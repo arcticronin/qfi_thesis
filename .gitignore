@@ -1,0 +1,19 @@
+# LaTeX build and auxiliary files
+*.aux
+*.bbl
+*.bbl-SAVE-ERROR
+*.bcf
+*.bcf-SAVE-ERROR
+*.blg
+*.fdb_latexmk
+*.fls
+*.log
+*.run.xml
+*.synctex.gz
+*.toc
+
+# Ignore the final compiled thesis to prevent repository bloat
+TeXtured/thesis.pdf
+
+# (Optional) Ignore reference PDFs
+papers/

@@ -1,0 +1,574 @@
+
+\chapter{Mathematical Background} \label{ch:MathBackground}
+
+
+\begin{infobox}[label={infobox_1}]{Why infoboxes}
+    also if there is a infobox, is something that sta in piedi da solo, so it is completely skippable but I liked it, it seems like a insight from a book
+\end{infobox}
+
+\section{Quantum Foundations: States, Open Systems, and Measurement Theory}
+
+A rigorous treatment of quantum parameter estimation requires distinguishing between intrinsic quantum indeterminacy and classical statistical ignorance.
+
+This corresponds to the fundamental divide between \textbf{ontic} uncertainty (from the Greek \textit{ontos}, meaning `being' or `reality') and \textbf{epistemic} uncertainty (from the Greek \textit{episteme}, meaning `knowledge').
+
+In quantum mechanics, the physical state of a system is represented by a density operator acting on a separable Hilbert space $\mathcal{H}$ \cite{Sakurai_Napolitano_2020}.
+
+
+\subsection{Density Operators, Purity, and Ontic versus Epistemic Uncertainty}
+
+\begin{definition}[Density Operator]
+    A quantum state is fully characterized by a density operator $\rho \in \mathcal{T}(\mathcal{H})$, where $\mathcal{T}(\mathcal{H})$ denotes the trace-class operators on $\mathcal{H}$. A valid density operator must satisfy three fundamental properties:
+    \begin{enumerate}
+        \item \textbf{Self-Adjointness:} $\rho^\dagger = \rho$.
+        \item \textbf{Positive Semi-Definiteness:} $\rho \ge 0$, meaning $\langle \psi | \rho | \psi \rangle \ge 0$ for all $|\psi\rangle \in \mathcal{H}$.
+        \item \textbf{Unit Trace:} $\operatorname{Tr}(\rho) = 1$, ensuring probability conservation.
+    \end{enumerate}
+\end{definition}
+
+\begin{definition}[Spectral Decomposition and State Purity]
+    By the spectral theorem for compact self-adjoint operators, any density operator admits a spectral decomposition:
+    \begin{equation}
+        \rho = \sum_{k} p_k | \psi_k \rangle \langle \psi_k |,
+    \end{equation}
+    where $\{ | \psi_k \rangle \}$ forms an orthonormal basis of eigenvectors and the eigenvalues $p_k$ satisfy $p_k \ge 0$ with $\sum_k p_k = 1$. The purity of a state is quantified by the functional $\gamma(\rho) \coloneqq \operatorname{Tr}(\rho^2) = \sum_k p_k^2$, which is bounded by $1/d \le \gamma(\rho) \le 1$, where $d = \dim(\mathcal{H})$.
+\end{definition}
+
+\begin{remark}[Ontic versus Epistemic Uncertainty in Pure and Mixed States]
+    The physical distinction between pure states ($\gamma = 1$) and mixed states ($\gamma < 1$) lies in the nature of the uncertainty they encode:
+    \begin{enumerate}
+        \item \textbf{Pure States and Ontic Uncertainty:} When $\rho = |\psi\rangle\langle\psi|$, the system is in a pure state representing maximal possible knowledge of the physical preparation. Any probabilistic outcome arising from measurements on $|\psi\rangle$ (e.g., superposition across non-commuting observable bases) is strictly \emph{ontic}, an irreducible, intrinsic quantum indeterminacy of physical reality itself, independent of observer ignorance.
+        \item \textbf{Mixed States and Epistemic Uncertainty:} When $\gamma < 1$, the density operator represents either a classical statistical ensemble of pure states or an open quantum system entangled with an inaccessible environment. In this regime, measurement randomness stems from a hybrid of two distinct sources: \emph{epistemic uncertainty} regarding which pure state $|\psi_k\rangle$ was prepared (quantified by the Shannon entropy of the classical probability distribution $\{p_k\}$), superimposed onto the underlying \emph{ontic uncertainty} intrinsic to each individual state $|\psi_k\rangle$.
+    \end{enumerate}
+\end{remark}
+
+\subsection{Quantum Operations, Effects, and Completely Positive Maps}
+
+Real physical systems are rarely closed, they interact with surrounding environments or undergo generalized measurement processes. The focus of our work was on quantum metrology where the measured state was mixed. We introduce here an unified algebraic description of both quantum state evolution and measurement outcomes, that is achieved through the formalism of Kraus operators and quantum effects~\cite{nielsen_chuang_2010_quantum_computation_and_quantum_information,quantum_theory_from_first_principles}.
+
+\begin{definition}[Kraus Representation of Quantum Operations]
+    A quantum operation is a linear, completely positive (CP), trace-non-increasing superoperator $\mathcal{S}: \mathcal{T}(\mathcal{H}) \to \mathcal{T}(\mathcal{H})$ that describes the physical transformation of a state. By Choi's isomorphism, any such operation admits an operator-sum representation:
+    \begin{equation}
+        \mathcal{S}(\rho) = \sum_{n} K_n \rho K_n^\dagger,
+    \end{equation}
+    where the Kraus operators $\{K_n\}$ act on $\mathcal{H}$ and satisfy the trace-non-increasing bounded condition $\sum_n K_n^\dagger K_n \le \mathbb{I}$.
+\end{definition}
+
+\begin{definition}[Quantum Effects from Kraus Operators]
+    Let an open-system evolution or a measurement process be described by a set of Kraus operators $\{K_n\}$~\cite{nielsen_chuang_2010_quantum_computation_and_quantum_information,quantum_theory_from_first_principles}. To each outcome or dynamical branch $n$, we associate a \emph{quantum effect} $E_n \in \mathcal{T}(\mathcal{H})$, defined as:
+    \begin{equation}
+        E_n \coloneqq K_n^\dagger K_n.
+        \label{eq:effect_def}
+    \end{equation}
+    By construction, every effect is a positive semi-definite operator ($E_n \ge 0$) bounded by the identity ($0 \le E_n \le \mathbb{I}$). While the effect $E_n$ uniquely dictates the classical occurrence probability of the event via Born's rule,
+    \begin{equation}
+        p(n|\rho) = \operatorname{Tr}(\rho E_n) = \operatorname{Tr}(K_n \rho K_n^\dagger),
+    \end{equation}
+    the Kraus operator $K_n = U_n \sqrt{E_n}$ carries the additional isometric degree of freedom $U_n$ that governs the selective post-measurement state transformation $\rho \mapsto K_n \rho K_n^\dagger / p(n|\rho)$.
+\end{definition}
+
+\begin{definition}[Completely Positive Trace-Preserving (CPTP) Maps]
+    When a quantum operation represents unconditional physical evolution across all possible outcomes (non-selective evolution), the sum of the underlying effects must resolve the identity: $\sum_n E_n = \mathbb{I}$. The superoperator $\mathcal{E}: \mathcal{T}(\mathcal{H}_S) \to \mathcal{T}(\mathcal{H}_S)$ becomes a Completely Positive Trace-Preserving (CPTP) map (quantum channel), satisfying:
+    \begin{enumerate}
+        \item \textbf{Trace-Preserving (TP):} $\sum_n K_n^\dagger K_n = \sum_n E_n = \mathbb{I}$, ensuring $\operatorname{Tr}[\mathcal{E}(\rho)] = 1$ for all $\rho$.
+        \item \textbf{Complete Positivity (CP):} For any auxiliary Hilbert space $\mathcal{H}_A$ of arbitrary dimension $m$, the extended map $\mathcal{E} \otimes \mathcal{I}_m$ maps positive semi-definite operators on $\mathcal{H}_S \otimes \mathcal{H}_A$ to positive semi-definite operators.
+    \end{enumerate}
+\end{definition}
+
+\begin{definition}[Parametrized Quantum State Trajectories]
+    In quantum parameter estimation, the parameter of interest $\theta \in \Theta$ is imprinted onto an initial state $\rho_0$ via a $\theta$-dependent CPTP map $\mathcal{E}_\theta$:
+    \begin{equation}
+        \rho(\theta) \coloneqq \mathcal{E}_\theta(\rho_0) = \sum_{n} K_n(\theta) \rho_0 K_n^\dagger(\theta).
+    \end{equation}
+    When the dynamics are unitary (closed system), the Kraus operators reduce to a single operator $K_1(\theta) = U(\theta) = \exp(-i H \theta)$, preserving state purity ($\gamma[\rho(\theta)] = \gamma[\rho_0]$). When open-system interaction is present, $\mathcal{E}_\theta$ generally degrades purity, mixing ontic quantum phase sensitivity with epistemic environmental noise.
+\end{definition}
+
+
+\subsection{Quantum Measurement Theory and Naimark's Dilation}
+
+Information about the parameter $\theta$ encoded in $\rho(\theta)$ must be extracted through physical measurement, we distinguish between projective measurements and a more generalize measurement.
+
+\begin{definition}[Projective (von Neumann) Measurements]
+    An ideal projective measurement is described by a collection of orthogonal projection operators $\mathbb{P} = \{P_x\}$ on $\mathcal{H}$ satisfying:
+    \begin{equation}
+        P_x P_y = \delta_{xy} P_x, \quad P_x^\dagger = P_x, \quad \sum_x P_x = \mathbb{I}.
+    \end{equation}
+    Upon obtaining outcome $x$ with probability $p(x|\theta) = \operatorname{Tr}[\rho(\theta) P_x]$, the post-measurement state collapses to $\rho'_x = P_x \rho(\theta) P_x / p(x|\theta)$.
+\end{definition}
+
+\begin{definition}[Positive Operator-Valued Measure (POVM)]
+    Describes a generalized quantum measurements, including noisy detectors, sub-ensembles, and measurements combined with auxiliary systems. The orthogonality constraint is relaxed. A POVM is defined by a set of positive semi-definite operators $\Pi = \{M_x\}$ such that:
+    \begin{equation}
+        M_x \ge 0 \quad \forall x, \quad \text{and} \quad \sum_x M_x = \mathbb{I}.
+        \label{eq:povm_def}
+    \end{equation}
+    By Born's rule, the probability of outcome $x$ is $p(x|\theta) = \operatorname{Tr}[\rho(\theta) M_x]$.
+\end{definition}
+
+\begin{theorem}[Naimark's Dilation Theorem]
+    Every generalized measurement (POVM) $\Pi = \{M_x\}$ acting on a system Hilbert space $\mathcal{H}_S$ can be realized as a projective measurement $\{P_x\}$ acting on an extended Hilbert space $\mathcal{H}_S \otimes \mathcal{H}_A$, where $\mathcal{H}_A$ is an auxiliary (ancilla) Hilbert space. Specifically, there exists an isometric embedding $V: \mathcal{H}_S \to \mathcal{H}_S \otimes \mathcal{H}_A$ and a set of orthogonal projectors $\{P_x\}$ on $\mathcal{H}_S \otimes \mathcal{H}_A$ such that:
+    \begin{equation}
+        M_x = V^\dagger P_x V \quad \forall x.
+        \label{eq:naimark_dilation}
+    \end{equation}
+\end{theorem}
+
+\begin{remark}[Operational Meaning of Naimark Dilation]
+    Naimark's theorem establishes that any non-orthogonal, non-projective POVM on a system is mathematically and physically equivalent to:
+    \begin{enumerate}
+        \item Coupling the primary system $\mathcal{H}_S$ to an ancilla system $\mathcal{H}_A$ prepared in a fixed reference state $|0\rangle_A$.
+        \item Executing a joint unitary transformation $U_{SA}$ on the composite Hilbert space $\mathcal{H}_S \otimes \mathcal{H}_A$.
+        \item Performing a standard von Neumann projective measurement on the ancilla space $\mathcal{H}_A$.
+    \end{enumerate}
+    Consequently, optimization over all POVMs—the core mechanism connecting classical statistical distance to Quantum Fisher Information—is operationally equivalent to optimizing over all possible physical couplings between the system and an external measurement apparatus.
+\end{remark}
+
+
+\section{Classical Foundations: Parameter Estimation and Statistical Distance}
+
+Consider a classical statistical estimation problem where an unknown continuous parameter $\theta \in \mathbb{R}$ is encoded within a family of probability distributions $P = \{p(x|\theta) \mid \theta \in \Theta\}$. An observer performs $N$ independent and identically distributed (i.i.d.) measurements yielding data $X = (x_1, \dots, x_N)$ to construct an unbiased estimator $\hat{\theta}(X)$.
+
+\begin{definition}[Classical Fisher Information]
+    Let $p(x|\theta)$ be a parametrized probability density function differentiable with respect to $\theta$. The Classical Fisher Information (CFI), $F(\theta)$, associated with a single measurement outcome $x$ is defined as the second moment of the score function:
+    \begin{equation}
+        F(\theta) \coloneqq \mathbb{E}\left[ \left( \frac{\partial}{\partial \theta} \ln p(x|\theta) \right)^2 \right] = \int_{\mathcal{X}} \frac{1}{p(x|\theta)} \left( \frac{\partial p(x|\theta)}{\partial \theta} \right)^2 \mathrm{d}x.
+        \label{eq:classical_fi}
+    \end{equation}
+\end{definition}
+
+\begin{remark}[Operational Meaning of the Classical Fisher Information]
+    The CFI measures the sensitivity of the distribution $p(x|\theta)$ to local variations in $\theta$. Geometrically, $F(\theta)$ defines a local Riemannian metric tensor (the Fisher-Rao metric) on the statistical manifold of probability distributions. Operationally, it dictates the minimum obtainable estimation variance via the classical Cramér-Rao bound:
+    \begin{equation}
+        \mathrm{Var}(\hat{\theta}) \ge \frac{1}{N F(\theta)}
+    \end{equation}
+\end{remark}
+
+\begin{definition}[Wootters Statistical Distance]
+    For two neighboring probability distributions $p(x|\theta)$ and $p(x|\theta + \mathrm{d}\theta)$, the infinitesimal statistical distance $\mathrm{d}s_{\text{W}}^2$ (Wootters distance) corresponds to the line element of the Fisher-Rao metric:
+    \begin{equation}
+        \mathrm{d}s_{\text{W}}^2 = \frac{1}{4} F(\theta) \mathrm{d}\theta^2 = \sum_{x} \left( \sqrt{p(x|\theta + \mathrm{d}\theta)} - \sqrt{p(x|\theta)} \right)^2
+    \end{equation}
+\end{definition}
+
+\begin{remark}[Intuition Behind Wootters Distance]
+    By mapping probability amplitudes $r_x = \sqrt{p(x|\theta)}$ onto a unit hypersphere ($\sum_x r_x^2 = 1$), the distinguishability between two distributions maps directly to the spherical geodesic distance between two points. The CFI is precisely the quadratic scaling factor governing how rapidly two distributions become distinguishable as $\theta$ fluctuates.
+\end{remark}
+
+
+\section{The Mathematical Architecture: The Symmetric Logarithmic Derivative}
+
+In quantum mechanics, parameters are not direct observables (e.g., time, coupling constants, phase shifts). Instead, $\theta$ is encoded into a parameter-dependent quantum state $\rho(\theta)$ acting on a Hilbert space $\mathcal{H}$.
+
+To extract information, one performs a quantum measurement described by a Positive Operator-Valued Measure (POVM), defined as a set of positive semi-definite operators $\Pi = \{M_x\}$ satisfying $\sum_x M_x = \mathbb{I}$. According to Born's rule, the conditional probability of obtaining outcome $x$ given $\theta$ is:
+\begin{equation}
+    p(x|\theta) = \mathrm{Tr}\left( \rho(\theta) M_x \right)
+\end{equation}
+
+Because $p(x|\theta)$ depends on the choice of measurement $\Pi$, the resulting classical Fisher information $F(\theta; \Pi)$ is a measurement-dependent quantity. Furthermore, because a density matrix $\rho(\theta)$ and its derivative $\partial_\theta \rho(\theta)$ do not generally commute, a direct logarithmic derivative is ill-defined.
+
+\subsection{The Continuous Lyapunov Equation}
+
+\todo[]{cite here}
+To circumvent this non-commutativity, the Symmetric Logarithmic Derivative (SLD), denoted as $L_\theta$, is introduced.
+
+\begin{definition}[Symmetric Logarithmic Derivative]
+    Let $\rho(\theta)$ be a parameter-dependent density matrix. The Symmetric Logarithmic Derivative (SLD) $L_\theta$ is implicitly defined as the unique Hermitian solution to the continuous operator Lyapunov equation:
+    \begin{equation}
+        \partial_\theta \rho(\theta) = \frac{1}{2} \left( \rho(\theta) L_\theta + L_\theta \rho(\theta) \right) \equiv \frac{1}{2} \{L_\theta, \rho(\theta)\}
+        \label{eq:sld_lyapunov}
+    \end{equation}
+\end{definition}
+
+\begin{remark}[Hermiticity and Zero Expectation]
+    The symmetrized definition in Equation~\eqref{eq:sld_lyapunov} ensures that $L_\theta$ remains a valid Hermitian observable ($L_\theta^\dagger = L_\theta$), serving as the quantum operator analogue to the classical score function. Because probability conservation dictates $\operatorname{Tr}[\partial_\theta \rho(\theta)] = 0$, taking the trace of both sides of the Lyapunov equation yields:
+    \begin{equation}
+        \operatorname{Tr}[\rho(\theta) L_\theta] = 0.
+    \end{equation}
+    Thus, the expectation value of the SLD operator with respect to the underlying state is strictly zero.
+\end{remark}
+
+\begin{definition}[Quantum Fisher Information via SLD]
+    The Quantum Fisher Information (QFI), $\mathcal{F}_Q(\theta)$, is defined as the expectation value of the square of the Symmetric Logarithmic Derivative:
+    \begin{equation}
+        \mathcal{F}_Q(\theta) \coloneqq \operatorname{Tr}\left[ \rho(\theta) L_\theta^2 \right].
+        \label{eq:qfi_sld_def}
+    \end{equation}
+\end{definition}
+
+\begin{remark}[Variance Interpretation]
+    Because $\operatorname{Tr}[\rho(\theta) L_\theta] = 0$, Equation~\eqref{eq:qfi_sld_def} demonstrates that the QFI is precisely the variance of the SLD operator:
+    \begin{equation}
+        \mathcal{F}_Q(\theta) = \operatorname{Var}_{\rho}(L_\theta) = \langle L_\theta^2 \rangle - \langle L_\theta \rangle^2.
+    \end{equation}
+    It quantifies the dynamic inferential capacity of the system—how sensitively the state encodes the parameters of its temporal or spatial evolution.
+\end{remark}
+
+\subsection{Explicit Formulas and Spectral Decomposition}
+
+Solving the implicit Lyapunov equation analytically requires projecting the density matrix into its spectral decomposition.
+
+\begin{definition}[Spectral Matrix Elements of the SLD]
+    Let \\ $\rho(\theta) = \sum_k \lambda_k \vert\psi_k\rangle\langle\psi_k\vert$ be the spectral decomposition of $\rho(\theta)$, where $\lambda_k$ and $\vert\psi_k\rangle$ depend on $\theta$. For any pair of indices $(k,l)$ such that $\lambda_k + \lambda_l > 0$, the matrix elements of $L_\theta$ in the eigenbasis of $\rho(\theta)$ are given by:
+    \begin{equation}
+        \langle \psi_k \vert L_\theta \vert \psi_l \rangle = \frac{2}{\lambda_k + \lambda_l} \langle \psi_k \vert \partial_\theta \rho(\theta) \vert \psi_l \rangle.
+        \label{eq:sld_spectral_elements}
+    \end{equation}
+\end{definition}
+
+\begin{definition}[Spectral Formula for the QFI]
+    Substituting Equation~\eqref{eq:sld_spectral_elements} into Equation~\eqref{eq:qfi_sld_def} yields the explicit representation of the Quantum Fisher Information for a density matrix with support over the subspace where $\lambda_k + \lambda_l > 0$:
+    \begin{equation}
+        \mathcal{F}_Q(\theta) = 2 \sum_{k,l : \lambda_k + \lambda_l > 0} \frac{\vert\langle \psi_k \vert \partial_\theta \rho(\theta) \vert \psi_l \rangle\vert^2}{\lambda_k + \lambda_l}.
+        \label{eq:qfi_spectral_explicit}
+    \end{equation}
+\end{definition}
+
+\begin{remark}[Classical vs. Quantum Contributions]
+    By expanding $\partial_\theta \rho(\theta) = \sum_k (\partial_\theta \lambda_k) \vert\psi_k\rangle\langle\psi_k\vert + \lambda_k (\vert\partial_\theta \psi_k\rangle\langle\psi_k\vert + \vert\psi_k\rangle\langle\partial_\theta \psi_k\vert)$, Equation~\eqref{eq:qfi_spectral_explicit} separates into two distinct physical contributions:
+    \begin{equation}
+        \mathcal{F}_Q(\theta) = \sum_{k : \lambda_k > 0} \frac{(\partial_\theta \lambda_k)^2}{\lambda_k} + 2 \sum_{k \neq l : \lambda_k + \lambda_l > 0} \frac{(\lambda_k - \lambda_l)^2}{\lambda_k + \lambda_l} \vert\langle\psi_k\vert\partial_\theta\psi_l\rangle\vert^2.
+    \end{equation}
+    The first term represents classical statistical distinguishability arising from changes in population distributions ($\lambda_k$), while the second term captures purely quantum distinguishability arising from the rotation of the eigenvectors ($\vert\psi_k\rangle$) in Hilbert space.
+\end{remark}
+
+\begin{remark}[Pure State Reduction]
+    For a pure state $\rho(\theta) = |\psi_\theta\rangle\langle\psi_\theta|$, the QFI simplifies to four times the variance of the generator of parameter shifts:
+    \begin{equation}
+        \mathcal{F}_Q(\theta) = 4 \left( \langle \partial_\theta \psi_\theta | \partial_\theta \psi_\theta \rangle - |\langle \psi_\theta | \partial_\theta \psi_\theta \rangle|^2 \right).
+    \end{equation}
+    If the state evolves unitarily according to $|\psi_\theta\rangle = e^{-i H \theta} |\psi_0\rangle$, the QFI becomes independent of $\theta$:
+    \begin{equation}
+        \mathcal{F}_Q = 4 \, \mathrm{Var}(H)_{\psi_0} = 4 \left( \langle \psi_0 | H^2 | \psi_0 \rangle - \langle \psi_0 | H | \psi_0 \rangle^2 \right)
+    \end{equation}
+\end{remark}
+
+\subsection{Advanced Evaluation: \v{S}afr\'{a}nek Formula and Vectorization}
+
+While the spectral decomposition provides analytical clarity, diagonalizing a density matrix is computationally expensive, scaling as $\mathcal{O}(d^3)$ where $d$ is the Hilbert space dimension. For high-dimensional, multi-parameter quantum systems, this represents a severe computational bottleneck.
+
+\begin{definition}[Vectorized QFI Matrix via \v{S}afr\'{a}nek Formula]
+    Let $\boldsymbol{\theta} = (\theta_1, \dots, \theta_M)$ be a vector of parameters, and let $\operatorname{vec}(A)$ denote the column-vectorization of a matrix $A$. The Quantum Fisher Information Matrix (QFIM), with components $H_{ij}$, can be computed without diagonalization via the linear Kronecker-product system:
+    \begin{equation}
+        H_{ij} = 2 \operatorname{vec}[\partial_i\rho]^\dagger \left( \rho \otimes \mathbb{I} + \mathbb{I} \otimes \rho^T \right)^{-1} \operatorname{vec}[\partial_j\rho],
+        \label{eq:safranek_vectorized}
+    \end{equation}
+    where $\partial_i \equiv \partial/\partial\theta_i$ and the inverse is taken over the support of $\rho \otimes \mathbb{I} + \mathbb{I} \otimes \rho^T$.
+\end{definition}
+
+\begin{remark}[Computational Advantages of Vectorization]
+    Equation~\eqref{eq:safranek_vectorized} evaluates the QFIM in any arbitrary orthonormal basis, bypassing the explicit derivation of the eigenbasis $\{\vert\psi_k\rangle\}$. When $\rho$ is rank-deficient, the standard matrix inverse is replaced by the Moore-Penrose pseudoinverse, or evaluated within the restricted support projector of the density operator.
+\end{remark}
+
+\begin{table}[h!]
+    \centering
+    \caption{Comparison of analytical and computational methodologies for evaluating the Symmetric Logarithmic Derivative (SLD) and the Quantum Fisher Information (QFI).}
+    \label{tab:qfi_evaluation_methods}
+    \begin{tabular}{p{2cm} p{3cm} p{5cm} p{4.5cm}}
+        \hline\hline
+        \textbf{Evaluation Method}     & \textbf{Mathematical Basis}                                               & \textbf{Primary Advantages}                                               & \textbf{Constraints / Limitations}                                           \\
+        \hline
+        Spectral Decomposition         & Eigenbasis projection of $\rho(\theta)$                                   & Exact analytical expressions; isolates population vs. coherence dynamics. & Prohibitive $\mathcal{O}(d^3)$ diagonalization cost for large systems.       \\
+        Pure State Reduction           & State vector gradients $\vert\partial_\theta \psi(\theta)\rangle$         & Bypasses density matrices; maximally efficient calculation.               & Strictly limited to unitary evolution of pure states.                        \\
+        \v{S}afr\'{a}nek Vectorization & Kronecker product ($\rho \otimes \mathbb{I} + \mathbb{I} \otimes \rho^T$) & Diagonalization-free; evaluates QFIM in any arbitrary orthonormal basis.  & High memory overhead ($\mathcal{O}(d^4)$ matrix size) in vectorized space.   \\
+        Block-Matrix Lyapunov          & Support-restricted inversion                                              & Highly efficient for states with small active support sets.               & Requires explicit determination of the support projector and pseudoinverses. \\
+        \hline\hline
+    \end{tabular}
+\end{table}
+
+
+\section{Operational Foundation: The Braunstein-Caves Optimization}
+
+The physical connection between Classical Fisher Information and Quantum Fisher Information is established by optimizing over all mathematically allowed quantum measurements.
+
+\begin{definition}[Braunstein-Caves Theorem]
+    Let $\rho(\theta)$ be a parameter dependent density matrix
+    and let $\mathcal{M}$ denote the set of all valid POVMs $\Pi = \{M_x\}$.
+    The Quantum Fisher Information is the supremum of the Classical Fisher Information over all possible POVMs:
+    \begin{equation}
+        \mathcal{F}_Q(\theta) = \sup_{\Pi \in \mathcal{M}} F(\theta; \Pi)
+    \end{equation}
+\end{definition}
+
+\begin{remark}[Optimal Measurement Basis]
+    An optimal POVM that achieves the supremum $F(\theta; \Pi) = \mathcal{F}_Q(\theta)$ is given by the projection onto the eigenbasis of the Symmetric Logarithmic Derivative $L_\theta$. Thus, while $F(\theta; \Pi)$ depends on the experimental choice of measurement setup, $\mathcal{F}_Q(\theta)$ represents an intrinsic property of the state trajectory $\rho(\theta)$ in Hilbert space.
+\end{remark}
+
+
+\section{Quantum Metrology Bounds and Scaling Limits}
+
+\begin{definition}[Quantum Cramér-Rao Bound]
+    Let $\hat{\theta}$ be any locally unbiased estimator of $\theta$ constructed from the outcomes of $N$ independent measurement runs on the state $\rho(\theta)$. The variance of $\hat{\theta}$ is lower-bounded by the Quantum Cramér-Rao Bound (QCRB):
+    \begin{equation}
+        \mathrm{Var}(\hat{\theta}) \ge \frac{1}{N F(\theta; \Pi)} \ge \frac{1}{N \mathcal{F}_Q(\theta)}.
+    \end{equation}
+\end{definition}
+
+\begin{remark}[Physical Significance of Precision Scaling]
+    Consider an ensemble of $K$ physical probes (e.g., $K$ two-level systems) used to measure a parameter $\theta$ via the local Hamiltonian $H = \sum_{j=1}^K h_j$.
+
+    \begin{enumerate}
+        \item \textbf{Standard Quantum Limit (SQL):} If the probes are prepared in an unentangled product state $\rho = \bigotimes_{j=1}^K \rho_j$, the QFI is additive:
+              \begin{equation}
+                  \mathcal{F}_Q = \sum_{j=1}^K \mathcal{F}_Q^{(j)} = \mathcal{O}(K) \implies \mathrm{Var}(\hat{\theta}) \ge \mathcal{O}\left(\frac{1}{N K}\right).
+              \end{equation}
+              This $1/\sqrt{K}$ precision scaling is bounded by shot-noise (classical independence).
+
+        \item \textbf{Heisenberg Limit (HL):} If the $K$ probes are prepared in a maximally entangled state, such as the Greenberger-Horne-Zeilinger (GHZ) state $|\text{GHZ}\rangle = \frac{1}{\sqrt{2}}(|0\rangle^{\otimes K} + |1\rangle^{\otimes K})$, the variance of the global Hamiltonian scales quadratically:
+              \begin{equation}
+                  \mathcal{F}_Q = 4 \mathrm{Var}\left(\sum_{j=1}^K h_j\right) = \mathcal{O}(K^2) \implies \mathrm{Var}(\hat{\theta}) \ge \mathcal{O}\left(\frac{1}{N K^2}\right).
+              \end{equation}
+              This $1/K$ uncertainty scaling represents the absolute physical bound on estimation precision allowed by quantum mechanics.
+    \end{enumerate}
+\end{remark}
+
+
+\begin{table}[t]
+    \centering
+    \caption{Comparison between classical and quantum parameter estimation frameworks.}
+    \label{tab:comparison_classical_quantum_fisher_information}
+
+    \begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}X
+        >{\raggedright\arraybackslash}X
+        >{\raggedright\arraybackslash}X@{}}
+        \toprule
+        \textbf{Metrological Feature}                              &
+        \textbf{Classical Estimation}                              &
+        \textbf{Quantum Estimation}                                        \\
+        \midrule
+        Foundational object                                        &
+        Probability distribution $p(x\mid\theta)$                  &
+        Density matrix $\rho(\theta)$                                      \\
+
+        Information metric                                         &
+        Classical Fisher information $\mathcal{F}_{\mathrm C}$     &
+        Quantum Fisher information $\mathcal{F}_{\mathrm Q}$               \\
+
+        Dependence                                                 &
+        Measurement dependent                                      &
+        State dependent; optimized over all measurements                   \\
+
+        Precision bound                                            &
+        Classical Cramér--Rao bound                                &
+        Quantum Cramér--Rao bound (QCRB)                                   \\
+
+        Scaling without entanglement                               &
+        Standard limit $\operatorname{Var}(\hat\theta)\propto 1/N$ &
+        Standard quantum limit $\operatorname{Var}(\hat\theta)\propto 1/N$ \\
+
+        Scaling with entanglement                                  &
+        Not applicable                                             &
+        Heisenberg limit $\operatorname{Var}(\hat\theta)\propto 1/N^2$     \\
+
+        Underlying geometry                                        &
+        Fisher--Rao metric on the probability simplex              &
+        Bures metric on the space of density matrices                      \\
+        \bottomrule
+    \end{tabularx}
+\end{table}
+
+
+\section{Information Geometry: The Bures Metric and Fubini-Study}
+
+The translation of QFI from a purely statistical bound into a geometric object defines the field of Quantum Information Geometry. In this context, the QFI acts as a metric tensor that dictates the curvature and distance across the manifold of quantum states.
+
+\subsection{The Bures Distance for Mixed States}
+
+\begin{definition}[Bures Distance and Metric Tensor]
+    \label{def:bures_distance}
+    The Bures distance $d_B(\rho, \sigma)$ between two density operators $\rho$ and $\sigma$ is defined via the Uhlmann fidelity $F(\rho, \sigma) \coloneqq \operatorname{Tr}\left[\sqrt{\sqrt{\rho}\sigma\sqrt{\rho}}\right]$:
+    \begin{equation}
+        d_B^2(\rho, \sigma) \coloneqq 2 - 2F(\rho, \sigma).
+    \end{equation}
+    For infinitesimal parameter separations $\sigma = \rho + d\rho$, the Riemannian metric tensor $g_{ij}^B$ induced by the squared distance $d_B^2(\rho, \rho + d\rho) = \sum_{i,j} g_{ij}^B d\theta_i d\theta_j$ is the Bures metric (or Helstrom metric).
+\end{definition}
+
+\begin{definition}[Proportionality of QFIM and Bures Metric]
+    \label{def:qfim_bures_relation}
+    The components of the Quantum Fisher Information Matrix $H_{ij}$ are strictly proportional to the Bures metric tensor components $g_{ij}^B$:
+    \begin{equation}
+        H_{ij} = 4 g_{ij}^B.
+        \label{eq:qfim_bures_relation}
+    \end{equation}
+\end{definition}
+
+\begin{remark}[Geometric Meaning of the Factor of Four]
+    The factor of $4$ in Equation~\eqref{eq:qfim_bures_relation} is a universal normalization constant that connects the statistical Cram\'{e}r-Rao bound to the differential geometry of state manifolds. Furthermore, the Riemannian volume element $\mathrm{d}V = \sqrt{\det(g^B)} \, \mathrm{d}^M\theta$ serves as the Jeffreys prior for mixed states, providing a reparametrization-invariant non-informative prior in quantum Bayesian inference.
+\end{remark}
+
+
+\todo[]{maybe from here to the HOLEVO bound, and the QFI Matrix, can be moved in the appendix}
+
+\subsection{The Fubini-Study Metric for Pure States}
+
+\begin{definition}[Fubini-Study Metric Tensor]
+    For a manifold of pure states $\rho(\boldsymbol{\lambda}) = \vert\psi(\boldsymbol{\lambda})\rangle\langle\psi(\boldsymbol{\lambda})\vert$ parameterized by $\boldsymbol{\lambda} = (\lambda_1, \dots, \lambda_M)$, the Bures metric reduces to the Fubini-Study metric $g_{\mu\nu}^{FS}$ on the complex projective space $\mathbb{C}P^{d-1}$:
+    \begin{equation}
+        g_{\mu\nu}^{FS} = \operatorname{Re} \left[ \langle \partial_\mu \psi \vert \partial_\nu \psi \rangle - \langle \partial_\mu \psi \vert \psi \rangle \langle \psi \vert \partial_\nu \psi \rangle \right].
+        \label{eq:fubini_study_def}
+    \end{equation}
+\end{definition}
+
+\begin{remark}[Gauge Invariance and Projective Rays]
+    Global phase transformations $\vert\psi\rangle \to e^{i\alpha(\boldsymbol{\lambda})}\vert\psi\rangle$ leave physical states invariant. The subtraction term $\langle \partial_\mu \psi \vert \psi \rangle \langle \psi \vert \partial_\nu \psi \rangle$ in Equation~\eqref{eq:fubini_study_def} acts as a gauge-fixing projection, ensuring that $g_{\mu\nu}^{FS}$ measures distance exclusively between distinct physical rays in projective Hilbert space rather than unphysical phase evolutions.
+\end{remark}
+
+\subsection{Conformal Geometries of the Qubit Bloch Ball}
+
+\begin{definition}[Conformal Equivalence for Qubits]
+    Let a two-level system (qubit) be parameterized by its Bloch vector $\vec{r} \in \mathbb{R}^3$ with $\vert\vec{r}\vert < 1$. The Bures metric line element $\mathrm{d}s_{B}^2$ on the interior of the Bloch ball is conformally equivalent to the Beltrami-Klein metric $\mathrm{d}s_{BK}^2$ of hyperbolic geometry:
+    \begin{equation}
+        \mathrm{d}s_{BK}^2 = 4 \gamma^2(r) \mathrm{d}s_{B}^2, \quad \text{where} \quad \gamma(r) = \frac{1}{\sqrt{1 - r^2}}.
+    \end{equation}
+\end{definition}
+
+\begin{remark}[Relativistic and Dimensional Obstructions]
+    The conformal factor $\gamma^2(r) = (1-r^2)^{-1}$ corresponds to the Lorentz gamma factor of special relativity, reflecting the exceptional Lie group isomorphism $\mathrm{SL}(2, \mathbb{C}) \cong \mathrm{Spin}^+(1,3)$. However, for Hilbert space dimensions $N \ge 3$ (qutrits and beyond), full-rank density matrices possess a non-vanishing Weyl curvature tensor at the maximally mixed state. Consequently, high-dimensional quantum state spaces cannot be conformally mapped to any constant-curvature hyperbolic space.
+\end{remark}
+
+
+%\begin{infobox}[label={sec:quantum_geom_tensor}]{Quantum Geometric Tensor}
+\section{Quantum Geometric Tensor}
+
+To comprehend the full physical scope of the Fubini-Study metric and the QFI, they must be recognized as components of a broader mathematical object: the Quantum Geometric Tensor (QGT), which unifies Riemannian state distances with symplectic geometric phases.
+
+\begin{definition}[Quantum Geometric Tensor]
+    For a smooth manifold of pure states $\vert\psi(\boldsymbol{\lambda})\rangle$, the Quantum Geometric Tensor $Q_{\mu\nu}(\boldsymbol{\lambda})$ is a complex, Hermitian second-rank tensor defined as:
+    \begin{equation}
+        Q_{\mu\nu}(\boldsymbol{\lambda}) \coloneqq \langle \partial_\mu \psi \vert \left( \mathbb{I} - \vert\psi\rangle\langle\psi\vert \right) \vert \partial_\nu \psi \rangle.
+        \label{eq:qgt_def}
+    \end{equation}
+\end{definition}
+
+\begin{definition}[Metric and Curvature Decomposition]
+    Any Hermitian tensor decomposes uniquely into a real symmetric component and an imaginary antisymmetric component:
+    \begin{equation}
+        Q_{\mu\nu} = g_{\mu\nu} - \frac{i}{2} F_{\mu\nu},
+    \end{equation}
+    where:
+    \begin{align}
+        g_{\mu\nu} & \coloneqq \operatorname{Re}(Q_{\mu\nu}) = \text{Fubini-Study Metric Tensor (Riemannian)}, \\
+        F_{\mu\nu} & \coloneqq -2\operatorname{Im}(Q_{\mu\nu}) = \text{Berry Curvature 2-Form (Symplectic)}.
+    \end{align}
+\end{definition}
+
+\begin{remark}[Physical Manifestations of the QGT]
+    While the imaginary antisymmetric component $F_{\mu\nu}$ acts as a momentum-space magnetic field generating topological invariants (Chern numbers, Berry phases, anomalous Hall conductivity), the real symmetric component $g_{\mu\nu}$ dictates geometric fluctuations. In condensed matter physics, $g_{\mu\nu}$ bounds the gauge-invariant Wannier function localization spread and determines the superfluid stiffness in flat-band systems such as magic-angle twisted bilayer graphene.
+\end{remark}
+
+\begin{table}[h!]
+    \centering
+    \caption{Decomposition of the Quantum Geometric Tensor (QGT) and its physical implications across quantum information and condensed matter physics.}
+    \label{tab:qgt_decomposition}
+    \begin{tabular}{p{2cm} p{2.1cm} p{2.75cm} p{5.5cm}}
+        \hline\hline
+        \textbf{QGT Component}        & \textbf{Math. Identity}           & \textbf{Geometric Interpretation}       & \textbf{Physical / Observable Implications}                                                                           \\
+        \hline
+        Real Part ($g_{\mu\nu}$)      & $\operatorname{Re}(Q_{\mu\nu})$   & Fubini-Study / Bures Metric (Symmetric) & QFI, Quantum Cram\'{e}r-Rao Bound, Wannier localization spread, flat-band superfluid stiffness, quantum speed limits. \\
+        Imaginary Part ($F_{\mu\nu}$) & $-2\operatorname{Im}(Q_{\mu\nu})$ & Berry Curvature (Antisymmetric 2-form)  & Berry phase, Chern numbers (topological invariants), Quantum Hall Effect, non-adiabatic forces.                       \\
+        \hline\hline
+    \end{tabular}
+\end{table}
+
+
+\section{Petz Classification and Monotone Metrics}
+
+In classical statistics, Chentsov's theorem proves that the Fisher-Rao metric is the unique Riemannian metric on probability distributions invariant under stochastic Markov morphisms. In quantum mechanics, non-commutativity ($[\rho, \sigma] \neq 0$) leads to an infinite family of Riemannian metrics that contract monotonically under Completely Positive Trace-Preserving (CPTP) maps.
+
+\begin{definition}[Petz Classification Theorem and Kubo-Ando Symmetry]
+    Every monotone quantum Riemannian metric $g_f$ is in one-to-one correspondence with an operator monotone function $f: (0, \infty) \to (0, \infty)$ satisfying the Kubo-Ando symmetry:
+    \begin{equation}
+        f(t) = t f(t^{-1}), \quad \text{with} \quad f(1) = 1.
+    \end{equation}
+    The inner product between two tangent vectors $A, B \in \mathcal{T}_\rho$ at state $\rho$ is generated by the Morozova-Chentsov kernel:
+    \begin{equation}
+        g_f(A, B) = \operatorname{Tr}\left[ A \cdot \left( \mathcal{R}_\rho \circ f(\mathcal{L}_\rho \mathcal{R}_\rho^{-1}) \right)^{-1}(B) \right],
+    \end{equation}
+    where $\mathcal{L}_\rho(X) = \rho X$ and $\mathcal{R}_\rho(X) = X \rho$ denote left- and right-multiplication superoperators.
+\end{definition}
+
+\begin{definition}[Extremal Monotone Metrics]
+    Within the infinite Petz family, three metrics correspond to distinct operator monotone functions $f(t)$:
+    \begin{enumerate}
+        \item \textbf{Symmetric Logarithmic Derivative (SLD) Metric:} Generated by $f_{\text{SLD}}(t) = \frac{1+t}{2}$. It represents the minimal monotone metric under the positive semidefinite order, yielding the tightest Cram\'{e}r-Rao variance bound.
+        \item \textbf{Right Logarithmic Derivative (RLD) Metric:} Generated by $f_{\text{RLD}}(t) = \frac{2t}{t+1}$. It represents the maximal monotone metric, yielding a looser estimation bound ($\text{SLD-CRB} \ge \text{RLD-CRB}$).
+        \item \textbf{Kubo-Mori (Bogoliubov) Metric:} Generated by the logarithmic mean $f_{\text{KM}}(t) = \frac{t-1}{\ln t}$. It governs linear response theory and thermal equilibrium geometries in quantum statistical mechanics.
+    \end{enumerate}
+\end{definition}
+
+\begin{remark}[Curvature and Entanglement Non-Reduction]
+    For two-parameter qubit state slices, any Petz metric splits into independent population, coherence, and entanglement (concurrence) derivative channels. Rigorous non-reduction theorems prove that neither the Gaussian curvature of a slice nor the scalar curvature of the ambient Petz metric can be expressed as a function of entanglement monotones alone. Curvature reflects the interplay between classical eigenvalues and quantum coherence, rather than serving as a proxy for entanglement.
+\end{remark}
+
+%\end{infobox}
+
+\section{The Holevo Bound}
+
+
+When estimating a parameter vector $\boldsymbol{\theta} = (\theta_1, \dots, \theta_M)$, the scalar QFI upgrades to the $M \times M$ Quantum Fisher Information Matrix (QFIM) $H_{ij}$.
+
+\begin{definition}[Multiparameter SLD Cram\'{e}r-Rao Bound]
+    For any locally unbiased estimator $\hat{\boldsymbol{\theta}}$ of $\boldsymbol{\theta}$ with covariance matrix $V_{ij} = \operatorname{Cov}(\hat{\theta}_i, \hat{\theta}_j)$ and any positive-semidefinite weight matrix $W$, the multiparameter SLD Cram\'{e}r-Rao Bound (SLD-CRB) satisfies:
+    \begin{equation}
+        \operatorname{Tr}(W V) \ge \operatorname{Tr}(W H^{-1}).
+    \end{equation}
+\end{definition}
+
+\begin{definition}[Weak Commutativity Condition]
+    Unlike classical estimation, the multiparameter SLD-CRB is not generally attainable because optimal POVMs for distinct parameters $\theta_i$ and $\theta_j$ may be incompatible. The necessary and sufficient condition for simultaneous saturation of the SLD-CRB is the vanishing of the expectation value of the SLD commutators:
+    \begin{equation}
+        \operatorname{Tr}\left[ \rho(\boldsymbol{\theta}) [L_i, L_j] \right] = 0, \quad \forall i, j.
+        \label{eq:weak_commutativity}
+    \end{equation}
+\end{definition}
+
+\begin{definition}[Holevo Cram\'{e}r-Rao Bound]
+    When Equation~\eqref{eq:weak_commutativity} is violated, the asymptotic precision limit for collective measurements on $\rho(\boldsymbol{\theta})^{\otimes N}$ is governed by the Holevo Cram\'{e}r-Rao Bound (HCRB), defined via the scalar optimization problem:
+    \begin{equation}
+        C_{\text{Holevo}}(W) \coloneqq \min_{\{V_i\}} \left\{ \operatorname{Tr}(W \operatorname{Re} Z) + \operatorname{Tr}\vert\sqrt{W} (\operatorname{Im} Z) \sqrt{W}\vert \right\},
+    \end{equation}
+    where $Z_{ij} = \operatorname{Tr}[\rho V_i V_j]$ is evaluated over all sets of locally unbiased Hermitian operators $\{V_i\}$.
+\end{definition}
+
+\begin{remark}[Hierarchy of Multiparameter Bounds]
+    The collective estimation bounds satisfy the fundamental hierarchy:
+    \begin{equation}
+        C_{\text{Holevo}}(W) \ge \operatorname{Tr}(W H_{\text{SLD}}^{-1}) \ge \operatorname{Tr}(W H_{\text{RLD}}^{-1}).
+    \end{equation}
+    The Belliardo-Giovannetti ratio $R = C_{\text{Holevo}} / \operatorname{Tr}(W H_{\text{SLD}}^{-1}) \in [1, 2]$ quantifies measurement incompatibility: $R=1$ indicates perfect asymptotic compatibility, whereas $R \to 2$ signifies maximal operational incompatibility between the parameters.
+\end{remark}
+
+
+\section{Phase Transitions, Singularities, and Discontinuities}
+
+\begin{definition}[Removable Singularities at Rank Boundaries]
+    When a density matrix $\rho(\theta)$ undergoes a transition where its rank changes (e.g., crossing a zero-temperature quantum phase transition from a mixed state to a pure state), the explicit QFIM formula in Equation~\eqref{eq:qfi_spectral_explicit} exhibits mathematical discontinuities due to eigenvalues crossing $\lambda_k = 0$.
+\end{definition}
+
+\begin{remark}[Bures Metric as a Continuous Envelope]
+    While perturbative Taylor expansions of the QFIM fail at points of rank change, statistical distinguishability remains physically well-behaved. The macroscopic Bures metric $d_B^2(\rho, \sigma)$ acts as a globally continuous Riemannian envelope across rank boundaries. The discontinuities in the differential QFIM are removable singularities that occur only when Taylor expanding across regions with discontinuous spectral support.
+\end{remark}
+
+
+\section{NISQ Era Algorithms for QFI}
+
+This work focuses on computing approximations of the QFI, because computing the exact QFI for an arbitrary $n$-qubit mixed state ($\dim \mathcal{H} = 2^n$) scales as $\mathcal{O}(8^n)$ via diagonalization, rendering exact classical evaluations intractable for Intermediate-Scale systems.
+
+\begin{definition}[Variational Quantum Fisher Information Estimation]
+    Variational Quantum Fisher Information Estimation (VQFIE) avoids diagonalization by variationally bounding the QFI via parameter-shifted state overlaps $\rho_\theta$ and $\rho_{\theta+\delta}$:
+    \begin{enumerate}
+        \item \textbf{Truncated QFI (TQFI):} Projects $\rho$ onto its $m$ largest eigenvalues using a Variational Quantum State Eigensolver (VQSE), computing lower fidelity bounds within the dominant eigenspace.
+        \item \textbf{Sub- and Super-QFI (SSQFI):} Evaluates fidelity bounds purely via trace measurements of polynomial state products ($\operatorname{Tr}[\rho\sigma]$, $\operatorname{Tr}[\rho\sigma\rho\sigma]$) obtained from SWAP-test quantum circuits.
+    \end{enumerate}
+\end{definition}
+
+\begin{definition}[Quantum Natural Gradient Descent]
+    In Variational Quantum Algorithms (VQAs) with parametrized states $\vert\psi(\boldsymbol{\theta})\rangle$, Quantum Natural Gradient (QNG) descent updates parameters along the Riemannian geodesic of state space by preconditioning the Euclidean gradient with the inverse QFIM (Fubini-Study metric tensor $g_{\mu\nu}^{+}$):
+    \begin{equation}
+        \boldsymbol{\theta}^{(t+1)} = \boldsymbol{\theta}^{(t)} - \eta \, g^{+}(\boldsymbol{\theta}^{(t)})^{-1} \nabla_{\boldsymbol{\theta}} \mathcal{L}(\boldsymbol{\theta}^{(t)}),
+    \end{equation}
+    where $\eta$ is the learning rate and $\mathcal{L}(\boldsymbol{\theta})$ is the variational objective function.
+\end{definition}
+
+\begin{remark}[SPSA and Constant Complexity]
+    To bypass the $\mathcal{O}(M^2)$ cost of evaluating the $M \times M$ tensor $g_{\mu\nu}$, Simultaneous Perturbation Stochastic Approximation (SPSA) integrates Rademacher random perturbations into QNG. This technique dynamically approximates the action of $g^{-1} \nabla \mathcal{L}$ using a constant number of quantum circuit evaluations per optimization step, independent of parameter dimension $M$.
+\end{remark}

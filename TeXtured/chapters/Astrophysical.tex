@@ -1,0 +1,295 @@
+\chapter{Astrophysical Metrology: Exoplanet Detection}
+\label{sec:astrophysical_metrology_spade}
+
+A primary physical arena for testing advanced quantum parameter estimation is astronomical observation, specifically the direct detection and characterization of exoplanets and close binary star systems~\cite{Santamaria2024single}. The fundamental limits of such observations are dictated not by detector sensitivity, but by the wave nature of light itself and the statistical properties of weak thermal sources~\cite{Tsang2016quantum}. This chapter details the physical limits of sub-Rayleigh imaging, models the optical fields as mixed quantum states, establishes the star-centric alignment protocol as a physical realization of variational majorization, and details the robust decoupling of parameters under experimental cross talk, multi-photon shot statistics, and atmospheric turbulence.
+
+% ==============================================================================
+\section{The Resolution Barrier and Space Domain Awareness}
+% ==============================================================================
+
+The characterization of sub-diffraction astronomical structures represents a corner-stone challenge in contemporary precision metrology. This challenge is exemplified by two primary observational fronts: exoplanetary atmospheric spectroscopy and Space Domain Awareness (SDA).
+
+\subsection{The Exoplanet Characterization Problem}
+Direct imaging and spectroscopy of an exoplanet situated adjacent to its host star is exceptionally challenging due to the extreme disparity in their emission intensities~\cite{Santamaria2024single, Santamaria2025spectroscopy}. Let a primary bright source (the star, $A$) have an image-plane intensity $I_A$, and a secondary dim source (the exoplanet, $B$) have an intensity $I_B$~\cite{Santamaria2024single, Santamaria2025spectroscopy}. The physical system is characterized by the relative intensity ratio (or contrast ratio) $\epsilon$~\cite{Santamaria2024single, Santamaria2025spectroscopy}:
+\begin{equation}
+    \epsilon \coloneqq \frac{I_B}{I_A} \ll 1,
+    \label{eq:intensity_ratio_epsilon}
+\end{equation}
+representing a high dynamic range typically exceeding four to ten orders of visual magnitude ($\epsilon \sim 10^{-4}$ to $10^{-10}$)~\cite{Santamaria2024single}. When the angular separation between the star and the planet is small, their light fields overlap on the telescope's aperture, creating a composite field where the weak planetary signal is obscured by the classical shot noise of the overwhelming starlight~\cite{Santamaria2024single}. Characterizing the exoplanet's atmosphere—such as searching for biosignature absorption lines (e.g., $O_2, H_2O, CH_4$)—requires separating these light fields at sub-Rayleigh scales~\cite{Santamaria2025spectroscopy}.
+
+\subsection{Space Domain Awareness: Deep Sub-Rayleigh Constellations}
+Beyond exoplanet detection, Space Domain Awareness (SDA) aims to continuously detect, track, catalog, and identify artificial space objects—such as satellites, spacecraft, and orbital debris—to ensure safe space operations~\cite{choi2024adaptive}. Ground-based imaging observations of these targets are severely restricted by their dim appearance, small angular size/separation, and dense distributions~\cite{choi2024adaptive}. These challenges render space targets as point-like objects in the sub-Rayleigh regime, possessing extreme brightness contrast but low photon budgets, often further degraded by atmospheric turbulence~\cite{choi2024adaptive}. To resolve these targets, the iterative Quantum-Accelerated Imaging (QAI) framework adaptively varies the measurement basis in response to initial data, maximizing the extracted Quantum Fisher Information (QFI) per photon~\cite{choi2024adaptive}.
+
+% ==============================================================================
+\section{Rayleigh's Curse, Failure of Direct Imaging}
+% ==============================================================================
+
+According to the classical Rayleigh criterion, a diffraction-limited imaging system possesses a fundamental spatial resolution limit. When light from a point-source passes through a telescope's circular pupil of diameter $R$, diffraction broadens the image of the point-source into a finite spot on the image plane~\cite{Santamaria2024single, Santamaria2025spectroscopy}. For a Gaussian point-spread function (PSF) profile of spatial width $w_0$, the Rayleigh limit is reached when the transverse spatial separation $d$ between the two point emitters is comparable to or smaller than $w_0$~\cite{Santamaria2024single}.
+
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.7\textwidth]{asi_report/rayleigh.png}
+    \caption{curse}
+    \label{<label12123>}
+\end{figure}
+
+
+In classical telescopy, detection is performed via \emph{Direct Imaging} (DI)—a pixel-by-pixel intensity measurement on the image plane using charge-coupled devices (CCDs)~\cite{Santamaria2024single}. Under DI, the single-photon probability density $p(x, y)$ on the detector array for a binary source separated along the $x$-axis is given by~\cite{Santamaria2024single, Santamaria2025spectroscopy}:
+\begin{equation}
+    p(x, y) = \eta \frac{e^{-y^2/(2w_0^2)}}{2\pi w_0^2} \left[ (1 - \epsilon) e^{-x^2/(2w_0^2)} + \epsilon e^{-(x-d)^2/(2w_0^2)} \right]
+    \label{eq:di_probability_distribution}
+\end{equation}
+where $\eta \ll 1$ is the total single-photon detection probability.
+
+The statistical consequence of this spatial overlap is known as \textbf{Rayleigh's Curse}~\cite{Santamaria2024single}. By evaluating the classical Fisher Information $\mathcal{I}_{\text{DI}}(d)$ from Eq.~\eqref{eq:di_probability_distribution}, we find that in the sub-Rayleigh regime ($d \ll w_0$), the Fisher information scales quadratically with the small parameter $\epsilon$:
+\begin{equation}
+    \mathcal{I}_{\text{DI}}(d) \approx \frac{\eta \epsilon^2}{w_0^2}.
+    \label{eq:di_fisher_collapse}
+\end{equation}
+By the classical Cram\'{e}r-Rao bound, the minimum obtainable variance on the separation estimate scales as $\Delta d_{\text{DI}} \ge w_0 / (\epsilon \sqrt{\eta n})$~\cite{Santamaria2024single}. For faint planets ($\epsilon \ll 1$), this statistical uncertainty diverges rapidly, rendering sub-Rayleigh characterization impossible under direct intensity measurements because the spatial intensity profile completely discards the phase information of the field.
+
+% ==============================================================================
+\section{Representing Sensed Optical Fields as Mixed Quantum States}
+% ==============================================================================
+
+To link the spatial demultiplexing of an unbalanced binary source with our QFI formalism, we model the transverse optical field in the image plane of a ground-based astronomical telescope as a spatio-temporal mixed quantum state. We operate in the weak-field, faint-signal regime (such as that of direct exoplanet imaging under adaptive optics) where the probability of detecting more than one photon per temporal mode is negligibly small~\cite{Santamaria2024single, Santamaria2025spectroscopy}.
+
+Following the single-photon vacuum mixture model, the optical state $\rho_d$ in a given spatio-temporal mode is represented by the non-normalized density operator:
+\begin{equation}
+    \rho_d = (1 - \eta)|0\rangle\langle 0| + \eta (1 - \epsilon) |\psi_0\rangle\langle \psi_0| + \eta \epsilon |\psi_d\rangle\langle \psi_d|,
+    \label{eq:optical_density_matrix_chap}
+\end{equation}
+where $|0\rangle$ is the vacuum state, $|\psi_0\rangle$ is the spatial wave packet of a photon emitted by the primary source at the origin, and $|\psi_d\rangle$ is the packet of a photon emitted by the secondary source shifted by a transverse distance $d = \sqrt{d_x^2 + d_y^2}$~\cite{Santamaria2024single, Santamaria2025spectroscopy}. Under a Gaussian point-spread function (PSF) of width $w_0$ (associated with the telescope's circular aperture), these spatial wavefunctions are expressed in the position basis as:
+\begin{align}
+    \langle x, y | \psi_0\rangle & = \psi_0(x, y) = \left( \frac{1}{2\pi w_0^2} \right)^{1/2} \exp\left( -\frac{x^2+y^2}{4w_0^2} \right), \label{eq:star_wavefunction}                     \\
+    \langle x, y | \psi_d\rangle & = \psi_d(x, y) = \left( \frac{1}{2\pi w_0^2} \right)^{1/2} \exp\left( -\frac{(x - d_x)^2 + (y - d_y)^2}{4w_0^2} \right). \label{eq:planet_wavefunction}
+\end{align}
+
+In information geometry, the physical distinguishability of this parameterized state $\rho_d$ is quantified by the Bures metric:
+\begin{equation}
+    ds^2_{\text{Bures}}(\rho_d, \rho_{d+dd}) = \frac{1}{4} \mathcal{I}_{\text{exact}}(d) (dd)^2,
+    \label{eq:bures_metric_optical}
+\end{equation}
+which is a quantum generalization of the classical Fisher information metric and is identical to the Fubini-Study metric when restricted to pure states. Computing the exact mixed-state QFI $\mathcal{I}_{\text{exact}}(d)$ classically requires solving the continuous Lyapunov equation for the Symmetric Logarithmic Derivative (SLD) $L_d$~\cite{Santamaria2024single}:
+\begin{equation}
+    2 \partial_d \rho_d = \rho_d L_d + L_d \rho_d,
+    \label{eq:lyapunov_opt_chap}
+\end{equation}
+which is notoriously difficult and scales as $\mathcal{O}(d^3)$ classically~\cite{Santamaria2024single}. This classical bottleneck motivates both our NISQ variational bounds and our structured physical sorting measurements~\cite{Santamaria2024single}.
+
+% ==============================================================================
+\section{The Star-Centric Alignment Protocol and VQSE Majorization}
+% ==============================================================================
+
+In Chapter~\ref{ch:methods}, we introduced the rank-truncated projected state $\rho^{(m)}_\theta = \Pi^{(m)}\rho_\theta\Pi^{(m)}$ to isolate the dominant eigenspace of a mixed state and construct dynamics-agnostic bounds. In the context of sub-Rayleigh imaging, the overwhelming challenge is the high dynamic range: the bright starlight acts as a massive background noise that obscures the weak planet signal~\cite{Santamaria2024single}.
+
+We formalize the SPADE measurement as a physical, analog implementation of the rank-truncation projector on a two-dimensional subspace~\cite{Santamaria2024single}. Specifically, we define a 2-basis decomposition of the Hilbert space using the first two Hermite-Gaussian (HG) spatial modes:
+\begin{align}
+    |HG_{00}\rangle & = \int_{-\infty}^{\infty} dxdy \, \psi_0(x, y) a^\dagger(x, y)|0\rangle, \label{eq:hg00_def}                                     \\
+    |HG_{01}\rangle & = \int_{-\infty}^{\infty} dxdy \, \left(\frac{x - \delta_x}{w_0}\right) \psi_0(x,y) a^\dagger(x,y)|0\rangle, \label{eq:hg01_def} \\
+    |HG_{10}\rangle & = \int_{-\infty}^{\infty} dxdy \, \left(\frac{y - \delta_y}{w_0}\right) \psi_0(x,y) a^\dagger(x,y)|0\rangle, \label{eq:hg10_def}
+\end{align}
+where $\delta_x, \delta_y$ account for residual spatial misalignment of the telescope's optical axis relative to the primary source~\cite{Santamaria2024single}, an intuitive visualization of them is provided in Figure~\ref{fig:hg_modes}.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=\textwidth]{figures/scripts_for_figures/hg_modes_visualization.png}
+    \caption{Visualization of the field amplitudes (top row) and spatial intensity distributions (bottom row) for the defined Hermite-Gaussian basis modes. To illustrate the physical effect of the residual spatial misalignment, the horizontal offset is set to $\delta_x = 0$, preserving the theoretical symmetry of the $|HG_{01}\rangle$ mode. In contrast, a non-zero vertical offset ($\delta_y = 0.3$) is applied to the $|HG_{10}\rangle$ mode, clearly demonstrating the resulting spatial shift of the mode profile along the $y$-axis.}
+    \label{fig:hg_modes}
+\end{figure}
+
+These modes define two orthogonal projection operators acting on the incoming optical field~\cite{Santamaria2024single}:
+\begin{align}
+    \Pi_0 & = |HG_{00}\rangle\langle HG_{00}| \quad \text{(The Dominant Star Subspace)}, \label{eq:pi0_def}                                         \\
+    \Pi_1 & = |HG_{01}\rangle\langle HG_{01}| + |HG_{10}\rangle\langle HG_{10}| \quad \text{(The Perturbative Planet Subspace)}. \label{eq:pi1_def}
+\end{align}
+
+
+Under this mapping, the rank-truncation projector with $m=1$ isolates the starlight into $\Pi_0$, allowing the parameter estimation of $d$ to be evaluated exclusively in the orthogonal subspace $\Pi_1$~\cite{Santamaria2024single}. This is mathematically equivalent to our variational state-diagonalization protocol where the dominant eigenvalue is mapped to a known basis state to inspect the remaining subnormalized spectrum.
+
+\subsection{Alignment as VQSE Majorization}
+Before the rank-truncation projector can be applied, the system must be aligned with the bright star. We establish a star-centric alignment protocol, where the spatial coordinates are tuned to maximize the single-photon count in the fundamental Hermite-Gaussian mode~\cite{Santamaria2024single}:
+\begin{equation}
+    p_0 = \langle HG_{00} | \rho_d | HG_{00} \rangle = \eta(1-\epsilon) e^{-\frac{\delta_x^2+\delta_y^2}{4w_0^2}} + \eta\epsilon e^{-\frac{(d_x-\delta_x)^2+(d_y-\delta_y)^2}{4w_0^2}}.
+    \label{eq:p0_alignment}
+\end{equation}
+
+By Schur-concavity and majorization theory, the true eigenvalues $\boldsymbol{\lambda}$ of a density matrix majorize its diagonal elements $\mathbf{p}$ in any orthonormal basis ($\boldsymbol{\lambda} \succ \mathbf{p}$). In our VQSE subroutine (Chapter~\ref{ch:methods}), the state-diagonalization task is executed by minimizing the expectation value of a non-degenerate local Hamiltonian:
+\begin{equation}
+    C(\beta) = \operatorname{Tr}\left[ H_L V(\beta) \rho_\theta V^\dagger(\beta) \right],
+    \label{eq:vqse_cost_opt}
+\end{equation}
+which rotates the dominant eigenvector of $\rho_\theta$ into the computational basis. In the SPADE pipeline, the physical star-centric alignment behaves exactly like the VQSE majorization loop: maximizing the fundamental mode occupancy $p_0$ corresponds to minimizing the VQSE energy cost, rotating the dominant "starlight" eigenvector of the optical field directly into the $|HG_{00}\rangle$ basis state~\cite{Santamaria2024single}.
+
+% ==============================================================================
+\section{The 2-Basis HG SPADE Projection and Stochastic Error Propagation}
+% ==============================================================================
+
+Using the exact mixed-state QFI formulation, the metrological sensitivity about the separation $d$ is extracted via the SLD $L_d$ satisfying Eq.~\eqref{eq:lyapunov_opt_chap}~\cite{Santamaria2024single}. The total exact QFI of the field, $\mathcal{I}_{\text{exact}}(d) = \operatorname{Tr}(\rho_d L_d^2)$, can be decomposed into classical and quantum components relative to the chosen measurement basis $\{\Pi_0, \Pi_1\}$~\cite{Santamaria2024single}:
+\begin{equation}
+    \mathcal{I}_{\text{exact}}(d) = \mathcal{I}_{\text{class}}(d) + \mathcal{I}_{\text{quant}}(d).
+    \label{eq:qfi_decomposition_chap}
+\end{equation}
+
+The probability of detecting a photon in the first-order asymmetric modes (HG01, HG10) is given by:
+\begin{equation}
+    p_1 = \langle HG_{01} | \rho_d | HG_{01} \rangle + \langle HG_{10} | \rho_d | HG_{10} \rangle = \eta(1-\epsilon) \frac{\delta_x^2 + \delta_y^2}{4w_0^2} + \eta\epsilon \frac{(d_x - \delta_x)^2 + (d_y - \delta_y)^2}{4w_0^2}.
+    \label{eq:p1_asymmetric}
+\end{equation}
+
+Whereas the alignment procedure aims at reducing systematic error, we model the residual misalignment as a stochastic error~\cite{Santamaria2024single}. We assume that $\delta_x$ and $\delta_y$ are independent stochastic variables with zero mean and variance $\sigma_M^2/2$, where $\sigma_M$ quantifies the alignment precision~\cite{Santamaria2024single}:
+\begin{equation}
+    \mathbb{E}[\delta_x] = \mathbb{E}[\delta_y] = 0, \quad \mathbb{E}[\delta_x^2] = \mathbb{E}[\delta_y^2] = \frac{\sigma_M^2}{2}.
+    \label{eq:stochastic_misalignment}
+\end{equation}
+
+Furthermore, physical demultiplexing is affected by mode cross talk $\chi$ (e.g., from Cailabs Proteus-C spatial demultiplexer, $\chi \approx 0.0035$), representing the probability that a photon in the fundamental mode HG00 is leaked and detected in either of the first-order modes~\cite{Santamaria2024single, Santamaria2025spectroscopy}. This leaks a background term $\chi p_0$ into the first-order mode probability, which we incorporate by defining an effective spatial variance $\sigma_{\text{eff}}^2$~\cite{Santamaria2024single}:
+\begin{equation}
+    \sigma_{\text{eff}}^2 \coloneqq \sigma_M^2 + 4w_0^2 \chi.
+    \label{eq:sigma_effective}
+\end{equation}
+
+Taking the expectation value over the stochastic misalignment and incorporating cross talk, the average detected fraction $f_1 = n_1/(\eta n)$ (where $n$ is the total photon budget) has a standard deviation of~\cite{Santamaria2024single}:
+\begin{equation}
+    \Delta f_1 = \frac{1}{\eta}\sqrt{\frac{p_1 p_0}{\eta n}} \approx \sqrt{\frac{\sigma_{\text{eff}}^2 + \epsilon d^2}{4w_0^2 \eta n}}.
+    \label{eq:std_dev_fraction}
+\end{equation}
+
+By error propagation, the uncertainty in the estimated separation $d$ (if $\epsilon$ is known) is~\cite{Santamaria2024single}:
+\begin{equation}
+    \Delta d = \left( \frac{\partial (p_1/\eta)}{\partial d} \right)^{-1} \Delta f_1 \approx \frac{2w_0^2}{\epsilon d} \sqrt{\frac{\sigma_{\text{eff}}^2 + \epsilon d^2}{4w_0^2 \eta n}}.
+    \label{eq:propagation_uncertainty_d}
+\end{equation}
+
+Similarly, if $d$ is known, the uncertainty in the relative intensity estimate $\epsilon$ is~\cite{Santamaria2024single}:
+\begin{equation}
+    \Delta \epsilon = \left( \frac{\partial (p_1/\eta)}{\partial \epsilon} \right)^{-1} \Delta f_1 \approx \frac{4w_0^2}{d^2} \sqrt{\frac{\sigma_{\text{eff}}^2 + \epsilon d^2}{4w_0^2 \eta n}}.
+    \label{eq:propagation_uncertainty_epsilon}
+\end{equation}
+
+Equations~\eqref{eq:propagation_uncertainty_d} and \eqref{eq:propagation_uncertainty_epsilon} prove that at sub-wavelength scales, the metrological precision of SPADE is ultimately limited by the hardware cross talk floor $\chi$, establishing an effective resolution limit of $d_{\text{min}} \approx w_0 \sqrt{\chi/\epsilon}$~\cite{Santamaria2024single}.
+
+% ==============================================================================
+\section{Multiparameter Estimation Limits and Parameter Decoupling}
+% ==============================================================================
+
+In realistic physical scenarios, the single-parameter assumption of a precisely known source centroid, equal source brightness, and perfect incoherence does not hold~\cite{Santamaria2024single, Santamaria2025spectroscopy}. Estimating the separation of a source constellation under these conditions must be treated as a multiparameter quantum estimation problem~\cite{Santamaria2024single}.
+
+Let the sources be displaced along one direction only. The joint estimation of the midpoint $s_0$, separation $d$, and intensity ratio $\epsilon$ is described by the $3 \times 3$ joint Quantum Fisher Information Matrix (QFIM) $Q(s_0, d, \epsilon)$ derived by \v{R}eha\v{c}ek et al.~\cite{Santamaria2024single}:
+\begin{equation}
+    Q(s_0, d, \epsilon) = 4 \begin{pmatrix}
+        p_2 + 4\epsilon(1-\epsilon)P^2 & (\epsilon - 1/2)p_2 & -iwP                                  \\
+        (\epsilon - 1/2)p_2            & p_2/4               & 0                                     \\
+        -iwP                           & 0                   & 1 - \frac{w^2}{4\epsilon(1-\epsilon)}
+    \end{pmatrix},
+    \label{eq:qfim_midpoint_chap}
+\end{equation}
+where $p_2, P, w$ are positive parameters associated with the Gaussian PSF profile.
+
+\subsection{Coordinate Transformation to Star-Centric Frame}
+In our experiment, the telescope is aligned to the brighter star (Source A) at position $x = s_0 - d/2$. We define the linear coordinate transformation matrix $R$~\cite{Santamaria2024single}:
+\begin{equation}
+    R = \begin{pmatrix} 1 & -1/2 & 0 \\ 0 & 1 & 0 \\ 0 & 0 & 1 \end{pmatrix},
+    \label{eq:linear_transform_matrix}
+\end{equation}
+such that the covariance matrix transforms as $\Sigma(x, d, \epsilon) = R \Sigma(s_0, d, \epsilon) R^T$. The transformed QFIM is given by $Q(x, d, \epsilon) = (R^{-1})^T Q(s_0, d, \epsilon) R^{-1}$~\cite{Santamaria2024single}:
+\begin{equation}
+    Q(x, d, \epsilon) = 4 \begin{pmatrix}
+        p_2 + 4\epsilon(1-\epsilon)P^2   & (p_2 + 2(1-\epsilon)P^2)\epsilon  & -iwP                                  \\
+        (p_2 + 2(1-\epsilon)P^2)\epsilon & (p_2 + (1-\epsilon)P^2)\epsilon^2 & -iwP\epsilon/2                        \\
+        -iwP                             & -iwP\epsilon/2                    & 1 - \frac{w^2}{4\epsilon(1-\epsilon)}
+    \end{pmatrix}.
+    \label{eq:transformed_qfim_chap}
+\end{equation}
+
+The matrix element $Q_{11}$ (associated with the star position $x$) is of order $\mathcal{O}(1)$, while $Q_{22}$ (separation $d$) is of order $\mathcal{O}(\epsilon^2)$~\cite{Santamaria2024single}. This disparity establishes a separation of scale. The off-diagonal correlation terms scale as $\mathcal{O}(\epsilon)$, which vanish completely in the high-contrast limit $\epsilon \to 0$~\cite{Santamaria2024single}. This mathematically proves that the star-centric alignment and the parameter estimation of $d$ or $\epsilon$ decouple and can be treated as entirely independent, circumventing the resurgence of Rayleigh's curse due to multi-parameter correlations~\cite{Santamaria2024single}.
+
+\subsection{Bypassing Nuisance Parameters via Decoupled Mode Ratios}
+To completely bypass the requirement of estimating multiple challenging source-dependent parameters—such as partial coherence $|\gamma|$, brightness imbalance $b$, and random relative phase $\phi$—Sajia et al. proposed a parameter-decoupled superresolution framework~\cite{Sajia2025breaking}.
+
+By projecting the incoming field onto the Hermite-Gaussian basis, the detection probability $p_q$ in the $q$-th mode depends on all variables~\cite{Sajia2025breaking}:
+\begin{equation}
+    p_q = \operatorname{Tr}[\rho | \Phi_q \rangle\langle \Phi_q |] = \frac{e^{-Q} Q^q}{q!} \frac{B_q}{N(Q)},
+    \label{eq:pq_decoupled}
+\end{equation}
+where $Q = s^2 / 16\sigma^2$, $B_q = b+1+(-1)^q k$, and $k = 2|\gamma|\sqrt{b}\cos\phi$~\cite{Sajia2025breaking}.
+
+By defining the ratio $r_{mn}$ between even (or odd) modes, the source-dependent parameters cancel out entirely~\cite{Sajia2025breaking}:
+\begin{equation}
+    r_{mn}(s) \coloneqq \frac{p_m}{p_n} = \frac{n!}{m!} Q^{m-n}, \quad (\text{for } m, n \text{ both even or both odd}).
+    \label{eq:ratio_decoupled}
+\end{equation}
+This ratio depends solely on the separation $s$, completely decoupling the estimation of separation from all other nuisance variables and ensuring that the Fisher information remains practically non-zero even as $s \to 0$~\cite{Sajia2025breaking}.
+
+% ==============================================================================
+\section{Robustness under Practical Noise: Physics-Informed Machine Learning}
+% ==============================================================================
+
+While the decoupled ratio $r_{mn}(s)$ is theoretically elegant, measuring it directly is highly susceptible to source-independent experimental noise, such as background luminosity, photon loss, and centroid drift~\cite{Sajia2025breaking}.
+
+To address these non-idealities, the theoretical ratio $r_{20}(s) = s^2 / 8\sigma^2$ is integrated with a **Physics-Informed Convolutional Neural Network (CNN)**~\cite{Sajia2025breaking}. The network is trained on simulated images corrupted with random extra brightness (up to 20% of the signal), pixel-wise photon losses (up to 20%), and centroid/orientation misalignments (up to 7.5%)~\cite{Sajia2025breaking}. 
+
+This neural decoder learns the robust mapping directly from corrupted intensity profiles to the parameter-decoupled separation $s_E$, achieving an estimation fidelity of $F > 0.82$ for separations down to $s \ge 0.06\sigma$ (16 times below the diffraction limit, corresponding to $\approx 10.8$ nm in optical microscopy)~\cite{Sajia2025breaking}. This framework successfully bridges the gap between idealized superresolution limits and practical astronomical or biological implementations~\cite{Sajia2025breaking}.
+
+% ==============================================================================
+\section{Multi-Photon Shot Statistics: The BLESS Technique}
+% ==============================================================================
+
+Standard SPADE protocols operate in the weak-source limit where the average photon number per pulse is $\mu \ll 1$, rendering multi-photon events negligible~\cite{Santamaria2024single, Katamadze2026breaking}. However, for brighter sources or longer integration times, discarding multi-photon events limits the achievable resolution~\cite{Katamadze2026breaking}.
+
+The **BLESS (Beam moduLation and Examination of Shot Statistics)** technique overcomes this by combining spatial detection mode shaping with direct measurements of the full Photon Number Distribution (PND) using photon-number-resolving detectors (PNRDs)~\cite{Katamadze2026breaking}.
+
+By modeling the coupled PND $P_{sm}(n)$ from the sources $s \in \{a, b\}$ into the detection mode $\Phi_m$, the total detected PND $P_m(n)$ is a convolution of individual Poissonian or thermal distributions~\cite{Katamadze2026breaking}. BLESS leverages these multi-photon statistics (specifically including two-photon coincidence events) to estimate the relative brightness $\gamma$ and separation $d$ independently, completely breaking Rayleigh's curse for highly unbalanced, simultaneously emitting sources without requiring destructive high-power depletion as in STED~\cite{Katamadze2026breaking}.
+
+% ==============================================================================
+\section{Super-Resolved Spectroscopy via Spatial Demultiplexing}
+% ==============================================================================
+
+The ultimate goal of direct exoplanet imaging is spectroscopy—analyzing the wavelength-dependent absorption features of the planet's atmosphere to search for biosignatures~\cite{Santamaria2025spectroscopy}. Under classical direct imaging, the exoplanet's spectral signature $f_p(\lambda)$ is completely obscured by the star's spectrum $f_s(\lambda)$~\cite{Santamaria2025spectroscopy}.
+
+Let the star and planet be located at $x_s = 0$ and $x_p = d$, respectively~\cite{Santamaria2025spectroscopy}. The Fisher Information for estimating the planet's spectral signature $f_p(\lambda)$ under direct detection (DD) scales quadratically with $\epsilon$ and separation~\cite{Santamaria2025spectroscopy}:
+\begin{equation}
+    F_{\text{DD}}(\lambda) \approx \eta \epsilon^2 \frac{d^2}{4w_0^2} \frac{\left[ \frac{\partial f_p(\lambda)}{\partial f_p(\lambda)} \right]^2}{f_s(\lambda)} \propto \epsilon^2.
+    \label{eq:spectroscopy_fisher_dd}
+\end{equation}
+
+By contrast, using HG SPADE, the symmetric starlight is structurally prevented from coupling into the odd-parity mode $|HG_{01}\rangle$~\cite{Santamaria2025spectroscopy}. The Fisher Information in the HG first-order mode is~\cite{Santamaria2025spectroscopy}:
+\begin{equation}
+    F_{\text{HG}}(\lambda) \approx \eta \epsilon \frac{d^2}{4w_0^2} \frac{\left[ \frac{\partial f_p(\lambda)}{\partial f_p(\lambda)} \right]^2}{f_p(\lambda)} \propto \epsilon.
+    \label{eq:spectroscopy_fisher_hg}
+\end{equation}
+
+Comparing $F_{\text{HG}}$ and $F_{\text{DD}}$ reveals that SPADE yields an **$\epsilon^{-1}$ metrological advantage** in the high-contrast limit, preserving the signal-to-noise ratio of the planetary spectrum down to arbitrary sub-wavelength scales~\cite{Santamaria2025spectroscopy}.
+
+\subsection{The Scalar Product Quantifier for Spectral Discrimination}
+To experimentally assess the decoupling of the star and planet spectra, we define the normalized spectral vectors $C_0^N(\lambda)$ (measured in HG00) and $C_1^N(\lambda)$ (measured in HG01+HG10)~\cite{Santamaria2025spectroscopy}. The **Scalar Product Quantifier** is given by~\cite{Santamaria2025spectroscopy}:
+\begin{equation}
+    S_P(d_a, \epsilon) \coloneqq \sum_\lambda C_1^N(\lambda) C_0^N(\lambda).
+    \label{eq:scalar_product_quantifier}
+\end{equation}
+
+Ideally, if the star is perfectly centered, its starlight cannot couple to the odd-parity HG1 modes, and HG1 contains exclusively planet photons~\cite{Santamaria2025spectroscopy}. Thus, $S_P(d_a, \epsilon)$ drops significantly below unity, proving complete spectral decoupling~\cite{Santamaria2025spectroscopy}. In our tabletop experiment, $S_P$ drops below $0.97$ for separations $d_a > 0.2$, enabling clear spectral discrimination of a planet up to 100 times dimmer than the star at sub-Rayleigh separations, whereas under direct detection, the scalar product remains close to 1 across all sub-Rayleigh scales due to severe star contamination~\cite{Santamaria2025spectroscopy}.
+
+% ==============================================================================
+\section{Perfect Coronagraphy and Adaptive Basis Optimization}
+% ==============================================================================
+
+While SPADE sorts light into discrete modal channels, exoplanet imaging conventionally demands direct-imaging coronagraphs to form filtered spatial images~\cite{Deshler2025experimental}. Deshler et al. demonstrated a quantum-optimal coronagraph by implementing a double-pass **Multi-Plane Light Conversion (MPLC)** spatial mode sorter~\cite{Deshler2025experimental}.
+
+During the forward pass, the MPLC decomposes the incident field into Fourier-Zernike modes $\{\psi_{nm}\}$~\cite{Deshler2025experimental}. At the sorting plane, a pinhole mask rejects the fundamental mode $\psi_{00}$ (containing the starlight) to a beam dump~\cite{Deshler2025experimental}. The higher-order modes (containing the planet's light) reflect off the mask and propagate backward through the MPLC, inverting the unitary transformation and reconstructing a high-contrast, star-suppressed image of the exoplanet on the detector~\cite{Deshler2025experimental}.
+
+\subsection{Wavefront Phase Characterization and Atmospheric Coherence Limits}
+Ground-based metrology is further limited by atmospheric turbulence, which distorts the wavefront phase~\cite{choi2024adaptive, Hrebeniuk2026quantum}. The severity of these distortions is characterized by the Fried parameter $r_0$~\cite{Hrebeniuk2026quantum}.
+
+Under direct imaging, if the telescope's receiver aperture is smaller than the coherence radius $r_0$, the classical Fisher information for estimating $r_0$ diverges, representing an absolute precision floor~\cite{Hrebeniuk2026quantum}. By contrast, spatial-mode decomposition maintains a finite Fisher information across all aperture scales, achieving a **1.84-fold precision improvement** in real-time Fried parameter characterization and enabling optimal closed-loop adaptive optics corrections under low-photon conditions~\cite{Hrebeniuk2026quantum}.
+
+\subsection{Learning Theory and Resolvable Expressive Capacity (REC) Complexity Scaling}
+To rigorously quantify the information limit of superresolution under finite-sample budgets, Wang et al. introduced **Resolvable Expressive Capacity (REC)**~\cite{Wang2025advancing}.
+
+Under this framework, imaging multiple compact sources yields a stepwise increase in the total REC as a function of the number of measurement samples $S$~\cite{Wang2025advancing}. While the total intensity (Rayleigh-resolvable feature) is extracted with a constant number of samples, extracting sub-Rayleigh features of size $L$ (relative to the PSF width $\sigma$) requires the sample size to scale as a power law~\cite{Wang2025advancing}:
+\begin{equation}
+    S \sim \Theta\left( \left(\frac{L}{\sigma}\right)^{-2m} \right),
+    \label{eq:rec_scaling}
+\end{equation}
+where $m$ represents the order of the source moments to be estimated~\cite{Wang2025advancing}. This mathematically formalizes that while mode sorting circumvents the infinite-sample divergence of Rayleigh's curse, physical precision remains bounded by the sample-complexity requirements of finite-photon statistics~\cite{Wang2025advancing}.

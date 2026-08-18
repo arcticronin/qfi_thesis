@@ -1,0 +1,102 @@
+\chapter{Introduction}
+\label{ch:introduction}
+
+\section{Broad Context and Motivation: The Second Quantum Revolution}
+Over the past century, quantum mechanics has transitioned from a fundamental, often controversial, inquiry into the microscopic laws of nature to a powerful driver of technological innovation, inaugurating the era of the \emph{Second Quantum Revolution}~\cite{Santamaria2024single}. While the first quantum wave yielded transformative solid-state technologies such as the transistor, the laser, and the semiconductor microchip, the current frontier leverages the non-local, phase-sensitive, and coherent properties of individual quantum states—specifically superposition, entanglement, and quantum squeezing—to perform information processing tasks that are fundamentally impossible within the framework of classical physics~\cite{Santamaria2024single, Santamaria2025spectroscopy}.
+
+Within this landscape, \textbf{Quantum Metrology} stands as one of the most mature and impactful applications of quantum information science~\cite{Santamaria2024single, Maccone2020squeezing}. Quantum metrology exploits quantum resources to estimate physical parameters—such as magnetic fields, temporal phase shifts, optical paths, and spatial separations—with a precision that surpasses the fundamental limits of classical statistical estimation~\cite{Santamaria2024single, Santamaria2025spectroscopy}. In classical estimation, independent measurement probes are bound by the Standard Quantum Limit (SQL), where the statistical uncertainty scales as $\mathcal{O}(1/\sqrt{K})$ for $K$ probes~\cite{Intro_Passage39}. By preparing the probes in highly entangled states (such as the Greenberger-Horne-Zeilinger state), quantum metrology unlocks the Heisenberg Limit (HL), compressing the parameter uncertainty scale quadratically to $\mathcal{O}(1/K)$~\cite{Intro_Passage40}. This dramatic scaling enhancement has revolutionary implications across multiple scales of scientific inquiry, ranging from macroscopic gravitational wave detection to nanoscale quantum sensing, biological microscopy, and high-precision astronomical imaging~\cite{Tsang2016, Santamaria2024single, Maccone2020squeezing}.
+
+In practice, the deployment of quantum metrology encounters two prominent physical frontiers:
+\begin{enumerate}
+    \item \textbf{Noisy Intermediate-Scale Quantum (NISQ) Devices:} Modern quantum hardware operates in the NISQ era, where processors are composed of a moderate number of qubits ($10$ to $1000$) that are highly susceptible to environmental decoherence, gate errors, and uncharacterized state dissipation~\cite{Methods_Passage114}. Estimating and optimizing metrological sensitivity on these platforms requires scalable, noise-tolerant quantum-classical hybrid algorithms~\cite{Methods_Passage114}.
+    \item \textbf{Astronomical and Optical Sensing:} In observational astrophysics, resolving the separation or relative brightness of sub-wavelength spatial objects (such as an exoplanet situated adjacent to its host star) is severely restricted by diffraction, which spatial-mode quantum optical receivers aim to bypass~\cite{Santamaria2024single, Santamaria2025spectroscopy}.
+\end{enumerate}
+
+Establishing a unified, mathematically rigorous, and physically realizable framework that bridges these two domains is of paramount importance for the future of quantum-enhanced technology.
+
+% ==============================================================================
+\section{The Problem Statement: Computational and Spatial Resolution Gaps}
+% ==============================================================================
+
+Despite the immense theoretical promise of quantum-optimal sensing, a deep divide exists between abstract information-geometric limits and the practical realities of NISQ hardware and experimental optical receivers. This thesis addresses three critical bottlenecks currently limiting the fields of quantum sensing and sub-Rayleigh imaging:
+
+\subsection{The Classical Computational Bottleneck of Mixed-State QFI}
+Evaluating the ultimate metrological utility of a parameterized quantum state $\rho(\theta)$ requires computing its Quantum Fisher Information (QFI)~\cite{Intro_Passage24}. For mixed states under realistic, open-system noise, the exact QFI calculation requires solving the continuous operator Lyapunov equation to retrieve the Symmetric Logarithmic Derivative (SLD) $L_\theta$~\cite{Intro_Passage22}. Evaluating the spectral decomposition of a density matrix acting on $n$ qubits classically scales as $\mathcal{O}(2^{3n})$ or $\mathcal{O}(8^n)$~\cite{Intro_Passage31, Methods_Passage121}. As a result, calculating exact ground-truth QFI baselines for intermediate-scale many-body quantum sensors is classically intractable, necessitating the development of scalable, dynamics-agnostic variational algorithms on quantum simulators~\cite{Intro_Passage65, Methods_Passage114}.
+
+\subsection{The Metrological Characterization of Subsystem Noise}
+While real-world sensors inevitably undergo decoherence, conventional metrological benchmarks often quantify noise strictly in terms of a state's purity or entropy~\cite{project9report}. However, physical noise channels (such as depolarizing decay versus structured thermal Gibbs mixing) introduce highly distinct deformations in the local state manifold~\cite{project9report}. There is a lack of rigorous theoretical and numerical understanding regarding how many-body environmental correlations propagate into a localized subsystem after tracing out the unobserved environment, and how the specific \emph{mechanism of mixedness}—rather than the raw amount of entropy—governs local parameter sensitivity~\cite{project9report}.
+
+\subsection{The High Contrast Resolution Barrier (Rayleigh's Curse)}
+In astronomical observation, the direct detection and spectral characterization of faint exoplanets situated near bright stars is fundamentally limited by diffraction~\cite{Santamaria2024single}. When imaged classically via direct intensity measurements, the point-spread functions (PSFs) of the two sources overlap in the image plane~\cite{Santamaria2024single}. As their spatial separation $d$ falls below the Rayleigh diffraction length $w_0$, the classical Fisher information collapses quadratically as $\mathcal{O}(\epsilon^2)$, where $\epsilon \ll 1$ represents the extreme intensity ratio (contrast) of the planet to the star~\cite{Santamaria2024single}. This statistical collapse, known as Rayleigh's Curse, causes the estimation uncertainty to diverge, burying the planetary signal under starlight shot noise~\cite{Santamaria2024single}. Although Spatial-Mode Demultiplexing (SPADE) has been proposed to preserve sensitivity down to arbitrary sub-wavelength scales by sorting the field into transverse modes (such as Hermite-Gaussian modes)~\cite{Santamaria2024single}, practical physical setups are heavily degraded by experimental non-idealities, including spatial cross talk, residual centroid misalignments, and atmospheric turbulence~\cite{Santamaria2024single}.
+
+\subsection{The Conceptual Divide}
+Most critically, there is no existing synthesis that connects the variational, rank-truncated information bounds developed for NISQ quantum simulators to the physical hardware-level projectors utilized in spatial-mode optical receivers. Resolving this conceptual gap would show that spatial mode sorting is not just a classical optics technique, but a physical, analog quantum algorithm that saturates the ultimate variational limits of quantum metrology~\cite{Link_Passage70}.
+
+% ==============================================================================
+\section{Aims and Objectives}
+% ==============================================================================
+
+The central goal of this thesis is to establish a rigorous mathematical, numerical, and experimental bridge between variational quantum metrology on near-term hardware and sub-Rayleigh spatial-mode optical sensing. To achieve this, we pursue the following specific objectives:
+\begin{enumerate}
+    \item \textbf{Develop a Scalable, NISQ-Friendly Algorithmic Pipeline:} Implement and validate the Variational Quantum Fisher Information Estimation (VQFIE) protocol, coupled with the Variational Quantum State Eigensolver (VQSE)~\cite{Methods_Passage114}. We aim to extract dominant eigenvalues and eigenvectors using a qubit-frugal, single-copy register to compute dynamics-agnostic lower and upper bounds on the QFI, bypassing classical diagonalization bottlenecks~\cite{Methods_Passage114, Methods_Passage122}.
+    \item \textbf{Characterize the Metrological Footprint of Localized Open-System Noise:} Systematically analyze many-body quantum sensors (modeled under the Transverse-Field Ising Model) under realistic environmental decay channels at the subsystem level~\cite{project9report}. We aim to demonstrate how boundary conditions and low-temperature thermal mixing access sensitive excited states of the Hamiltonian, allowing structured mixed states to outperform pure ground-state subsystems~\cite{project9report}.
+    \item \textbf{Implement a High-Contrast sub-Rayleigh Projective Setup:} Mathematically characterize and experimentally implement a star-centric SPADE tabletop receiver operating in the heralded single-photon regime~\cite{Santamaria2024single}. We aim to evaluate the statistical error-propagation limits for spatial separation $d$ and relative intensity $\epsilon$ in the presence of physical spatial cross talk ($\chi = 0.0035$) and centroid misalignments~\cite{Santamaria2024single}.
+    \item \textbf{Construct the Unified 2-Basis Projection Bridge:} Mathematically prove that the physical alignment and mode-sorting subroutines of SPADE are the exact physical, analog equivalents of the VQSE majorization loop and the rank-truncation projection operator $\Pi^{(1)}$ developed in our NISQ metrology track~\cite{Link_Passage70, Link_Passage80}. We aim to demonstrate that the variational bounds optimized on NISQ simulators are the physical limits governing sub-diffraction exoplanet detection and spectroscopy~\cite{Link_Passage70}.
+\end{enumerate}
+
+% ==============================================================================
+\section{Scope and Limitations}
+% ==============================================================================
+
+To maintain rigorous focus and manage expectations, the boundaries of this work are explicitly defined:
+\begin{itemize}
+    \item \textbf{Many-Body Systems:} Our numerical simulations of open-system metrology are restricted to 1D spin chains governed by the Transverse-Field Ising Model (TFIM) up to $N=6$ sites. We do not attempt to simulate macroscopic material phases or high-temperature superconducting systems.
+    \item \textbf{Parameter Bounds:} Our parameter estimation framework focuses on single-parameter sensing (e.g., transverse magnetic field strength $h_x$ and spatial separation $d$). Multiparameter scenarios are evaluated under decoupling limits (such as high-contrast exoplanet alignment) rather than simultaneous saturation of the Holevo bound across incompatible measurements.
+    \item \textbf{Optical Regime:} The experimental and analytical treatments of SPADE operate within the weak-field, faint-signal limit (single-photon regime) where multi-photon coincidence statistics are negligible. The spatial modes are truncated to the first three Hermite-Gaussian components ($HG_{00}, HG_{01}, HG_{10}$). We do not model infinite-dimensional, arbitrary spatial-field configurations.
+\end{itemize}
+
+% ==============================================================================
+\section{Thesis Outline and Roadmap}
+% ==============================================================================
+
+This thesis is organized in a progressive, modular structure that guides the reader from foundational quantum information-geometric concepts, through variational and open-system algorithms, and ultimately to the physical implementation and bridging of spatial-mode optical sensors:
+
+\begin{figure}[h!]
+    \centering
+    \begin{center}
+        \textbf{The Analytical Architecture of the Thesis:}
+        \begin{tabular}{c}
+            \textbf{Chapter 2: Theoretical Foundations of Quantum Metrology}            \\
+            $\downarrow$                                                                \\
+            \textbf{Chapter 3: Variational Sensing and NISQ Algorithms (VQFIE \& VQSE)} \\
+            $\downarrow$                                                                \\
+            \textbf{Chapter 4: Open-System Noise Metrology (Subsystem Fingerprints)}    \\
+            $\downarrow$                                                                \\
+            \textbf{Chapter 5: Astrophysical Metrology (Rayleigh's Curse and SPADE)}    \\
+            $\downarrow$                                                                \\
+            \textbf{Chapter 6: Synthesis (The 2-Basis Projection Bridge)}               \\
+            $\downarrow$                                                                \\
+            \textbf{Chapter 7: Conclusions and Scientific Outlook}
+        \end{tabular}
+    \end{center}
+    \caption{The modular progression of the thesis, illustrating how abstract information theory is sequentially mapped to algorithms, noise metrology, physical telescopes, and the unifying synthesis.}
+    \label{fig:thesis_roadmap}
+\end{figure}
+
+\subsection*{Chapter 2: Theoretical Foundations of Quantum Estimation and Information Geometry}
+This chapter establishes the core mathematical language of the thesis, thoroughly distinguishing between intrinsic quantum (ontic) indeterminacy and classical statistical (epistemic) ignorance~\cite{Intro_Passage4, Intro_Passage5}. We review the properties of density operators, completely positive maps, and positive operator-valued measures (POVMs), utilizing Naimark's dilation theorem to link generalized measurements to physical couplings~\cite{Intro_Passage2, Intro_Passage6, Intro_Passage14}. We derive the classical Fisher Information, statistical distance (Wootters metric), and the Symmetric Logarithmic Derivative (SLD) Lyapunov equation~\cite{Intro_Passage17, Intro_Passage19, Intro_Passage22}. The chapter concludes by reviewing the Braunstein-Caves theorem, the Quantum Cram\'{e}r-Rao Bound (QCRB), the Bures metric, and the Petz monotone metrics classification, which collectively govern the limits of parameter estimation~\cite{Intro_Passage36, Intro_Passage38, Intro_Passage44, Intro_Passage55}.
+
+\subsection*{Chapter 3: Variational Quantum Sensing and Optimization on NISQ Hardware}
+Here, we present our scalable quantum-classical hybrid pipeline to estimate and optimize mixed-state metrology bounds on near-term hardware~\cite{Methods_Passage114}. We define the 1D Transverse-Field Ising Model (TFIM) and our mixed-state generation protocol using the partial trace~\cite{Methods_Passage115, Methods_Passage117}. We introduce the Truncated Quantum Fisher Information (TQFI) lower and upper bounds (based on the generalized subnormalized Uhlmann fidelity $F_*$) and the Sub/Super-Fidelity QFI (SSQFI) bounds based on polynomial trace functionals~\cite{Methods_Passage122, Methods_Passage125, Methods_Passage126}. We detail the Variational Quantum State Eigensolver (VQSE) and the Variational Quantum Fisher Information Estimation (VQFIE) algorithms, detailing how VQSE leverages quantum majorization and a local-to-global adaptive Hamiltonian schedule to diagonalize states on single-copy registers while bypassing barren plateaus~\cite{Methods_Passage129, Methods_Passage133, VQSE_Passages_All}.
+
+\subsection*{Chapter 4: Open-System Noise Metrology: Fingerprints of Mixedness at the Subsystem Level}
+This chapter investigates how environmental noise corrupts the metrological sensitivity of localized quantum sensors under open-system conditions~\cite{project9report}. We benchmark six state families (including global and reduced depolarizing and thermal Gibbs states) under two operating modes: fixed-noise and matched-purity~\cite{project9report}. We derive the matched-SLD analytical local derivative correction, which incorporates field-dependent chain-rule coordinates via the Duhamel formula, resolving non-physical monotonicity violations of earlier secant-like approximations~\cite{project9report}. Through a systematic evaluation of five experimental presets, we analyze critical peak collapses, spatial peak migrations, and boundary condition sensitivities, proving that structured thermal states can preserve superior local sensitivity relative to ground-state subsystems~\cite{project9report}.
+
+\subsection*{Chapter 5: Astrophysical Metrology: Rayleigh's Curse and the Exoplanet Detection Challenge}
+We transition the parameter estimation framework to the physical domain of astronomical imaging and optical spectroscopy~\cite{Santamaria2024single, Santamaria2025spectroscopy}. We define the high-contrast exoplanet detection problem (where the intensity ratio is extremely unbalanced, $\epsilon \ll 1$) and mathematically formulate how the classical Fisher Information collapses to zero as the spatial separation $d$ between two point sources vanishes (Rayleigh's curse) under direct imaging~\cite{Santamaria2024single}. We introduce Spatial-Mode Demultiplexing (SPADE) as the phase-preserving, quantum-optimal alternative~\cite{Santamaria2024single}. By sorting the field into Hermite-Gaussian modes, SPADE isolates the starlight from the planet signal, maintaining constant sub-Rayleigh sensitivity and yielding an $\epsilon^{-1/2}$ improvement in the signal-to-noise ratio~\cite{Santamaria2024single}.
+
+\subsection*{Chapter 6: Bridging Variational Metrology and Sub-Rayleigh Quantum Imaging: The 2-Basis Projection Framework}
+The climax of the thesis formally unites our two research tracks~\cite{Link_Passage69}. We model the image-plane optical field as a single-photon spatio-temporal mixed state $\rho_d$ and map SPADE to the rank-truncation projection operator $\Pi^{(1)}$ developed in our NISQ pipeline~\cite{Link_Passage70, Link_Passage74, Link_Passage77}. We prove that the star-centric alignment protocol is the physical, analog equivalent of the VQSE majorization loop, rotating the dominant starlight background into the fundamental $|HG_{00}\rangle$ mode to isolate the planet signal in the $|HG_{01}\rangle/|HG_{10}\rangle$ modes~\cite{Link_Passage80}. We demonstrate that classical SPADE measurements perfectly saturate the TQFI lower bound~\cite{Link_Passage85, Link_Passage90}. The chapter also characterizes our tabletop implementation (PPLN source, Cailabs Proteus-C mode sorter, cooled SPADs), details error propagation in the presence of physical spatial cross talk ($\chi = 0.0035$), demonstrates robust noise decoding via physics-informed machine learning, and justifies low-rank sufficiency using Krylov subspace closure~\cite{Link_Passage71, Link_Passage91, Link_Passage94}.
+
+\subsection*{Chapter 7: Conclusions, Synthesis, and Scientific Outlook}
+This final chapter summarizes the core scientific achievements of the thesis, synthesizing the computational, theoretical, and experimental insights gained across both tracks. We discuss the broader implications of our unified projection framework for near-term quantum technologies and outline future research directions, including multiparameter adaptive astronomical arrays, squeezed-light enhanced SPADE, and hardware implementations of VQSE-assisted sensors on physical NISQ processors.

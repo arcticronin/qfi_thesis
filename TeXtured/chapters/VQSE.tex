@@ -1,0 +1,188 @@
+\section{Deep Dive: The Variational Quantum State Eigensolver (VQSE)} \label{sec:vqse_deep_dive}
+
+\todo[]{this section coulb be completely skipped, but it was a nice idea in the resentation, and i did some tweaks of the methods, so maybe i can use it and make a small digression. the infobox is also skippable but it is my idea of using $\text{QFI}^{-1}$ to train it}
+
+
+In this small section, we describe in detail the procedure we followed to extract the principal eigenvalues and eigenvectors, that is particularly important when we deal with high-dimensional density matrices. It is a foundational subroutine in quantum machine learning, state characterization, and metrological rank truncation. While the standard Variational Quantum Eigensolver (VQE) targets the ground state of a known Hamiltonian \todo[]{cite someting here?}, the Variational Quantum State Eigensolver (VQSE, \cite{cerezo2022vqse}) addresses the dual problem: variationally learning the $m$ largest eigenvalues $\{\lambda_i\}_{i=1}^m$ and preparing the corresponding eigenbasis $\{|\lambda_i\rangle\}_{i=1}^m$ of an unknown $n$-qubit density matrix $\rho$
+% ==============================================================================
+\subsection{Mathematical Foundation: Diagonalization via Majorization}
+% ==============================================================================
+
+Rather than explicitly measuring off-diagonal matrix elements to quantify how far a state is from diagonal form, VQSE exploits the mathematical equivalence between matrix diagonalization and \textbf{quantum majorization}.
+
+\begin{definition}[Quantum Majorization]
+    Let $\rho$ be an $n$-qubit density matrix with sorted, non-increasing eigenvalues $\boldsymbol{\lambda} = (\lambda_1, \lambda_2, \dots, \lambda_{2^n})$ where $\lambda_1 \ge \lambda_2 \ge \dots \ge \lambda_{2^n} \ge 0$. Let $\mathbf{p}(\theta) = (p_1, p_2, \dots, p_{2^n})$ denote the diagonal elements of the transformed state $\tilde{\rho} = V(\theta)\rho V^\dagger(\theta)$ measured in the computational basis $\{|z_k\rangle\}$:
+    \begin{equation}
+        p_k(\theta) = \langle z_k | V(\theta)\rho V^\dagger(\theta) | z_k \rangle.
+    \end{equation}
+    By the Schur-Horn theorem, the eigenvalue vector $\boldsymbol{\lambda}$ strictly majorizes the diagonal probability vector $\mathbf{p}(\theta)$, denoted $\boldsymbol{\lambda} \succ \mathbf{p}(\theta)$.
+\end{definition}
+
+\begin{theorem}[VQSE Cost Function Minimization]
+    Let $H$ be an $n$-qubit Hamiltonian diagonal in the computational basis with non-negative, non-degenerate eigenenergies sorted in strictly increasing order $0 \le E_1 < E_2 < \dots < E_{2^n}$ . The VQSE cost function is defined as the energy expectation value:
+    \begin{equation}
+        C(\theta) = \operatorname{Tr}\left[ H V(\theta)\rho V^\dagger(\theta) \right] = \sum_{k=1}^{2^n} E_k p_k(\theta) = \mathbf{E} \cdot \mathbf{p}(\theta).
+        \label{eq:vqse_cost_dot_product}
+    \end{equation}
+    Because the inner product of an increasingly sorted vector $\mathbf{E}$ with a vector $\mathbf{p}$ majorized by $\boldsymbol{\lambda}$ is a \textbf{Schur-concave function}, $C(\theta)$ achieves its absolute global minimum if and only if $V(\theta_{\text{opt}})$ maps the $k$-th eigenvector $|\lambda_k\rangle$ of $\rho$ to the $k$-th computational basis state $|z_k\rangle$ :
+    \begin{equation}
+        C_{\text{min}} = \mathbf{E} \cdot \boldsymbol{\lambda} = \sum_{k=1}^{2^n} E_k \lambda_k.
+    \end{equation}
+\end{theorem}
+
+% ==============================================================================
+\subsection{Ansatz Execution and Readout Subroutines}
+% ==============================================================================
+
+Once the hybrid quantum-classical loop converges to the optimal parameter set $\theta_{\text{opt}}$, the $m$ dominant eigenvalues and eigenvectors are retrieved as follows:
+
+1. \textbf{Eigenvalue Readout:} Prepare $V(\theta_{\text{opt}}) \rho V^\dagger(\theta_{\text{opt}})$ and sample in the computational basis for $N_{\text{runs}}$ shots. The estimated eigenvalue $\tilde{\lambda}_i$ corresponds to the relative frequency $f_i / N_{\text{runs}}$ of the bitstring $z_i \in \{0,1\}^n$ :
+\begin{equation}
+    \tilde{\lambda}_i^{\text{est}} = \frac{f_i}{N_{\text{runs}}}.
+\end{equation}
+2. \textbf{Eigenvector Preparation On-Demand:} Given a computational basis state $|z_i\rangle = X^{z_{i,1}} \otimes \dots \otimes X^{z_{i,n}} |0\rangle^{\otimes n}$, the corresponding approximate state eigenvector $|\tilde{\lambda}_i\rangle$ is generated on a quantum register via:
+\begin{equation}
+    |\tilde{\lambda}_i\rangle = V^\dagger(\theta_{\text{opt}}) |z_i\rangle.
+\end{equation}
+
+% ==============================================================================
+\subsection{Adaptive Cost Function Schedule: Mitigating NISQ Landscape Bottlenecks}
+% ==============================================================================
+
+The choice of the target Hamiltonian $H$ introduces a fundamental trade-off between trainability and optimization landscape structure :
+\begin{itemize}
+
+    \item \textbf{Fixed Local Hamiltonian ($H_L = \sum_j r_j Z_j$):} Yields local cost functions whose gradients do not exponentially vanish at shallow circuit depths, successfully avoiding barren plateaus. However, strict non-degeneracy restricts the solution space, leading to a high density of sub-optimal local minima.
+    \item \textbf{Fixed Global Hamiltonian ($H_G = \sum_{i=1}^m q_i |z_i\rangle\langle z_i|$):} Possesses a $(2^n - m)$-fold degenerate subspace, creating a large, flexible solution space . However, global cost functions exhibit exponentially vanishing gradients (barren plateaus) across random hardware-efficient Ansätze.
+\end{itemize}
+
+To overcome both bottlenecks simultaneously, VQSE introduces a time-dependent, adaptively updated Hamiltonian schedule:
+\begin{equation}
+    H(t) = (1 - f(t)) H_L + f(t) H_G(t), \quad t \in [0,1],
+    \label{eq:adaptive_hamiltonian}
+\end{equation}
+where $t = k / N_{\text{max}}$ represents the normalized optimization progress.
+
+\begin{figure}[h!]
+    \centering
+    \begin{center}
+        % Conceptual illustration of adaptive schedule
+        \textbf{Adaptive Optimization Dynamics:}
+        $t=0 \implies H(0)=H_L$ (Local, Trainable, No Barren Plateau)
+        $\longrightarrow t=1 \implies H(1)=H_G$ (Global, High Degeneracy, Devoid of Traps)
+    \end{center}
+    \caption{The adaptive schedule interpolates smoothly from a local Hamiltonian $H_L$ to a measurement-informed global Hamiltonian $H_G(t)$, converting local traps into global minima while preserving gradient signal.}
+    \label{fig:adaptive_schedule}
+\end{figure}
+
+As outlined in Algorithm~\ref{alg:adaptive_vqse}, $H_G(t) = \sum_{i=1}^m q_i |z_i(t)\rangle\langle z_i(t)|$ is periodically re-centered around the dominant bitstrings $z_i(t)$ sampled from intermediate measurements of $V(\theta)\rho V^\dagger(\theta)$. This dynamic shift alters the cost landscape during training, lifting optimization traps into global minima.
+
+\begin{algorithm}[H]
+    \caption{Adaptive VQSE Optimization Schedule}
+    \label{alg:adaptive_vqse}
+    \begin{algorithmic}[1]
+        \Require Input state $\rho$, rank $m$, step size $t_s = 1/s$, local $H_L$, weights $\{q_i\}_{i=1}^m$.
+        \State Initialize parameters $\theta_0$ randomly; set $H(0) \leftarrow H_L$, $t \leftarrow \delta t$.
+        \While{$t \le 1$}
+        \If{$t$ is divisible by $t_s$}
+        \State Measure $V(\theta)\rho V^\dagger(\theta)$ in the computational basis.
+        \State Identify $m$ most frequent bitstrings $Z(t) = \{z_1(t), \dots, z_m(t)\}$.
+        \State Update global component: $H_G(t) \leftarrow \sum_{i=1}^m q_i |z_i(t)\rangle\langle z_i(t)|$ .
+        \EndIf
+        \State Update total Hamiltonian: $H(t) \leftarrow (1 - t) H_L + t H_G(t)$.
+        \State Execute classical gradient step: $\theta \leftarrow \text{Optimizer}(\theta, \nabla_\theta C(t, \theta))$.
+        \State $t \leftarrow t + \delta t$.
+        \EndWhile
+        \State \textbf{Return:} $\theta_{\text{opt}} \leftarrow \theta$.
+    \end{algorithmic}
+\end{algorithm}
+
+% ==============================================================================
+\subsection{Finite Shot Sampling Complexity and Verification Bounds}
+% ==============================================================================
+
+Evaluating eigenvalues via empirical bitstring frequencies $f_i / N_{\text{runs}}$ introduces statistical sampling noise.
+
+\begin{theorem}[Shot Complexity for Relative Accuracy]
+    By Hoeffding's inequality, to ensure that the relative error $\epsilon_i = |\tilde{\lambda}_i^{\text{est}} - \tilde{\lambda}_i| / \tilde{\lambda}_i$ across all $m$ target eigenvalues remains below a threshold $c > 0$ with success probability at least $1 - \delta$, the required number of measurement shots scales as:
+    \begin{equation}
+        N_{\text{runs}} \ge \frac{\log(1/\delta)}{2 c^2 \lambda_m^2} = \Omega\left( \frac{\log(1/\delta)}{c^2 \lambda_m^2} \right),
+        \label{eq:shot_scaling}
+    \end{equation}
+    where $\lambda_m$ is the smallest eigenvalue within the target truncation rank $m$ [4].
+\end{theorem}
+
+\begin{theorem}[Operational Error Verification Bound]
+    The total eigenvalue error $\epsilon_\lambda = \sum_{i=1}^m (\lambda_i - \tilde{\lambda}_i)^2$ and eigenvector alignment error $\epsilon_v = \sum_{i=1}^m \langle \delta_i | \delta_i \rangle$ (where $|\delta_i\rangle = (\mathbb{I} - |\tilde{\lambda}_i\rangle\langle\tilde{\lambda}_i|)\rho|\tilde{\lambda}_i\rangle$) are strictly bounded by the convergence value of the cost function $C(\theta_{\text{opt}})$:
+    \begin{equation}
+        \epsilon_\lambda, \, \epsilon_v \le \operatorname{Tr}[\rho^2] - \frac{(E_{m+1} - C(\theta_{\text{opt}}))^2}{\sum_{i=1}^m (E_{m+1} - E_i)^2}.
+        \label{eq:operational_error_bound}
+    \end{equation}
+    Furthermore, an optional 2-copy verification protocol utilizing $b_m > m$ sampled bitstrings establishes an even tighter, hardware-verifiable bound:
+    \begin{equation}
+        \epsilon_\lambda, \, \epsilon_v \le \operatorname{Tr}[\rho^2] - \sum_{i=1}^{b_m} \tilde{\lambda}_i^2 - \frac{\left(1 - \sum_{i=1}^{b_m} \tilde{\lambda}_i\right)^2}{2^n - b_m}.
+        \label{eq:verification_bound_2copy}
+    \end{equation}
+\end{theorem}
+
+% ==============================================================================
+\subsection{Comparative Resource Scaling: Why VQSE is Qubit-Frugal}
+% ==============================================================================
+
+Compared to existing quantum state diagonalization and principal component extraction algorithms, VQSE achieves ultimate qubit frugality by requiring only a \textbf{single copy of $\rho$ ($n$ qubits)} per circuit execution .
+
+\todo[]{cite here the works}
+\begin{table}[h!]
+    \centering
+    \caption{Comparison of quantum state spectrum extraction algorithms for an $n$-qubit density matrix $\rho$.}
+    \label{tab:vqse_comparison}
+    \begin{tabular}{p{2.25cm} p{2.2cm} p{2.6cm} p{5.75cm}}
+        \toprule
+        \textbf{Algorithm} & \textbf{Qubit Count} & \textbf{Input State}               & \textbf{Primary NISQ Bottlenecks}                                                               \\
+        \midrule
+        \textbf{qPCA}      & $n + a$ qubits       & $\rho^{\otimes k}$ copies          & Requires Phase Estimation and matrix exponentiation $e^{-i\rho t}$; prohibitive circuit depth . \\
+        \textbf{VQSD}      & $2n$ qubits          & $\rho \otimes \rho$ (2 copies)     & Requires joint 2-register gates; vulnerable to asymmetric inter-register noise .                \\
+        \textbf{QSVD}      & $n$ to $2n$ qubits   & $|\psi_{AB}\rangle$ (Purification) & Requires explicit state purification; fails under uncharacterized incoherent noise .            \\
+        \textbf{VQSE}      & \textbf{$n$ qubits}  & \textbf{$\rho$ (1 copy)}           & \textbf{Single-copy execution; short depth; uses majorization for qubit frugality}.             \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+\afterpage{
+    \begin{infobox}[label={sec:vqse_qng_optimization}]{Optimizing VQSE using Quantum Natural Gradient}
+        The Variational Quantum State Eigensolver (VQSE) is a hybrid quantum-classical algorithm designed to extract the largest eigenvalues and corresponding eigenvectors of a density matrix $\rho$. This is achieved by minimizing a cost function $C(\theta) = \text{Tr}[H V(\theta)\rho V^\dagger(\theta)]$, where $H$ is a known non-degenerate Hamiltonian and $V(\theta)$ is a parameterized quantum circuit \cite{cerezo2022vqse}. While traditional optimization of $V(\theta)$ relies on standard gradient descent, this approach evaluates steepest descent in a Euclidean parameter space, ignoring the underlying geometry of the quantum state space \cite{kolotouros2024RNG}.
+
+        To address this, the Quantum Natural Gradient (QNG) method can be applied to the VQSE optimization loop. QNG considers the steepest descent direction within the Quantum Information Geometry by substituting the Euclidean metric with the Fubini-Study metric tensor, which is proportional to the Quantum Fisher Information Matrix (QFIM), denoted as $\mathcal{F}_Q(\theta)$ \cite{gacon2021_perturbation_stochastic_qfi}.
+
+        \subsubsection*{Methodology}
+
+        Implementing QNG within the VQSE framework requires modifying the parameter update step. The procedure is formulated as follows:
+
+        \begin{enumerate}
+            \item \textbf{Gradient Evaluation:} The first-order gradient of the VQSE cost function, $\nabla C(\theta)$, is evaluated. For hardware-efficient ansatzes, this is typically executed analytically via the parameter-shift rule on the quantum processor \cite{cerezo2022vqse, kolotouros2024RNG}.
+            \item \textbf{QFIM Evaluation:} The QFIM, $\mathcal{F}_Q(\theta)$, is calculated to capture the local geometry of the parameterized state $V(\theta)\rho V^\dagger(\theta)$. The elements of $\mathcal{F}_Q(\theta)$ correspond to the overlap between the current state and its derivatives, which requires structural modifications to the quantum circuit, such as deploying a SWAP test or a compute-uncompute sequence \cite{kolotouros2024RNG, gacon2021_perturbation_stochastic_qfi}.
+            \item \textbf{Parameter Update:} The classical optimizer updates the circuit parameters using the natural gradient descent rule:
+                  \begin{equation}
+                      \theta_{k+1} = \theta_k - \eta \mathcal{F}_Q(\theta_k)^+ \nabla C(\theta_k)
+                  \end{equation}
+                  where $\eta$ represents the learning rate and $\mathcal{F}_Q(\theta_k)^+$ denotes the Moore-Penrose pseudo-inverse of the QFIM \cite{kolotouros2024RNG}.
+        \end{enumerate}
+
+        \subsubsection*{Advantages and Limitations}
+
+        The integration of QNG into VQSE yields several significant advantages. Primarily, QNG adjusts the step size based on the sensitivity of the quantum state to parameter variations, rather than employing a global learning rate. This dynamic scaling facilitates faster convergence in terms of optimization iterations and enables the algorithm to effectively navigate complex cost landscapes with high densities of local minima.
+
+        However, the exact calculation of the QFIM poses severe scalability challenges for near-term quantum hardware. For an ansatz parameterized by $m$ variables, evaluating $\mathcal{F}_Q(\theta)$ requires $\mathcal{O}(m^2)$ distinct quantum state preparations per iteration \cite{kolotouros2024RNG, gacon2021_perturbation_stochastic_qfi}. Furthermore, measuring state overlaps inherently introduces circuit overhead, requiring either a doubling of the circuit width (e.g., using ancilla qubits for a SWAP test) or circuit depth, thereby exacerbating vulnerabilities to decoherence and gate infidelities. Finally, classical evaluation involves inverting $\mathcal{F}_Q(\theta)$, which can exhibit numerical instabilities requiring meticulous regularization if the matrix is ill-conditioned \cite{gacon2021_perturbation_stochastic_qfi}.
+
+        To mitigate these computational bottlenecks, stochastic approximations such as the Random Natural Gradient (RNG), Stochastic-Coordinate QNG, or Simultaneous Perturbation Stochastic Approximation (SPSA) can be substituted for the exact QFIM. These methods construct unbiased estimators or reduced-rank approximations of the QFIM using only $\mathcal{O}(1)$ or $\mathcal{O}(m)$ resources, drastically reducing the quantum overhead while preserving the geometric advantages of the natural gradient.
+    \end{infobox}
+}
+
+\todo[]{cite it from the box or from before}
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=\textwidth]{misc/sgd_vs_sr_comparison.png}
+    \caption{Comparison SGD against natural gradinent. In this experiment we used an architecture called Neural Quantum State, modelling a Complex Restricted Boltzman machine, in order to learn the wavefunction of a TFIM. In this specific context, it is easier to compute analytically the QFI Matrix of the weights, and the comparison shows that not only the NG converges earlier, but also it finds a lower enery state: the SGD was stuck in a local minimum.}
+    \label{<label>}
+\end{figure}
+

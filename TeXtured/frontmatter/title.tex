@@ -1,0 +1,61 @@
+\pdfbookmark{Title Page}{titlepage} % add PDF outline entry
+
+\begin{titlepage}
+    \thispagestyle{empty} % no number on the title page
+    \begin{center}
+        % Header
+        {\large INTER-UNIVERSITY MASTER'S DEGREE PROGRAMME} \\[5ex]
+        {\large Department of Physics} \\[1ex]
+        {\large Master Degree Program} \\[1ex]
+        {\large \StudyProgramme} \\[7ex]
+
+        % Logos and university names
+        \begin{tabular}{ccc}
+            \includegraphics[height=3cm]{images/logos/logo1.png}  &
+            \includegraphics[height=3cm]{images/logos/logo2.jpeg} &
+            \includegraphics[height=3cm]{images/logos/logo3.png}                                                          \\[2ex]
+            Università degli Studi di                             & Università degli Studi di & Università degli Studi di \\
+            Milano                                                & Milano - Bicocca          & Pavia
+        \end{tabular} \\[10ex]
+
+        % Title
+        {\LARGE\bfseries \ThesisTitle} \\[5ex]
+        \ifdef{\ThesisSubtitle}{%
+            {\large\bfseries \ThesisSubtitle} \\[10ex]
+        }
+    \end{center}
+
+    % Supervisors and candidate
+    \begin{minipage}[t]{0.45\textwidth}
+        \begin{flushleft}\large
+            Supervisor: \\
+            \textbf{\Supervisor}
+            \ifdef{\CoSupervisor}{%
+                \\[3ex]
+                Co-Supervisor: \\
+                \textbf{\CoSupervisor}
+            }{}
+        \end{flushleft}
+    \end{minipage}
+    \hfill
+    \begin{minipage}[t]{0.45\textwidth}
+        \begin{flushright}\large
+            Candidate: \\
+            \textbf{\ThesisAuthor}
+            \ifdef{\ThesisStudentID}{%
+                \\
+                \textbf{\ThesisStudentID}
+            }{}
+        \end{flushright}
+    \end{minipage}
+
+    \vfill
+
+    % Footer
+    \begin{center}
+        {\large Academic year: \YearSubmitted}
+        \ifWIP
+            \\[1ex]\small\ttfamily \textcolor{red}{(Draft -- \today)}
+        \fi
+    \end{center}
+\end{titlepage}

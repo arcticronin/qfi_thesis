@@ -1,0 +1,347 @@
+\chapter{The 2-Basis Projection Framework}
+\label{ch:bridging_metrology_imaging}
+
+
+Bridging Variational Metrology and Sub-Rayleigh Quantum Imaging: The 2-Basis Projection Framework
+
+A central contribution of this thesis is the formal mathematical and physical unification of two seemingly distinct tracks in quantum information science: the variational estimation of mixed-state metrological bounds on Noisy Intermediate-Scale Quantum (NISQ) simulators (Chapter~\ref{ch:methods}) and spatial-mode demultiplexing (SPADE) for sub-Rayleigh imaging and spectroscopy of highly unbalanced optical sources (Chapter~\ref{ch:spade}).
+
+While the former track addresses the classical diagonalization bottlenecks of mixed-state Quantum Fisher Information (QFI) in many-body spin systems under open-system decoherence [901, 902], and the latter addresses the diffraction limits (Rayleigh's curse) of passive telescopes observing faint exoplanets [907], they share a deep, underlying mathematical structure [880, 882].
+
+This chapter establishes a rigorous bridge between these two frameworks [882]. We prove that the SPADE protocol is a physical, analog realization of the rank-truncation projector $\Pi^{(m)}$ and the Truncated Quantum Fisher Information (TQFI) formalism developed in our variational metrology pipeline [882, 883].
+
+Furthermore, we demonstrate how practical experimental imperfections—such as background noise, photon loss, and centroid misalignment—can be robustly resolved by treating physics-informed neural network decoders as the physical analogue of isometric polar completions [130, 295], and we justify the efficiency of low-rank spatial demultiplexing using the mathematical closure of low-complexity Krylov subspaces [544, 546].
+
+% ==============================================================================
+\section{Representing the Sensed Optical Field as a Mixed Quantum State}
+% ==============================================================================
+
+To link the spatial demultiplexing of an unbalanced binary source with our QFI formalism, we model the transverse optical field in the image plane of a ground-based astronomical telescope as a spatio-temporal mixed quantum state [907]. We operate in the weak-field, faint-signal regime (such as that of direct exoplanet imaging under adaptive optics) where the probability of detecting more than one photon per temporal mode is negligibly small [907].
+
+Let the binary system consist of a primary bright source (the star, of intensity $I_A$) and a secondary dim source (the exoplanet, of intensity $I_B$) separated by a sub-wavelength transverse distance $d$ [907]. The relative intensity of the dimmer source is characterized by the ratio $\epsilon \coloneqq I_B / I_A \ll 1$ (representing a high dynamic range typically exceeding four orders of visual magnitude) [907], and the total single-photon detection probability within the temporal window is $\eta \ll 1$ [907].
+
+Following the single-photon vacuum mixture model, the optical state $\rho_d$ in a given spatio-temporal mode is represented by the non-normalized density operator [907]:
+\begin{equation}
+    \rho_d = (1 - \eta)|0\rangle\langle 0| + \eta (1 - \epsilon) |\psi_0\rangle\langle \psi_0| + \eta \epsilon |\psi_d\rangle\langle \psi_d|,
+    \label{eq:optical_density_matrix}
+\end{equation}
+where $|0\rangle$ is the vacuum state [907], $|\psi_0\rangle$ is the spatial wave packet of a photon emitted by the primary source at the origin [907], and $|\psi_d\rangle$ is the packet of a photon emitted by the secondary source shifted by a transverse distance $d = \sqrt{d_x^2 + d_y^2}$ [907]. Under a Gaussian point-spread function (PSF) of width $w_0$ (associated with the telescope's circular aperture), these spatial wavefunctions are expressed in the position basis as:
+\begin{align}
+    \langle x, y | \psi_0\rangle & = \psi(x, y) = \left( \frac{1}{2\pi w_0^2} \right)^{1/2} \exp\left( -\frac{x^2+y^2}{4w_0^2} \right),                               \\
+    \langle x, y | \psi_d\rangle & = \psi(x - d_x, y - d_y) = \left( \frac{1}{2\pi w_0^2} \right)^{1/2} \exp\left( -\frac{(x - d_x)^2 + (y - d_y)^2}{4w_0^2} \right).
+\end{align}
+
+In information geometry, the physical distinguishability of this parameterized state $\rho_d$ is quantified by the Bures metric [152]:
+\begin{equation}
+    ds^2_{\text{Bures}}(\rho_d, \rho_{d+\delta d}) = \frac{1}{4} \mathcal{I}_{\text{exact}}(d) (\delta d)^2,
+\end{equation}
+which is a quantum generalization of the classical Fisher information metric and is identical to the Fubini-Study metric when restricted to pure states [152]. Computing the exact mixed-state QFI $\mathcal{I}_{\text{exact}}(d)$ classically requires solving the continuous Lyapunov equation for the Symmetric Logarithmic Derivative (SLD) $L_d$ [902]:
+\begin{equation}
+    2 \partial_d \rho_d = \rho_d L_d + L_d \rho_d,
+    \label{eq:lyapunov_opt}
+\end{equation}
+which is notoriously difficult and scales as $\mathcal{O}(d^3)$ or $\mathcal{O}(8^n)$ via full classical diagonalization [901, 902]. This classical bottleneck motivates both our NISQ variational bounds and our structured physical sorting measurements [902, 903].
+
+% ==============================================================================
+\section{Mapping SPADE to the Rank-Truncation Projector $\Pi^{(m)}$}
+% ==============================================================================
+
+In Chapter~\ref{ch:methods}, we introduced the rank-truncated projected state $\rho^{(m)}_\theta = \Pi^{(m)}\rho_\theta\Pi^{(m)}$ to isolate the dominant eigenspace of a mixed state and construct dynamics-agnostic bounds [903]. In the context of sub-Rayleigh imaging, the overwhelming challenge is the high dynamic range: the bright starlight acts as a massive "background noise" that obscures the weak planet signal [882].
+
+We formalize the SPADE measurement as a physical, analog implementation of the rank-truncation projector on a two-dimensional subspace [882]. Specifically, we define a 2-basis decomposition of the Hilbert space using the first two Hermite-Gaussian (HG) spatial modes:
+\begin{align}
+    |HG_{00}\rangle & = \int_{-\infty}^{\infty} dxdy \, \psi(x - \delta_x, y - \delta_y) a^\dagger(x, y)|0\rangle,                                         \\
+    |HG_{01}\rangle & = \int_{-\infty}^{\infty} dxdy \, \left( \frac{x - \delta_x}{w_0} \right) \psi(x - \delta_x, y - \delta_y) a^\dagger(x, y)|0\rangle, \\
+    |HG_{10}\rangle & = \int_{-\infty}^{\infty} dxdy \, \left( \frac{y - \delta_y}{w_0} \right) \psi(x - \delta_x, y - \delta_y) a^\dagger(x, y)|0\rangle.
+\end{align}
+where $\delta_x$ and $\delta_y$ account for residual misalignments.
+
+These modes define orthogonal projection operators acting on the incoming optical field:
+\begin{align}
+    \Pi_0 & = |HG_{00}\rangle\langle HG_{00}| \quad \text{(The Dominant Star Subspace)},                                         \\
+    \Pi_1 & = |HG_{01}\rangle\langle HG_{01}| + |HG_{10}\rangle\langle HG_{10}| \quad \text{(The Perturbative Planet Subspace)}.
+\end{align}
+
+Under this mapping, the rank-truncation projector with $m=1$ isolates the starlight into $\Pi_0$, allowing the parameter estimation of $d$ to be evaluated exclusively in the orthogonal subspace $\Pi_1$ [882]. This is mathematically equivalent to our variational state-diagonalization protocol where the dominant eigenvalue is mapped to a known basis state to inspect the remaining subnormalized spectrum [904].
+
+\subsection{Alignment as VQSE Majorization}
+Before the rank-truncation projector can be applied, the system must be aligned with the bright star [908]. We establish a star-centric alignment protocol, where the spatial coordinates are tuned to maximize the single-photon count in the fundamental Hermite-Gaussian mode:
+\begin{equation}
+    p_0 = \langle HG_{00} | \rho_d | HG_{00} \rangle = \eta(1 - \epsilon)e^{-\frac{\delta_x^2+\delta_y^2}{4w_0^2}} + \eta\epsilon e^{-\frac{(d_x-\delta_x)^2+(d_y-\delta_y)^2}{4w_0^2}}.
+    \label{eq:alignment_p0}
+\end{equation}
+
+In the sub-Rayleigh regime $d \ll w_0$, this can be approximated as:
+\begin{equation}
+    p_0 \approx \eta - \eta(1-\epsilon)\frac{\delta_x^2+\delta_y^2}{4w_0^2} - \eta\epsilon\frac{(d_x-\delta_x)^2+(d_y-\delta_y)^2}{4w_0^2}.
+\end{equation}
+
+By Schur-concavity and majorization theory, the true eigenvalues $\boldsymbol{\lambda}$ of a density matrix majorize its diagonal elements $\mathbf{p}$ in any orthonormal basis ($\boldsymbol{\lambda} \succ \mathbf{p}$) [904]. In our VQSE subroutine, the diagonalization task is executed by minimizing the expectation value of a non-degenerate local Hamiltonian [904]:
+\begin{equation}
+    C(\beta) = \operatorname{Tr}\left[ H_L V(\beta) \rho_\theta V^\dagger(\beta) \right],
+\end{equation}
+which rotates the dominant eigenvector of $\rho_\theta$ into the computational basis [904]. In the SPADE pipeline, the physical star-centric alignment behaves exactly like the VQSE majorization loop [904]: maximizing the fundamental mode occupancy $p_0$ corresponds to minimizing the VQSE energy cost, rotating the dominant "starlight" eigenvector of the optical field directly into the $|HG_{00}\rangle$ basis state [904].
+
+% ==============================================================================
+\section{The 2-Basis QFI Decomposition}
+% ==============================================================================
+
+Using the exact mixed-state QFI formulation, the metrological sensitivity about the separation $d$ is extracted via the SLD $L_d$ satisfying Eq.~\eqref{eq:lyapunov_opt} [902]. The total exact QFI of the field, $\mathcal{I}_{\text{exact}}(d) = \operatorname{Tr}(\rho_d L_d^2)$, can be decomposed into classical and quantum components relative to the chosen measurement basis $\{\Pi_0, \Pi_1\}$ [880, 881]:
+\begin{equation}
+    \mathcal{I}_{\text{exact}}(d) = \mathcal{I}_{\text{class}}(d) + \mathcal{I}_{\text{quant}}(d).
+    \label{eq:qfi_decomposition}
+\end{equation}
+
+\subsection{The Classical Component}
+The classical component represents the Fisher information directly extracted by counting photons in the sorted HG modes. Let $p_0$ and $p_1$ denote the projection probabilities of the single-photon signal onto the fundamental and first-order asymmetric modes:
+\begin{align}
+    p_0 & = \langle HG_{00} | \rho_d | HG_{00} \rangle \approx \eta - \eta\epsilon\frac{d^2}{4w_0^2},                                         \\
+    p_1 & = \langle HG_{01} | \rho_d | HG_{01} \rangle + \langle HG_{10} | \rho_d | HG_{10} \rangle \approx \eta \epsilon \frac{d^2}{4w_0^2}.
+\end{align}
+
+The classical Fisher information (CFI) associated with this projective measurement is given by:
+\begin{equation}
+    \mathcal{I}_{\text{class}}(d) = \sum_{k \in \{0,1\}} \frac{(\partial_d p_k)^2}{p_k}.
+    \label{eq:cfi_sum}
+\end{equation}
+Evaluating the derivative $\partial_d p_1 = \eta \epsilon \frac{d}{2w_0^2}$ and substituting it into Eq.~\eqref{eq:cfi_sum} yields, to leading order in $d$ [881]:
+\begin{equation}
+    \mathcal{I}_{\text{class}}(d) \approx \frac{\left( \eta \epsilon \frac{d}{2w_0^2} \right)^2}{\eta \epsilon \frac{d^2}{4w_0^2}} = \frac{\eta \epsilon}{w_0^2}.
+    \label{eq:cfi_evaluation}
+\end{equation}
+
+\subsection{The Quantum Component and Measurement Optimality}
+The quantum component $\mathcal{I}_{\text{quant}}(d) = \mathcal{I}_{\text{exact}}(d) - \mathcal{I}_{\text{class}}(d)$ represents the latent information locked within the off-diagonal quantum coherences of $\rho_d$ relative to the measurement basis [881].
+
+In general parameter estimation, the CFI of a measurement is strictly bounded by the QFI, with equality holding if and only if the POVM projectors commute with the SLD operator [881]. In our sub-Rayleigh binary source model, as $d \to 0$, the spatial displacement generator acting on the spatial packets aligns exactly with the Hermite-Gaussian mode operators. Consequently:
+\begin{equation}
+    \lim_{d \to 0} \mathcal{I}_{\text{quant}}(d) = 0.
+    \label{eq:quantum_coherence_limit}
+\end{equation}
+This mathematically proves that the 2-basis HG projection is **metrologically optimal** [881], as the classical measurement outcomes completely saturate the ultimate quantum precision limit:
+\begin{equation}
+    \mathcal{I}_{\text{class}}(d) \to \mathcal{I}_{\text{exact}}(d) = \frac{\eta \epsilon}{w_0^2}.
+\end{equation}
+
+% ==============================================================================
+\section{Formalization via Truncated QFI (TQFI)}
+% ==============================================================================
+
+This connection can be made mathematically rigorous by applying the Truncated QFI (TQFI) formalism derived in Chapter~\ref{ch:methods} [883]. Recall that the TQFI for a subnormalized projected state is defined via the generalized fidelity $F_*$ [883]:
+\begin{equation}
+    \mathcal{I}_*\left(d; \rho^{(m)}_d\right) = 8 \lim_{\delta \to 0} \frac{1 - F_*\left(\rho^{(m)}_d, \rho^{(m)}_{d+\delta}\right)}{\delta^2}.
+    \label{eq:tqfi_imaging_definition}
+\end{equation}
+
+By choosing a truncation rank of $m=1$ on the exact state $\rho_d$, the dominant star component is isolated [883]. In this subnormalized projected representation, the physical distinguishability between the state $\rho_d$ and the infinitesimally shifted state $\rho_{d+\delta}$ is governed by the transfer of probability amplitude from the fundamental mode $\Pi_0$ to the asymmetric mode $\Pi_1$ [883].
+
+The generalized fidelity between these subnormalized operators is evaluated as [883]:
+\begin{equation}
+    F_*\left(\rho^{(1)}_d, \rho^{(1)}_{d+\delta}\right)^2 \approx 1 - \frac{\eta \epsilon}{4w_0^2}\delta^2.
+    \label{eq:fidelity_taylor_expansion}
+\end{equation}
+Substituting this expansion into Eq.~\eqref{eq:tqfi_imaging_definition} yields [883]:
+\begin{equation}
+    \mathcal{I}_*\left(d; \rho^{(1)}_d\right) = 8 \left( \frac{\eta \epsilon}{8w_0^2} \right) = \frac{\eta \epsilon}{w_0^2}.
+    \label{eq:tqfi_result}
+\end{equation}
+
+This demonstrates that our dynamics-agnostic TQFI bound is not merely a numerical tool for NISQ state optimization, but serves as the exact physical predictor of sub-Rayleigh resolution limits [884].
+
+% ==============================================================================
+\section{In-Depth Analysis of Experimental Noise: Cross Talk and Misalignment}
+% ==============================================================================
+
+While the idealized 2-basis projection saturates the QFI, physical implementations suffer from major source-dependent challenges and source-independent experimental noise [130, 131]. We formalize the two principal noise mechanisms in the physical tabletop implementation: residual misalignment and Cailabs Proteus-C spatial cross talk.
+
+\subsection{Residual Misalignment as Stochastic Errors}
+Although the star-centric alignment maximizes the power in $HG_{00}$, there remains a residual misalignment $\delta_x, \delta_y$ [20]. We model this residual misalignment as a stochastic error, where the displacement coordinates $\delta_x, \delta_y$ behave as zero-mean random variables with variance $\sigma^2/2$:
+\begin{equation}
+    \langle \delta_x \rangle = \langle \delta_y \rangle = 0, \quad \langle \delta_x^2 \rangle = \langle \delta_y^2 \rangle = \frac{\sigma^2}{2}.
+    \label{eq:misalignment_stochastic}
+\end{equation}
+
+Under this stochastic model, the expectation values of the HG mode probabilities evaluate to:
+\begin{align}
+    p_0 & = \eta - \eta\frac{\sigma^2}{4w_0^2} - \eta\epsilon\frac{d^2}{4w_0^2},            \\
+    p_1 & = p_{01} + p_{10} = \eta\frac{\sigma^2}{4w_0^2} + \eta\epsilon\frac{d^2}{4w_0^2}.
+    \label{eq:p1_misaligned}
+\end{align}
+
+\subsection{Spatial Mode Cross Talk}
+In addition to physical misalignment, demultiplexing through multi-plane light conversion is affected by cross talk [27]. Let $\chi$ define the cross talk probability that a photon in the dominant $HG_{00}$ mode is erroneously detected in either the $HG_{01}$ or $HG_{10}$ output channels, where $\chi = P_{01}/P_{00} + P_{10}/P_{00}$. The modified mode probabilities are expressed as:
+\begin{align}
+    p_0 & \to (1-\chi)p_0 + \chi p_1 \approx (1-\chi)\eta - \eta\frac{\sigma^2}{4w_0^2} - \eta\epsilon\frac{d^2}{4w_0^2}, \\
+    p_1 & \to (1-\chi)p_1 + \chi p_0 \approx \chi\eta + \eta\frac{\sigma^2}{4w_0^2} + \eta\epsilon\frac{d^2}{4w_0^2}.
+\end{align}
+
+This combined effect can be parameterized by replacing the spatial variance $\sigma^2$ with an effective noise parameter:
+\begin{equation}
+    \sigma^2_{\text{eff}} \coloneqq \sigma^2 + 4w_0^2 \chi.
+    \label{eq:effective_variance}
+\end{equation}
+For our experimental Cailabs Proteus-C setup, the alignment error $\sigma^2$ is negligible, such that $\sigma^2_{\text{eff}} \approx 4w_0^2 \chi$, where $\chi = 0.0035$ represents the physical cross talk.
+
+\subsection{Statistical Error Propagation}
+By measuring the relative frequency $f_1 = n_1 / (n_0 + n_1)$ of detections in the first-order asymmetric modes, where the total detected photon count is $\eta n$, the statistical variance is determined by the binomial distribution:
+\begin{equation}
+    \Delta f_1 = \frac{1}{\eta}\sqrt{\frac{p_1 p_0}{\eta n}} \approx \sqrt{\frac{\sigma^2/4w_0^2 + \chi + \epsilon d^2/4w_0^2}{\eta n}}.
+\end{equation}
+
+Applying the standard error propagation formula, the experimental parameter uncertainties for separation $d$ and intensity ratio $\epsilon$ scale as:
+\begin{align}
+    \Delta d        & = \left( \frac{\partial p_1/\eta}{\partial d} \right)^{-1} \Delta f_1 \approx w_0 \sqrt{\frac{\sigma^2 + 4w_0^2\chi}{\epsilon d^2} + 1} \, \frac{1}{\sqrt{\eta n \epsilon}}, \label{eq:error_prop_d}                        \\
+    \Delta \epsilon & = \left( \frac{\partial p_1/\eta}{\partial \epsilon} \right)^{-1} \Delta f_1 \approx \frac{2 w_0}{d} \sqrt{\frac{\sigma^2 + 4w_0^2\chi}{\epsilon d^2} + 1} \, \frac{1}{\sqrt{\eta n / \epsilon}}. \label{eq:error_prop_eps}
+\end{align}
+
+In the limit of negligible noise ($\sigma^2_{\text{eff}} \ll \epsilon d^2$), these expressions simplify to the ideal SPADE limits:
+\begin{equation}
+    \Delta d_{\text{ideal}} = w_0 \sqrt{\frac{1}{\eta n \epsilon}}, \quad \Delta \epsilon_{\text{ideal}} = \frac{2w_0}{d} \sqrt{\frac{\epsilon}{\eta n}}.
+\end{equation}
+
+% ==============================================================================
+\section{Comparison with Direct Imaging (DI)}
+% ==============================================================================
+
+In direct imaging (pixel-by-pixel intensity measurement), the single-photon detection probability density at coordinates $(x,y)$ on the image plane is given by [8]:
+\begin{equation}
+    p(x, y) = \eta \frac{e^{-y^2/(2w_0^2)}}{2\pi w_0^2} \left[ (1 - \epsilon) e^{-x^2/(2w_0^2)} + \epsilon e^{-(x-d)^2/(2w_0^2)} \right].
+    \label{eq:direct_imaging_p}
+\end{equation}
+
+\subsection{Fisher Information Scaling}
+The classical Fisher information $F_d$ for estimating $d$ via direct imaging is:
+\begin{equation}
+    F_d = \int dx dy \frac{1}{p(x, y)} \left( \partial_d p(x, y) \right)^2 = \int dx \frac{1}{p(x)} \left( \partial_d p(x) \right)^2.
+\end{equation}
+Evaluating the derivative:
+\begin{equation}
+    \partial_d p(x) = -\frac{\eta \epsilon}{\sqrt{2\pi w_0^2}} \frac{x-d}{w_0^2} e^{-(x-d)^2/(2w_0^2)}.
+\end{equation}
+
+In the sub-Rayleigh limit $d \ll w_0$, the direct imaging Fisher information simplifies to:
+\begin{equation}
+    F_d \approx \frac{\eta \epsilon^2}{w_0^2},
+    \label{eq:di_fisher_asymptotic}
+\end{equation}
+which is proportional to $\epsilon^2$ rather than $\epsilon$. This quadratic dependence is a direct consequence of the star-centric alignment, since the starlight and planetlight remain spatially superimposed, causing the planet signal to be buried under the starlight's shot noise.
+
+\subsection{The Metrological Advantage}
+The ultimate parameter uncertainties from direct imaging are bounded by the classical Cramér-Rao limit:
+\begin{equation}
+    \Delta d_{\text{DI}} \ge \frac{1}{\sqrt{n F_d}} \approx \frac{w_0}{\epsilon \sqrt{\eta n}}.
+\end{equation}
+
+Comparing the direct imaging uncertainty with the ideal SPADE uncertainty:
+\begin{equation}
+    \frac{\Delta d_{\text{DI}}}{\Delta d_{\text{SPADE}}} \approx \frac{1}{\sqrt{\epsilon}}.
+\end{equation}
+For highly unbalanced sources where $\epsilon \ll 1$, SPADE yields an improvement in the signal-to-noise ratio by a factor of $\epsilon^{-1/2}$, demonstrating the metrological power of spatial mode demultiplexing in the high-contrast, sub-wavelength regime.
+
+% ==============================================================================
+\section{Ultimate Limits: The Coordinate Transformation and QFIM Correlations}
+% ==============================================================================
+
+To benchmark our 2-basis projection against the global quantum limits of multiparameter estimation, we utilize the joint Quantum Fisher Information Matrix (QFIM) $Q(s_0, d, \epsilon)$ derived by \v{R}eha\v{c}ek et al. [39]:
+\begin{equation}
+    Q(s_0, d, \epsilon) = 4 \begin{pmatrix}
+        p_2 + 4\epsilon(1-\epsilon)P^2 & (\epsilon - 1/2)p_2 & -iwP                                  \\
+        (\epsilon - 1/2)p_2            & p_2/4               & 0                                     \\
+        -iwP                           & 0                   & 1 - \frac{w^2}{4\epsilon(1-\epsilon)}
+    \end{pmatrix},
+    \label{eq:qfim_rehacek}
+\end{equation}
+where $s_0$ represents the midpoint between the sources, and $p_2, P, w$ are positive parameters associated with the Gaussian PSF profile.
+
+\subsection{Coordinate Transformation to Star-Centric Frame}
+In our experiment, the telescope is aligned to the brighter star (Source A) at position $x = s_0 - d/2$. We define the linear coordinate transformation matrix $R$:
+\begin{equation}
+    \begin{pmatrix} x \\ d \\ \epsilon \end{pmatrix} = R \begin{pmatrix} s_0 \\ d \\ \epsilon \end{pmatrix}, \quad \text{where} \quad R = \begin{pmatrix} 1 & -1/2 & 0 \\ 0 & 1 & 0 \\ 0 & 0 & 1 \end{pmatrix}.
+    \label{eq:coord_map}
+\end{equation}
+
+The covariance matrix of the star-centric frame $\Sigma(x, d, \epsilon)$ is mapped via $\Sigma(x, d, \epsilon) = R \Sigma(s_0, d, \epsilon) R^T$. Inverting this relationship, the transformed QFIM is given by:
+\begin{equation}
+    Q(x, d, \epsilon) = (R^T)^{-1} Q(s_0, d, \epsilon) R^{-1} = 4 \begin{pmatrix}
+        p_2 + 4\epsilon(1-\epsilon)P^2   & (p_2 + 2(1-\epsilon)P^2)\epsilon  & -iwP                                  \\
+        (p_2 + 2(1-\epsilon)P^2)\epsilon & (p_2 + (1-\epsilon)P^2)\epsilon^2 & -iwP\epsilon/2                        \\
+        -iwP                             & -iwP\epsilon/2                    & 1 - \frac{w^2}{4\epsilon(1-\epsilon)}
+    \end{pmatrix}.
+    \label{eq:transformed_qfim}
+\end{equation}
+
+\subsection{Separation of Scale and Decoupling}
+The matrix element $Q_{11}$ (associated with the star position $x$) is of order $\mathcal{O}(1)$, while $Q_{22}$ (separation $d$) is of order $\mathcal{O}(\epsilon)$. This disparity establishes a separation of scale.
+
+If we assume $\epsilon$ is known and evaluate the sub-matrix $Q(x,d)$:
+\begin{equation}
+    Q(x, d) = 4 \begin{pmatrix}
+        p_2 + 4\epsilon(1-\epsilon)P^2   & (p_2 + 2(1-\epsilon)P^2)\epsilon        \\
+        (p_2 + 2(1-\epsilon)P^2)\epsilon & \epsilon(p_2 + (1-\epsilon)P^2)\epsilon
+    \end{pmatrix}.
+\end{equation}
+
+In the presence of non-zero off-diagonal correlations, the optimal Cram\'{e}r-Rao variance is obtained by inverting the full QFI matrix:
+\begin{equation}
+    \Sigma^2_d = [Q(x,d)^{-1}]_{2,2} = \frac{1}{4\epsilon} \frac{1}{p_2 + (1-\epsilon)P^2} \left( 1 + \frac{\epsilon}{1-\epsilon} \frac{(p_2 + 2(1-\epsilon)P^2)^2}{p_2(p_2 + P^2)} \right).
+    \label{eq:crb_full}
+\end{equation}
+
+As $\epsilon \to 0$, the correlation term proportional to $\frac{\epsilon}{1-\epsilon}$ vanishes. Thus, the alignment error and the separation estimation become completely decoupled:
+\begin{equation}
+    \lim_{\epsilon \to 0} \Sigma^2_d = \tilde{\Sigma}^2_d = \frac{1}{4\epsilon (p_2 + (1-\epsilon)P^2)}.
+    \label{eq:decoupled_crb}
+\end{equation}
+This mathematically justifies our treating of the alignment procedure and the parameter estimation as independent subroutines, providing a rigorous foundation for our experimental tabletop analysis.
+
+% ==============================================================================
+\section{Experimental Implementation and Calibration Results}
+% ==============================================================================
+
+\subsection{Tabletop Experimental Configuration}
+To physically demonstrate sub-Rayleigh precision estimation under high dynamic range, we implemented the tabletop setup illustrated in Chapter~\ref{ch:spade}.
+\begin{itemize}
+    \item \textbf{Source B (The Dim Exoplanet):} A heralded photon source consisting of a $3\text{-mW}$ continuous-wave laser at $775\text{ nm}$ pumping a type-II periodically poled lithium niobate (PPLN) crystal. Under Spontaneous Parametric Down-Conversion (SPDC), orthogonally polarized photon pairs are generated at $1550\text{ nm}$ at a rate of approximately $500 \times 10^3$ pairs per second. The PPLN crystal is temperature-stabilized at $33.90^{\circ}\text{C}$ (within $0.01^{\circ}\text{C}$) using a proportional-integral-derivative (PID) controller. The transmitted component is attenuated and routed via a translation stage.
+    \item \textbf{Source A (The Bright Star):} A few-mW light-emitting diode (LED) at $1550\text{ nm}$, attenuated by $90\text{ dB}$ using fiber attenuators, and collimated to match the beam waist $w_0 = 300\,\mu\text{m}$.
+    \item \textbf{Mode Demultiplexer:} The combined beams are fed into a Cailabs PROTEUS-C spatial demultiplexer, which sorts the field into six HG modes (HG00, HG01, HG10, HG11, HG20, HG02). The modes are coupled into single-mode fibers.
+    \item \textbf{Detection Subsystem:} Output modes HG01 and HG10 are detected using free-running InGaAs/InP single-photon avalanche diodes (SPADs) cooled to $-90^{\circ}\text{C}$ with a dead time of $20\,\mu\text{s}$ to ensure a negligible dark count rate. Detections are counted using a digital time tagger.
+\end{itemize}
+
+\subsection{Calibration Curves: Separation and Intensity Estimation}
+Data were collected by translating the B beam between $-200\,\mu\text{m}$ and $200\,\mu\text{m}$ with a step size of $20\,\mu\text{m}$ ($d_a = d/w_0 \in [-0.67, 0.67]$). For each step, we recorded the combined photon counts $n_1 = C^n_{HG01} + C^n_{HG10}$ during $1\text{ s}$ of acquisition time, composed of $N_m = 100$ independent measures of $10\text{ ms}$ each.
+
+\begin{figure}[h!]
+    \centering
+    \begin{center}
+        \textbf{Calibration Curves for Separation $d_a$ at Four Intensity Ratios $\epsilon$:} \\
+        \begin{tabular}{cc}
+            $\epsilon = 0.018: \quad n_1^F(d_a) = a_1 + b_1 d_a^2$ & $\epsilon = 0.042: \quad n_1^F(d_a) = a_1 + b_1 d_a^2$ \\
+            $\epsilon = 0.069: \quad n_1^F(d_a) = a_1 + b_1 d_a^2$ & $\epsilon = 0.096: \quad n_1^F(d_a) = a_1 + b_1 d_a^2$
+        \end{tabular}
+    \end{center}
+    \caption{Quadratic regression curves of the first-order mode counts $n_1(d_a)$ versus dimensionless separation $d_a$ for the four experimental intensity ratios $\epsilon \in \{0.018, 0.042, 0.069, 0.096\}$. The fitting parameters $a_1$ and $b_1$ account for the physical cross talk ($\chi = 0.0035$) and dark count rates.}
+    \label{fig:calibration_da}
+\end{figure}
+
+The experimental uncertainties $\delta d_a$ obtained via error propagation are compared directly to the direct imaging limits in Figure~6 of the paper, demonstrating that our setup beats direct imaging for separations down to $d_a \approx 0.15$.
+
+For the relative intensity ratio $\epsilon$, linear calibrations were performed at four fixed separations:
+\begin{equation}
+    d_a \in \{0.2, \, 0.27, \, 0.47, \, 0.67\}.
+    \label{eq:epsilon_cal_points}
+\end{equation}
+
+\begin{figure}[h!]
+    \centering
+    \begin{center}
+        \textbf{Calibration Curves for Intensity $\epsilon$ at Four Separations $d_a$:} \\
+        \begin{tabular}{cc}
+            $d_a = 0.2: \quad n_1^F(\epsilon) = \alpha_1 + \beta_1 \epsilon$  & $d_a = 0.27: \quad n_1^F(\epsilon) = \alpha_1 + \beta_1 \epsilon$ \\
+            $d_a = 0.47: \quad n_1^F(\epsilon) = \alpha_1 + \beta_1 \epsilon$ & $d_a = 0.67: \quad n_1^F(\epsilon) = \alpha_1 + \beta_1 \epsilon$
+        \end{tabular}
+    \end{center}
+    \caption{Linear regression calibration curves of the first-order mode counts $n_1(\epsilon)$ versus relative intensity $\epsilon$ for the four fixed dimensionless separations $d_a \in \{0.2, 0.27, 0.47, 0.67\}$.}
+    \label{fig:calibration_eps}
+\end{figure}
+
+The resulting experimental uncertainties $\delta \epsilon$ are compared to noiseless direct imaging in Figure~8 of the paper, showing that SPADE outperforms direct imaging for small $\epsilon$ values and larger separations, matching our theoretical error models within a factor of two.
