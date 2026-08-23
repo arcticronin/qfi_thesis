@@ -1,37 +1,37 @@
 \chapter{Astrophysical Metrology: Exoplanet Detection}
 \label{sec:astrophysical_metrology_spade}
 
-A primary physical arena for testing advanced quantum parameter estimation is astronomical observation, specifically the direct detection and characterization of exoplanets and close binary star systems~\cite{Santamaria2024single}. The fundamental limits of such observations are dictated not by detector sensitivity, but by the wave nature of light itself and the statistical properties of weak thermal sources~\cite{Tsang2016quantum}. This chapter details the physical limits of sub-Rayleigh imaging, models the optical fields as mixed quantum states, establishes the star-centric alignment protocol as a physical realization of variational majorization, and details the robust decoupling of parameters under experimental cross talk, multi-photon shot statistics, and atmospheric turbulence.
-
-% ==============================================================================
-\section{The Resolution Barrier and Space Domain Awareness}
-% ==============================================================================
-
-The characterization of sub-diffraction astronomical structures represents a corner-stone challenge in contemporary precision metrology. This challenge is exemplified by two primary observational fronts: exoplanetary atmospheric spectroscopy and Space Domain Awareness (SDA).
+We tested the quantum parameter estimation in astronomical observation, specifically the direct detection and characterization of exoplanets and close binary star systems~\cite{Santamaria2024single}. 
+The fundamental limits are dictated not by detector sensitivity, but by the nature of light itself and the statistical properties of weak thermal sources~\cite{Tsang2016quantum}.
+This chapter details the physical limits of sub-Rayleigh imaging, models the optical fields as mixed quantum states, establishes the star-centric alignment protocol as a physical realization of variational majorization, and details the robust decoupling of parameters under experimental cross talk, multi-photon shot statistics, and atmospheric turbulence.
+The data used in this chapter was given to our group by \textbf{ASI Matera (Italian Space Agency)}.
+The challenge is exemplified by two primary observational fronts: exoplanetary atmospheric spectroscopy and Space Domain Awareness (SDA).
 
 \subsection{The Exoplanet Characterization Problem}
-Direct imaging and spectroscopy of an exoplanet situated adjacent to its host star is exceptionally challenging due to the extreme disparity in their emission intensities~\cite{Santamaria2024single, Santamaria2025spectroscopy}. Let a primary bright source (the star, $A$) have an image-plane intensity $I_A$, and a secondary dim source (the exoplanet, $B$) have an intensity $I_B$~\cite{Santamaria2024single, Santamaria2025spectroscopy}. The physical system is characterized by the relative intensity ratio (or contrast ratio) $\epsilon$~\cite{Santamaria2024single, Santamaria2025spectroscopy}:
+Direct imaging and spectroscopy of an exoplanet situated adjacent to its host star is exceptionally challenging due to the extreme disparity in their emission intensities. Let a primary bright source (the star, $A$) have an image-plane intensity $I_A$, and a secondary dim source (the exoplanet, $B$) have an intensity $I_B$~\cite{Santamaria2024single, Santamaria2025spectroscopy}. 
+The physical system is characterized by the relative intensity ratio (or contrast ratio) $\epsilon$~\cite{Santamaria2024single, Santamaria2025spectroscopy}:
 \begin{equation}
     \epsilon \coloneqq \frac{I_B}{I_A} \ll 1,
     \label{eq:intensity_ratio_epsilon}
 \end{equation}
-representing a high dynamic range typically exceeding four to ten orders of visual magnitude ($\epsilon \sim 10^{-4}$ to $10^{-10}$)~\cite{Santamaria2024single}. When the angular separation between the star and the planet is small, their light fields overlap on the telescope's aperture, creating a composite field where the weak planetary signal is obscured by the classical shot noise of the overwhelming starlight~\cite{Santamaria2024single}. Characterizing the exoplanet's atmosphere—such as searching for biosignature absorption lines (e.g., $O_2, H_2O, CH_4$)—requires separating these light fields at sub-Rayleigh scales~\cite{Santamaria2025spectroscopy}.
+representing a high dynamic range typically exceeding four to ten orders of magnitude ($\epsilon \sim 10^{-4}$ to $10^{-10}$)~\cite{Santamaria2024single}. 
+When the angular separation between the star and the planet is small, their light fields overlap on the telescope's aperture, creating a composite field where the weak planetary signal is obscured by the classical shot noise of the overwhelming starlight~\cite{Santamaria2024single}. Characterizing the exoplanet's atmosphere—such as searching for biosignature absorption lines (e.g., $O_2, H_2O, CH_4$)—requires separating these light fields at sub-Rayleigh scales~\cite{Santamaria2025spectroscopy}.
 
 \subsection{Space Domain Awareness: Deep Sub-Rayleigh Constellations}
-Beyond exoplanet detection, Space Domain Awareness (SDA) aims to continuously detect, track, catalog, and identify artificial space objects—such as satellites, spacecraft, and orbital debris—to ensure safe space operations~\cite{choi2024adaptive}. Ground-based imaging observations of these targets are severely restricted by their dim appearance, small angular size/separation, and dense distributions~\cite{choi2024adaptive}. These challenges render space targets as point-like objects in the sub-Rayleigh regime, possessing extreme brightness contrast but low photon budgets, often further degraded by atmospheric turbulence~\cite{choi2024adaptive}. To resolve these targets, the iterative Quantum-Accelerated Imaging (QAI) framework adaptively varies the measurement basis in response to initial data, maximizing the extracted Quantum Fisher Information (QFI) per photon~\cite{choi2024adaptive}.
+Beyond exoplanet detection, Space Domain Awareness (SDA) aims to continuously detect, track, catalog, and identify artificial space objects—such as satellites, spacecraft, and orbital debris, to ensure safe space operations~\cite{choi2024adaptive}. Ground-based imaging observations of these targets are severely restricted by their dim appearance, small separation, and dense distributions~\cite{choi2024adaptive}. These challenges render space targets as point-like objects in the sub-Rayleigh regime, possessing extreme brightness contrast but low photon budgets, often further degraded by atmospheric turbulence~\cite{choi2024adaptive}. To resolve these targets, the iterative Quantum-Accelerated Imaging (QAI) framework adaptively varies the measurement basis in response to initial data, maximizing the extracted Quantum Fisher Information (QFI) per photon~\cite{choi2024adaptive}.
 
 % ==============================================================================
 \section{Rayleigh's Curse, Failure of Direct Imaging}
 % ==============================================================================
 
-According to the classical Rayleigh criterion, a diffraction-limited imaging system possesses a fundamental spatial resolution limit. When light from a point-source passes through a telescope's circular pupil of diameter $R$, diffraction broadens the image of the point-source into a finite spot on the image plane~\cite{Santamaria2024single, Santamaria2025spectroscopy}. For a Gaussian point-spread function (PSF) profile of spatial width $w_0$, the Rayleigh limit is reached when the transverse spatial separation $d$ between the two point emitters is comparable to or smaller than $w_0$~\cite{Santamaria2024single}.
-
+According to the classical Rayleigh criterion, a diffraction-limited imaging system possesses a fundamental spatial resolution limit. When light from a point source passes through a telescope's circular pupil of diameter $R$, diffraction broadens the image into a finite spot on the image plane~\cite{Santamaria2024single, Santamaria2025spectroscopy}. Modeling this point-spread function (PSF) via a Gaussian approximation of the physical Airy disk, let the profile have a spatial width $w_0$. The Rayleigh limit is then reached when the transverse spatial separation $d$between two point emitters becomes comparable to or smaller than$w_0$~\cite{Santamaria2024single}.
 
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=0.7\textwidth]{asi_report/rayleigh.png}
-    \caption{curse}
-    \label{<label12123>}
+    \includegraphics[width=0.48\textwidth]{figures/scripts_for_figures/rayleigh_resolved.png}\hfill
+    \includegraphics[width=0.48\textwidth]{figures/scripts_for_figures/rayleigh_unresolved.png}
+    \caption{Illustration of the Rayleigh criterion and the onset of Rayleigh's Curse in Direct Imaging (DI). The figure contrasts a resolved binary system (left, $d = 4.5$) with a sub-Rayleigh, unresolved system (right, $d = 2.5$) for a contrast ratio of $\epsilon = 0.4$. Top: 2D spatial intensity distribution on the image plane, representing the overlapping diffraction-limited point-spread functions (PSFs). Bottom: 1D cross-sectional intensity profiles along the axis of separation. The individual single-source PSFs are shown as dashed lines (blue-grey for the primary source $I_A$, grey for the secondary source $I_B$), while the solid green line represents the composite intensity measured during classical Direct Imaging. In the unresolved regime ($d \ll w_0$), the combined intensity profile merges into a single apparent peak. This visual blending demonstrates the fundamental loss of spatial distinguishability that drives the quadratic collapse of the classical Fisher Information ($\mathcal{I}_{\text{DI}}$) described in Eq.~\eqref{eq:di_fisher_collapse}.}
+    \label{fig:rayleigh_criterion}
 \end{figure}
 
 
@@ -128,19 +128,20 @@ which rotates the dominant eigenvector of $\rho_\theta$ into the computational b
 
 Using the exact mixed-state QFI formulation, the metrological sensitivity about the separation $d$ is extracted via the SLD $L_d$ satisfying Eq.~\eqref{eq:lyapunov_opt_chap}~\cite{Santamaria2024single}. The total exact QFI of the field, $\mathcal{I}_{\text{exact}}(d) = \operatorname{Tr}(\rho_d L_d^2)$, can be decomposed into classical and quantum components relative to the chosen measurement basis $\{\Pi_0, \Pi_1\}$~\cite{Santamaria2024single}:
 \begin{equation}
-    \mathcal{I}_{\text{exact}}(d) = \mathcal{I}_{\text{class}}(d) + \mathcal{I}_{\text{quant}}(d).
+    \mathcal{I}_{\text{exact}}(d) = \mathcal{I}_{\text{class}}(d) + \mathcal{I}_{\text{quant}}(d)
     \label{eq:qfi_decomposition_chap}
 \end{equation}
 
 The probability of detecting a photon in the first-order asymmetric modes (HG01, HG10) is given by:
 \begin{equation}
-    p_1 = \langle HG_{01} | \rho_d | HG_{01} \rangle + \langle HG_{10} | \rho_d | HG_{10} \rangle = \eta(1-\epsilon) \frac{\delta_x^2 + \delta_y^2}{4w_0^2} + \eta\epsilon \frac{(d_x - \delta_x)^2 + (d_y - \delta_y)^2}{4w_0^2}.
+    p_1 = \langle HG_{01} | \rho_d | HG_{01} \rangle + \langle HG_{10} | \rho_d | HG_{10} \rangle = $$
+    $$ = \eta(1-\epsilon) \frac{\delta_x^2 + \delta_y^2}{4w_0^2} + \eta\epsilon \frac{(d_x - \delta_x)^2 + (d_y - \delta_y)^2}{4w_0^2}
     \label{eq:p1_asymmetric}
 \end{equation}
 
 Whereas the alignment procedure aims at reducing systematic error, we model the residual misalignment as a stochastic error~\cite{Santamaria2024single}. We assume that $\delta_x$ and $\delta_y$ are independent stochastic variables with zero mean and variance $\sigma_M^2/2$, where $\sigma_M$ quantifies the alignment precision~\cite{Santamaria2024single}:
 \begin{equation}
-    \mathbb{E}[\delta_x] = \mathbb{E}[\delta_y] = 0, \quad \mathbb{E}[\delta_x^2] = \mathbb{E}[\delta_y^2] = \frac{\sigma_M^2}{2}.
+    \mathbb{E}[\delta_x] = \mathbb{E}[\delta_y] = 0, \quad \mathbb{E}[\delta_x^2] = \mathbb{E}[\delta_y^2] = \frac{\sigma_M^2}{2}
     \label{eq:stochastic_misalignment}
 \end{equation}
 
@@ -206,41 +207,46 @@ such that the covariance matrix transforms as $\Sigma(x, d, \epsilon) = R \Sigma
 The matrix element $Q_{11}$ (associated with the star position $x$) is of order $\mathcal{O}(1)$, while $Q_{22}$ (separation $d$) is of order $\mathcal{O}(\epsilon^2)$~\cite{Santamaria2024single}. This disparity establishes a separation of scale. The off-diagonal correlation terms scale as $\mathcal{O}(\epsilon)$, which vanish completely in the high-contrast limit $\epsilon \to 0$~\cite{Santamaria2024single}. This mathematically proves that the star-centric alignment and the parameter estimation of $d$ or $\epsilon$ decouple and can be treated as entirely independent, circumventing the resurgence of Rayleigh's curse due to multi-parameter correlations~\cite{Santamaria2024single}.
 
 \subsection{Bypassing Nuisance Parameters via Decoupled Mode Ratios}
-To completely bypass the requirement of estimating multiple challenging source-dependent parameters—such as partial coherence $|\gamma|$, brightness imbalance $b$, and random relative phase $\phi$—Sajia et al. proposed a parameter-decoupled superresolution framework~\cite{Sajia2025breaking}.
+To completely bypass the requirement of estimating multiple challenging source-dependent parameters—such as partial coherence $|\gamma|$, brightness imbalance $b$, and random relative phase $\phi$—Sajia et al. proposed a parameter-decoupled superresolution framework~\cite{sajia2025breaking_diffraction_parameter_decoupled_superresolution}.
 
-By projecting the incoming field onto the Hermite-Gaussian basis, the detection probability $p_q$ in the $q$-th mode depends on all variables~\cite{Sajia2025breaking}:
+By projecting the incoming field onto the Hermite-Gaussian basis, the detection probability $p_q$ in the $q$-th mode depends on all variables~\cite{sajia2025breaking_diffraction_parameter_decoupled_superresolution}:
 \begin{equation}
     p_q = \operatorname{Tr}[\rho | \Phi_q \rangle\langle \Phi_q |] = \frac{e^{-Q} Q^q}{q!} \frac{B_q}{N(Q)},
     \label{eq:pq_decoupled}
 \end{equation}
-where $Q = s^2 / 16\sigma^2$, $B_q = b+1+(-1)^q k$, and $k = 2|\gamma|\sqrt{b}\cos\phi$~\cite{Sajia2025breaking}.
+where $Q = s^2 / 16\sigma^2$, $B_q = b+1+(-1)^q k$, and $k = 2|\gamma|\sqrt{b}\cos\phi$~\cite{sajia2025breaking_diffraction_parameter_decoupled_superresolution}.
 
-By defining the ratio $r_{mn}$ between even (or odd) modes, the source-dependent parameters cancel out entirely~\cite{Sajia2025breaking}:
+By defining the ratio $r_{mn}$ between even (or odd) modes, the source-dependent parameters cancel out entirely~\cite{sajia2025breaking_diffraction_parameter_decoupled_superresolution}:
 \begin{equation}
     r_{mn}(s) \coloneqq \frac{p_m}{p_n} = \frac{n!}{m!} Q^{m-n}, \quad (\text{for } m, n \text{ both even or both odd}).
     \label{eq:ratio_decoupled}
 \end{equation}
-This ratio depends solely on the separation $s$, completely decoupling the estimation of separation from all other nuisance variables and ensuring that the Fisher information remains practically non-zero even as $s \to 0$~\cite{Sajia2025breaking}.
+This ratio depends solely on the separation $s$, completely decoupling the estimation of separation from all other nuisance variables and ensuring that the Fisher information remains practically non-zero even as $s \to 0$~\cite{sajia2025breaking_diffraction_parameter_decoupled_superresolution}.
 
 % ==============================================================================
 \section{Robustness under Practical Noise: Physics-Informed Machine Learning}
 % ==============================================================================
 
-While the decoupled ratio $r_{mn}(s)$ is theoretically elegant, measuring it directly is highly susceptible to source-independent experimental noise, such as background luminosity, photon loss, and centroid drift~\cite{Sajia2025breaking}.
+While the decoupled ratio $r_{mn}(s)$ is theoretically elegant, measuring it directly is highly susceptible to source-independent experimental noise, such as background luminosity, photon loss, and centroid drift~\cite{sajia2025breaking_diffraction_parameter_decoupled_superresolution}.
 
-To address these non-idealities, the theoretical ratio $r_{20}(s) = s^2 / 8\sigma^2$ is integrated with a **Physics-Informed Convolutional Neural Network (CNN)**~\cite{Sajia2025breaking}. The network is trained on simulated images corrupted with random extra brightness (up to 20% of the signal), pixel-wise photon losses (up to 20%), and centroid/orientation misalignments (up to 7.5%)~\cite{Sajia2025breaking}. 
+To address these non-idealities, the theoretical ratio $r_{20}(s) = s^2 / 8\sigma^2$ is integrated with a **Physics-Informed Convolutional Neural Network (CNN)**~\cite{sajia2025breaking_diffraction_parameter_decoupled_superresolution}. The network is trained on simulated images corrupted with random extra brightness (up to 20% of the signal), pixel-wise photon losses (up to 20%), and centroid/orientation misalignments (up to 7.5%)~\cite{sajia2025breaking_diffraction_parameter_decoupled_superresolution}. 
 
-This neural decoder learns the robust mapping directly from corrupted intensity profiles to the parameter-decoupled separation $s_E$, achieving an estimation fidelity of $F > 0.82$ for separations down to $s \ge 0.06\sigma$ (16 times below the diffraction limit, corresponding to $\approx 10.8$ nm in optical microscopy)~\cite{Sajia2025breaking}. This framework successfully bridges the gap between idealized superresolution limits and practical astronomical or biological implementations~\cite{Sajia2025breaking}.
+This neural decoder learns the robust mapping directly from corrupted intensity profiles to the parameter-decoupled separation $s_E$, achieving an estimation fidelity of $F > 0.82$ for separations down to $s \ge 0.06\sigma$ (16 times below the diffraction limit, corresponding to $\approx 10.8$ nm in optical microscopy)~\cite{sajia2025breaking_diffraction_parameter_decoupled_superresolution}. This framework successfully bridges the gap between idealized superresolution limits and practical astronomical or biological implementations~\cite{sajia2025breaking_diffraction_parameter_decoupled_superresolution}.
 
 % ==============================================================================
 \section{Multi-Photon Shot Statistics: The BLESS Technique}
 % ==============================================================================
 
-Standard SPADE protocols operate in the weak-source limit where the average photon number per pulse is $\mu \ll 1$, rendering multi-photon events negligible~\cite{Santamaria2024single, Katamadze2026breaking}. However, for brighter sources or longer integration times, discarding multi-photon events limits the achievable resolution~\cite{Katamadze2026breaking}.
+Standard SPADE protocols operate in the weak-source limit where the average photon number per pulse is $\mu \ll 1$, rendering multi-photon events negligible~\cite{Santamaria2024single, katamadze2025breaking
+}. However, for brighter sources or longer integration times, discarding multi-photon events limits the achievable resolution~\cite{katamadze2025breaking
+}.
 
-The **BLESS (Beam moduLation and Examination of Shot Statistics)** technique overcomes this by combining spatial detection mode shaping with direct measurements of the full Photon Number Distribution (PND) using photon-number-resolving detectors (PNRDs)~\cite{Katamadze2026breaking}.
+The **BLESS (Beam moduLation and Examination of Shot Statistics)** technique overcomes this by combining spatial detection mode shaping with direct measurements of the full Photon Number Distribution (PND) using photon-number-resolving detectors (PNRDs)~\cite{katamadze2025breaking
+}.
 
-By modeling the coupled PND $P_{sm}(n)$ from the sources $s \in \{a, b\}$ into the detection mode $\Phi_m$, the total detected PND $P_m(n)$ is a convolution of individual Poissonian or thermal distributions~\cite{Katamadze2026breaking}. BLESS leverages these multi-photon statistics (specifically including two-photon coincidence events) to estimate the relative brightness $\gamma$ and separation $d$ independently, completely breaking Rayleigh's curse for highly unbalanced, simultaneously emitting sources without requiring destructive high-power depletion as in STED~\cite{Katamadze2026breaking}.
+By modeling the coupled PND $P_{sm}(n)$ from the sources $s \in \{a, b\}$ into the detection mode $\Phi_m$, the total detected PND $P_m(n)$ is a convolution of individual Poissonian or thermal distributions~\cite{katamadze2025breaking
+}. BLESS leverages these multi-photon statistics (specifically including two-photon coincidence events) to estimate the relative brightness $\gamma$ and separation $d$ independently, completely breaking Rayleigh's curse for highly unbalanced, simultaneously emitting sources without requiring destructive high-power depletion as in STED~\cite{katamadze2025breaking
+}.
 
 % ==============================================================================
 \section{Super-Resolved Spectroscopy via Spatial Demultiplexing}
@@ -275,21 +281,21 @@ Ideally, if the star is perfectly centered, its starlight cannot couple to the o
 \section{Perfect Coronagraphy and Adaptive Basis Optimization}
 % ==============================================================================
 
-While SPADE sorts light into discrete modal channels, exoplanet imaging conventionally demands direct-imaging coronagraphs to form filtered spatial images~\cite{Deshler2025experimental}. Deshler et al. demonstrated a quantum-optimal coronagraph by implementing a double-pass **Multi-Plane Light Conversion (MPLC)** spatial mode sorter~\cite{Deshler2025experimental}.
+While SPADE sorts light into discrete modal channels, exoplanet imaging conventionally demands direct-imaging coronagraphs to form filtered spatial images~\cite{deshler2025experimental}. Deshler et al. demonstrated a quantum-optimal coronagraph by implementing a double-pass **Multi-Plane Light Conversion (MPLC)** spatial mode sorter~\cite{deshler2025experimental}.
 
-During the forward pass, the MPLC decomposes the incident field into Fourier-Zernike modes $\{\psi_{nm}\}$~\cite{Deshler2025experimental}. At the sorting plane, a pinhole mask rejects the fundamental mode $\psi_{00}$ (containing the starlight) to a beam dump~\cite{Deshler2025experimental}. The higher-order modes (containing the planet's light) reflect off the mask and propagate backward through the MPLC, inverting the unitary transformation and reconstructing a high-contrast, star-suppressed image of the exoplanet on the detector~\cite{Deshler2025experimental}.
+During the forward pass, the MPLC decomposes the incident field into Fourier-Zernike modes $\{\psi_{nm}\}$~\cite{deshler2025experimental}. At the sorting plane, a pinhole mask rejects the fundamental mode $\psi_{00}$ (containing the starlight) to a beam dump~\cite{deshler2025experimental}. The higher-order modes (containing the planet's light) reflect off the mask and propagate backward through the MPLC, inverting the unitary transformation and reconstructing a high-contrast, star-suppressed image of the exoplanet on the detector~\cite{deshler2025experimental}.
 
 \subsection{Wavefront Phase Characterization and Atmospheric Coherence Limits}
-Ground-based metrology is further limited by atmospheric turbulence, which distorts the wavefront phase~\cite{choi2024adaptive, Hrebeniuk2026quantum}. The severity of these distortions is characterized by the Fried parameter $r_0$~\cite{Hrebeniuk2026quantum}.
+Ground-based metrology is further limited by atmospheric turbulence, which distorts the wavefront phase~\cite{choi2024adaptive, hrebeniuk2026quantum_turbulence}. The severity of these distortions is characterized by the Fried parameter $r_0$~\cite{hrebeniuk2026quantum_turbulence}.
 
-Under direct imaging, if the telescope's receiver aperture is smaller than the coherence radius $r_0$, the classical Fisher information for estimating $r_0$ diverges, representing an absolute precision floor~\cite{Hrebeniuk2026quantum}. By contrast, spatial-mode decomposition maintains a finite Fisher information across all aperture scales, achieving a **1.84-fold precision improvement** in real-time Fried parameter characterization and enabling optimal closed-loop adaptive optics corrections under low-photon conditions~\cite{Hrebeniuk2026quantum}.
+Under direct imaging, if the telescope's receiver aperture is smaller than the coherence radius $r_0$, the classical Fisher information for estimating $r_0$ diverges, representing an absolute precision floor~\cite{hrebeniuk2026quantum_turbulence}. By contrast, spatial-mode decomposition maintains a finite Fisher information across all aperture scales, achieving a **1.84-fold precision improvement** in real-time Fried parameter characterization and enabling optimal closed-loop adaptive optics corrections under low-photon conditions~\cite{hrebeniuk2026quantum_turbulence}.
 
 \subsection{Learning Theory and Resolvable Expressive Capacity (REC) Complexity Scaling}
-To rigorously quantify the information limit of superresolution under finite-sample budgets, Wang et al. introduced **Resolvable Expressive Capacity (REC)**~\cite{Wang2025advancing}.
+To rigorously quantify the information limit of superresolution under finite-sample budgets, Wang et al. introduced **Resolvable Expressive Capacity (REC)**~\cite{wang2025advancing}.
 
-Under this framework, imaging multiple compact sources yields a stepwise increase in the total REC as a function of the number of measurement samples $S$~\cite{Wang2025advancing}. While the total intensity (Rayleigh-resolvable feature) is extracted with a constant number of samples, extracting sub-Rayleigh features of size $L$ (relative to the PSF width $\sigma$) requires the sample size to scale as a power law~\cite{Wang2025advancing}:
+Under this framework, imaging multiple compact sources yields a stepwise increase in the total REC as a function of the number of measurement samples $S$~\cite{wang2025advancing}. While the total intensity (Rayleigh-resolvable feature) is extracted with a constant number of samples, extracting sub-Rayleigh features of size $L$ (relative to the PSF width $\sigma$) requires the sample size to scale as a power law~\cite{wang2025advancing}:
 \begin{equation}
     S \sim \Theta\left( \left(\frac{L}{\sigma}\right)^{-2m} \right),
     \label{eq:rec_scaling}
 \end{equation}
-where $m$ represents the order of the source moments to be estimated~\cite{Wang2025advancing}. This mathematically formalizes that while mode sorting circumvents the infinite-sample divergence of Rayleigh's curse, physical precision remains bounded by the sample-complexity requirements of finite-photon statistics~\cite{Wang2025advancing}.
+where $m$ represents the order of the source moments to be estimated~\cite{wang2025advancing}. This mathematically formalizes that while mode sorting circumvents the infinite-sample divergence of Rayleigh's curse, physical precision remains bounded by the sample-complexity requirements of finite-photon statistics~\cite{wang2025advancing}.

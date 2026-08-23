@@ -140,10 +140,10 @@ Compared to existing quantum state diagonalization and principal component extra
         \toprule
         \textbf{Algorithm} & \textbf{Qubit Count} & \textbf{Input State}               & \textbf{Primary NISQ Bottlenecks}                                                               \\
         \midrule
-        \textbf{qPCA}      & $n + a$ qubits       & $\rho^{\otimes k}$ copies          & Requires Phase Estimation and matrix exponentiation $e^{-i\rho t}$; prohibitive circuit depth . \\
-        \textbf{VQSD}      & $2n$ qubits          & $\rho \otimes \rho$ (2 copies)     & Requires joint 2-register gates; vulnerable to asymmetric inter-register noise .                \\
-        \textbf{QSVD}      & $n$ to $2n$ qubits   & $|\psi_{AB}\rangle$ (Purification) & Requires explicit state purification; fails under uncharacterized incoherent noise .            \\
-        \textbf{VQSE}      & \textbf{$n$ qubits}  & \textbf{$\rho$ (1 copy)}           & \textbf{Single-copy execution; short depth; uses majorization for qubit frugality}.             \\
+        \textbf{qPCA}      & $n + a$ qubits       & $\rho^{\otimes k}$ copies          & Requires Phase Estimation and matrix exponentiation $e^{-i\rho t}$; prohibitive circuit depth \cite{qpca_2014}. \\
+        \textbf{VQSD}      & $2n$ qubits          & $\rho \otimes \rho$ (2 copies)     & Requires joint 2-register gates; vulnerable to asymmetric inter-register noise \cite{LaRose2019_vqsd}.                \\
+        \textbf{QSVD}      & $n$ to $2n$ qubits   & $|\psi_{AB}\rangle$ (Purification) & Requires explicit state purification; fails under uncharacterized incoherent noise \cite{Bravo_Prieto_2020_qsvd}.            \\
+        \textbf{VQSE}      & \textbf{$n$ qubits}  & \textbf{$\rho$ (1 copy)}           & \textbf{Single-copy execution, short depth, uses majorization for qubit frugality} \cite{cerezo2022vqse}.             \\
         \bottomrule
     \end{tabular}
 \end{table}
@@ -182,7 +182,7 @@ Compared to existing quantum state diagonalization and principal component extra
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=\textwidth]{misc/sgd_vs_sr_comparison.png}
-    \caption{Comparison SGD against natural gradinent. In this experiment we used an architecture called Neural Quantum State, modelling a Complex Restricted Boltzman machine, in order to learn the wavefunction of a TFIM. In this specific context, it is easier to compute analytically the QFI Matrix of the weights, and the comparison shows that not only the NG converges earlier, but also it finds a lower enery state: the SGD was stuck in a local minimum.}
-    \label{<label>}
+    \caption{Comparison SGD against natural gradient. In this experiment we used an architecture called Neural Quantum State, modelling a Complex Restricted Boltzmann machine, in order to learn the wavefunction of a TFIM. In this specific context of a RBM, it is easier to compute analytically the QFI Matrix for the weights, and the comparison shows that not only the NG converges earlier, but also it finds a lower energy state: the SGD was stuck in a local minimum.}
+    \label{fig:sgd_vs_ng}
 \end{figure}
 

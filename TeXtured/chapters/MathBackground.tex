@@ -37,14 +37,14 @@ In quantum mechanics, the physical state of a system is represented by a density
 \begin{remark}[Ontic versus Epistemic Uncertainty in Pure and Mixed States]
     The physical distinction between pure states ($\gamma = 1$) and mixed states ($\gamma < 1$) lies in the nature of the uncertainty they encode:
     \begin{enumerate}
-        \item \textbf{Pure States and Ontic Uncertainty:} When $\rho = |\psi\rangle\langle\psi|$, the system is in a pure state representing maximal possible knowledge of the physical preparation. Any probabilistic outcome arising from measurements on $|\psi\rangle$ (e.g., superposition across non-commuting observable bases) is strictly \emph{ontic}, an irreducible, intrinsic quantum indeterminacy of physical reality itself, independent of observer ignorance.
-        \item \textbf{Mixed States and Epistemic Uncertainty:} When $\gamma < 1$, the density operator represents either a classical statistical ensemble of pure states or an open quantum system entangled with an inaccessible environment. In this regime, measurement randomness stems from a hybrid of two distinct sources: \emph{epistemic uncertainty} regarding which pure state $|\psi_k\rangle$ was prepared (quantified by the Shannon entropy of the classical probability distribution $\{p_k\}$), superimposed onto the underlying \emph{ontic uncertainty} intrinsic to each individual state $|\psi_k\rangle$.
+        \item \textbf{Pure States and Ontic Uncertainty:} When $\rho = |\psi\rangle\langle\psi|$, the system is in a pure state representing maximal possible knowledge of the physical preparation. Any probabilistic outcome arising from measurements on $|\psi\rangle$ (e.g., superposition across non-commuting observable bases) is strictly \emph{ontic}, an irreducible, intrinsic quantum indeterminacy of physical reality itself, independent of observer ignorance. We know exactly which quantum state the system is in.
+        \item \textbf{Mixed States and Epistemic Uncertainty:} When $\gamma < 1$, the density operator represents either a classical statistical ensemble of pure states or an open quantum system entangled with an inaccessible environment. In this regime, measurement randomness stems from a hybrid of two distinct sources: \emph{epistemic uncertainty} regarding which pure state $|\psi_k\rangle$ was prepared (quantified by the Shannon entropy of the classical probability distribution $\{p_k\}$), superimposed onto the underlying \emph{ontic uncertainty} intrinsic to each individual state $|\psi_k\rangle$. We do not exactly know which quantum state the system is in.
     \end{enumerate}
 \end{remark}
 
 \subsection{Quantum Operations, Effects, and Completely Positive Maps}
 
-Real physical systems are rarely closed, they interact with surrounding environments or undergo generalized measurement processes. The focus of our work was on quantum metrology where the measured state was mixed. We introduce here an unified algebraic description of both quantum state evolution and measurement outcomes, that is achieved through the formalism of Kraus operators and quantum effects~\cite{nielsen_chuang_2010_quantum_computation_and_quantum_information,quantum_theory_from_first_principles}.
+Real physical systems are rarely closed, they interact with surrounding environments (they can become entangled with the environment) or undergo generalized measurement processes. The focus of our work was on quantum metrology where the measured state was mixed. We introduce here an unified algebraic description of both quantum state evolution and measurement outcomes, that is achieved through the formalism of Kraus operators and quantum effects~\cite{nielsen_chuang_2010_quantum_computation_and_quantum_information,quantum_theory_from_first_principles}.
 
 \begin{definition}[Kraus Representation of Quantum Operations]
     A quantum operation is a linear, completely positive (CP), trace-non-increasing superoperator $\mathcal{S}: \mathcal{T}(\mathcal{H}) \to \mathcal{T}(\mathcal{H})$ that describes the physical transformation of a state. By Choi's isomorphism, any such operation admits an operator-sum representation:
@@ -91,7 +91,7 @@ Information about the parameter $\theta$ encoded in $\rho(\theta)$ must be extra
 \begin{definition}[Projective (von Neumann) Measurements]
     An ideal projective measurement is described by a collection of orthogonal projection operators $\mathbb{P} = \{P_x\}$ on $\mathcal{H}$ satisfying:
     \begin{equation}
-        P_x P_y = \delta_{xy} P_x, \quad P_x^\dagger = P_x, \quad \sum_x P_x = \mathbb{I}.
+        P_x P_y = \delta_{xy} P_x, \quad P_x^\dagger = P_x, \quad \sum_x P_x = \mathbb{I}
     \end{equation}
     Upon obtaining outcome $x$ with probability $p(x|\theta) = \operatorname{Tr}[\rho(\theta) P_x]$, the post-measurement state collapses to $\rho'_x = P_x \rho(\theta) P_x / p(x|\theta)$.
 \end{definition}
@@ -99,7 +99,7 @@ Information about the parameter $\theta$ encoded in $\rho(\theta)$ must be extra
 \begin{definition}[Positive Operator-Valued Measure (POVM)]
     Describes a generalized quantum measurements, including noisy detectors, sub-ensembles, and measurements combined with auxiliary systems. The orthogonality constraint is relaxed. A POVM is defined by a set of positive semi-definite operators $\Pi = \{M_x\}$ such that:
     \begin{equation}
-        M_x \ge 0 \quad \forall x, \quad \text{and} \quad \sum_x M_x = \mathbb{I}.
+        M_x \ge 0 \quad \forall x, \quad \text{and} \quad \sum_x M_x = \mathbb{I}
         \label{eq:povm_def}
     \end{equation}
     By Born's rule, the probability of outcome $x$ is $p(x|\theta) = \operatorname{Tr}[\rho(\theta) M_x]$.
@@ -108,7 +108,7 @@ Information about the parameter $\theta$ encoded in $\rho(\theta)$ must be extra
 \begin{theorem}[Naimark's Dilation Theorem]
     Every generalized measurement (POVM) $\Pi = \{M_x\}$ acting on a system Hilbert space $\mathcal{H}_S$ can be realized as a projective measurement $\{P_x\}$ acting on an extended Hilbert space $\mathcal{H}_S \otimes \mathcal{H}_A$, where $\mathcal{H}_A$ is an auxiliary (ancilla) Hilbert space. Specifically, there exists an isometric embedding $V: \mathcal{H}_S \to \mathcal{H}_S \otimes \mathcal{H}_A$ and a set of orthogonal projectors $\{P_x\}$ on $\mathcal{H}_S \otimes \mathcal{H}_A$ such that:
     \begin{equation}
-        M_x = V^\dagger P_x V \quad \forall x.
+        M_x = V^\dagger P_x V \quad \forall x
         \label{eq:naimark_dilation}
     \end{equation}
 \end{theorem}
@@ -123,7 +123,6 @@ Information about the parameter $\theta$ encoded in $\rho(\theta)$ must be extra
     Consequently, optimization over all POVMs—the core mechanism connecting classical statistical distance to Quantum Fisher Information—is operationally equivalent to optimizing over all possible physical couplings between the system and an external measurement apparatus.
 \end{remark}
 
-
 \section{Classical Foundations: Parameter Estimation and Statistical Distance}
 
 Consider a classical statistical estimation problem where an unknown continuous parameter $\theta \in \mathbb{R}$ is encoded within a family of probability distributions $P = \{p(x|\theta) \mid \theta \in \Theta\}$. An observer performs $N$ independent and identically distributed (i.i.d.) measurements yielding data $X = (x_1, \dots, x_N)$ to construct an unbiased estimator $\hat{\theta}(X)$.
@@ -131,7 +130,7 @@ Consider a classical statistical estimation problem where an unknown continuous 
 \begin{definition}[Classical Fisher Information]
     Let $p(x|\theta)$ be a parametrized probability density function differentiable with respect to $\theta$. The Classical Fisher Information (CFI), $F(\theta)$, associated with a single measurement outcome $x$ is defined as the second moment of the score function:
     \begin{equation}
-        F(\theta) \coloneqq \mathbb{E}\left[ \left( \frac{\partial}{\partial \theta} \ln p(x|\theta) \right)^2 \right] = \int_{\mathcal{X}} \frac{1}{p(x|\theta)} \left( \frac{\partial p(x|\theta)}{\partial \theta} \right)^2 \mathrm{d}x.
+        F(\theta) \coloneqq \mathbb{E}\left[ \left( \frac{\partial}{\partial \theta} \ln p(x|\theta) \right)^2 \right] = \int\limits_{\mathcal{X}} \frac{1}{p(x|\theta)} \left( \frac{\partial p(x|\theta)}{\partial \theta} \right)^2 \mathrm{d}x
         \label{eq:classical_fi}
     \end{equation}
 \end{definition}
@@ -146,14 +145,13 @@ Consider a classical statistical estimation problem where an unknown continuous 
 \begin{definition}[Wootters Statistical Distance]
     For two neighboring probability distributions $p(x|\theta)$ and $p(x|\theta + \mathrm{d}\theta)$, the infinitesimal statistical distance $\mathrm{d}s_{\text{W}}^2$ (Wootters distance) corresponds to the line element of the Fisher-Rao metric:
     \begin{equation}
-        \mathrm{d}s_{\text{W}}^2 = \frac{1}{4} F(\theta) \mathrm{d}\theta^2 = \sum_{x} \left( \sqrt{p(x|\theta + \mathrm{d}\theta)} - \sqrt{p(x|\theta)} \right)^2
+        \mathrm{d}s_{\text{W}}^2 = \frac{1}{4} F(\theta) \mathrm{d}\theta^2 = \int\limits_{\mathcal{X}} \left( \sqrt{p(x|\theta + \mathrm{d}\theta)} - \sqrt{p(x|\theta)} \right)^2 \mathrm{d}x
     \end{equation}
 \end{definition}
 
 \begin{remark}[Intuition Behind Wootters Distance]
-    By mapping probability amplitudes $r_x = \sqrt{p(x|\theta)}$ onto a unit hypersphere ($\sum_x r_x^2 = 1$), the distinguishability between two distributions maps directly to the spherical geodesic distance between two points. The CFI is precisely the quadratic scaling factor governing how rapidly two distributions become distinguishable as $\theta$ fluctuates.
+    By mapping probability amplitudes $r(x) = \sqrt{p(x|\theta)}$ onto a unit hypersphere in an $L^2$ function space ($\int_{\mathcal{X}} r(x)^2 \mathrm{d}x = 1$), the distinguishability between two distributions maps directly to the spherical geodesic distance between two points. The CFI is precisely the quadratic scaling factor governing how rapidly two distributions become distinguishable as $\theta$ fluctuates.
 \end{remark}
-
 
 \section{The Mathematical Architecture: The Symmetric Logarithmic Derivative}
 
@@ -564,11 +562,32 @@ This work focuses on computing approximations of the QFI, because computing the 
 \begin{definition}[Quantum Natural Gradient Descent]
     In Variational Quantum Algorithms (VQAs) with parametrized states $\vert\psi(\boldsymbol{\theta})\rangle$, Quantum Natural Gradient (QNG) descent updates parameters along the Riemannian geodesic of state space by preconditioning the Euclidean gradient with the inverse QFIM (Fubini-Study metric tensor $g_{\mu\nu}^{+}$):
     \begin{equation}
-        \boldsymbol{\theta}^{(t+1)} = \boldsymbol{\theta}^{(t)} - \eta \, g^{+}(\boldsymbol{\theta}^{(t)})^{-1} \nabla_{\boldsymbol{\theta}} \mathcal{L}(\boldsymbol{\theta}^{(t)}),
+        \boldsymbol{\theta}^{(t+1)} = \boldsymbol{\theta}^{(t)} - \eta \, g^{+}(\boldsymbol{\theta}^{(t)})^{-1} \nabla_{\boldsymbol{\theta}} \mathcal{L}(\boldsymbol{\theta}^{(t)})
     \end{equation}
     where $\eta$ is the learning rate and $\mathcal{L}(\boldsymbol{\theta})$ is the variational objective function.
 \end{definition}
 
-\begin{remark}[SPSA and Constant Complexity]
-    To bypass the $\mathcal{O}(M^2)$ cost of evaluating the $M \times M$ tensor $g_{\mu\nu}$, Simultaneous Perturbation Stochastic Approximation (SPSA) integrates Rademacher random perturbations into QNG. This technique dynamically approximates the action of $g^{-1} \nabla \mathcal{L}$ using a constant number of quantum circuit evaluations per optimization step, independent of parameter dimension $M$.
+\begin{remark}[Geometric Intuition and the Newton Connection]
+    Structurally, the idea of QNG is very similar to Newton's optimization method, which preconditions the gradient using the inverse Hessian matrix. However, while Newton's method accounts for the curvature of the loss function in Euclidean parameter space, QNG accounts for the intrinsic curvature of the physical state space.
+
+    Standard Euclidean gradient descent implicitly assumes that a unit step in the parameter space $\boldsymbol{\theta}$ produces a uniform change in the quantum state $\vert\psi(\boldsymbol{\theta})\rangle$. In reality, parameter space is distorted: a small shift in one parameter might drastically orthogonalize the state, while a large shift in another might cause negligible evolution. The Fubini-Study metric $g^{+}$ corrects this dimensional mismatch. It acts as a geometric conversion factor, penalizing parameter updates along highly sensitive directions and amplifying updates along insensitive ones. This ensures the optimizer takes consistent, uniform steps across the actual physical manifold of the Hilbert space.
+\end{remark}
+
+\begin{remark}[Efficient and Stochastic Approximations to QNG]
+    To bypass the $\mathcal{O}(M^2)$ cost of evaluating the
+    $M \times M$ tensor $g_{\mu\nu}$, Simultaneous Perturbation
+    Stochastic Approximation (SPSA) uses random perturbations to
+    estimate the quantum Fisher information matrix and thereby
+    approximate the quantum natural-gradient update
+    $g^{-1}\nabla\mathcal{L}$. In particular, QN-SPSA estimates the
+    metric using a constant number of quantum circuit evaluations per
+    stochastic sample, independently of the parameter dimension $M$
+    \cite{gacon2021_perturbation_stochastic_qfi}.
+    More generally, randomized natural-gradient approaches based on
+    random measurements can reduce the measurement cost while
+    preserving parameter-correlation information
+    \cite{kolotouros2024RNG}. Alternative estimators based on Stein's
+    identity also achieve constant-complexity QFIM estimation, although
+    they are not SPSA methods
+    \cite{halla2025estimation}.
 \end{remark}

@@ -40,6 +40,18 @@ To simulate open-system metrology where environmental coupling degrades state pu
     The partial trace operation integrates out environmental degrees of freedom, transforming the pure state into a rank-deficient mixed state. The degree of mixing is quantified by the participation ratio $R = 1 / \operatorname{Tr}(\rho_\theta^2)$, which dictates the effective number of dominant eigenvalues required for accurate rank truncation.
 \end{remark}
 
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=.5\textwidth]{figures/asi_report/circuit_notrotter.png}
+    \includegraphics[width=\textwidth]{figures/asi_report/circuit_trotter_3.png}
+    \caption{Quantum circuits for the time evolution and mixed-state generation of the Transverse-Field Ising Model (TFIM) probe.
+        To simulate open-system decoherence, the environmental qubits (the first 2) are traced out at the end of the sequence, without being measured, yielding the reduced mixed state $\rho_\theta$.
+        \textbf{Top:} A single-block circuit applying the nearest-neighbor exchange coupling ($XX$ interactions) followed by the transverse magnetic field ($Z$ rotations).
+        \textbf{Bottom:} Implementation of the time evolution using a first-order Suzuki-Trotter decomposition with $3$ Trotter steps (\cite{hatano_2005_suzuki_trotter}).
+        Because the exchange and transverse field terms of the Hamiltonian do not commute ($[X_i X_{i+1}, Z_i] \neq 0$), the total evolution time is discretized into repeated, alternating layers of coupling and field operations to accurately approximate the true continuous unitary dynamics.}
+    \label{fig:tfim_trotter_circuits}
+\end{figure}
 % ==============================================================================
 \section{Exact Baseline: Ground-Truth QFI Evaluation}
 % ==============================================================================
