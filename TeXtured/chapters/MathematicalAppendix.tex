@@ -1,0 +1,80 @@
+\chapter{Supplementary Mathematical Background}
+\label{app:mathematical_background}
+
+This appendix records several standard results that provide useful context but are not required for following the main argument of the thesis. The notation follows Chapter~\ref{ch:MathBackground}.
+
+\section{Generalized Measurements}
+
+\begin{definition}[Quantum instrument]
+An outcome-resolved quantum measurement may be described by Kraus operators $\{K_{x,a}\}$, for which
+\begin{equation}
+    p(x|\rho)=\sum_a\operatorname{Tr}\!\left[K_{x,a}\rho K_{x,a}^\dagger\right],
+    \qquad
+    \sum_{x,a}K_{x,a}^\dagger K_{x,a}=\mathbb{I}.
+\end{equation}
+The associated POVM effects are $M_x=\sum_aK_{x,a}^\dagger K_{x,a}$, recovering Eq.~\eqref{eq:povm_def}.
+\end{definition}
+
+\begin{theorem}[Naimark dilation]
+Every POVM can be implemented as a projective measurement on a larger Hilbert space: there exist an ancilla state $|0\rangle_A$, a unitary $U$, and projectors $\{\Pi_x\}$ such that
+\begin{equation}
+    \operatorname{Tr}[\rho M_x]
+    =\operatorname{Tr}\!\left[
+    U(\rho\otimes|0\rangle\langle0|_A)U^\dagger\Pi_x
+    \right].
+    \label{eq:naimark_dilation}
+\end{equation}
+\end{theorem}
+
+\begin{remark}[Operational meaning]
+It explains why optimizing over POVMs in the definition of QFI is physically meaningful, even when the receiver is implemented through a larger apparatus.
+\end{remark}
+
+\section{Classical Statistical Distance and Metrological Scaling}
+
+\begin{definition}[Wootters statistical distance]
+For nearby probability distributions, the Wootters statistical distance is
+\begin{equation}
+    \mathrm{d}s^2=\frac{1}{4}\sum_x\frac{(\mathrm{d}p_x)^2}{p_x}.
+\end{equation}
+For a one-parameter family, $\mathrm{d}s^2=\mathcal{F}_{\mathrm{C}}(\theta)\mathrm{d}\theta^2/4$.
+\end{definition}
+
+\begin{remark}[Metrological scaling]
+Fisher information is the local statistical distinguishability per unit change of the parameter.
+For $N$ independent probes with a fixed per-probe information, the Cram\'er--Rao bound gives the standard-quantum-limit scaling $\Delta\theta=\mathcal{O}(N^{-1/2})$. Entangled probes can, under ideal unitary encoding, yield the Heisenberg scaling $\Delta\theta=\mathcal{O}(N^{-1})$. Noise, state-preparation cost, and the measurement required to attain the bound determine whether this ideal scaling is operationally relevant.
+\end{remark}
+
+\section{Geometric and Multiparameter Extensions}
+
+\begin{definition}[Quantum geometric tensor]
+For a pure ansatz state, the complex quantum geometric tensor is
+\begin{equation}
+    Q_{\mu\nu}
+    =\langle\partial_\mu\psi|
+    (\mathbb{I}-|\psi\rangle\langle\psi|)
+    |\partial_\nu\psi\rangle.
+    \label{eq:qgt_def}
+\end{equation}
+Its real part is the Fubini--Study metric used by the quantum natural gradient, while its imaginary part is the Berry curvature.
+\end{definition}
+
+\begin{remark}[Scope of the main text]
+The main text uses only the real, metric component. The Bures metric is one member of a broader family of contractive Riemannian metrics classified by Petz. This classification is useful conceptually: under parameter-independent quantum channels, distinguishability cannot increase. The present thesis uses the Bures/SLD member because it is directly connected to the QFI in Eq.~\eqref{def:qfim_bures_relation}.
+\end{remark}
+
+\begin{remark}[Multiparameter compatibility]
+For several physical parameters, the inverse QFIM provides a matrix-valued local precision benchmark, but the corresponding single-parameter optimal measurements need not be jointly attainable. A common sufficient local compatibility condition is
+\begin{equation}
+    \operatorname{Tr}\!\left[\rho[L_i,L_j]\right]=0
+    \quad\text{for all } i,j.
+    \label{eq:weak_commutativity}
+\end{equation}
+When this condition fails, the Holevo bound supplies the tighter asymptotic multiparameter limit. These refinements are not needed for the single-parameter QFI estimates and variational optimization studied in this thesis.
+\end{remark}
+
+\section{Rank Boundaries}
+
+\begin{remark}[Rank boundaries]
+At parameter values where the rank of $\rho(\theta)$ changes, an SLD may be non-unique outside the support of the state. The QFI remains well defined by restricting the spectral sums and vectorized inverse in Chapter~\ref{ch:MathBackground} to terms with nonzero denominator, as indicated by Eqs.~\eqref{eq:sld_spectral_elements} and \eqref{eq:safranek_vectorized}. This convention is also the numerically stable one used for the classical reference calculations.
+\end{remark}

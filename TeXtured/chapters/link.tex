@@ -1,63 +1,72 @@
 \chapter{The 2-Basis Projection Framework}
 \label{ch:bridging_metrology_imaging}
 
-A central contribution of this thesis is the formal mathematical and physical unification of two seemingly distinct tracks in quantum information science: the variational estimation of mixed-state metrological bounds on Noisy Intermediate-Scale Quantum (NISQ) simulators (Chapter~\ref{ch:methods}) and spatial-mode demultiplexing (SPADE) for sub-Rayleigh imaging and spectroscopy of highly unbalanced optical sources (Chapter~\ref{sec:astrophysical_metrology_spade}).
+A central contribution of this thesis is the formal mathematical and physical unification of two seemingly distinct tracks in quantum information science: the variational estimation of mixed-state metrological bounds on Noisy Intermediate-Scale Quantum (NISQ) simulators (Chapter~\ref{ch:methods}) and spatial-mode demultiplexing (SPADE) for sub-Rayleigh imaging of highly unbalanced optical sources (Chapter~\ref{sec:astrophysical_metrology_spade}).
 
-While Chapter~\ref{ch:methods} established the abstract theory of the Variational Quantum State Eigensolver (VQSE) and the Variational Quantum Fisher Information Estimation (VQFIE) protocols to resolve classical diagonalization bottlenecks, and Chapter~\ref{sec:astrophysical_metrology_spade} motivated the physical and astrophysical challenge of sub-diffraction telescopy, this chapter establishes the rigorous bridge between these two worlds.
+While Chapter~\ref{ch:methods} established VQSE, VQFIE, and truncated-QFI bounds, Chapter~\ref{sec:astrophysical_metrology_spade} developed the optical model, SPADE receiver, and its experimental characterization. This chapter compares the two descriptions and identifies the conditions under which they address the same dominant optical component.
 
-Rather than treating them as isolated tracks, we prove that the physical apparatus of spatial-mode demultiplexing is a physical, analog realization of the rank-truncation projector $\Pi^{(1)}$ and the Truncated Quantum Fisher Information (TQFI) formalism developed in our variational metrology pipeline. We demonstrate how telescope alignment corresponds directly to VQSE majorization, how the ultimate limits of SPADE saturate the variational TQFI lower bounds, how low-rank mode-sorting is justified by Krylov subspace closure, and how physics-informed neural network decoders act as the physical analogue of isometric polar completions. Finally, we analyze the global precision limits via the joint Quantum Fisher Information Matrix (QFIM) to prove that alignment errors and parameter estimates completely decouple as $\epsilon \to 0$.
+The comparison has three parts: the relation between low-order modal filtering and spectral truncation, the objective-level correspondence between star-centric alignment and VQSE, and the QFIM transformation that explains the high-contrast separation of alignment and estimation scales. The experimental implementation remains in Chapter~\ref{sec:astrophysical_metrology_spade}.
+
+\begin{infobox}{Scope and assumptions of the 2-basis projection framework}
+    \textbf{Established within the model.} For a weak, incoherent, high-contrast two-source field with a Gaussian PSF and star-centric alignment, the fundamental and first-order HG sectors provide a physically meaningful low-order modal cutoff. We use this cutoff to compare the SPADE Fisher information with a rank-one TQFI calculation.
+
+    \textbf{Analogy, not identity.} The optical cutoff is not itself the spectral rank-$m$ projector used by VQFIE: $\Pi_0+\Pi_1$ has three spatial modes, whereas $m=1$ denotes one spectral eigenvector. Likewise, alignment minimizes an objective analogous to a VQSE cost, but its degenerate first-order sector does not implement the full VQSE diagonalization task.
+
+    \textbf{Regime.} The discussion assumes $\eta \ll 1$, $\epsilon \ll 1$, small separations relative to $w_0$, and an aligned Gaussian spatial basis. Outside this regime, the correspondence and the low-order approximation must be reassessed.
+\end{infobox}
 
 % ==============================================================================
-\section{SPADE as a Physical Rank-Truncation Projector $\Pi^{(1)}$}
+\section{SPADE as a Low-Order Modal Cutoff}
 % ==============================================================================
 
-In Chapter~\ref{ch:methods}, we introduced the rank-truncated projected state $\rho^{(m)}_\theta = \Pi^{(m)}\rho_\theta\Pi^{(m)}$ as an abstract, mathematical construction to isolate the dominant eigenspace of a high-dimensional mixed state and construct dynamics-agnostic metrological bounds. We now demonstrate that spatial-mode demultiplexing (SPADE) acts as a physical, analog hardware-level implementation of this exact truncation scheme on a two-dimensional spatial subspace.
+In Chapter~\ref{ch:methods}, the spectral projector $\Pi^{(m)}$ selects the $m$ dominant eigenvectors of a density operator. SPADE instead resolves the optical field in a fixed spatial basis. The two constructions can be compared in the star-dominated regime, but their rank labels have different meanings.
 
-Recall the single-photon spatio-temporal mixed state $\rho_d$ in the image plane of the telescope, defined in Eq.~\eqref{eq:optical_density_matrix_chap}. In astronomical observations under extreme high-contrast regimes ($\epsilon \ll 1$), the overwhelming starlight acts as a massive coherent background that dwarfs the exoplanet's signal. The rank-truncation operator with $m=1$ provides the exact physical filter required to isolate and discard this uninformative starlight background.
+Recall the single-photon spatio-temporal mixed state $\rho_d$ in the image plane of the telescope, defined in Eq.~\eqref{eq:optical_density_matrix_chap}. In the extreme high-contrast regime, the dominant eigenvector is approximately the star-centred fundamental spatial mode. This is the condition that permits a comparison with the $m=1$ spectral truncation.
 
 Using the first two Hermite-Gaussian (HG) spatial modes defined in Eqs.~\eqref{eq:hg00_def}--\eqref{eq:hg10_def}, we recall the orthogonal projection operators:
 \begin{align}
     \Pi_0 & = |HG_{00}\rangle\langle HG_{00}| \quad \text{(The Dominant Star Subspace)},                                         \\
     \Pi_1 & = |HG_{01}\rangle\langle HG_{01}| + |HG_{10}\rangle\langle HG_{10}| \quad \text{(The Perturbative Planet Subspace)}.
 \end{align}
-Under this mapping, the physical projection of the optical field onto the asymmetric modes is mathematically equivalent to applying the rank-truncation projector:
+The physical receiver retains the low-order modal sector
 \begin{equation}
-    \rho_d^{(1)} = \Pi^{(1)}\rho_d\Pi^{(1)}, \quad \text{where} \quad \Pi^{(1)} = \Pi_0 + \Pi_1.
-    \label{eq:physical_rank_truncation}
+    \Pi_{\leq 1} \coloneqq \Pi_0 + \Pi_1, \qquad
+    \rho_d^{(\leq 1)} \coloneqq \Pi_{\leq 1}\rho_d\Pi_{\leq 1}.
+    \label{eq:physical_modal_cutoff}
 \end{equation}
-By routing the starlight into $\Pi_0$, the parameter estimation of the transverse separation $d$ is evaluated exclusively in the orthogonal subspace $\Pi_1$, shielding the weak signal from the starlight's shot noise. This is the exact optical analogue of our variational state-diagonalization protocol where the dominant eigenvalue is mapped to a known basis state to inspect the remaining subnormalized spectrum.
+Here $\Pi_{\leq1}$ has rank three, not rank one. Routing starlight into $\Pi_0$ nevertheless leaves the leading displacement-dependent signal in $\Pi_1$. Under the star-dominance and alignment assumptions above, this provides the operational counterpart of isolating the leading spectral component in VQFIE.
 
 \subsection{Telescope Alignment as VQSE Majorization}
 Before the physical rank-truncation projector can be executed, the optical system must be physically aligned with the bright star. In Section~\ref{sec:astrophysical_metrology_spade}, we detailed the star-centric alignment protocol, where the telescope's spatial coordinates are tuned to maximize the single-photon count $p_0$ in the fundamental mode $|HG_{00}\rangle$ (Eq.~\eqref{eq:p0_alignment}).
 
-We now establish a formal bijection between this physical alignment and the mathematical majorization mechanism of VQSE. Recall from Chapter~\ref{ch:methods} that VQSE diagonalizes an unknown state by minimizing the energy expectation value of a sorted, non-degenerate local Hamiltonian $H_L = \sum_k E_k |e_k\rangle\langle e_k|$ (Eq.~\eqref{eq:vqse_cost_opt}). Because the true eigenvalues $\boldsymbol{\lambda}$ majorize the diagonal probability elements $\mathbf{p}$ in any basis ($\boldsymbol{\lambda} \succ \mathbf{p}$), minimizing the cost function $C(\beta)$ mathematically rotates the dominant eigenvector of $\rho$ into the lowest energy basis state $|e_1\rangle$.
+This alignment problem has an objective-level correspondence with VQSE. VQSE minimizes the expectation value of a sorted, non-degenerate Hamiltonian (Eq.~\eqref{eq:vqse_cost_dot_product}); majorization then places the dominant eigenvector in the lowest-energy basis state. In the optical system, maximizing $p_0$ serves the corresponding practical purpose of concentrating the dominant star contribution in $|HG_{00}\rangle$.
 
-In the SPADE pipeline, the physical star-centric alignment acts as a physical, analog realization of the VQSE majorization loop:
+The correspondence can be expressed through the following alignment objective:
 \begin{enumerate}
-    \item **The State Mapping:** The mixed state $\rho_d$ acts as the unknown input state to be diagonalized.
-    \item **The Hamiltonian Mapping:** We define a physical "Hamiltonian" in the HG basis:
+    \item \textbf{State mapping:} The mixed state $\rho_d$ is the input to be aligned in the HG basis.
+    \item \textbf{Alignment observable:} Define
           \begin{equation}
               H_{\text{align}} = 0 \cdot |HG_{00}\rangle\langle HG_{00}| + 1 \cdot |HG_{01}\rangle\langle HG_{01}| + 1 \cdot |HG_{10}\rangle\langle HG_{10}|.
           \end{equation}
-    \item **The Cost Function Equivalence:** Minimizing the expectation value of $H_{\text{align}}$ corresponds to:
+    \item \textbf{Cost:} Minimizing its expectation value gives
           \begin{equation}
               C_{\text{align}} = \operatorname{Tr}[H_{\text{align}}\rho_d] = p_1 = 1 - p_0.
           \end{equation}
 \end{enumerate}
-Maximizing the fundamental mode occupancy $p_0$ is mathematically identical to minimizing the energy cost $C_{\text{align}}$. The physical alignment knobs (fine-tuning the translation stages) serve as the physical "parameters" $\beta$, and the optical apparatus itself acts as the analog processor. By maximizing $p_0$, the physical alignment rotates the dominant "starlight" eigenvector of the optical field directly into the $|HG_{00}\rangle$ basis state.
+Thus, maximizing $p_0$ is equivalent to minimizing $C_{\text{align}}$, with the translation stages taking the role of optimization parameters. Since $H_{\text{align}}$ is degenerate on the first-order sector, this does not reproduce VQSE's full eigenbasis-learning task; it is a targeted alignment analogue for the dominant mode.
 
 % ==============================================================================
-\section{Rigorous Proof of Variational TQFI Saturation}
+\section{TQFI Comparison in the Low-Order Regime}
 % ==============================================================================
 
-This physical correspondence can be formalized mathematically by proving that the classical Fisher Information extracted by SPADE perfectly saturates the ultimate variational Truncated QFI (TQFI) lower bound developed in our NISQ metrology track.
+Under the assumptions stated above, we compare the classical Fisher information extracted by SPADE with the rank-one TQFI lower bound used in the variational metrology track.
 
 Recall the general definition of the TQFI for a subnormalized projected state under the generalized subnormalized fidelity $F_*$, established in Eq.~\eqref{eq:tqfi_bounds}:
 \begin{equation}
     \mathcal{I}_*\left(d; \rho^{(m)}_d\right) \coloneqq 8 \lim_{\delta \to 0} \frac{1 - F_*\left(\rho^{(m)}_d, \rho^{(m)}_{d+\delta}\right)}{\delta^2}.
     \label{eq:tqfi_general_def}
 \end{equation}
-We evaluate this bound for a truncation rank of $m=1$ on the single-photon density matrix $\rho_d$ of the optical field (Eq.~\eqref{eq:optical_density_matrix_chap}), isolating the dominant star component. In this subnormalized projected representation, the physical distinguishability between $\rho_d$ and the shifted state $\rho_{d+\delta}$ is governed entirely by the transfer of probability amplitude from the fundamental mode $\Pi_0$ to the asymmetric mode $\Pi_1$.
+We evaluate this bound for a spectral truncation rank of $m=1$ on the single-photon density matrix $\rho_d$ of the optical field (Eq.~\eqref{eq:optical_density_matrix_chap}). In the aligned, star-dominated approximation, its leading eigenvector is identified with $|HG_{00}\rangle$; the transfer into $\Pi_1$ then governs the leading displacement dependence. This identification is an approximation, distinct from the rank-three cutoff $\Pi_{\leq1}$ in Eq.~\eqref{eq:physical_modal_cutoff}.
 
 The generalized subnormalized fidelity $F_*$ between these subnormalized operators is defined as:
 \begin{equation}
@@ -118,25 +127,6 @@ The Krylov distribution demonstrates that the Krylov complexity associated with 
 This mathematical closure proves that **full quantum state tomography is mathematically redundant**. Because the operator growth of the spatial derivative is confined to a 2-dimensional Krylov subspace, a simple 2-basis $HG_{00}/HG_{01}$ demultiplexer is guaranteed to capture nearly $100\%$ of the exact QFI \cite{KrylovQFI2026}. This provides the ultimate theoretical justification for the metrological efficiency of low-rank structured physical receivers.
 
 % ==============================================================================
-\section{Denoising as Polar Completion of Projected Operators}
-% ==============================================================================
-
-In Section~\ref{sec:astrophysical_metrology_spade}, we introduced the Physics-Informed Convolutional Neural Network (CNN) as a variational decoder to recover the separation $d$ under severe background noise, photon loss, and centroid drift. We now show that this machine learning recovery scheme is the exact physical analogue of the **polar completion** used to repair truncated VQSE updates on NISQ simulators.
-
-On a quantum simulator, applying an unconstrained projection operator $P_M$ to a physical density matrix causes state leakage and non-unitarity. To maintain physical consistency, the polar completion constructs the unique nearest isometry $\widetilde{K}$ to the projected update in the Frobenius norm:
-\begin{equation}
-    \widetilde{K}^{(x)}_{y,\eta} = \bar{K}^{(x)}_{y,\eta} G_x^{-1/2}, \quad \text{where} \quad G_x = \sum_{y,\eta} \bar{K}^{(x)\dagger}_{y,\eta} \bar{K}^{(x)}_{y,\eta}.
-    \label{eq:polar_completion_link}
-\end{equation}
-
-The Physics-Informed CNN acts as the physical, numerical analogue of this mathematical completion:
-\begin{enumerate}
-    \item **The Non-Unitary Projection:** Physical aberrations, spatial crosstalk ($\chi = 0.0035$), and photon losses act as a non-unitary projection that corrupts and leaks the spatial mode intensities.
-    \item **The Isometric Reconstruction:** The CNN is trained with the physics-informed ratio of even HG modes $r_{20} \coloneqq p_2/p_0$ (which is structurally immune to symmetric alignment drift). By mapping the corrupted, non-unitary intensity profiles back to the clean, parameter-decoupled spatial separation $d$, the network numerically learns the unique isometric transformation that preserves information conservation.
-\end{enumerate}
-This allows the variational decoder to reconstruct the sub-wavelength separation with $>82\%$ fidelity, demonstrating how machine learning decoders physically execute the mathematical repair of projected quantum channels.
-
-% ==============================================================================
 \section{Global Precision Limits: QFIM Coordinate Transformation and Decoupling}
 % ==============================================================================
 
@@ -160,11 +150,15 @@ In our experiment, the telescope is aligned to the brighter star (Source A) at p
 
 The covariance matrix of the star-centric frame $\Sigma(x, d, \epsilon)$ is mapped via $\Sigma(x, d, \epsilon) = R \Sigma(s_0, d, \epsilon) R^T$. Inverting this relationship, the transformed QFIM is given by:
 \begin{equation}
-    Q(x, d, \epsilon) = (R^T)^{-1} Q(s_0, d, \epsilon) R^{-1} = 4 \begin{pmatrix}
-        p_2 + 4\epsilon(1-\epsilon)P^2   & (p_2 + 2(1-\epsilon)P^2)\epsilon  & -iwP                                  \\
-        (p_2 + 2(1-\epsilon)P^2)\epsilon & (p_2 + (1-\epsilon)P^2)\epsilon^2 & -iwP\epsilon/2                        \\
-        -iwP                             & -iwP\epsilon/2                    & 1 - \frac{w^2}{4\epsilon(1-\epsilon)}
-    \end{pmatrix}.
+    \begin{split}
+        Q(x, d, \epsilon) & = (R^T)^{-1} Q(s_0, d, \epsilon) R^{-1}
+        \\
+                          & = 4 \begin{pmatrix}
+                                    p_2 + 4\epsilon(1-\epsilon)P^2   & (p_2 + 2(1-\epsilon)P^2)\epsilon  & -iwP                                  \\
+                                    (p_2 + 2(1-\epsilon)P^2)\epsilon & (p_2 + (1-\epsilon)P^2)\epsilon^2 & -iwP\epsilon/2                        \\
+                                    -iwP                             & -iwP\epsilon/2                    & 1 - \frac{w^2}{4\epsilon(1-\epsilon)}
+                                \end{pmatrix}
+    \end{split}
     \label{eq:transformed_qfim_link}
 \end{equation}
 
@@ -193,49 +187,3 @@ As the relative intensity ratio $\epsilon \to 0$, the correlation term proportio
 This mathematically justifies our treating of the alignment procedure and the parameter estimation as independent subroutines, providing a rigorous information-theoretic foundation for our experimental tabletop analysis.
 
 % ==============================================================================
-\section{Experimental Calibration and Regression Synthesis}
-% ==============================================================================
-
-To physically verify the decoupled sub-Rayleigh precision limits derived above, we synthesize the results from the tabletop experimental configuration described in Section~\ref{sec:astrophysical_metrology_spade} using the physical noise parameterizations.
-
-\subsection{Regression Calibration Models}
-Recall that the average detected fraction $f_1 = n_1/(\eta n)$ incorporates physical cross talk ($\chi = 0.0035$) and stochastic misalignment into the effective noise parameter $\sigma_{\text{eff}}^2 \coloneqq \sigma_M^2 + 4w_0^2\chi$ (Eq.~\eqref{eq:sigma_effective}).
-
-To construct our experimental calibration curves, data were collected by translating the B beam between $-200\,\mu\text{m}$ and $200\,\mu\text{m}$ ($d_a = d/w_0 \in [-0.67, 0.67]$). For each step, we recorded the combined photon counts $n_1 = C^n_{HG01} + C^n_{HG10}$ during $1\text{ s}$ of acquisition time, composed of $N_m = 100$ independent measures of $10\text{ ms}$ each.
-
-\begin{figure}[h!]
-    \centering
-    \begin{center}
-        \textbf{Calibration Curves for Separation $d_a$ at Four Intensity Ratios $\epsilon$:} \\
-        \begin{tabular}{cc}
-            $\epsilon = 0.018: \quad n_1^F(d_a) = a_1 + b_1 d_a^2$ & $\epsilon = 0.042: \quad n_1^F(d_a) = a_1 + b_1 d_a^2$ \\
-            $\epsilon = 0.069: \quad n_1^F(d_a) = a_1 + b_1 d_a^2$ & $\epsilon = 0.096: \quad n_1^F(d_a) = a_1 + b_1 d_a^2$
-        \end{tabular}
-    \end{center}
-    \caption{Quadratic regression curves of the first-order mode counts $n_1(d_a)$ versus dimensionless separation $d_a$ for the four experimental intensity ratios $\epsilon \in \{0.018, 0.042, 0.069, 0.096\}$. The fitting parameters $a_1$ and $b_1$ account for the physical cross talk ($\chi = 0.0035$) and dark count rates.}
-    \label{fig:calibration_da_link}
-\end{figure}
-
-The fitting parameter $a_1$ corresponds to the baseline count rate from the effective noise parameter $\sigma_{\text{eff}}^2$, while $b_1$ represents the parameter-dependent signal scaling:
-\begin{align}
-    a_1 & \propto \eta \sigma_{\text{eff}}^2 = \eta (\sigma_M^2 + 4w_0^2\chi), \\
-    b_1 & \propto \eta \epsilon w_0^2.
-\end{align}
-The resulting experimental uncertainties $\Delta d_a$ obtained via these quadratic calibrations show that our SPADE tabletop setup successfully beats the direct imaging theoretical limits for separations down to $d_a \approx 0.15$.
-
-For the relative intensity ratio $\epsilon$, linear calibrations were performed at the four fixed separations $d_a \in \{0.2, 0.27, 0.47, 0.67\}$ established in Eq.~\eqref{eq:epsilon_cal_points}:
-
-\begin{figure}[h!]
-    \centering
-    \begin{center}
-        \textbf{Calibration Curves for Intensity $\epsilon$ at Four Separations $d_a$:} \\
-        \begin{tabular}{cc}
-            $d_a = 0.2: \quad n_1^F(\epsilon) = \alpha_1 + \beta_1 \epsilon$  & $d_a = 0.27: \quad n_1^F(\epsilon) = \alpha_1 + \beta_1 \epsilon$ \\
-            $d_a = 0.47: \quad n_1^F(\epsilon) = \alpha_1 + \beta_1 \epsilon$ & $d_a = 0.67: \quad n_1^F(\epsilon) = \alpha_1 + \beta_1 \epsilon$
-        \end{tabular}
-    \end{center}
-    \caption{Linear regression calibration curves of the first-order mode counts $n_1(\epsilon)$ versus relative intensity $\epsilon$ for the four fixed dimensionless separations $d_a \in \{0.2, 0.27, 0.47, 0.67\}$.}
-    \label{fig:calibration_eps_link}
-\end{figure}
-
-The fitting parameter $\alpha_1$ accounts for the background counts from spatial crosstalk, while $\beta_1$ scales linearly with the separation $d_a^2$. The resulting experimental uncertainties $\Delta\epsilon$ match our theoretical stochastic error models (Eq.~\eqref{eq:propagation_uncertainty_d}--\eqref{eq:std_dev_fraction}) within a factor of two, verifying the metrological advantage of SPADE in realistic high-contrast regimes.
