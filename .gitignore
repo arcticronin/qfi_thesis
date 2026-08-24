@@ -17,3 +17,9 @@ TeXtured/thesis.pdf
 
 # (Optional) Ignore reference PDFs
 papers/
+
+# Ignore stupid files of Mac folders
+.DS_Store
+
+# Ignore dvi files
+*.dvi
