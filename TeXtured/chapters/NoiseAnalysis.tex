@@ -73,6 +73,26 @@ The channel is parameter independent when $P$ is fixed.
 \]
 The diagram should state explicitly that both $H_N$ and the Gibbs state depend on $h_x$.
 
+
+\begin{infobox}{Scope of the Thermal Model}
+    The thermal branch does not model dynamical thermalization of the accessible subsystem by the discarded qubits. Instead, we assume that the full finite TFIM probe has been prepared in the Gibbs state
+    \[
+        \rho_{\mathrm{th},N}(h_x;\beta)
+        =
+        \frac{e^{-\beta H_N(h_x)}}{Z(h_x,\beta)}
+    \]
+    by an external, unmodelled equilibrium-preparation mechanism. We then restrict access to the subsystem $S$ by tracing out the complementary degrees of freedom $E$.
+
+    Thus, $E$ represents an inaccessible part of the prepared probe, not a macroscopic thermal bath. In general,
+    \[
+        \operatorname{Tr}_E[\rho_{\mathrm{th},N}]
+        \neq
+        \frac{e^{-\beta H_S}}{\operatorname{Tr}[e^{-\beta H_S}]},
+    \]
+    because interactions across the $S$--$E$ boundary and their correlations remain encoded in the reduced state. The present model therefore studies the local metrological consequences of global thermal preparation, rather than a microscopic thermalization dynamics.
+\end{infobox}
+
+
 \subsection{Data processing and the comparison rule}
 
 For a fixed $P$, the depolarizing channel and the partial trace are parameter-independent channels. The valid full-to-local comparison is therefore
