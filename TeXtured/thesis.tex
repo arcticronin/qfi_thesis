@@ -10,8 +10,8 @@
 \input{preamble/pdfA-compliance/glyphtounicode}
 
 %% NOTE: Choose the desirable page layout version (electronic vs print)
-%\documentclass[12pt,a4paper]{report}                      % single-side (electronic)
-\documentclass[12pt,a4paper,openright,twoside]{report}  % two-sided (for printing)
+\documentclass[12pt,a4paper]{report}                      % single-side (electronic)
+%\documentclass[12pt,a4paper,openright,twoside]{report}  % two-sided (for printing)
 
 %% Set some toggle flags to control some of the document properties
 \input{preamble/toggles}
@@ -38,9 +38,8 @@
     %chapters/Methods,
     %chapters/NoiseAnalysis,
     chapters/Astrophysical,
-    chapters/AstrophysicalExperiment,
-    % chapters/link,
-    % chapters/Conclusions,
+    chapters/ExoplanetExperiment,
+    chapters/Conclusions,
     % chapters/MathematicalAppendix,
 }
 
@@ -70,9 +69,7 @@
 \include{chapters/Methods}
 \include{chapters/NoiseAnalysis}
 \include{chapters/Astrophysical}
-
-\include{chapters/AstrophysicalExperiment}
-\include{chapters/link}
+\include{chapters/ExoplanetExperiment}
 
 \include{chapters/Conclusions}
 

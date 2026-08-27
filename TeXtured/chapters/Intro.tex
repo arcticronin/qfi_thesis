@@ -61,14 +61,13 @@ Spatial-Mode Demultiplexing (SPADE) addresses this problem by measuring the spat
 
 \subsection{Connecting the Two Settings}
 
-The three bottlenecks arise in two physically different settings, but the proposed approaches share a common mathematical idea. Variational QFI methods approximate a quantum state by projecting it onto a limited subspace containing its most informative components. Similarly, a SPADE receiver projects an optical field onto a limited set of spatial modes that carry information about the source parameters. The precise relationship between these two forms of projection is not immediately evident and constitutes an additional conceptual question addressed by this thesis. Establishing this connection may provide a common framework for understanding information extraction in both near-term quantum processors and spatial-mode optical receivers.
+The two settings share a concern with retaining useful information under limited access, but their reductions are physically different. Variational QFI methods retain a dominant state eigenspace, whereas SPADE measures a fixed spatial-mode basis. The practical optical analysis therefore keeps these constructions distinct: it uses low-order modes as experimentally meaningful measurement outcomes and does not identify them automatically with the spectral truncation used by VQFIE.
 
 % ==============================================================================
 \section{Aims and Objectives}
 % ==============================================================================
 
-The central goal of this thesis is to establish a rigorous mathematical, numerical, and experimental bridge between variational quantum metrology on near-term hardware and sub-Rayleigh spatial-mode optical sensing. 
-The objectives listed below follow the structure of the thesis. The first two objectives develop the computational metrology track, whereas the third addresses the optical sensing track. These two tracks are largely independent and can be considered separately. The fourth objective brings them together by identifying the mathematical principles they share.
+The central goal of this thesis is to develop and apply QFI-based reasoning in two complementary settings: variational metrology on near-term quantum hardware and sub-Rayleigh spatial-mode optical sensing. The first two objectives develop the computational metrology track, whereas the remaining objectives establish and analyse the optical experiment.
 \begin{enumerate}
     \item 
     \textbf{Develop a scalable algorithmic pipeline for near-term quantum devices:} The first objective is to implement and validate Variational Quantum Fisher Information Estimation (VQFIE), together with the Variational Quantum State Eigensolver (VQSE). These methods are designed for NISQ devices, whose limited number of qubits and sensitivity to noise restrict the complexity of the algorithms that they can run. The VQSE is used to estimate the dominant eigenvalues and eigenvectors of a quantum state using a qubit-efficient, single-copy register. This information is then used by VQFIE to calculate lower and upper bounds on the QFI without requiring the complete classical diagonalization of the state. The resulting bounds do not depend on the particular dynamics used to encode the parameter.
@@ -78,11 +77,11 @@ The objectives listed below follow the structure of the thesis. The first two ob
     \textbf{Determine how localized open-system noise affects metrological sensitivity:} The second objective is to study many-body quantum sensors described by the Transverse-Field Ising Model (TFIM). In particular, we examine how realistic environmental decay processes affect a localized subsystem of a larger quantum sensor. The aim is to determine whether sensitivity depends only on how mixed the subsystem is or also on the physical mechanism that produced this mixedness. We investigate how boundary conditions and low-temperature thermal mixing can populate parameter-sensitive excited states of the Hamiltonian. Under appropriate conditions, these structured mixed states may retain greater sensitivity than subsystems obtained from a pure ground state.
 
     \item
-    \textbf{Implement a high-contrast sub-Rayleigh optical receiver:} The third objective begins a separate, experimental track focused on optical sensing. We mathematically characterize and experimentally implement a tabletop receiver based on SPADE for the detection of a faint source located close to a much brighter star~\cite{Santamaria2024single}. The receiver operates in the heralded single-photon regime and uses projections onto selected spatial modes to recover information that is difficult to access through direct imaging. We evaluate the statistical uncertainty in the estimation of the source separation $d$ and relative intensity $\epsilon$. The analysis includes experimentally relevant imperfections, particularly spatial crosstalk between the measured modes, quantified by $\chi = 0.0035$, and misalignment with respect to the source centroid~\cite{Santamaria2024single}.
+    \textbf{Establish the high-contrast sub-Rayleigh imaging problem and SPADE baseline:} The third objective begins the optical-sensing track. We formulate the detection of a faint source near a much brighter star~\cite{Santamaria2024single}, explain the poor high-contrast scaling of direct imaging, and introduce a low-order SPADE receiver. This supplies the physical source and measurement model needed to interpret the recorded spatial-mode counts.
     
 
     \item
-   \textbf{Establish a unified two-basis projection framework:} As a final objective, we compare the spectral projection used in VQFIE with the spatial-mode projection implemented by SPADE. More specifically, we investigate how the alignment and mode-sorting operations of the optical receiver relate to the majorization objective of the VQSE and to the rank-truncation projector $\Pi^{(1)}$. This connection is established under the physical assumptions relevant to the optical model, rather than by treating the two procedures as identical in every respect. The aim is to determine how the variational information bounds developed for NISQ simulations can help describe the precision limits of sub-diffraction exoplanet detection and spectroscopy.
+   \textbf{Develop a channel-resolved analysis of the SPADE record:} The final objective is to determine what the available repeated aggregate first-order counts can support. We distinguish an attractive but unavailable data-derived TQFI construction from the analysis that the record does support: an explicit sequence of loss, alignment, dephasing, imperfect-POVM, and classical count-noise components. This permits conditional likelihood and bootstrap tests of calibrated channel configurations, followed by clearly labelled model-QFI and CFI comparisons.
 
 \end{enumerate}
 
@@ -95,7 +94,7 @@ The scope and principal limitations of this work are defined below. These bounda
 \begin{itemize}
     \item \textbf{Many-Body Systems:} Our numerical simulations of open-system metrology are restricted to 1D spin chains governed by the Transverse-Field Ising Model (TFIM) up to $N=6$ sites. We do not attempt to simulate macroscopic material phases or high-temperature superconducting systems.
     \item \textbf{Parameter Bounds:} Our parameter estimation framework focuses on single-parameter sensing (e.g., transverse magnetic field strength $h_x$ and spatial separation $d$). Multiparameter scenarios are evaluated under decoupling limits (such as high-contrast exoplanet alignment) rather than simultaneous saturation of the Holevo bound across incompatible measurements.
-    \item \textbf{Optical Regime:} The experimental and analytical treatments of SPADE operate within the weak-field, faint-signal limit (single-photon regime) where multi-photon coincidence statistics are negligible. The spatial modes are truncated to the first three Hermite-Gaussian components ($HG_{00}, HG_{01}, HG_{10}$). We do not model infinite-dimensional, arbitrary spatial-field configurations.
+    \item \textbf{Optical Regime:} The experimental and analytical treatments of SPADE operate within the weak-field, faint-signal limit (single-photon regime) where multi-photon coincidence statistics are negligible. The physical record is an aggregate first-order count, while the QFI model uses a controlled finite HG representation with an unresolved tail. We do not reconstruct an arbitrary infinite-dimensional optical state from the counts.
 \end{itemize}
 
 % ==============================================================================
@@ -110,14 +109,14 @@ The scope and principal limitations of this work are defined below. These bounda
     Non ho cambiato nulla qui, perché non so i dettagli. Secondo me per mantenere uno stile adatto a non esperti, ci sta passare questo ultimo pezzo a chat e chiedere di uniformarlo con il resto del capitolo, aggiungendo qualche spiegazione breve, però non so :/
 \end{Suggestion}
 
-This thesis is organized in a progressive, modular structure that guides the reader from foundational quantum information-geometric concepts, through variational and open-system algorithms, and ultimately to the physical implementation and bridging of spatial-mode optical sensors. The roadmap of the thesis is illustrated in Fig.~\ref{fig:thesis_roadmap}. The details of the specific contents of each chapter are summarized below.
+This thesis is organized in a progressive, modular structure that guides the reader from foundational quantum information-geometric concepts, through variational and open-system algorithms, to a physical spatial-mode sensing problem and its practical channel analysis. The roadmap of the thesis is illustrated in Fig.~\ref{fig:thesis_roadmap}. The details of the specific contents of each chapter are summarized below.
 
 \begin{figure}[h!]
     \centering
     \begin{center}
         \includegraphics[width=0.9\textwidth]{figures/thesis-structure-excalidraw.png}
     \end{center}
-    \caption{The modular progression of the thesis, illustrating how abstract information theory is sequentially mapped to algorithms, noise metrology, physical telescopes, and the unifying synthesis.}
+    \caption{The modular progression of the thesis, illustrating how abstract information theory is sequentially mapped to algorithms, noise metrology, physical telescopes, and practical channel modelling.}
     \label{fig:thesis_roadmap}
 \end{figure}
 
@@ -130,11 +129,11 @@ Here, we present our scalable quantum-classical hybrid pipeline to estimate and 
 \subsection*{Chapter 4: Open-System Noise Metrology: Fingerprints of Mixedness at the Subsystem Level}
 This chapter investigates how environmental noise corrupts the metrological sensitivity of localized quantum sensors under open-system conditions. We benchmark six state families (including global and reduced depolarizing and thermal Gibbs states) under two operating modes: fixed-noise and matched-purity. We derive the matched-SLD analytical local derivative correction, which incorporates field-dependent chain-rule coordinates via the Duhamel formula, resolving non-physical monotonicity violations of earlier secant-like approximations. Through a systematic evaluation of five experimental presets, we analyze critical peak collapses, spatial peak migrations, and boundary condition sensitivities, proving that structured thermal states can preserve superior local sensitivity relative to ground-state subsystems.
 
-\subsection*{Chapter 5: Astrophysical Metrology: Rayleigh's Curse and the Exoplanet Detection Challenge}
-We transition the parameter-estimation framework to high-contrast astronomical imaging~\cite{Santamaria2024single}. After defining the exoplanet problem and the Rayleigh collapse of direct imaging, we develop the mixed-state optical model and the low-order HG SPADE receiver. This chapter also contains the receiver-level error propagation, calibration, sequential channel model, maximum-likelihood fit, and overdispersed-count validation of the tabletop experiment.
+\subsection*{Chapter 5: High-Contrast Sub-Rayleigh Imaging}
+We transition the parameter-estimation framework to high-contrast astronomical imaging~\cite{Santamaria2024single}. After defining the exoplanet problem and the Rayleigh collapse of direct imaging, this chapter develops the weak-light optical model and the low-order HG SPADE receiver. It establishes the physical baseline without anticipating the later channel fit or QFI analysis.
 
-\subsection*{Chapter 6: Bridging Variational Metrology and Sub-Rayleigh Quantum Imaging: The 2-Basis Projection Framework}
-This chapter compares the spectral truncation used in VQFIE with the low-order HG modal cutoff used by SPADE. It makes the required weak-source, high-contrast, Gaussian, and aligned-basis assumptions explicit; relates star-centric alignment to the VQSE objective without identifying it with full VQSE diagonalization; and develops the star-centric QFIM transformation and high-contrast decoupling argument. The experimental apparatus and validation are deliberately kept in Section \ref{sec:astrophysical_experiment}.
+\subsection*{Chapter 6: Practical SPADE: Channel Modelling and Conditional QFI Analysis}
+This chapter begins with the initially intended accessible-mode/TQFI analysis and explains why an aggregate first-order count record cannot implement it. It then develops the sequential source, loss, alignment, dephasing, imperfect-POVM, and count-noise model; diagnoses the measured baseline and overdispersion; and performs conditional likelihood and bootstrap tests. QFI and CFI comparisons are used as model-validation and measurement-design tools, with their assumptions and limits stated explicitly.
 
-\subsection*{Chapter 7: Conclusions, Synthesis, and Scientific Outlook}
-This final chapter summarizes the core scientific achievements of the thesis, synthesizing the computational, theoretical, and experimental insights gained across both tracks. We discuss the broader implications of our unified projection framework for near-term quantum technologies and outline future research directions, including multiparameter adaptive astronomical arrays, squeezed-light enhanced SPADE, and hardware implementations of VQSE-assisted sensors on physical NISQ processors.
+\subsection*{Chapter 7: Conclusions and Outlook}
+This final chapter summarizes the computational and optical-sensing results, distinguishing exact QFI benchmarks, variational bounds, and the conditional information quantities of the practical SPADE model. It also identifies the calibration data required to turn the present count-channel analysis into a fully calibrated multi-mode information experiment.
