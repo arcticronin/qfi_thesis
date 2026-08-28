@@ -1,12 +1,14 @@
 \chapter{Local Quantum Metrology under Reduction, Temperature, and Noise}
 \label{ch:noise_analysis}
 
-This chapter asks how much information about the transverse field $h_x$ is available to an observer who can access only an $n$-qubit subsystem of an $N$-qubit TFIM probe. The central issue is therefore local metrology: not only how much QFI is present in the full state, but how much survives after part of the probe is discarded and how that answer depends on the physical origin of mixedness.
-
-The numerical framework follows Chapter~\ref{ch:methods}. Exact SLD QFI is the primary differential benchmark, evaluated using the formalism of Chapter~\ref{ch:MathBackground}; the finite-displacement fidelity quantities follow Section~\ref{sec:bounds}. This chapter specifies the preparation histories and the resulting comparisons, because the order of preparation, channel action, and partial trace determines what can be concluded.
+This chapter asks how much information about the transverse field $h_x$ is available to an observer who can access only an $n$-qubit subsystem of an $N$-qubit TFIM probe.
+The central issue is local metrology: not only how much QFI is present in the full state, but how much survives after part of the probe is discarded and how that answer depends on the physical origin of mixedness.
+The numerical framework follows Chapter~\ref{ch:methods}.
+We evaluate QFI using the formalism of Chapter~\ref{ch:MathBackground} and the partial fidelity quantities follow Section~\ref{sec:bounds}.
+This chapter specifies the preparation histories and the resulting comparisons, because the order of preparation, channel action, and partial trace determines what can be concluded.
 
 \begin{remark}[What this chapter establishes]
-    For the finite TFIM geometries, field windows, and state families sampled here, local SLD QFI grows strongly when more qubits are accessible. Depolarizing noise is a monotonic damaging baseline. Thermal preparation of the \emph{full} system before partial trace can outperform the reduced ground-state family in selected regimes. These are finite-system, state-family-dependent results; they are not universal scaling laws or a claim that thermal noise is generically beneficial.
+    For the finite TFIM geometries, field windows, and state families sampled here, local SLD QFI grows strongly when more qubits are accessible. Depolarizing noise is a monotonic damaging baseline. Thermal preparation of the \emph{full} system before partial trace can outperform the reduced ground-state family in selected regimes. These are finite-system, state-family-dependent results, they are not universal scaling laws or a claim that thermal noise is generically beneficial.
 \end{remark}
 % ==============================================================================
 \section{Question, State Families, and Valid Comparisons}
@@ -15,7 +17,8 @@ The numerical framework follows Chapter~\ref{ch:methods}. Exact SLD QFI is the p
 
 \subsection{Subsystem-first metrology}
 
-Let $S$ denote the retained $n$-qubit subsystem and $E$ the discarded complement of $N-n$ qubits. The parameter $h_x$ plays the role of $\theta$ in Chapters~\ref{ch:MathBackground} and~\ref{ch:methods}; the notation $h_x$ is kept here to match the numerical data sets.
+Let $S$ denote the retained $n$-qubit subsystem and $E$ the discarded complement of $N-n$ qubits. The parameter $h_x$ is used as the estimation parameter $\theta$ in Chapters~\ref{ch:MathBackground} and~\ref{ch:methods}.
+The notation $h_x$ is kept here to match the numerical data sets.
 
 \begin{definition}[Prepared and reduced state families]
     The ground-state reference, depolarized, and thermal families are
@@ -39,7 +42,7 @@ Let $S$ denote the retained $n$-qubit subsystem and $E$ the discarded complement
     Here $\Lambda^{(N)}_P$ is a full-system depolarizing channel with fixed probability $P$, and $\beta$ is the inverse temperature of the Gibbs preparation.
 \end{definition}
 
-The three primary local comparators are $\rho_{\mathrm{sub}}$, $\rho_{\mathrm{dep},S}$, and $\rho_{\mathrm{th},S}$. Full-system curves are reference ceilings and consistency checks; they are not the primary comparator for a local quantity.
+The three primary local comparators are $\rho_{\mathrm{sub}}$, $\rho_{\mathrm{dep},S}$, and $\rho_{\mathrm{th},S}$. Full-system curves are reference ceilings and consistency checks, they are not the primary comparator for local quantities.
 
 \todo[]{insert diagram 1}
 
@@ -228,9 +231,9 @@ The figure source is \texttt{/home/ronin/Dev/space/QCES/cqes/project1\_plots.ipy
 
 \todo[]{insert diagram 5, Fig~\ref{fig:project1_fig_1_1}}
 
-\begin{figure}[htbp]
+\begin{figure}[H]%[htbp]
     \centering
-    \includegraphics[width=0.8\textwidth]{figures/noise/proj1_fig_1_1.png}
+    \includegraphics[width=0.8\textwidth]{figures/noise/project1/proj1_fig_1_1.png}
     \caption{Project~1 main-text figure P1.1: local bounds and exact local SLD in small multiples for the three rows of Table~\ref{tab:project1_size_sequence}.}
     \label{fig:project1_fig_1_1}
 \end{figure}
@@ -263,11 +266,24 @@ Retaining more qubits gives rapid, monotonic recovery of the critical response. 
 
 \noindent\emph{Plot brief.} Insert Project~1 main-text figure P1.2: exact local-SLD overlays for $n=2,\ldots,7$ at fixed $N=8$, Fig~\ref{fig:project1_fig_1_2}.
 
+\begin{Todo}
+    Pick one
+\end{Todo}
+
+
 \begin{figure}[H]%[htbp]
     \centering
-    \includegraphics[width=0.8\textwidth]{figures/noise/subsystem_SLD_varying_n_fixing_N8.png}
+    \includegraphics[width=0.8\textwidth]{figures/noise/project1/subsystem_SLD_varying_n_fixing_N8.png}
     \caption{Project~1 main-text figure P1.2}
     \label{fig:project1_fig_1_2}
+\end{figure}
+
+
+\begin{figure}[H]%[htbp]
+    \centering
+    \includegraphics[width=0.6\textwidth]{figures/noise/project1/local_bounds_and_exact_over_N.png}
+    \caption{Project~1 main-text figure P1.3: local bounds and exact over $n$}
+    \label{fig:project1_fig_1_3}
 \end{figure}
 
 
@@ -275,33 +291,29 @@ Retaining more qubits gives rapid, monotonic recovery of the critical response. 
 \todo[]{insert diagram 7}
 
 \noindent\emph{Supplementary plot brief.} Insert separate heatmaps for local SLD, \texttt{lower\_tqfi}, and \texttt{sub\_qfi\_bound} across the $n$ sweep Fig~\ref{fig:project1_fig_1_2_heatmaps}.
+
+
 \begin{figure}[H]%[htbp]
     \centering
-    \includegraphics[width=0.48\textwidth]{figures/noise/subsystem_SLD_varying_n_fixing_N8_heatmap.png}
-    \includegraphics[width=0.48\textwidth]{figures/noise/subsystem_TQFI_varying_n_fixing_N8_heatmap.png}
+    \includegraphics[width=0.48\textwidth]{figures/noise/project1/subsystem_SLD_varying_n_fixing_N8_heatmap.png}
+    \includegraphics[width=0.48\textwidth]{figures/noise/project1/subsystem_TQFI_varying_n_fixing_N8_heatmap.png}
 
     \caption{Project~1 main-text figure P1.2 heatmaps}
     \label{fig:project1_fig_1_2_heatmaps}
 \end{figure}
 
+\begin{figure}[H]%[htbp]
+    \centering
+    \includegraphics[width=1\textwidth]{figures/noise/project1/local_bounds_and_exact_over_n.png}
+    \caption{Project~1 main-text figure P1.3: local bounds and exact over $n$}
+    \label{fig:project1_fig_1_3}
+\end{figure}
+
+
+
+
+
 At the local-SLD peak, the \texttt{lower\_tqfi}/SLD ratio ranges from about $0.42$ to $0.96$ in the two Project~1 sweeps; the corresponding \texttt{sub\_qfi\_bound}/SLD ratio ranges from about $0.05$ to $0.60$. The finite-displacement quantities are informative but can be loose when the reduced state is strongly mixed or the truncation misses part of the response.
-
-
-\todo[]{think, I like the following them more}
-\begin{figure}[H]%[htbp]
-    \centering
-    \includegraphics[width=1\textwidth]{figures/noise/local_bounds_and_exact_over_n.png}
-    \caption{Project~1 main-text figure P1.3: local bounds and exact over $n$}
-    \label{fig:project1_fig_1_3}
-\end{figure}
-
-\begin{figure}[H]%[htbp]
-    \centering
-    \includegraphics[width=0.6\textwidth]{figures/noise/local_bounds_and_exact_over_N.png}
-    \caption{Project~1 main-text figure P1.3: local bounds and exact over $n$}
-    \label{fig:project1_fig_1_3}
-\end{figure}
-
 % ==============================================================================
 \section{Project 7: Thermal Crossover and Local Recovery}
 \label{sec:project7_noise}
@@ -347,7 +359,16 @@ The figure source is \texttt{/home/ronin/Dev/space/QCES/cqes/project7\_plots.ipy
 
 \todo[]{insert diagram 8}
 
+
 \noindent\emph{Plot brief.} Insert Project~7 figure P7.1: recovery of peak local information versus $\beta$, including the $90\%$ reference used for $\beta_\star$.
+
+
+\begin{figure}[H]%[htbp]
+    \centering
+    \includegraphics[width=1\textwidth]{figures/noise/project7/recovery_peak_vs_beta.png}
+    \caption{Project~7 main-text figure P7.1: recovery of peak local information versus $\beta$}
+    \label{fig:project7_fig_7_1}
+\end{figure}
 
 \todo[]{insert diagram 9}
 
