@@ -2,22 +2,31 @@
 \label{sec:astrophysical_metrology_spade}
 \label{ch:astrophysical_theory}
 
-This chapter introduces the optical-imaging problem that motivates the application considered later in the thesis. Its purpose is deliberately limited: it establishes the high-contrast, sub-Rayleigh regime; explains why a conventional intensity image is statistically inefficient there; and introduces spatial-mode demultiplexing (SPADE) as the standard measurement idea. It does not yet analyse the QFI of the receiver, prescribe the estimation method developed in this thesis, or describe a particular experimental calibration.
+This chapter introduces the optical-imaging problem that motivates the application considered later in the thesis.
+Its purpose is deliberately limited: it establishes the high-contrast, sub-Rayleigh regime, explains why a conventional intensity image is statistically inefficient there and introduces spatial-mode demultiplexing (SPADE) as the standard measurement idea.
+It does not yet analyse the QFI of the receiver, prescribe the estimation method developed in this thesis, or describe a particular experimental calibration.
 
 \section{The high-contrast imaging problem}
 
-Directly observing a faint object close to a bright one is a central problem in astronomical imaging. An exoplanet next to its host star is the motivating example, but the same statistical structure occurs for an unequal binary star or, more generally, for two incoherent point sources of very different brightness~\cite{Santamaria2024single}. Besides detection, the quantities of interest can include the angular displacement of the faint source and its brightness relative to the bright source. These are needed to localise and characterise the object.
+Directly observing a faint object close to a bright one is a central problem in astronomical imaging. 
+A planet next to its host star is the motivating example (a planet orbiting around a star that is not the Sun is called exoplanet), but the same statistical structure occurs for an unequal binary star or, more generally, for two incoherent point sources of very different brightness~\cite{Santamaria2024single, rouviere_spade_separation_2024}. 
+Besides detection, the quantities of interest can include the angular displacement of the faint source and its brightness relative to the bright source. These are needed to localise and characterise the object.
 
-Let $I_A$ and $I_B$ denote the detected intensities of the bright source $A$ and faint source $B$. We use
+Let $I_A$ and $I_B$ denote the detected intensities of the bright source $A$ (the Star) and faint source $B$ (the exoplanet). We use
 \begin{equation}
-    \epsilon \coloneqq \frac{I_B}{I_A+I_B}, \qquad 0<\epsilon\ll1,
+    \epsilon \coloneqq \frac{I_B}{I_A+I_B}, \qquad 0<\epsilon\ll1
     \label{eq:intensity_ratio_epsilon}
 \end{equation}
-as the faint-source fraction. The more usual contrast ratio is $I_B/I_A=\epsilon/(1-\epsilon)\simeq\epsilon$ in the high-contrast limit. The separation in the telescope image plane is denoted by $\boldsymbol d=(d_x,d_y)$, with $d=\lVert\boldsymbol d\rVert$.
+as the faint-source fraction.
+
+The more usual contrast ratio is
+$$\frac{I_B}{I_A}=\frac{\epsilon}{1-\epsilon} \simeq\epsilon$$ in the high-contrast limit ($I_B\ll I_A$).
+
+The separation in the telescope image plane is denoted by $\boldsymbol d=(d_x,d_y)$, with $d=\lVert\boldsymbol d\rVert$.
 
 \todo[]{insert image of the epsilon and d in the exoplanet star binary syustem marghes job}
 
-The difficulty has two coupled origins. First, $\epsilon$ can be extremely small: the relevant photon stream is dominated by the star. Second, the images of the two sources can overlap strongly because every finite aperture produces a diffraction-limited point-spread function (PSF). When $d$ is comparable to, or below, its width $w_0$, a faint planet does not appear as a visibly separate spot. It produces only a small deformation of the bright star's image.
+The difficulty has two coupled origins. First, $\epsilon$ can be extremely small: the relevant photon stream is dominated by the star. Second, the images of the two sources can overlap strongly because every finite aperture produces a diffraction-limited point-spread function (PSF). When $d$ is comparable to, or below, its width $w_0$, a faint planet does not appear as a visibly separate spot. It produces only a small deformation of the bright star's image (see Figure~\ref{fig:rayleigh_criterion}).
 
 \begin{figure}[htbp]
     \centering
@@ -28,12 +37,12 @@ The difficulty has two coupled origins. First, $\epsilon$ can be extremely small
 \end{figure}
 
 \begin{remark}[What ``sub-Rayleigh'' means here]
-    The Rayleigh criterion is a useful visual rule, not a statement that estimation becomes mathematically impossible below a sharp boundary. The issue is statistical: as the PSFs overlap, an intensity measurement contains progressively less accessible information about the faint source per detected photon. With enough resources a direct image may still reveal it; the required resources can simply become prohibitive at high contrast.
+    The Rayleigh criterion is a useful visual rule, not a statement that estimation becomes mathematically impossible below a sharp boundary. The issue is statistical: as the PSFs overlap, an intensity measurement contains progressively less accessible information about the faint source per detected photon. With enough resources a direct image may still reveal it, the problem is that the required resources can simply become prohibitive at high contrast.
 \end{remark}
 
 \section{Why an intensity image is poorly conditioned}
 
-For clarity, consider two incoherent sources separated along the $x$ direction and approximate the PSF by a Gaussian of width $w_0$. Conditional on detecting a photon, direct imaging samples its position from
+For clarity, consider two incoherent sources separated along the $x$ direction, with the bright star used as a known position reference, and approximate the PSF by a Gaussian of width $w_0$. Conditional on detecting a photon, direct imaging samples its position from
 \begin{equation}
     p_{\mathrm{DI}}(x,y\mid d,\epsilon)
     = \frac{e^{-y^2/(2w_0^2)}}{2\pi w_0^2}
@@ -41,9 +50,13 @@ For clarity, consider two incoherent sources separated along the $x$ direction a
         +\epsilon e^{-(x-d)^2/(2w_0^2)}\right].
     \label{eq:di_probability_distribution}
 \end{equation}
-The detector records only this intensity distribution: it does not resolve the optical field into phase-sensitive spatial components. For $d\ll w_0$, changing $d$ changes the image only weakly, while the change is weighted by the already small factor $\epsilon$.
+The density in Eq.~\eqref{eq:di_probability_distribution} integrates to one: it describes the \emph{position conditional on a detection}.
+The separate probability that a temporal mode produces a detected photon is denoted by $\eta$ below.
+Direct imaging is therefore a position-basis measurement of the field.
+SPADE will implement a different spatial-basis measurement before photon counting.
+For $d\ll w_0$, changing $d$ changes the image only weakly, while the change is weighted by the already small factor $\epsilon$.
 
-For the known-reference-star model above, the Fisher information per temporal mode therefore has the leading high-contrast behaviour
+When the star position and $\epsilon$ are treated as known, and the scalar separation along $x$ is the parameter to be estimated, the Fisher information per temporal mode has the leading high-contrast behaviour
 \begin{equation}
     \mathcal{I}_{\mathrm{DI}}(d) \sim \frac{\eta\epsilon^2}{w_0^2},
     \qquad d\ll w_0,
@@ -53,7 +66,7 @@ where $\eta$ is the probability that a photon is detected in that temporal mode.
 
 \subsection{How direct-imaging data are normally used}
 
-In a conventional analysis, the detector pixels provide counts sampled from Eq.~\eqref{eq:di_probability_distribution} (or from a more realistic PSF model). A forward model is fitted to those counts to estimate $\boldsymbol d$, $\epsilon$, and any nuisance parameters such as the star position or background. The fit may be formulated as maximum likelihood or Bayesian inference. The statistical issue above is not that these procedures are invalid; it is that their likelihood changes very slowly with the faint-source displacement in the regime of interest.
+In a conventional analysis, the detector pixels provide counts sampled from Eq.~\eqref{eq:di_probability_distribution} (or from a more realistic PSF model, i.e. using Bessel functions). A forward model is fitted to those counts to estimate $\boldsymbol d$, $\epsilon$, and any other parameter such as the star position or background. The fit may be formulated as maximum likelihood or Bayesian inference. The statistical issue above is not that these procedures are invalid, it is that their likelihood changes very slowly with the faint-source displacement in the regime of interest.
 
 \section{Weak astronomical light as a spatial quantum state}
 
@@ -61,10 +74,16 @@ The same imaging problem can be described at the single-photon level. In the wea
 \begin{equation}
     \rho_d=(1-\eta)|0\rangle\langle0|
     +\eta(1-\epsilon)|\psi_0\rangle\langle\psi_0|
-    +\eta\epsilon|\psi_d\rangle\langle\psi_d|,
+    +\eta\epsilon|\psi_d\rangle\langle\psi_d|
     \label{eq:optical_density_matrix_chap}
 \end{equation}
-where $|0\rangle$ is the vacuum, $|\psi_0\rangle$ is the spatial state from the star, and $|\psi_d\rangle$ is the shifted spatial state from the planet. The state is normalized. The mixture, rather than a coherent superposition of the two source states, expresses their mutual incoherence.
+where:
+\begin{itemize}
+    \item $|0\rangle$ is the vacuum,
+    \item $|\psi_0\rangle$ is the spatial state from the star,
+    \item $|\psi_d\rangle$ is the shifted spatial state from the planet.
+\end{itemize}
+The state is normalized. The mixture, rather than a coherent superposition of the two source states, expresses their mutual incoherence.
 
 For the Gaussian PSF used for intuition in this chapter,
 \begin{align}
@@ -83,19 +102,48 @@ This description does not assume that an astronomical field is prepared in a lab
 
 Spatial-mode demultiplexing (SPADE) replaces pixel measurements with projections onto a set of orthogonal transverse modes~\cite{Tsang2016quantum,Santamaria2024single}. The key design choice is to use modes matched to the PSF and to centre the lowest-order mode on the bright source. For a Gaussian PSF, the natural family is the Hermite--Gaussian (HG) basis.
 
+\subsection{The Hermite--Gaussian spatial basis}
+
+\begin{definition}[Hermite--Gaussian spatial basis]
+    The transverse spatial state of one detected photon is described by a square-integrable complex wavefunction of the image-plane coordinates $(x,y)$.  The Hermite--Gaussian modes form a complete orthonormal basis of this infinite-dimensional spatial Hilbert space:
+    \begin{equation}
+        \langle HG_{mn}|HG_{pq}\rangle=\delta_{mp}\delta_{nq},
+        \qquad
+        |\psi\rangle=\sum_{m,n=0}^{\infty}c_{mn}|HG_{mn}\rangle,
+        \qquad
+        c_{mn}=\langle HG_{mn}|\psi\rangle
+        \label{eq:hg_complete_basis}
+    \end{equation}
+    Here $m$ and $n$ are non-negative integers that label the modal order in the $x$ and $y$ directions.  The functions are a Gaussian envelope multiplied by Hermite polynomials.  Increasing either index introduces additional transverse structure, it does not introduce an additional photon.
+\end{definition}
+
+The fundamental mode $HG_{00}$ has the same Gaussian shape as an aligned point-source PSF.  The first-order modes have one sign change in their \emph{field amplitude} along one axis.  Their intensity is non-negative, the sign change matters because a mode sorter interferometrically projects the incoming field onto these amplitudes before the final photon counts are recorded.
+
+For a small displacement of a Gaussian PSF, the modal expansion makes the SPADE mechanism explicit:
+\begin{equation}
+    |\psi_{\boldsymbol d}\rangle
+    \simeq |HG_{00}\rangle
+    +\frac{d_x}{2w_0}|HG_{10}\rangle
+    +\frac{d_y}{2w_0}|HG_{01}\rangle
+    +\mathcal{O}\!\left(\frac{d^2}{w_0^2}\right),
+    \qquad d\ll w_0.
+    \label{eq:hg_small_displacement_expansion}
+\end{equation}
+Thus, a small displacement transfers field amplitude out of the star-centred fundamental mode and into the first-order modes.  Contributions from higher total HG orders enter at progressively higher powers of $d/w_0$.  This is why low-order modes are physically informative in the sub-Rayleigh regime, while the full HG basis remains infinite.
+
 The fundamental mode is the star-centred PSF, while the two first-order modes are its displacement-sensitive directions:
 \begin{align}
-    |HG_{00}\rangle
-     & =\int dx\,dy\,\psi_0(x,y)a^\dagger(x,y)|0\rangle,
-    \label{eq:hg00_def}                                               \\
-    |HG_{01}\rangle
-     & =\int dx\,dy\,\frac{y}{w_0}\psi_0(x,y)a^\dagger(x,y)|0\rangle,
-    \label{eq:hg01_def}                                               \\
-    |HG_{10}\rangle
-     & =\int dx\,dy\,\frac{x}{w_0}\psi_0(x,y)a^\dagger(x,y)|0\rangle.
+    \langle x,y|HG_{00}\rangle
+     & =\psi_0(x,y),
+    \label{eq:hg00_def}           \\
+    \langle x,y|HG_{01}\rangle
+     & =\frac{y}{w_0}\psi_0(x,y),
+    \label{eq:hg01_def}           \\
+    \langle x,y|HG_{10}\rangle
+     & =\frac{x}{w_0}\psi_0(x,y).
     \label{eq:hg10_def}
 \end{align}
-Here $a^\dagger(x,y)$ creates a photon at image-plane position $(x,y)$. A practical mode sorter implements these projections optically and directs the modes to separate photon-counting ports.
+These position-space wavefunctions are equivalent to defining one-photon creation operators, but avoid introducing second-quantized notation that is not needed for the present measurement model.  A practical mode sorter implements the HG projections optically and directs the resulting modes to separate photon-counting ports.
 
 \begin{figure}[htbp]
     \centering
@@ -112,21 +160,30 @@ It is useful to group the lowest-order ports as
     +|HG_{10}\rangle\langle HG_{10}|.
     \label{eq:pi1_def}
 \end{align}
-These projectors define a \emph{low-order modal cutoff}, not a spectral-rank truncation of $\rho_d$. That distinction is important for the QFI-based comparison developed later in the thesis.
-
-When the sorter is aligned to the star, the star predominantly occupies $HG_{00}$. A small planetary displacement populates the first-order sector. In the ideal Gaussian model, the probability for a temporal mode to produce a detection in that sector has the leading form
+The low-order modal cutoff is therefore
 \begin{equation}
-    p_1\simeq \eta\epsilon\frac{d_x^2+d_y^2}{4w_0^2},
+    \Pi_{\leq1}\coloneqq\Pi_0+\Pi_1,
+    \qquad
+    \Pi_{\mathrm{rest}}\coloneqq\mathbb{I}-\Pi_{\leq1}.
+    \label{eq:hg_low_order_cutoff}
+\end{equation}
+It retains three modes---one fundamental and two first-order modes---while $\Pi_{\mathrm{rest}}$ contains every higher HG order.  This is a \emph{fixed physical measurement sector}, not a spectral-rank truncation of $\rho_d$.  The distinction is essential in the practical QFI analysis of the next chapter.
+
+When the sorter is aligned to the star, the star predominantly occupies $HG_{00}$. A small planetary displacement populates the first-order sector.  The probability for a temporal mode to produce a detection in that sector is
+\begin{equation}
+    p_1\coloneqq\operatorname{Tr}[\rho_d\Pi_1]
+    \simeq \eta\epsilon\frac{d_x^2+d_y^2}{4w_0^2},
     \qquad d\ll w_0.
     \label{eq:p1_asymmetric}
 \end{equation}
-Thus the first-order counts provide a direct displacement-sensitive observable without requiring the planet to form a visually separated intensity peak. Higher-order modes, background rejection, and different modal bases can also be useful; the low-order picture is the simplest illustration of the SPADE principle.
+Thus the first-order counts provide a direct displacement-sensitive observable without requiring the planet to form a visually separated intensity peak.  In the leading approximation, the $HG_{10}$ and $HG_{01}$ ports carry the $d_x^2$ and $d_y^2$ contributions separately, whereas their sum depends on $d_x^2+d_y^2$.  Photon counts in these ports alone are insensitive to the sign of a displacement along either axis; resolving that ambiguity requires a measurement sensitive to the relevant intermodal coherence, together with a defined spatial reference.  Higher-order modes, background rejection, and different modal bases can also be useful; the low-order picture is the simplest illustration of the SPADE principle.
 
 \subsection{Alignment and ordinary SPADE inference}
 
-The required reference frame is normally obtained by centring the fundamental mode on the bright source. With a residual alignment offset $\bmdelta = (\delta_x,\delta_y)$, its single-photon count probability is
+The required reference frame is normally obtained by centring the fundamental mode on the bright source.  Let $\bmdelta=(\delta_x,\delta_y)$ denote the displacement of the mode-sorter axis relative to the stellar centroid.  The fundamental-port probability is then
 \begin{equation}
-    p_0=\eta(1-\epsilon)e^{-(\delta_x^2+\delta_y^2)/(4w_0^2)}
+    p_0\coloneqq\operatorname{Tr}[\rho_d\Pi_0]
+    =\eta(1-\epsilon)e^{-(\delta_x^2+\delta_y^2)/(4w_0^2)}
     +\eta\epsilon e^{-[(d_x-\delta_x)^2+(d_y-\delta_y)^2]/(4w_0^2)}.
     \label{eq:p0_alignment}
 \end{equation}

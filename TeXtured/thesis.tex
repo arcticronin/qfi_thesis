@@ -29,17 +29,17 @@
 %% Only uncommented files are included (faster compilation)
 %% NOTE: If no files are uncommented, all files are included
 \includeonlysmart{
-    %frontmatter/title,
-    %frontmatter/declaration,
-    %frontmatter/dedication,
-    %frontmatter/information,
-    %chapters/Intro,
-    %chapters/MathBackground,
-    %chapters/Methods,
-    %chapters/NoiseAnalysis,
-    chapters/Astrophysical,
-    chapters/ExoplanetExperiment,
-    chapters/Conclusions,
+    % frontmatter/title,
+    % frontmatter/declaration,
+    % frontmatter/dedication,
+    % frontmatter/information,
+    % chapters/Intro,
+    % chapters/MathBackground,
+    % chapters/Methods,
+    chapters/NoiseAnalysis,
+    % chapters/Astrophysical,
+    % chapters/ExoplanetExperiment,
+    % chapters/Conclusions,
     % chapters/MathematicalAppendix,
 }
 
@@ -53,18 +53,9 @@
 
 \contentsandlists
 
-% \include{chapters/Introduction}
-% \include{chapters/QuickSummary}
-% \include{chapters/Notation}
-
-\mainmatter
-% \include{chapters/Design}
-% \include{chapters/Usage}
-% \include{chapters/Features}
-% \include{chapters/Tips}
-
-% custom, here it is numbered!
 \include{chapters/Intro}
+
+\mainmatter % here it is numbered!
 \include{chapters/MathBackground}
 \include{chapters/Methods}
 \include{chapters/NoiseAnalysis}

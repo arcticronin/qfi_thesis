@@ -110,7 +110,6 @@ Likewise,
     \leq \mathcal{F}_Q[\rho_{\mathrm{th},N}(h_x;\beta)].
     \label{eq:local_global_data_processing}
 \end{equation}
-All latest Project~9 outputs satisfy these checks at every sampled field.
 
 \begin{remark}[A necessary distinction]
     Thermal preparation is not generally a parameter-independent channel applied to the ground-state family: the Hamiltonian and Gibbs state both depend on $h_x$. Consequently, there is no theorem requiring
@@ -227,9 +226,16 @@ The local peak rises strongly, while the retained fraction of the full peak incr
 
 The figure source is \texttt{/home/ronin/Dev/space/QCES/cqes/project1\_plots.ipynb}.
 
-\todo[]{insert diagram 5}
+\todo[]{insert diagram 5, Fig~\ref{fig:project1_fig_1_1}}
 
-\noindent\emph{Plot brief.} Insert Project~1 main-text figure P1.1: local bounds and exact local SLD in small multiples for the three rows of Table~\ref{tab:project1_size_sequence}.
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.8\textwidth]{figures/noise/proj1_fig_1_1.png}
+    \caption{Project~1 main-text figure P1.1: local bounds and exact local SLD in small multiples for the three rows of Table~\ref{tab:project1_size_sequence}.}
+    \label{fig:project1_fig_1_1}
+\end{figure}
+
+
 
 \subsection{Accessible-subsystem sequence at fixed $N=8$}
 
@@ -255,13 +261,46 @@ Retaining more qubits gives rapid, monotonic recovery of the critical response. 
 
 \todo[]{insert diagram 6}
 
-\noindent\emph{Plot brief.} Insert Project~1 main-text figure P1.2: exact local-SLD overlays for $n=2,\ldots,7$ at fixed $N=8$.
+\noindent\emph{Plot brief.} Insert Project~1 main-text figure P1.2: exact local-SLD overlays for $n=2,\ldots,7$ at fixed $N=8$, Fig~\ref{fig:project1_fig_1_2}.
+
+\begin{figure}[H]%[htbp]
+    \centering
+    \includegraphics[width=0.8\textwidth]{figures/noise/subsystem_SLD_varying_n_fixing_N8.png}
+    \caption{Project~1 main-text figure P1.2}
+    \label{fig:project1_fig_1_2}
+\end{figure}
+
+
 
 \todo[]{insert diagram 7}
 
-\noindent\emph{Supplementary plot brief.} Insert separate heatmaps for local SLD, \texttt{lower\_tqfi}, and \texttt{sub\_qfi\_bound} across the $n$ sweep.
+\noindent\emph{Supplementary plot brief.} Insert separate heatmaps for local SLD, \texttt{lower\_tqfi}, and \texttt{sub\_qfi\_bound} across the $n$ sweep Fig~\ref{fig:project1_fig_1_2_heatmaps}.
+\begin{figure}[H]%[htbp]
+    \centering
+    \includegraphics[width=0.48\textwidth]{figures/noise/subsystem_SLD_varying_n_fixing_N8_heatmap.png}
+    \includegraphics[width=0.48\textwidth]{figures/noise/subsystem_TQFI_varying_n_fixing_N8_heatmap.png}
+
+    \caption{Project~1 main-text figure P1.2 heatmaps}
+    \label{fig:project1_fig_1_2_heatmaps}
+\end{figure}
 
 At the local-SLD peak, the \texttt{lower\_tqfi}/SLD ratio ranges from about $0.42$ to $0.96$ in the two Project~1 sweeps; the corresponding \texttt{sub\_qfi\_bound}/SLD ratio ranges from about $0.05$ to $0.60$. The finite-displacement quantities are informative but can be loose when the reduced state is strongly mixed or the truncation misses part of the response.
+
+
+\todo[]{think, I like the following them more}
+\begin{figure}[H]%[htbp]
+    \centering
+    \includegraphics[width=1\textwidth]{figures/noise/local_bounds_and_exact_over_n.png}
+    \caption{Project~1 main-text figure P1.3: local bounds and exact over $n$}
+    \label{fig:project1_fig_1_3}
+\end{figure}
+
+\begin{figure}[H]%[htbp]
+    \centering
+    \includegraphics[width=0.6\textwidth]{figures/noise/local_bounds_and_exact_over_N.png}
+    \caption{Project~1 main-text figure P1.3: local bounds and exact over $n$}
+    \label{fig:project1_fig_1_3}
+\end{figure}
 
 % ==============================================================================
 \section{Project 7: Thermal Crossover and Local Recovery}

@@ -21,7 +21,15 @@ The available ASI record is more limited than that objective requires.  It is a 
     \texttt{H\_data}[d_a,\epsilon,r]=n_1,
     \label{eq:spade_recorded_count}
 \end{equation}
-with $21\times25\times100=52{,}500$ measurements.  The dimensionless signed scan coordinate ranges over $d_a\in[-0.66667,0.66667]$, the faint-source fraction over $\epsilon\in[0.00427,0.09593]$, and $r$ indexes the repetitions.  The scan convention and PSF scale are retained as calibrated analysis coordinates; the model below makes any conversion to a physical width explicit.
+with $21\times25\times100=52{,}500$ measurements.  The dimensionless signed scan coordinate ranges over $d_a\in[-\frac{2}{3},\frac{2}{3}]$, the faint-source fraction over $\epsilon\in[0.00427,0.09593]$, and $r$ indexes the repetitions.  The scan convention and PSF scale are retained as calibrated analysis coordinates. The model below makes any conversion to a physical width explicit.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.45\textwidth]{figures/asi_report/sample_1_exoplanet_2026.png}
+    \includegraphics[width=0.53\textwidth]{figures/asi_report/average_sample_exoplanet_2026.png}
+    \caption{Schematic of the available SPADE count record. The left panel shows the photon counts detected during a single observation session (a single sample). The right panel displays the average number of photons detected across all 100 sessions combined. Only the aggregate first-order counts $n_1=n_{HG_{01}}+n_{HG_{10}}$ are recorded, while $HG_{00}$, separate first-order ports, higher modes, and no-click events are unrecorded.}
+    \label{fig:spade_data_record}
+\end{figure}
 
 \begin{table}[htbp]
     \centering
@@ -29,12 +37,12 @@ with $21\times25\times100=52{,}500$ measurements.  The dimensionless signed scan
     \label{tab:spade_data_record}
     \begin{tabular}{p{5.2cm} p{8.0cm}}
         \toprule
-        \textbf{Available} & \textbf{Absent from the count cube} \\
+        \textbf{Available}                                                            & \textbf{Absent from the count cube}                                                                                              \\
         \midrule
-        Repeated aggregate first-order counts $n_1$ for each $(d_a,\epsilon)$ setting & Simultaneous $HG_{00}$ counts; separate $HG_{01}$ and $HG_{10}$ counts; and higher-order modal counts \\
-        Nominal signed displacement and source-ratio settings & Accepted trials or independently calibrated incident photons per acquisition \\
-        Repetitions, permitting empirical mean and variance diagnostics & Source-blocked dark/background acquisitions; a mode-injection confusion matrix; and detector/laser drift time series \\
-        & A phase-sensitive measurement, or an independently validated coherence model, from which a density matrix could be reconstructed \\
+        Repeated aggregate first-order counts $n_1$ for each $(d_a,\epsilon)$ setting & Simultaneous $HG_{00}$ counts; separate $HG_{01}$ and $HG_{10}$ counts; and higher-order modal counts                            \\
+        Nominal signed displacement and source-ratio settings                         & Accepted trials or independently calibrated incident photons per acquisition                                                     \\
+        Repetitions, permitting empirical mean and variance diagnostics               & Source-blocked dark/background acquisitions; a mode-injection confusion matrix; and detector/laser drift time series             \\
+                                                                                      & A phase-sensitive measurement, or an independently validated coherence model, from which a density matrix could be reconstructed \\
         \bottomrule
     \end{tabular}
 \end{table}
@@ -72,12 +80,12 @@ This would be an interesting experiment: calibrated counts in every selected mod
     \label{tab:spade_reduction_distinctions}
     \begin{tabular}{p{3.2cm} p{4.0cm} p{6.0cm}}
         \toprule
-        \textbf{Construction} & \textbf{Object retained} & \textbf{What the current record supports} \\
+        \textbf{Construction}      & \textbf{Object retained}                                   & \textbf{What the current record supports}                                                            \\
         \midrule
-        Numerical HG cutoff & Modes up to a declared HG order, with a complementary tail & A converged \emph{model} calculation; order $12$ is used for the present QFI validation. \\
-        Rank-$m$ TQFI & Dominant eigenvectors of $\rho(\theta)$ & Not available from $n_1$ alone: neither the state pair nor its eigenspace is measured. \\
-        Accessible HG measurement & A fixed modal POVM plus its complement & A future calibrated multi-mode CFI experiment; the present record lacks the required outcome vector. \\
-        Current measurement record & One noisy aggregate count after the apparatus & Repeated-count likelihood modelling and conditional CFI/QFI comparisons. \\
+        Numerical HG cutoff        & Modes up to a declared HG order, with a complementary tail & A converged \emph{model} calculation; order $12$ is used for the present QFI validation.             \\
+        Rank-$m$ TQFI              & Dominant eigenvectors of $\rho(\theta)$                    & Not available from $n_1$ alone: neither the state pair nor its eigenspace is measured.               \\
+        Accessible HG measurement  & A fixed modal POVM plus its complement                     & A future calibrated multi-mode CFI experiment; the present record lacks the required outcome vector. \\
+        Current measurement record & One noisy aggregate count after the apparatus              & Repeated-count likelihood modelling and conditional CFI/QFI comparisons.                             \\
         \bottomrule
     \end{tabular}
 \end{table}
@@ -99,12 +107,12 @@ The practical model separates parameter encoding, quantum evolution, quantum mea
 
 \noindent\emph{Diagram brief.} Draw a quantum-process diagram with a quantum wire for the truncated spatial HG system $S$ and a vacuum sector $V$:
 \[
- (d_a,\epsilon)\!\to\!\rho_S
- \xrightarrow{\mathcal{E}_{\rm loss}(\eta)}
- \xrightarrow{U_{\rm align}(\delta_{\rm sorter})}
- \xrightarrow{\mathcal{E}_{\phi}(v)}
- \xrightarrow{\mathcal{M}_{\rm SPADE}(l_0,l_1,l_{\rm tail})}
- Y\xrightarrow{\mathcal{C}_{\rm dark,F}}n_1 .
+    (d_a,\epsilon)\!\to\!\rho_S
+    \xrightarrow{\mathcal{E}_{\rm loss}(\eta)}
+    \xrightarrow{U_{\rm align}(\delta_{\rm sorter})}
+    \xrightarrow{\mathcal{E}_{\phi}(v)}
+    \xrightarrow{\mathcal{M}_{\rm SPADE}(l_0,l_1,l_{\rm tail})}
+    Y\xrightarrow{\mathcal{C}_{\rm dark,F}}n_1 .
 \]
 Optionally draw environment wires for loss and dephasing.  Mark QFI checkpoints before and after the quantum channels, the modal-outcome CFI at $Y$, and the final count CFI after the classical channel.  State clearly that the current $Y$ has only \emph{reported first order} versus \emph{other} outcomes.
 
@@ -116,7 +124,7 @@ Before loss, the model source has the form
 \begin{equation}
     \rho_S(d_a,\epsilon)
     =\left(1-\epsilon_{\mathrm{eff}}\right)|HG_{00}\rangle\langle HG_{00}|
-     +\epsilon_{\mathrm{eff}}|u_{d_{\mathrm{eff}}}\rangle\langle u_{d_{\mathrm{eff}}}|,
+    +\epsilon_{\mathrm{eff}}|u_{d_{\mathrm{eff}}}\rangle\langle u_{d_{\mathrm{eff}}}|,
     \label{eq:spade_source_state}
 \end{equation}
 where $|u_{d_{\mathrm{eff}}}\rangle$ is the displaced Gaussian PSF.  The source components are mutually incoherent, as in the optical model of Chapter~\ref{ch:astrophysical_theory}.
@@ -132,9 +140,9 @@ For the data-facing sector model, the effective coordinates are
 \end{equation}
 where $d_0$, $w_{\mathrm{scale}}$, and $\alpha$ represent a displacement offset, a PSF-width rescaling, and a source-ratio calibration exponent.  The factor defining $\mu$ follows the PSF convention of the analysis code; $w_{\mathrm{scale}}$ carries the conversion from the scan coordinate to that convention.  The grouped source probabilities are
 \begin{align}
-    p_0 &=1-\epsilon_{\mathrm{eff}}+\epsilon_{\mathrm{eff}}e^{-\mu}, \\
-    p_1 &=\epsilon_{\mathrm{eff}}\mu e^{-\mu}, \\
-    p_{\mathrm{tail}}&=1-p_0-p_1.
+    p_0               & =1-\epsilon_{\mathrm{eff}}+\epsilon_{\mathrm{eff}}e^{-\mu}, \\
+    p_1               & =\epsilon_{\mathrm{eff}}\mu e^{-\mu},                       \\
+    p_{\mathrm{tail}} & =1-p_0-p_1.
     \label{eq:spade_sector_probabilities}
 \end{align}
 Here $p_1$ denotes the total first-order sector used by the stored aggregate count.  This simple sector description is used for likelihood intuition; the QFI calculation uses the converged multi-mode state rather than treating Eq.~\eqref{eq:spade_sector_probabilities} as a two-mode quantum state.
@@ -145,14 +153,14 @@ Here $p_1$ denotes the total first-order sector used by the stored aggregate cou
     Starting from the vacuum-free spatial source state $\rho_S(d_a,\epsilon)$, the quantum part of the model is
     \begin{align}
         \rho_{\mathrm{loss}}
-        &=\mathcal{E}_{\mathrm{loss},\eta}[\rho_S]
-          =\eta\rho_S+(1-\eta)|\mathrm{vac}\rangle\langle\mathrm{vac}|, \\
+         & =\mathcal{E}_{\mathrm{loss},\eta}[\rho_S]
+        =\eta\rho_S+(1-\eta)|\mathrm{vac}\rangle\langle\mathrm{vac}|,        \\
         \rho_{\mathrm{align}}
-        &=U_{\mathrm{align}}(\delta_{\mathrm{sorter}})\rho_{\mathrm{loss}}
-          U_{\mathrm{align}}^{\dagger}(\delta_{\mathrm{sorter}}), \\
+         & =U_{\mathrm{align}}(\delta_{\mathrm{sorter}})\rho_{\mathrm{loss}}
+        U_{\mathrm{align}}^{\dagger}(\delta_{\mathrm{sorter}}),              \\
         \rho_{\mathrm{q}}
-        &=\mathcal{E}_{\phi,v}[\rho_{\mathrm{align}}]
-          =v\rho_{\mathrm{align}}+(1-v)\operatorname{diag}_{\mathrm{HG}}(\rho_{\mathrm{align}}).
+         & =\mathcal{E}_{\phi,v}[\rho_{\mathrm{align}}]
+        =v\rho_{\mathrm{align}}+(1-v)\operatorname{diag}_{\mathrm{HG}}(\rho_{\mathrm{align}}).
         \label{eq:spade_quantum_sequence}
     \end{align}
     Photon loss is implemented as a completely positive trace-preserving erasure channel.  The fixed sorter displacement is a parameter-independent unitary.  The dephasing map suppresses HG-basis coherences while preserving populations.  With $\Pi_{HG_1}\coloneqq\Pi_{HG_{01}}+\Pi_{HG_{10}}$, the reported first-order outcome is described by the POVM element
@@ -201,13 +209,13 @@ The data first determine which idealizations are untenable.  Across the scan, th
     \label{tab:spade_raw_diagnostics}
     \begin{tabular}{p{5.0cm} c p{5.2cm}}
         \toprule
-        \textbf{Diagnostic} & \textbf{Observed value} & \textbf{Implication} \\
+        \textbf{Diagnostic}            & \textbf{Observed value} & \textbf{Implication}                                                               \\
         \midrule
-        Mean $n_1$ across the grid & $6.93$--$19.44$ & The displacement-sensitive signal is small relative to a substantial baseline. \\
-        Median $n_1$ at $d_a=0$ & $8.17$ & Include background and/or bright-mode leakage. \\
-        Median Fano factor & $2.50$ & Include an overdispersed count-noise model. \\
-        Fifth--ninety-fifth Fano range & $1.85$--$3.39$ & A single $F$ is a practical approximation, not a complete drift model. \\
-        Largest signed-scan asymmetry & $3.84$ counts & Retain signed distances and investigate alignment or scan asymmetry conditionally. \\
+        Mean $n_1$ across the grid     & $6.93$--$19.44$         & The displacement-sensitive signal is small relative to a substantial baseline.     \\
+        Median $n_1$ at $d_a=0$        & $8.17$                  & Include background and/or bright-mode leakage.                                     \\
+        Median Fano factor             & $2.50$                  & Include an overdispersed count-noise model.                                        \\
+        Fifth--ninety-fifth Fano range & $1.85$--$3.39$          & A single $F$ is a practical approximation, not a complete drift model.             \\
+        Largest signed-scan asymmetry  & $3.84$ counts           & Retain signed distances and investigate alignment or scan asymmetry conditionally. \\
         \bottomrule
     \end{tabular}
 \end{table}
@@ -228,19 +236,25 @@ The progression from ideal to effective models makes the same point quantitative
 
 Attempts to fit the higher-order tail illustrate why physical constraints matter.  A flexible tail term raises a mean-model fit from $R^2=0.8858$ to $0.9127$, but requires $A_{\mathrm{tail}}=-221290$.  A negative effective leakage is not a physical channel parameter; it is a warning that the flexible term is absorbing missing structure.  Likewise, exploratory fits that let the PSF scale float can drive it to a bound.  Such behaviour is diagnostic evidence for missing calibration information, not evidence for an exotic optical effect.
 
+% Add to preamble: \usepackage{makecell}
+% Add this to your preamble:
+% \usepackage{tabularx}
+
 \begin{table}[htbp]
     \centering
-    \caption{Repeated-count explorer scenarios.  These fits are used to expose missing constraints, not to select an unconstrained physical apparatus model.}
+    \caption{Repeated-count explorer scenarios. These fits are used to expose missing constraints, not to select an unconstrained physical apparatus model.}
     \label{tab:spade_explorer_scenarios}
-    \begin{tabular}{p{3.5cm} c c p{5.9cm}}
+    % \textwidth forces the table to fill the page width
+    % The 'X' column calculates the remaining space and acts like a 'p' column
+    \begin{tabularx}{\textwidth}{p{1.9cm} c c X}
         \toprule
-        \textbf{Scenario} & \textbf{Fitted $F$} & \textbf{Mean $R^2$} & \textbf{Diagnostic} \\
+        \textbf{Scenario}           & \textbf{Fitted $F$} & \textbf{Mean $R^2$} & \textbf{Diagnostic}                                                                                                           \\
         \midrule
-        Affine readout & $2.587$ & $0.8861$ & Baseline plus first-order contrast gives the simple repeated-count reference. \\
-        Source calibration & $2.582$ & $0.8942$ & Allowing offset, PSF scale, and source-ratio exponent drives the PSF scale to its lower bound $0.6$. \\
-        Tail readout & $2.702$ & $0.9056$ & The apparent improvement comes with a negative tail response and PSF scale $0.709$, so it is not a physical tail calibration. \\
+        Affine \newline readout     & $2.587$             & $0.8861$            & Baseline plus first-order contrast gives the simple repeated-count reference.                                                 \\
+        Source \newline calibration & $2.582$             & $0.8942$            & Allowing offset, PSF scale, and source-ratio exponent drives the PSF scale to its lower bound $0.6$.                          \\
+        Tail \newline readout       & $2.702$             & $0.9056$            & The apparent improvement comes with a negative tail response and PSF scale $0.709$, so it is not a physical tail calibration. \\
         \bottomrule
-    \end{tabular}
+    \end{tabularx}
 \end{table}
 
 \begin{remark}[What the effective fits are for]
@@ -260,13 +274,13 @@ The central inferential rule is simple: fix what an independent calibration spec
     \label{tab:spade_identifiability}
     \begin{tabular}{p{3.8cm} p{4.6cm} p{5.7cm}}
         \toprule
-        \textbf{Quantity} & \textbf{Status in the present analysis} & \textbf{Independent information needed for a physical estimate} \\
+        \textbf{Quantity}               & \textbf{Status in the present analysis}                    & \textbf{Independent information needed for a physical estimate}                                         \\
         \midrule
-        Fano factor $F$ & Approximately identifiable from repetitions & Detector/source drift characterisation for a more complete noise model \\
-        $B,A_1,A_{\mathrm{tail}}$ & Effective combinations can be fitted & Source-blocked counts, incident flux, and mode-injection calibration to separate their physical factors \\
-        Survival $\eta$ & Fittable only conditional on scale and readout assumptions & Incident photons per acquisition and calibrated transmission/detection factors \\
-        Source offset and sorter offset & Correlated in aggregate data & An independent alignment reference \\
-        HG dephasing visibility $v$ & Not identifiable from aggregate diagonal counts & Interferometric/state calibration or additional modal observables \\
+        Fano factor $F$                 & Approximately identifiable from repetitions                & Detector/source drift characterisation for a more complete noise model                                  \\
+        $B,A_1,A_{\mathrm{tail}}$       & Effective combinations can be fitted                       & Source-blocked counts, incident flux, and mode-injection calibration to separate their physical factors \\
+        Survival $\eta$                 & Fittable only conditional on scale and readout assumptions & Incident photons per acquisition and calibrated transmission/detection factors                          \\
+        Source offset and sorter offset & Correlated in aggregate data                               & An independent alignment reference                                                                      \\
+        HG dephasing visibility $v$     & Not identifiable from aggregate diagonal counts            & Interferometric/state calibration or additional modal observables                                       \\
         \bottomrule
     \end{tabular}
 \end{table}
@@ -322,13 +336,13 @@ At exactly $d_a=0$, the source model changes rank.  The derivative SLD QFI and a
     \label{tab:spade_information_comparison}
     \begin{tabular}{p{5.3cm} p{3.3cm} p{5.3cm}}
         \toprule
-        \textbf{Quantity} & \textbf{Result over the measured nonzero grid} & \textbf{Interpretation} \\
+        \textbf{Quantity}                                           & \textbf{Result over the measured nonzero grid}        & \textbf{Interpretation}                                                        \\
         \midrule
-        Post-quantum-channel QFI per launched photon & $1.09\times10^{-4}$--$2.51\times10^{-3}$ & Model information limit after the quantum channels \\
-        Full ideal-SPADE CFI$/\mathcal{F}_{\mathrm{Q}}$ & $0.999934$--$1.000000$ & A complete retained HG measurement is nearly QFI-optimal in the model \\
-        Ideal first-order CFI$/\mathcal{F}_{\mathrm{Q}}$ & $0.94479$--$0.98614$ at representative regular points & Low-order information is valuable in the ideal measurement \\
-        Imperfect binary-readout CFI$/\mathcal{F}_{\mathrm{Q}}$ & $5.90\times10^{-4}$--$0.53062$ & Bright-mode leakage and binary aggregation can discard substantial information \\
-        Final count CFI$/[N_{\mathrm{in}}\mathcal{F}_{\mathrm{Q}}]$ & $2.62\times10^{-4}$--$0.21778$ & Conditional information after readout, scale, background, and Fano noise \\
+        Post-quantum-channel QFI per launched photon                & $1.09\times10^{-4}$--$2.51\times10^{-3}$              & Model information limit after the quantum channels                             \\
+        Full ideal-SPADE CFI$/\mathcal{F}_{\mathrm{Q}}$             & $0.999934$--$1.000000$                                & A complete retained HG measurement is nearly QFI-optimal in the model          \\
+        Ideal first-order CFI$/\mathcal{F}_{\mathrm{Q}}$            & $0.94479$--$0.98614$ at representative regular points & Low-order information is valuable in the ideal measurement                     \\
+        Imperfect binary-readout CFI$/\mathcal{F}_{\mathrm{Q}}$     & $5.90\times10^{-4}$--$0.53062$                        & Bright-mode leakage and binary aggregation can discard substantial information \\
+        Final count CFI$/[N_{\mathrm{in}}\mathcal{F}_{\mathrm{Q}}]$ & $2.62\times10^{-4}$--$0.21778$                        & Conditional information after readout, scale, background, and Fano noise       \\
         \bottomrule
     \end{tabular}
 \end{table}
@@ -366,15 +380,15 @@ The most valuable next data products are listed in Table~\ref{tab:spade_calibrat
     \label{tab:spade_calibration_handoff}
     \begin{tabular}{p{5.3cm} p{8.0cm}}
         \toprule
-        \textbf{Requested data product} & \textbf{What it resolves} \\
+        \textbf{Requested data product}                                                                     & \textbf{What it resolves}                                                                              \\
         \midrule
-        Counts in $HG_{00}$, $HG_{01}$, $HG_{10}$, selected higher modes, and a complement/no-click outcome & The calibrated multi-outcome modal probability vector and the CFI of the real SPADE POVM \\
-        Accepted trials or incident photons per acquisition & The normalisation that separates photon survival from source brightness \\
-        Source-blocked data for each output & Dark/background counts versus optical modal signal \\
-        Mode-injection confusion matrix & Readout transmission, loss, and cross talk between selected modes \\
-        PSF, axis, source-ratio, and independent alignment calibration & Separation of source displacement from sorter displacement and nominal from effective scan coordinates \\
-        Time-resolved detector/source metadata & A physical model of overdispersion, drift, dead time, and other count correlations \\
-        Coherence-sensitive measurement or validated coherence model & A state-level QFI/TQFI analysis, beyond the modal-probability CFI protocol \\
+        Counts in $HG_{00}$, $HG_{01}$, $HG_{10}$, selected higher modes, and a complement/no-click outcome & The calibrated multi-outcome modal probability vector and the CFI of the real SPADE POVM               \\
+        Accepted trials or incident photons per acquisition                                                 & The normalisation that separates photon survival from source brightness                                \\
+        Source-blocked data for each output                                                                 & Dark/background counts versus optical modal signal                                                     \\
+        Mode-injection confusion matrix                                                                     & Readout transmission, loss, and cross talk between selected modes                                      \\
+        PSF, axis, source-ratio, and independent alignment calibration                                      & Separation of source displacement from sorter displacement and nominal from effective scan coordinates \\
+        Time-resolved detector/source metadata                                                              & A physical model of overdispersion, drift, dead time, and other count correlations                     \\
+        Coherence-sensitive measurement or validated coherence model                                        & A state-level QFI/TQFI analysis, beyond the modal-probability CFI protocol                             \\
         \bottomrule
     \end{tabular}
 \end{table}

@@ -33,7 +33,18 @@
     % \emergencystretch=1em % prevent some of the overfull hboxes
     % \hyphenpenalty 100 % try to prevent (some) hyphenation
     % \printbibliography[heading=bibintoc, title=References]
-    \printbibliography[heading=bibintoclabel, title=References, prenote=note]
+
+    % this was the old standard, it works, but they are all together
+    % \printbibliography[heading=bibintoclabel, title=References, prenote=note]
+    \printbibheading[heading=bibintoclabel, title=References]
+    \printbibliography[heading=subbibintoc, title=Books, type=book]
+    \printbibliography[heading=subbibintoc, title=Articles, type=article]
+    \printbibliography[
+        heading=subbibintoc,
+        title=Other references,
+        nottype=book,
+        nottype=article
+    ]
 }
 
 
