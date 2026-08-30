@@ -1,0 +1,32 @@
+\chapter{Supplementary Numerical Details for the Noise Analysis}
+\label{app:noise_analysis}
+
+This appendix records the derivative convention used for the matched-purity control in Chapter~\ref{ch:noise_analysis}, that was analyzed and corrected while studying the case, because the naive approach we followed in the beginning, led to inconsistencies.  It is included to make the numerical comparison reproducible. This part does not introduce any additional physical assumptions or conclusions.
+
+\section{Derivative conventions for matched-purity paths}
+\label{app:matched_purity_derivatives}
+
+In the matched-purity control, the depolarizing probability $P$ and inverse temperature $\beta$ are selected as functions of the estimated field $h_x$.  The QFI must consequently be evaluated using the total derivative along each selected path.
+
+For the matched depolarizing family, this derivative is
+\begin{equation}
+    \frac{\mathrm{d}\rho_{\mathrm{dep},S}}{\mathrm{d}h_x}
+    =
+    (1-P)\frac{\partial\rho_{\mathrm{G},S}}{\partial h_x}
+    -\frac{\mathrm{d}P}{\mathrm{d}h_x}\rho_{\mathrm{G},S}
+    +\frac{1}{2^n}\frac{\mathrm{d}P}{\mathrm{d}h_x}\mathbb{I}_S.
+    \label{eq:matched_depolarizing_derivative}
+\end{equation}
+For the matched thermal family, it is
+\begin{equation}
+    \frac{\mathrm{d}\rho_{\mathrm{th},S}}{\mathrm{d}h_x}
+    =
+    \operatorname{Tr}_E\!\left[
+        \frac{\partial\rho_{\mathrm{th},N}}{\partial h_x}
+        +\frac{\partial\rho_{\mathrm{th},N}}{\partial\beta}
+        \frac{\mathrm{d}\beta}{\mathrm{d}h_x}
+        \right].
+    \label{eq:matched_thermal_derivative}
+\end{equation}
+
+Thus, the matched-purity construction is a comparison of deliberately selected parameterized state paths, not a fixed-channel experiment.  The full-to-local QFI inequalities reported in Chapter~\ref{ch:noise_analysis} provide a practical consistency check for the resulting calculations.

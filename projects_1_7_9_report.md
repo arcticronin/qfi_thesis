@@ -16,7 +16,7 @@ The three projects have distinct roles:
 
 The strongest conclusions supported by the current data are:
 
-1. **Accessible local QFI grows strongly with both system size and accessible subsystem size.** In the sampled open-chain scaling sequence `(N,n)=(4,2),(6,4),(8,6)`, the peak exact subsystem SLD QFI rises from `2.859` to `5.919` to `9.472`. At fixed `N=8`, increasing the accessible subsystem from `n=2` to `n=7` raises the peak from `3.247` to `10.062`, reaching the full-system value when only one qubit is traced out.
+1. **Accessible local QFI grows strongly with both system size and accessible subsystem size.** In the sampled open-chain scaling sequence `(N,n)=(4,2),(6,4),(8,6)`, the peak exact subsystem SLD QFI rises from `2.859` to `5.919` to `9.472`. At fixed `N=8`, increasing the accessible subsystem from `n=2` to `n=7` raises the peak from `3.247` to `10.062`. The six subsystem curves are pointwise ordered; the `n=7` curve is equal to the full-system reference to machine precision at all 50 sampled fields, whereas `n=2,...,6` are visibly and quantitatively below it.
 2. **Partial trace is the central metrological loss mechanism.** Exact subsystem SLD QFI never exceeds the corresponding full-system SLD QFI in the saved outputs, as required by data processing. The size of that loss depends strongly on the retained subsystem and on boundary conditions.
 3. **Depolarizing noise is the clean monotonic damaging baseline.** At fixed geometry, increasing depolarizing strength steadily lowers the reduced QFI peak without changing the underlying critical structure qualitatively.
 4. **Thermal preparation before partial trace can be beneficial relative to the reduced ground-state subsystem.** This is a comparison between two distinct parameterized families, not a violation of QFI monotonicity. In Project 9 Preset E at `beta=5`, the peak `thermal_sub` SLD QFI is `4.847`, above the reduced-ground-state `subsystem` peak `3.926`; in the anti-periodic boundary-condition run, `thermal_sub > subsystem` at every sampled field point.
@@ -202,7 +202,9 @@ This is a useful finite-size result, but it should not be written as a universal
 | `6` | `9.472` | `0.941` |
 | `7` | `10.062` | `1.000` |
 
-This is the cleanest local-information result in the whole study. Retaining more qubits produces a rapid, monotonic recovery of the critical response. By `n=7`, tracing a single qubit does not reduce the peak SLD QFI within the displayed precision for this finite system.
+This is the cleanest local-information result in the whole study. The retained blocks are nested, and the saved local SLD is pointwise monotonic throughout the scan: every increase from `n` to `n+1` is non-negative at all 50 sampled fields. The curves are therefore **not** identical as `n` changes. For example, at the full-system peak field `h_x=0.712`, the local SLD rises from `2.980` (`n=2`) through `9.472` (`n=6`) to `10.062` (`n=7`).
+
+The exceptional last step is real in this finite open-chain calculation: retaining seven of the eight qubits gives the same local and full SLD values at every sampled field, with a maximum absolute difference of `1.2e-14`. A fresh recomputation using the analytical derivative reproduces the stored values to the same scale, and a central-difference derivative (`delta=1e-4`) reproduces the equality within its finite-difference error. This is a result for this ground-state family and geometry, not a generic claim that tracing out one qubit preserves QFI.
 
 The SLD maximum moves toward the full-system peak as `n` increases. This shows that access to a larger region restores both the height and the location of the metrologically relevant critical feature.
 
