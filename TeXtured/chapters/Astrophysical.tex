@@ -1,32 +1,38 @@
 \chapter{Astrophysical Metrology: Exoplanet Detection}
 \label{sec:astrophysical_metrology_spade}
 
-We tested the quantum parameter estimation in astronomical observation, specifically the direct detection and characterization of exoplanets and close binary star systems~\cite{Santamaria2024single}. 
-The fundamental limits are dictated not by detector sensitivity, but by the nature of light itself and the statistical properties of weak thermal sources~\cite{Tsang2016quantum}.
-This chapter establishes the sub-Rayleigh imaging problem, models the optical field as a mixed quantum state, develops the star-centric SPADE receiver, and validates that receiver under experimentally relevant cross talk and count noise.
-The data used in this chapter was given to our group by \textbf{ASI Matera (Italian Space Agency)}.
-The challenge is exemplified by two primary observational fronts: high-contrast exoplanet detection and Space Domain Awareness (SDA).
+This chapter applies the quantum parameter-estimation framework developed in the preceding chapters to astronomical imaging, focusing on the direct detection and characterization of exoplanets~\cite{Santamaria2024single}.
+In this setting, the achievable precision is fundamentally limited by the quantum and statistical properties of weak thermal light~\cite{Tsang2016quantum}.
+The aim is to show how the theoretical tools introduced earlier can be translated into a practical strategy for resolving high-contrast sources below the Rayleigh limit, using a star-centric SPADE receiver and testing its robustness to experimental imperfections.
+
+\begin{Todo}
+Dire qual è teoria già sviluppata in Ref  \cite{Santamaria2024single} e cosa è stato fatto in questa tesi
+\end{Todo}
 
 \section{Problem Setting: High-Contrast Sources}
 
 \subsection{The Exoplanet Characterization Problem}
-Direct imaging of an exoplanet situated adjacent to its host star is exceptionally challenging due to the extreme disparity in their emission intensities. Let a primary bright source (the star, $A$) have an image-plane intensity $I_A$, and a secondary dim source (the exoplanet, $B$) have an intensity $I_B$~\cite{Santamaria2024single}.
+Direct imaging of an exoplanet situated adjacent to its host star is exceptionally challenging due to the extreme disparity in their emission intensities. Let a primary bright source (the star, $A$) have an intensity $I_A$, and a secondary dim source (the exoplanet, $B$) have an intensity $I_B$~\cite{Santamaria2024single}.
 The physical system is characterized by the relative intensity ratio (or contrast ratio) $\epsilon$~\cite{Santamaria2024single}:
 \begin{equation}
     \epsilon \coloneqq \frac{I_B}{I_A} \ll 1,
     \label{eq:intensity_ratio_epsilon}
 \end{equation}
 representing a high dynamic range typically exceeding four to ten orders of magnitude ($\epsilon \sim 10^{-4}$ to $10^{-10}$)~\cite{Santamaria2024single}. 
-When the angular separation between the star and the planet is small, their light fields overlap on the telescope's aperture, creating a composite field where the weak planetary signal is obscured by the classical shot noise of the overwhelming starlight~\cite{Santamaria2024single}. Detecting and characterizing the faint source therefore requires separating the two fields at sub-Rayleigh scales.
+When the angular separation between the star and the planet is small, their light fields overlap on the telescope's aperture, creating a composite field where the weak planetary signal is obscured by the classical shot noise \textcolor{red}{si usa dopo shot noise?} of the starlight~\cite{Santamaria2024single}. Detecting and characterizing the faint source therefore requires separating the two fields at sub-Rayleigh scales (\textit{ie} smaller than the classic Rayleigh diffraction limit).
 
-\subsection{Space Domain Awareness: Deep Sub-Rayleigh Constellations}
-Beyond exoplanet detection, Space Domain Awareness (SDA) aims to continuously detect, track, catalog, and identify artificial space objects, for example satellites, spacecraft, and orbital debris, to ensure safe space operations~\cite{choi2024adaptive}. Ground-based imaging observations of these targets are severely restricted by their dim appearance, small separation, and dense distributions~\cite{choi2024adaptive}. These challenges render space targets as point-like objects in the sub-Rayleigh regime, possessing extreme brightness contrast but low photon budgets, often further degraded by atmospheric turbulence~\cite{choi2024adaptive}. To resolve these targets, the iterative Quantum-Accelerated Imaging (QAI) framework adaptively varies the measurement basis in response to initial data, maximizing the extracted Quantum Fisher Information (QFI) per photon~\cite{choi2024adaptive}.
+% \subsection{Space Domain Awareness: Deep Sub-Rayleigh Constellations}
+% Beyond exoplanet detection, Space Domain Awareness (SDA) aims to continuously detect, track, catalog, and identify artificial space objects, for example satellites, spacecraft, and orbital debris, to ensure safe space operations~\cite{choi2024adaptive}. Ground-based imaging observations of these targets are severely restricted by their dim appearance, small separation, and dense distributions~\cite{choi2024adaptive}. These challenges render space targets as point-like objects in the sub-Rayleigh regime, possessing extreme brightness contrast but low photon budgets, often further degraded by atmospheric turbulence~\cite{choi2024adaptive}. To resolve these targets, the iterative Quantum-Accelerated Imaging (QAI) framework adaptively varies the measurement basis in response to initial data, maximizing the extracted Quantum Fisher Information (QFI) per photon~\cite{choi2024adaptive}.
 
 % ==============================================================================
 \section{Rayleigh's Curse, Failure of Direct Imaging}
 % ==============================================================================
 
-According to the classical Rayleigh criterion, a diffraction-limited imaging system possesses a fundamental spatial resolution limit. When light from a point source passes through a telescope's circular pupil of diameter $R$, diffraction broadens the image into a finite spot on the image plane~\cite{Santamaria2024single}. Modeling this point-spread function (PSF) via a Gaussian approximation of the physical Airy disk, let the profile have a spatial width $w_0$. The Rayleigh limit is then reached when the transverse spatial separation $d$ between two point emitters becomes comparable to or smaller than $w_0$~\cite{Santamaria2024single}.
+According to the classical Rayleigh criterion, a diffraction-limited imaging system possesses a fundamental spatial resolution limit. When light from a point source passes through a telescope's circular pupil, diffraction broadens the image into a finite spot on the image plane~\cite{Santamaria2024single}. Modeling this point-spread function (PSF) via a Gaussian approximation of the physical Airy disk, let the profile have a spatial width $w_0$. The Rayleigh limit is then reached when the transverse spatial separation $d$ between two point emitters becomes comparable to or smaller than $w_0$~\cite{Santamaria2024single}.
+
+\begin{Suggestion}
+    Fare un disegnino dove si mostrano d e w0
+\end{Suggestion}
 
 \begin{figure}[htbp]
     \centering
