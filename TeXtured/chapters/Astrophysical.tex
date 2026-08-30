@@ -1,32 +1,38 @@
 \chapter{High-Contrast Sub-Rayleigh Imaging}
 \label{sec:astrophysical_metrology_spade}
-\label{ch:astrophysical_theory}
 
-This chapter introduces the optical-imaging problem that motivates the application considered later in the thesis.
-Its purpose is deliberately limited: it establishes the high-contrast, sub-Rayleigh regime, explains why a conventional intensity image is statistically inefficient there and introduces spatial-mode demultiplexing (SPADE) as the standard measurement idea.
-It does not yet analyse the QFI of the receiver, prescribe the estimation method developed in this thesis, or describe a particular experimental calibration.
+This chapter applies the quantum parameter-estimation framework developed in the preceding chapters to astronomical imaging, focusing on the direct detection and characterization of exoplanets~\cite{Santamaria2024single}.
+In this setting, the achievable precision is fundamentally limited by the quantum and statistical properties of weak thermal light~\cite{Tsang2016quantum}.
+The aim is to show how the theoretical tools introduced earlier can be translated into a practical strategy for resolving high-contrast sources below the Rayleigh limit, using a star-centric SPADE receiver and testing its robustness to experimental imperfections.
 
-\section{The high-contrast imaging problem}
+\begin{Todo}
+Dire qual è teoria già sviluppata in Ref  \cite{Santamaria2024single} e cosa è stato fatto in questa tesi
+\end{Todo}
 
-Directly observing a faint object close to a bright one is a central problem in astronomical imaging. 
-A planet next to its host star is the motivating example (a planet orbiting around a star that is not the Sun is called exoplanet), but the same statistical structure occurs for an unequal binary star or, more generally, for two incoherent point sources of very different brightness~\cite{Santamaria2024single, rouviere_spade_separation_2024}. 
-Besides detection, the quantities of interest can include the angular displacement of the faint source and its brightness relative to the bright source. These are needed to localise and characterise the object.
+\section{Problem Setting: High-Contrast Sources}
 
-Let $I_A$ and $I_B$ denote the detected intensities of the bright source $A$ (the Star) and faint source $B$ (the exoplanet). We use
+\subsection{The Exoplanet Characterization Problem}
+Direct imaging of an exoplanet situated adjacent to its host star is exceptionally challenging due to the extreme disparity in their emission intensities. Let a primary bright source (the star, $A$) have an intensity $I_A$, and a secondary dim source (the exoplanet, $B$) have an intensity $I_B$~\cite{Santamaria2024single}.
+The physical system is characterized by the relative intensity ratio (or contrast ratio) $\epsilon$~\cite{Santamaria2024single}:
 \begin{equation}
     \epsilon \coloneqq \frac{I_B}{I_A+I_B}, \qquad 0<\epsilon\ll1
     \label{eq:intensity_ratio_epsilon}
 \end{equation}
-as the faint-source fraction.
+representing a high dynamic range typically exceeding four to ten orders of magnitude ($\epsilon \sim 10^{-4}$ to $10^{-10}$)~\cite{Santamaria2024single}. 
+When the angular separation between the star and the planet is small, their light fields overlap on the telescope's aperture, creating a composite field where the weak planetary signal is obscured by the classical shot noise \textcolor{red}{si usa dopo shot noise?} of the starlight~\cite{Santamaria2024single}. Detecting and characterizing the faint source therefore requires separating the two fields at sub-Rayleigh scales (\textit{ie} smaller than the classic Rayleigh diffraction limit).
 
-The more usual contrast ratio is
-$$\frac{I_B}{I_A}=\frac{\epsilon}{1-\epsilon} \simeq\epsilon$$ in the high-contrast limit ($I_B\ll I_A$).
+% \subsection{Space Domain Awareness: Deep Sub-Rayleigh Constellations}
+% Beyond exoplanet detection, Space Domain Awareness (SDA) aims to continuously detect, track, catalog, and identify artificial space objects, for example satellites, spacecraft, and orbital debris, to ensure safe space operations~\cite{choi2024adaptive}. Ground-based imaging observations of these targets are severely restricted by their dim appearance, small separation, and dense distributions~\cite{choi2024adaptive}. These challenges render space targets as point-like objects in the sub-Rayleigh regime, possessing extreme brightness contrast but low photon budgets, often further degraded by atmospheric turbulence~\cite{choi2024adaptive}. To resolve these targets, the iterative Quantum-Accelerated Imaging (QAI) framework adaptively varies the measurement basis in response to initial data, maximizing the extracted Quantum Fisher Information (QFI) per photon~\cite{choi2024adaptive}.
 
-The separation in the telescope image plane is denoted by $\boldsymbol d=(d_x,d_y)$, with $d=\lVert\boldsymbol d\rVert$.
+% ==============================================================================
+\section{Rayleigh's Curse, Failure of Direct Imaging}
+% ==============================================================================
 
-\todo[]{insert image of the epsilon and d in the exoplanet star binary syustem marghes job}
+According to the classical Rayleigh criterion, a diffraction-limited imaging system possesses a fundamental spatial resolution limit. When light from a point source passes through a telescope's circular pupil, diffraction broadens the image into a finite spot on the image plane~\cite{Santamaria2024single}. Modeling this point-spread function (PSF) via a Gaussian approximation of the physical Airy disk, let the profile have a spatial width $w_0$. The Rayleigh limit is then reached when the transverse spatial separation $d$ between two point emitters becomes comparable to or smaller than $w_0$~\cite{Santamaria2024single}.
 
-The difficulty has two coupled origins. First, $\epsilon$ can be extremely small: the relevant photon stream is dominated by the star. Second, the images of the two sources can overlap strongly because every finite aperture produces a diffraction-limited point-spread function (PSF). When $d$ is comparable to, or below, its width $w_0$, a faint planet does not appear as a visibly separate spot. It produces only a small deformation of the bright star's image (see Figure~\ref{fig:rayleigh_criterion}).
+\begin{Suggestion}
+    Fare un disegnino dove si mostrano d e w0
+\end{Suggestion}
 
 \begin{figure}[htbp]
     \centering
