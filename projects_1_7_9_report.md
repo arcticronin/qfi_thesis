@@ -2,7 +2,7 @@
 
 ## Projects 1, 7, and 9
 
-**Dataset version:** saved `.npz` outputs generated between August 22 and August 25, 2026.
+**Dataset version:** saved `.npz` outputs generated between August 22 and August 30, 2026. The August 30 Project 1 files are refined peak-location studies derived from the August 22 scaling runs.
 
 ## Executive Summary
 
@@ -16,7 +16,7 @@ The three projects have distinct roles:
 
 The strongest conclusions supported by the current data are:
 
-1. **Accessible local QFI grows strongly with both system size and accessible subsystem size.** In the sampled open-chain scaling sequence `(N,n)=(4,2),(6,4),(8,6)`, the peak exact subsystem SLD QFI rises from `2.859` to `5.919` to `9.472`. At fixed `N=8`, increasing the accessible subsystem from `n=2` to `n=7` raises the peak from `3.247` to `10.062`. The six subsystem curves are pointwise ordered; the `n=7` curve is equal to the full-system reference to machine precision at all 50 sampled fields, whereas `n=2,...,6` are visibly and quantitatively below it.
+1. **Accessible local QFI grows strongly with both system size and accessible subsystem size.** Refined exact-SLD maxima in the sampled open-chain sequence `(N,n)=(4,2),(6,4),(8,6)` rise from `2.859` to `5.935` to `9.517`. At fixed `N=8`, they rise from `3.252` (`n=2`) to `10.068` (`n=7`). The six subsystem curves are pointwise ordered; the `n=7` curve is equal to the full-system reference to machine precision at all 50 sampled fields, whereas `n=2,...,6` are visibly and quantitatively below it.
 2. **Partial trace is the central metrological loss mechanism.** Exact subsystem SLD QFI never exceeds the corresponding full-system SLD QFI in the saved outputs, as required by data processing. The size of that loss depends strongly on the retained subsystem and on boundary conditions.
 3. **Depolarizing noise is the clean monotonic damaging baseline.** At fixed geometry, increasing depolarizing strength steadily lowers the reduced QFI peak without changing the underlying critical structure qualitatively.
 4. **Thermal preparation before partial trace can be beneficial relative to the reduced ground-state subsystem.** This is a comparison between two distinct parameterized families, not a violation of QFI monotonicity. In Project 9 Preset E at `beta=5`, the peak `thermal_sub` SLD QFI is `4.847`, above the reduced-ground-state `subsystem` peak `3.926`; in the anti-periodic boundary-condition run, `thermal_sub > subsystem` at every sampled field point.
@@ -60,7 +60,7 @@ For the thesis, exact SLD should carry the main quantitative conclusions. TQFI r
 
 The report uses the most recent saved output for each label:
 
-- Project 1: `project1_scaling_N_20260822_162213.npz` and `project1_scaling_n_20260822_162301.npz`.
+- Project 1: `project1_scaling_N_20260822_162213.npz` and `project1_scaling_n_20260822_162301.npz`; refined peak studies `project1_peak_position_20260830_200148.npz` (size sweep) and `project1_peak_position_20260830_200313.npz` (fixed-`N=8` subsystem sweep).
 - Project 7: all six outputs dated `20260823`, covering Presets A, B, and C.
 - Project 9: all twenty-one outputs dated `20260825`, covering Presets A through E.
 
@@ -183,26 +183,26 @@ The latest saved data cover:
 
 | `(N,n)` | Peak subsystem SLD QFI | Peak full SLD QFI | Local/full peak ratio | Peak `lower_tqfi` | Peak `sub_qfi_bound` |
 | --- | ---: | ---: | ---: | ---: | ---: |
-| `(4,2)` | `2.859` at `h_x=0.508` | `4.393` at `0.427` | `0.651` | `1.963` | `1.419` |
-| `(6,4)` | `5.919` at `0.631` | `6.780` at `0.631` | `0.873` | `3.164` | `1.408` |
-| `(8,6)` | `9.472` at `0.712` | `10.062` at `0.712` | `0.941` | `4.440` | `1.326` |
+| `(4,2)` | `2.859` at `h_x=0.508` | `4.395` at `0.435` | `0.651` | `1.969` | `1.419` |
+| `(6,4)` | `5.935` at `0.646` | `6.788` at `0.620` | `0.874` | `3.164` | `1.413` |
+| `(8,6)` | `9.517` at `0.730` | `10.068` at `0.719` | `0.945` | `4.440` | `1.330` |
 
-The local peak grows strongly over the sampled sizes. More importantly, its fraction of the full-system peak grows from about `65%` to `94%`. This occurs because the discarded environment remains two qubits while the retained subsystem grows with `N`; the scaling sweep therefore shows a combined effect of larger total systems and a larger accessible fraction.
+The local peak grows strongly over the sampled sizes. More importantly, its fraction of the full-system peak grows from about `65%` to `94.5%`. This occurs because the discarded environment remains two qubits while the retained subsystem grows with `N`; the scaling sweep therefore shows a combined effect of larger total systems and a larger accessible fraction. The refined locations also resolve the small local/full peak shifts that the coarse grid concealed: `0.074`, `0.026`, and `0.011` for `(N,n)=(4,2),(6,4),(8,6)`, respectively.
 
 This is a useful finite-size result, but it should not be written as a universal scaling exponent. Three points with changing `n/N` do not separate intrinsic size scaling from the changing size of the accessible region.
 
 ### 3.3 Accessible-subsystem sequence at fixed `N=8`
 
-| `n` | Peak subsystem SLD QFI | Fraction of full SLD peak |
-| ---: | ---: | ---: |
-| `2` | `3.247` | `0.323` |
-| `3` | `5.154` | `0.512` |
-| `4` | `6.932` | `0.689` |
-| `5` | `8.389` | `0.834` |
-| `6` | `9.472` | `0.941` |
-| `7` | `10.062` | `1.000` |
+| `n` | Refined subsystem-SLD peak | Refined full-SLD peak | Local/full peak ratio |
+| ---: | ---: | ---: | ---: |
+| `2` | `3.252` at `h_x=0.784` | `10.068` at `0.719` | `0.323` |
+| `3` | `5.170` at `0.767` | `10.068` at `0.719` | `0.514` |
+| `4` | `6.933` at `0.756` | `10.068` at `0.719` | `0.689` |
+| `5` | `8.410` at `0.741` | `10.068` at `0.719` | `0.835` |
+| `6` | `9.517` at `0.730` | `10.068` at `0.719` | `0.945` |
+| `7` | `10.068` at `0.719` | `10.068` at `0.719` | `1.000` |
 
-This is the cleanest local-information result in the whole study. The retained blocks are nested, and the saved local SLD is pointwise monotonic throughout the scan: every increase from `n` to `n+1` is non-negative at all 50 sampled fields. The curves are therefore **not** identical as `n` changes. For example, at the full-system peak field `h_x=0.712`, the local SLD rises from `2.980` (`n=2`) through `9.472` (`n=6`) to `10.062` (`n=7`).
+This is the cleanest local-information result in the whole study. The retained blocks are nested, and the saved local SLD is pointwise monotonic throughout the scan: every increase from `n` to `n+1` is non-negative at all 50 sampled fields. The curves are therefore **not** identical as `n` changes. The refined local maximum moves from `h_x=0.784` (`n=2`) to `0.719` (`n=7`), while the finite-`N=8` full-system maximum is `0.719`; its distance from that full-system position decreases from `0.065` to zero.
 
 The exceptional last step is real in this finite open-chain calculation: retaining seven of the eight qubits gives the same local and full SLD values at every sampled field, with a maximum absolute difference of `1.2e-14`. A fresh recomputation using the analytical derivative reproduces the stored values to the same scale, and a central-difference derivative (`delta=1e-4`) reproduces the equality within its finite-difference error. This is a result for this ground-state family and geometry, not a generic claim that tracing out one qubit preserves QFI.
 
@@ -218,13 +218,59 @@ The conclusion is not that one bound is always preferable. Rather:
 - `sub_qfi_bound` is the safer conservative TQFI quantity in these saved data;
 - `lower_tqfi` is useful for its truncation-based construction, but its finite-`delta` overshoots require careful language.
 
-### 3.5 Project 1 figures to include
+### 3.5 Peak-position and TQFI-location study
+
+The thermodynamic critical field of the clean TFIM is `h_x/J=1`, but a finite open chain has no nonanalytic transition. Its SLD maximum is therefore a finite-size pseudo-critical position, which need not lie at `1`. The Project 1 field grid is useful for locating the feature, but its spacing is about `0.041`; two maxima in the same grid bin are not evidence of identical continuous peak positions.
+
+The reproducible refinement program is [project1_peak_position.py](/home/ronin/Dev/space/QCES/cqes/qfi/project1_peak_position.py). It brackets each coarse maximum and recomputes the exact local SLD, exact full SLD, and the primary finite-displacement local quantities (`lower_tqfi`, `sub_qfi_bound`, and operational `H_delta`) inside that bracket. It writes an independently versioned `project1_peak_position_*.npz` output, including the configuration, coarse bracket maximum, refined peak coordinates, peak values, and optimizer tolerance.
+
+If a coarse maximum lies at either scan boundary, the code records its grid position with status `discarded_scan_boundary` and returns no refined peak or TQFI-to-SLD shift for that curve. This is the appropriate treatment when the curve is too flat, monotonic, or otherwise does not resolve an interior feature in the selected sensing window. It avoids turning a poor or absent peak into a spurious numerical comparison while allowing all other curves to be analysed.
+
+For every finite-displacement curve, report the requested base-coordinate shift
+
+\[
+\Delta h^\star_{\mathrm{TQFI}}
+= \left|h^\star_{\mathrm{TQFI}}-h^\star_{\mathrm{SLD,sub}}\right|.
+\]
+
+Also retain the diagnostic
+
+\[
+\left|\left(h^\star_{\mathrm{TQFI}} + \delta h_x/2\right)-h^\star_{\mathrm{SLD,sub}}\right|,
+\]
+
+because the finite-displacement metric is built from `rho(h_x)` and `rho(h_x+delta_h_x)`, whereas the SLD is evaluated at a single field value. The midpoint quantity is a coordinate-alignment diagnostic; it does not replace the requested base-coordinate result.
+
+The principal comparisons are `|h^star_SLD,sub-h^star_SLD,full|`, which measures recovery of the finite-system peak under greater subsystem access, and `|h^star_SLD,full-J|`, which measures the finite-size shift from the thermodynamic field. Agreement of a TQFI peak with the SLD peak, if found, is empirical only for the stated finite system, field window, displacement, and truncation rank. It is not a general property of TQFI, and `H_delta` must still not be called a certified SLD lower bound.
+
+#### Refined results and interpretation
+
+The new refinement files use `delta_h_x_tqfi=0.1`, `m=2`, and an optimizer tolerance of `1e-7`. The full-SLD pseudo-critical positions in the size sequence are `0.435` (`N=4`), `0.620` (`N=6`), and `0.719` (`N=8`). They are all below the thermodynamic value `1`, as expected for these finite open chains, but move toward it as `N` grows. This three-point sequence is evidence of a finite-size drift, not enough data for a finite-size-scaling exponent.
+
+At fixed `N=8`, increasing the retained subsystem restores the local-SLD peak position to the finite-system full-SLD position: the local/full position mismatch is `0.065`, `0.048`, `0.037`, `0.022`, `0.011`, and `0.000` for `n=2,...,7`. Thus, in this geometry, greater access makes the local peak agree with the **finite-size full-system** peak near `0.719`; it does not make the peak approach the thermodynamic value `1` at fixed `N`.
+
+The requested TQFI-to-local-SLD peak shifts for the fixed-`N=8` study are:
+
+| `n` | `Delta h_star_lower_tqfi` | Midpoint diagnostic | `Delta h_star_sub_qfi_bound` | Midpoint diagnostic | `sub_qfi_bound` status |
+| ---: | ---: | ---: | ---: | ---: | --- |
+| `2` | `0.046` | `0.004` | `0.020` | `0.030` | refined |
+| `3` | `0.055` | `0.005` | `0.011` | `0.039` | refined |
+| `4` | `0.070` | `0.020` | `0.012` | `0.038` | refined |
+| `5` | `0.080` | `0.030` | `0.031` | `0.019` | refined |
+| `6` | `0.098` | `0.048` | `0.073` | `0.023` | refined |
+| `7` | `0.050` | `0.0004` | — | — | `discarded_scan_boundary` |
+
+The base-coordinate shifts are the primary reported result. The lower-TQFI peak is systematically below the local-SLD peak in that convention; shifting it by half of the forward displacement often reduces the mismatch, which is consistent with its two-point construction, but does not remove it uniformly. The conservative `sub_qfi_bound` peak is close for some retained sizes and displaced for others; for `n=7` its coarse maximum is at the lower scan boundary, so it has no resolved interior peak and is deliberately excluded from location claims. Therefore the present data support TQFI as an operational, qualitative peak indicator in selected finite settings, but do not establish that it generally identifies the exact local-SLD maximum. `H_delta` is retained in the saved study for audit purposes and omitted from the location figure because it is a derived maximum rather than an independent bound.
+
+### 3.6 Project 1 figures to include
 
 Use [project1_plots.ipynb](/home/ronin/Dev/space/QCES/cqes/project1_plots.ipynb).
 
 **Main-text figure P1.1:** Preset A small multiples, "Local bounds and exact subsystem SLD", one panel for each `(N,n)`. This establishes the local-versus-global critical scaling story.
 
 **Main-text figure P1.2:** Preset B exact subsystem-SLD overlay versus `n`. It is the clearest visual proof that access to a larger subsystem restores QFI.
+
+**Main-text figure P1.3:** Peak-position study, with refined local/full SLD, `lower_tqfi`, and `sub_qfi_bound` locations in one panel and `Delta h_star_TQFI` in a second. Draw reference lines at the finite-system full-SLD peak and `h_x/J=1`; omit `H_delta` from the plot, identify discarded boundary cases, and state `delta_h_x_tqfi=0.1` and `m=2` in the caption.
 
 **Supplementary figure P1.S1:** Separate Viridis heatmaps for exact subsystem SLD, `lower_tqfi`, and `sub_qfi_bound` for the `n` sweep. These track peak movement and bound tightness without forcing four distinct quantities into a single heatmap.
 
@@ -328,12 +374,46 @@ This validates the corrected SLD derivatives used in the current channel compari
 
 The local scaling trend agrees with Project 1: larger retained systems preserve a larger fraction of the full critical response. The latest Project 9 data now include the `N=8` control, so the three-point trend is complete.
 
-However, this preset is a **consistency control**, not the strongest channel-separation result. Purity matching drives the matched parameters to essentially ground-state values:
+However, this preset is a **consistency control**, not the strongest channel-separation result. Purity matching drives the matched parameters very close to their ground-state limits:
 
-- `P_matched` is approximately `4e-9` to `1.5e-8`;
-- `beta_matched` ranges from `500` to `1.2e5`.
+- `P_matched` is `3.725e-9` to `1.490e-8` across the three runs;
+- `beta_matched` is `500` to `1.2e5`.
 
-Accordingly, `subsystem`, `depol_sub`, and `thermal_sub` coincide to numerical precision. The valid conclusion is that the matched-family derivative and reduction are consistent in this near-pure regime. It is not evidence that the three physical noise mechanisms are generally equivalent.
+The field-resolved curves therefore collapse by system level. In each run, the full-system curves satisfy
+
+\[
+F_Q^{\mathrm{SLD}}(\mathrm{pure}) \simeq
+F_Q^{\mathrm{SLD}}(\mathrm{depolN}) \simeq
+F_Q^{\mathrm{SLD}}(\mathrm{thermalN}),
+\]
+
+and the reduced-system curves satisfy
+
+\[
+F_Q^{\mathrm{SLD}}(\mathrm{subsystem}) \simeq
+F_Q^{\mathrm{SLD}}(\mathrm{depol\_sub}) \simeq
+F_Q^{\mathrm{SLD}}(\mathrm{thermal\_sub}).
+\]
+
+This is stronger than agreement of the peak values: the curves are almost superposed throughout the saved `h_x` sweep. The maximum pairwise deviations are:
+
+| `(N,n)` | Full-system triplet: max `|Δ SLD QFI|` (relative to peak) | Reduced-system triplet: max `|Δ SLD QFI|` (relative to peak) |
+| --- | ---: | ---: |
+| `(4,2)` | `1.872e-7` (`4.267e-8`) | `1.569e-6` (`4.880e-7`) |
+| `(6,4)` | `1.900e-6` (`2.806e-7`) | `8.179e-6` (`1.360e-6`) |
+| `(8,6)` | `1.226e-2` (`1.219e-3`) | `1.974e-5` (`2.092e-6`) |
+
+Thus the two triplets are indistinguishable at plot resolution for `N=4` and `N=6`; the reduced-system triplet remains so for `N=8`. The `N=8` full-system thermal curve has a small, resolvable residual (`0.12%` of its peak scale), so it should be described as **near** collapse rather than machine-precision equality over the complete sweep.
+
+#### Interpretation: purity is effective here, but is not a complete QFI descriptor
+
+This control supports the narrower statement that **reduced purity is an effective predictor of the SLD-QFI curve in this near-pure matched-purity regime**. It does not show that purity alone determines QFI. SLD QFI depends on the complete field-dependent state family, both `rho(h_x)` and its derivative `d rho / d h_x`; a single purity value is only one scalar property of `rho(h_x)`.
+
+The apparent purity-only behavior has a concrete origin here. The protocol matches the reduced purity at every sampled field (and at the neighbouring finite-difference fields used for the derivative), while driving `P(h_x)` to nearly zero and `beta(h_x)` to very large values. Consequently, the depolarized and thermal state families, including their local field dependence, approach the corresponding ground-state families. The matching therefore constrains much more than one isolated purity value, and the residual differences are below plot resolution for most of the data.
+
+It would not be wise to generalize this collapse. In a generic mixed-state family, distinct density matrices can have the same purity but different eigenvectors, spectra, or field derivatives, and hence different SLD QFI. Fixed-noise runs need not follow the same field-dependent trajectory as this matched control. The observed coincidence is thus evidence that the matched-family construction is internally consistent in the near-pure limit, not evidence for a universal relation `SLD QFI = f(purity)` or for general physical equivalence of depolarization, thermal preparation, and subsystem reduction.
+
+The dashed-versus-solid separation in the layered plot is a different effect: it compares full-system and reduced-system SLD QFI, which are not generally equal because the partial trace discards information. The valid conclusion is that the matched-family derivative and reduction are consistent in this near-pure regime. It is not evidence that depolarization, thermal preparation, and subsystem reduction are generally equivalent physical mechanisms.
 
 ### 5.3 Preset B: accessible-subsystem size under fixed noise
 
@@ -423,7 +503,7 @@ Use [project9_plots.ipynb](/home/ronin/Dev/space/QCES/cqes/project9_plots.ipynb)
 
 **Main-text figure P9.5:** Preset C field-resolved boundary-condition panels. The anti-periodic panel is the most visually compelling example of channel ordering changing with spectral structure.
 
-**Supplementary figure P9.S1:** Preset A matched-purity control with stored `P_matched` and `beta_matched` metadata. Use it to document why the curves coincide.
+**Supplementary figure P9.S1:** Preset A matched-purity control with stored `P_matched` and `beta_matched` metadata. Use the layered interactive view to document the near-collapse of the full-system and reduced-system curve triplets, while retaining the full-versus-reduced separation.
 
 **Supplementary figure P9.S2:** The consistency-audit output or a compact table verifying `thermal_sub <= thermalN`, `depol_sub <= depolN`, and `subsystem <= pure`.
 
