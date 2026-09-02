@@ -1,18 +1,35 @@
-\chapter{Practical SPADE: Channel Modelling and Conditional QFI Analysis}
+\chapter{Practical SPADE: From an Initial TQFI Idea to a Channel Model}
 \label{ch:exoplanet_experiment}
 
-Chapter~\ref{ch:astrophysical_theory} introduced high-contrast sub-Rayleigh imaging and the ideal SPADE measurement.  This chapter asks a different, practical question: what can be concluded from the available repeated SPADE counts, and how can they be related responsibly to a quantum-information model?  The answer is not to turn the count file into a fictitious two-dimensional quantum state.  Instead, the experiment is represented as a sequence of named physical and statistical channels.  This makes the missing calibrations visible, permits conditional likelihood tests of complete configurations, and gives QFI a precise role as a model-based limit and design diagnostic.
+Chapter~\ref{ch:astrophysical_theory} introduced high-contrast sub-Rayleigh imaging and the ideal SPADE measurement.  The present chapter describes what happened when that theory was confronted with the available experimental record.  The initial plan was to use a few measured Hermite--Gaussian (HG) modes to build a reduced optical description and connect it with the truncated-QFI methods of Chapter~\ref{ch:methods}.  The data, however, contain only one aggregate count channel.  They are not a measurement of a two-mode quantum state.
+
+This limitation does not make the data useless, but it changes the question.  Rather than reconstructing a state that was not measured, we model the complete path from the optical source to the stored count.  The repeated counts can then test whether a specified channel configuration is compatible with the experiment.  QFI is calculated only for the quantum state associated with such a model and is used as a theoretical limit and a measurement-design diagnostic.
+
+\begin{infobox}{The reasoning followed in this chapter}
+    The analysis proceeds in four stages:
+    \begin{enumerate}
+        \item state the original low-mode/TQFI objective;
+        \item identify exactly what the count file contains and why it is insufficient for that objective;
+        \item replace the attempted state reconstruction with a sequence of physical, measurement, and classical channels;
+        \item test complete channel configurations against the repetitions and then compare their model QFI with the CFI of different SPADE measurements.
+    \end{enumerate}
+    This order is important: the QFI calculation is the final model-based step, not a quantity extracted directly from the count variance.
+\end{infobox}
 
 \begin{remark}[What this chapter establishes]
     The recorded first-order SPADE counts require a nonzero baseline and are overdispersed relative to ideal Poisson counting.  A sequential channel configuration with an explicit overdispersion factor is compatible with the repeated data when its independent calibration assumptions are fixed.  For the corresponding truncated optical model, complete ideal SPADE is nearly QFI-optimal, whereas the recorded binary first-order channel can retain much less information because of leakage and count noise.  These are conditional model-validation and measurement-design results.  They are not a direct experimental measurement of QFI, a unique estimate of every channel parameter, or a data-derived TQFI calculation.
 \end{remark}
 
 % ==============================================================================
-\section{Question, Data Record, and Initial Objective}
+\section{What We Wanted to Measure and What Was Recorded}
 \label{sec:spade_question_record}
 % ==============================================================================
 
+\subsection{The original low-mode idea}
+
 The initial objective was motivated by the low-order SPADE receiver of Chapter~\ref{ch:astrophysical_theory} and the rank-truncation methods of Chapter~\ref{ch:methods}.  A displaced point-spread function occupies an infinite Hermite--Gaussian (HG) ladder, but low orders carry the leading displacement dependence near the aligned sub-Rayleigh regime.  It was therefore natural to ask whether the experimentally accessible low-order ports could be used to construct a reduced state and evaluate a truncated-QFI-type quantity.
+
+\subsection{The available count record}
 
 The available ASI record is more limited than that objective requires.  It is a cube of repeated aggregate first-order counts,
 \begin{equation}
@@ -22,6 +39,22 @@ The available ASI record is more limited than that objective requires.  It is a 
     \label{eq:spade_recorded_count}
 \end{equation}
 with $21\times25\times100=52{,}500$ measurements.  The dimensionless signed scan coordinate ranges over $d_a\in[-\frac{2}{3},\frac{2}{3}]$, the faint-source fraction over $\epsilon\in[0.00427,0.09593]$, and $r$ indexes the repetitions.  The scan convention and PSF scale are retained as calibrated analysis coordinates. The model below makes any conversion to a physical width explicit.
+
+\noindent The structure of the record can be summarized before any modelling:
+\begin{Verbatim}[fontsize=\small]
+ programmed setting (d_a, epsilon)
+                 |
+                 v
+          [SPADE apparatus]
+            |    |    |
+            |    |    +--> higher modes / no click  (not stored)
+            |    +-------> HG00                     (not stored)
+            +-----------> HG01 + HG10               (stored only as n1)
+
+ The same setting is repeated 100 times.
+\end{Verbatim}
+
+\todo[]{Draw diagram 1: the available aggregate-count record and its unrecorded outputs.}
 
 \begin{figure}[htbp]
     \centering
@@ -49,14 +82,31 @@ with $21\times25\times100=52{,}500$ measurements.  The dimensionless signed scan
 
 The missing information is not merely inconvenient.  A nonzero observed $n_1$ at $d_a=0$ can arise from dark counts, bright-mode leakage, higher-order leakage, incident flux, or imperfect alignment.  With only the aggregate count, these effects are partly degenerate.  The analysis below keeps them as distinct possibilities rather than assigning the entire baseline to one of them.
 
-\todo[]{insert image 1}
-
-\noindent\emph{Diagram brief.} Show the measured record only: programmed $(d_a,\epsilon)$ settings entering a SPADE receiver and the stored output $n_1=n_{HG_{01}}+n_{HG_{10}}$, repeated one hundred times.  Show $HG_{00}$, separate first-order ports, higher modes, and no-click events as unrecorded outputs.
-
-\section{Why the Initial TQFI Objective Cannot Be Implemented From These Counts}
+\section{Why the Initial Low-Mode/TQFI Objective Cannot Be Implemented}
 \label{sec:spade_tqfi_boundary}
 
-\subsection{The attractive accessible-mode idea}
+\subsection{Two possible meanings of the low-mode measurement}
+
+The initial idea can be interpreted in two ways.  Neither is directly available from the stored file:
+\begin{table}[htbp]
+    \centering
+    \caption{Two natural low-mode descriptions and what the experiment actually stores.}
+    \label{tab:spade_two_mode_meanings}
+    \begin{tabularx}{\textwidth}{p{3.4cm} p{4.5cm} X}
+        \toprule
+        \textbf{Intended object}                                       & \textbf{Physical meaning} & \textbf{Present record} \\
+        \midrule
+        $HG_{01}$ and $HG_{10}$                                        &
+        Two orthogonal ports spanning the first-order spatial sector   &
+        Only their sum $n_1=n_{HG_{01}}+n_{HG_{10}}$ is stored.                                                              \\
+        $HG_{00}$ and the aggregate first-order sector                 &
+        A reference sector and the leading separation-sensitive sector &
+        $HG_{00}$ is not stored; only the aggregate first-order count is available.                                          \\
+        \bottomrule
+    \end{tabularx}
+\end{table}
+
+\subsection{What an accessible-mode experiment would require}
 
 For a fixed accessible modal set $\mathcal{M}$, a physically meaningful reduction of the optical state would be
 \begin{equation}
@@ -69,6 +119,19 @@ For a fixed accessible modal set $\mathcal{M}$, a physically meaningful reductio
 For example, $\mathcal{M}=\{HG_{00},HG_{01},HG_{10}\}$ would retain a reference mode and the two-dimensional first-order sector.  Crucially, the complete measurement must also retain the complementary outcome $\mathbb{I}-P_{\mathrm{acc}}$.  Otherwise, loss and population in unmeasured higher modes are silently postselected away, and potentially relevant separation information is discarded.
 
 This would be an interesting experiment: calibrated counts in every selected mode and in the complement would define the classical Fisher information (CFI) of the actual multi-outcome SPADE POVM.  With an independently justified source model or coherence-sensitive data, it could also support a study of the reduced quantum state.
+
+\noindent In diagrammatic form, the required measurement would be
+\begin{Verbatim}[fontsize=\small]
+                         +--> HG00
+                         +--> HG01
+ rho(d_a, epsilon) -->   +--> HG10       --> calibrated outcome
+      SPADE POVM         +--> ...             probabilities --> CFI
+                         +--> complement
+
+ The complement is an outcome of the experiment, not discarded data.
+\end{Verbatim}
+
+\todo[]{Draw diagram 2: the proposed accessible-mode SPADE measurement, including the complementary outcome.}
 
 \begin{remark}[Accessible modal projection is not rank-$m$ TQFI]
     The TQFI construction in Section~\ref{sec:bounds} retains the $m$ dominant \emph{eigenvectors} of $\rho(\theta)$ and compares two parameterized states on that fixed state eigenspace.  A finite HG set instead retains a fixed, experimentally chosen \emph{measurement basis}.  HG modes need not be eigenvectors of the mixed source state, and the two first-order ports are not automatically its two principal components.  A numerical HG cutoff is likewise different again: it is a controlled representation of the infinite spatial Hilbert space, not a rank-$m$ TQFI projection.
@@ -90,22 +153,57 @@ This would be an interesting experiment: calibrated counts in every selected mod
     \end{tabular}
 \end{table}
 
-The present file cannot construct $\rho_{\mathrm{acc}}$ from data.  In particular, setting $p_0=1-p_1$ after dividing by an assumed photon number would incorrectly fold vacuum, bright-mode leakage, higher modes, dark counts, and missed photons into two artificial probabilities.  It would also provide only diagonal modal probabilities, not the coherences needed for a general density-matrix QFI calculation.
+The present file cannot construct $\rho_{\mathrm{acc}}$ from data.  In particular, dividing $n_1$ by an assumed photon number and then setting $p_0=1-p_1$ would create two artificial probabilities.  The quantity called $p_0$ would silently combine vacuum, missed photons, $HG_{00}$ population, higher modes, and background events.  Even a correctly normalized set of modal probabilities would give only the diagonal of the state in the HG measurement basis; it would not supply the coherences needed for a general density-matrix QFI calculation.
 
-\subsection{Constructive consequence}
+\subsection{How the question was reformulated}
 
 The limitation changes the question rather than ending the analysis.  We use the available repetitions to test models for the final recorded count.  For each explicit model configuration, we can then propagate the corresponding source state through named quantum channels, calculate its QFI, and compare this model limit with the CFI of ideal and imperfect SPADE measurements.  Thus the result is a calibrated-model study, not a claim of state reconstruction.
 
+\begin{Verbatim}[fontsize=\small]
+ original question:
+ measured low modes --> reconstructed reduced state --> TQFI
+                              X
+                    not supported by n1 alone
+
+ revised question:
+ repeated n1 counts --> test a complete channel model
+                                   |
+                                   v
+                         model state and QFI
+                                   |
+                                   v
+                   compare ideal and practical SPADE CFI
+\end{Verbatim}
+
 % ==============================================================================
-\section{From Optical Source to Recorded Count: The Sequential Channel Model}
+\section{From Optical Source to Recorded Count}
 \label{sec:spade_sequential_channels}
 % ==============================================================================
 
-The practical model separates parameter encoding, quantum evolution, quantum measurement, and classical detector statistics.  This ordering is essential.  Loss and dephasing act on a quantum state; a fixed sorter misalignment is unitary; mode confusion belongs to the POVM that reports modal occupancy; dark counts and overdispersion occur after measurement on a classical count wire.
+The revised analysis follows the complete experiment in its physical order.  It separates four different operations: encoding the source parameters in an optical state, changing that state through quantum channels, measuring it with SPADE, and finally recording a noisy classical count.  Calling all four operations \emph{noise} would hide which object is being changed and which information quantity can be assigned to it.
 
-\todo[]{insert image 2}
+\noindent The complete process used in the analysis is
+\begin{Verbatim}[fontsize=\small]
+ theta = (d_a, epsilon)
+          |
+          v
+ [Source preparation]
+          |
+          | quantum state rho_S
+          v
+ [Photon loss] --> [Sorter alignment] --> [HG dephasing]
+          |                                      |
+          | quantum state rho_q                  | optional environments
+          v                                      v
+ [Imperfect SPADE POVM] --> outcome Y --> [Background + count noise]
+                                                   |
+                                                   v
+                                      recorded aggregate count n1
+\end{Verbatim}
 
-\noindent\emph{Diagram brief.} Draw a quantum-process diagram with a quantum wire for the truncated spatial HG system $S$ and a vacuum sector $V$:
+\todo[]{Draw diagram 3: the complete quantum-to-classical SPADE process shown above.}
+
+\noindent\emph{Diagram brief.} Use a quantum wire for the truncated spatial HG system $S$ and a vacuum sector $V$:
 \[
     (d_a,\epsilon)\!\to\!\rho_S
     \xrightarrow{\mathcal{E}_{\rm loss}(\eta)}
@@ -116,9 +214,38 @@ The practical model separates parameter encoding, quantum evolution, quantum mea
 \]
 Optionally draw environment wires for loss and dephasing.  Mark QFI checkpoints before and after the quantum channels, the modal-outcome CFI at $Y$, and the final count CFI after the classical channel.  State clearly that the current $Y$ has only \emph{reported first order} versus \emph{other} outcomes.
 
+The distinction between the present and proposed readouts is
+\begin{Verbatim}[fontsize=\small]
+ current:  Y = {reported first order, other} --> aggregate count n1
+
+ future:   Y = {HG00, HG01, HG10, ..., complement}
+                                           --> modal count vector
+\end{Verbatim}
+
+For parameter-independent loss, alignment, and dephasing settings, the corresponding information hierarchy is
+\begin{equation}
+    \mathcal{F}_Q[\rho_S]
+    \geq \mathcal{F}_Q[\rho_{\mathrm{loss}}]
+    = \mathcal{F}_Q[\rho_{\mathrm{align}}]
+    \geq \mathcal{F}_Q[\rho_{\mathrm{q}}]
+    \geq \mathcal{F}_{\mathrm{C}}(Y).
+    \label{eq:spade_information_processing_chain}
+\end{equation}
+The equality follows because a fixed unitary alignment changes the basis but not the QFI.  The last term is the CFI of the idealized measurement outcome per launched photon.  The final count CFI is instead a per-acquisition quantity after $N_{\mathrm{in}}$ trials and classical count noise, so it can be compared with $N_{\mathrm{in}}\mathcal{F}_Q$ only after the photon-number and detector assumptions have been stated.
+
 \subsection{Source sectors and a controlled numerical basis}
 
-The physical source is represented in an HG basis whose one-axis displacement direction is aligned to the experimental scan.  The numerical implementation retains modes through HG order $12$, together with a vacuum state and an unresolved higher-order tail.  The tail preserves trace under numerical truncation; it is not a claim that all higher modes are one physical mode.  Because the data record stores $n_{HG_{01}}+n_{HG_{10}}$ rather than its two components, this is a one-axis effective source model for the aggregate readout, not a reconstruction of a two-dimensional spatial density matrix.
+The spatial field is not intrinsically a two-mode system.  In principle, it occupies the infinite basis
+\begin{equation}
+    \mathcal{H}_{\mathrm{spatial}}
+    =\operatorname{span}\{
+    |HG_{00}\rangle,|HG_{01}\rangle,|HG_{10}\rangle,
+    |HG_{02}\rangle,\ldots\}.
+    \label{eq:spade_infinite_hg_space}
+\end{equation}
+The physical source is represented in this HG basis with one displacement direction aligned to the experimental scan.  For numerical work, modes are retained through HG order $12$, together with a vacuum state and an unresolved higher-order tail.  The representative QFI calculations are stable when the cutoff is increased from order $8$ to order $12$.  This is a computational approximation to the infinite space; it is not the rank-$m$ TQFI truncation discussed above.  The tail preserves trace and does not imply that all higher HG modes form one physical mode.
+
+Because the record stores $n_{HG_{01}}+n_{HG_{10}}$ rather than its two components, the count-facing calculation uses a one-axis effective description of the aggregate first-order sector.  It does not reconstruct a two-dimensional spatial density matrix.
 
 Before loss, the model source has the form
 \begin{equation}
@@ -147,37 +274,69 @@ where $d_0$, $w_{\mathrm{scale}}$, and $\alpha$ represent a displacement offset,
 \end{align}
 Here $p_1$ denotes the total first-order sector used by the stored aggregate count.  This simple sector description is used for likelihood intuition; the QFI calculation uses the converged multi-mode state rather than treating Eq.~\eqref{eq:spade_sector_probabilities} as a two-mode quantum state.
 
-\subsection{Quantum channels, POVM, and count model}
+The three probabilities have a direct interpretation:
+\begin{itemize}
+    \item $p_0$ is the bright/reference sector, dominated by $HG_{00}$;
+    \item $p_1$ is the leading separation-sensitive first-order sector;
+    \item $p_{\mathrm{tail}}$ groups the unresolved higher orders for the count model.
+\end{itemize}
+At perfect alignment, $d_{\mathrm{eff}}=0$ and therefore $\mu=0$, so the ideal model gives $p_1=0$.  The observed nonzero count at this point cannot be explained as an ideal first-order signal.  This simple observation is what forces a baseline mechanism---background, leakage, or both---into the practical model.
 
-\begin{definition}[Sequential practical SPADE model]
-    Starting from the vacuum-free spatial source state $\rho_S(d_a,\epsilon)$, the quantum part of the model is
-    \begin{align}
-        \rho_{\mathrm{loss}}
-         & =\mathcal{E}_{\mathrm{loss},\eta}[\rho_S]
-        =\eta\rho_S+(1-\eta)|\mathrm{vac}\rangle\langle\mathrm{vac}|,        \\
-        \rho_{\mathrm{align}}
-         & =U_{\mathrm{align}}(\delta_{\mathrm{sorter}})\rho_{\mathrm{loss}}
-        U_{\mathrm{align}}^{\dagger}(\delta_{\mathrm{sorter}}),              \\
-        \rho_{\mathrm{q}}
-         & =\mathcal{E}_{\phi,v}[\rho_{\mathrm{align}}]
-        =v\rho_{\mathrm{align}}+(1-v)\operatorname{diag}_{\mathrm{HG}}(\rho_{\mathrm{align}}).
-        \label{eq:spade_quantum_sequence}
-    \end{align}
-    Photon loss is implemented as a completely positive trace-preserving erasure channel.  The fixed sorter displacement is a parameter-independent unitary.  The dephasing map suppresses HG-basis coherences while preserving populations.  With $\Pi_{HG_1}\coloneqq\Pi_{HG_{01}}+\Pi_{HG_{10}}$, the reported first-order outcome is described by the POVM element
-    \begin{equation}
-        M_1=l_0\Pi_{HG_{00}}+l_1\Pi_{HG_1}+l_{\mathrm{tail}}\Pi_{\mathrm{higher}},
-        \qquad M_{\mathrm{other}}=\mathbb{I}-M_1,
-        \label{eq:spade_imperfect_povm}
-    \end{equation}
-    with $0\leq l_0,l_1,l_{\mathrm{tail}}\leq1$.  It is an imperfect measurement instrument: $l_0$ describes bright-mode leakage into the reported first-order channel, $l_1$ its first-order transmission, and $l_{\mathrm{tail}}$ the reporting of higher-order population.  Finally, the predicted count mean and working variance are
-    \begin{equation}
-        \lambda_1=b+N_{\mathrm{in}}\operatorname{Tr}[M_1\rho_{\mathrm{q}}],
-        \qquad
-        \operatorname{Var}(n_1)=F\lambda_1,
-        \label{eq:spade_count_channel}
-    \end{equation}
-    where $b$ is a classical background term, $N_{\mathrm{in}}$ is the number of launched photons per acquisition, and $F$ is a Fano factor.  In the present repeated-count regime, a normal likelihood with this mean and variance is used as a quasi-Gaussian approximation.
-\end{definition}
+\subsection{The model, one step at a time}
+
+\paragraph{1. Photon loss.}
+The prepared source contains one photon in the spatial HG system.  A photon survives with probability $\eta$ and otherwise enters a vacuum state:
+\begin{equation}
+    \rho_{\mathrm{loss}}
+    =\mathcal{E}_{\mathrm{loss},\eta}[\rho_S]
+    =\eta\rho_S+(1-\eta)|\mathrm{vac}\rangle\langle\mathrm{vac}|.
+    \label{eq:spade_loss_channel}
+\end{equation}
+This is a completely positive trace-preserving erasure channel.  It is the correct position for $\eta$ when $\eta$ denotes the survival of a launched photon.
+
+\paragraph{2. Static sorter misalignment.}
+A fixed displacement between the optical field and the mode sorter is represented by
+\begin{equation}
+    \rho_{\mathrm{align}}
+    =U_{\mathrm{align}}(\delta_{\mathrm{sorter}})
+    \rho_{\mathrm{loss}}
+    U_{\mathrm{align}}^{\dagger}(\delta_{\mathrm{sorter}}).
+    \label{eq:spade_alignment_channel}
+\end{equation}
+This map is unitary and parameter independent.  It therefore preserves state QFI, although it can make a fixed SPADE measurement less informative.  The sorter offset $\delta_{\mathrm{sorter}}$ is conceptually different from the source-coordinate offset $d_0$ in Eq.~\eqref{eq:spade_effective_coordinates}.  The aggregate record tends to correlate them, so they cannot both be interpreted physically without an independent alignment reference.
+
+\paragraph{3. HG-basis dephasing.}
+The visibility parameter $v$ controls loss of coherence in the HG basis:
+\begin{equation}
+    \rho_{\mathrm{q}}
+    =\mathcal{E}_{\phi,v}[\rho_{\mathrm{align}}]
+    =v\rho_{\mathrm{align}}
+    +(1-v)\operatorname{diag}_{\mathrm{HG}}(\rho_{\mathrm{align}}).
+    \label{eq:spade_quantum_sequence}
+\end{equation}
+This channel preserves HG populations but suppresses off-diagonal terms.  It can change QFI, which depends on the complete state, but it cannot be identified from this diagonal aggregate count alone.
+
+\paragraph{4. Imperfect SPADE measurement.}
+The mode sorter does not report the optical state directly.  It produces a classical outcome.  Let
+$\Pi_{HG_1}\coloneqq\Pi_{HG_{01}}+\Pi_{HG_{10}}$.  The reported first-order event is modelled by
+\begin{equation}
+    M_1=l_0\Pi_{HG_{00}}+l_1\Pi_{HG_1}
+    +l_{\mathrm{tail}}\Pi_{\mathrm{higher}},
+    \qquad
+    M_{\mathrm{other}}=\mathbb{I}-M_1,
+    \label{eq:spade_imperfect_povm}
+\end{equation}
+where $0\leq l_0,l_1,l_{\mathrm{tail}}\leq1$.  The coefficient $l_0$ is leakage of the bright $HG_{00}$ sector into the reported first-order channel, $l_1$ is the desired first-order transmission, and $l_{\mathrm{tail}}$ describes higher-order events reported in that same channel.  These coefficients belong to the measurement POVM.  They are not automatically quantum noise acting on the state.
+
+\paragraph{5. Classical background and count fluctuations.}
+After the POVM, the model has a classical event probability.  The predicted count mean and working variance are
+\begin{equation}
+    \lambda_1=b+N_{\mathrm{in}}\operatorname{Tr}[M_1\rho_{\mathrm{q}}],
+    \qquad
+    \operatorname{Var}(n_1)=F\lambda_1,
+    \label{eq:spade_count_channel}
+\end{equation}
+where $b$ is a background count, $N_{\mathrm{in}}$ is the number of launched photons per acquisition, and $F$ is the Fano factor.  A normal likelihood with this mean and variance is used as a quasi-Gaussian approximation for the present repeated-count regime.  This is a statistical model for the observed fluctuations, not a claim that photon counting is fundamentally Gaussian.
 
 For identity alignment and dephasing, Eq.~\eqref{eq:spade_count_channel} reduces to the transparent sector expression
 \begin{equation}
@@ -185,23 +344,53 @@ For identity alignment and dephasing, Eq.~\eqref{eq:spade_count_channel} reduces
     \left(l_0p_0+l_1p_1+l_{\mathrm{tail}}p_{\mathrm{tail}}\right).
     \label{eq:spade_sector_count_model}
 \end{equation}
-An equally useful effective parameterization is
+This expression also makes the parameter degeneracy visible.  The observed scale depends on products such as $N_{\mathrm{in}}\eta l_1$, while the baseline can contain both $b$ and $N_{\mathrm{in}}\eta l_0$.  The current count channel cannot separate all of these factors.  For data exploration, it is therefore useful to write
 \begin{equation}
     \lambda_1=B+A_1p_1+A_{\mathrm{tail}}p_{\mathrm{tail}},
     \label{eq:spade_effective_count_model}
 \end{equation}
-where $B$, $A_1$, and $A_{\mathrm{tail}}$ are identifiable combinations of background, input flux, survival, and readout probabilities.  They are diagnostic fit parameters, not unique measurements of dark counts, leakage, or efficiency.
+where, approximately at small displacement,
+\begin{equation}
+    B\simeq b+N_{\mathrm{in}}\eta l_0,\qquad
+    A_1=N_{\mathrm{in}}\eta(l_1-l_0),\qquad
+    A_{\mathrm{tail}}=N_{\mathrm{in}}\eta(l_{\mathrm{tail}}-l_0).
+    \label{eq:spade_effective_parameter_combinations}
+\end{equation}
+These are identifiable combinations and useful diagnostic parameters.  They are not unique measurements of dark counts, leakage, or efficiency.
 
 \begin{remark}[Where information can be lost]
     A parameter-independent unitary alignment map leaves the QFI of the quantum state invariant, but it can reduce the CFI of the fixed downstream SPADE POVM.  The loss and dephasing maps can reduce QFI.  In contrast, the imperfect POVM and the classical count channel do not change the pre-measurement state QFI; they reduce the information available in the observed data.  These distinctions are why all imperfections should not be represented by one generic ``noise'' box.
 \end{remark}
 
 % ==============================================================================
-\section{What the Repeated Counts Require}
+\section{What the Repeated Counts Taught Us}
 \label{sec:spade_data_diagnostics}
 % ==============================================================================
 
-The data first determine which idealizations are untenable.  Across the scan, the mean recorded first-order count ranges from $6.93$ to $19.44$, while the median count at zero displacement is $8.17$.  An ideal first-order response alone predicts zero there, so it cannot explain the record.  The median empirical Fano factor is $2.50$, with a fifth-to-ninety-fifth percentile range of $1.85$ to $3.39$.  Thus ideal Poisson fluctuations ($F=1$) are also inadequate.  The largest signed-distance asymmetry is $3.84$ counts, which motivates retaining the signed scan and treating alignment asymmetry as a possible nuisance effect.
+The final model was not chosen at the beginning.  It was built by asking what each simpler description failed to explain:
+\begin{Verbatim}[fontsize=\small]
+ ideal HG1 response
+        |
+        +--> fails at d_a = 0: a baseline is missing
+        v
+ add baseline and first-order response
+        |
+        +--> describes most of the mean, but not all response variation
+        v
+ test offset, epsilon calibration, and higher-order tail
+        |
+        +--> bound-hitting and negative tail expose missing calibrations
+        v
+ inspect all repetitions
+        |
+        +--> variance exceeds the mean: Poisson noise is inadequate
+        v
+ constrained sequential channel + overdispersed count model
+\end{Verbatim}
+
+\todo[]{Draw diagram 4: the progression from the failed ideal model to the constrained channel model.}
+
+The raw data already rule out two important idealizations.  Across the scan, the mean recorded first-order count ranges from $6.93$ to $19.44$, while the median count at zero displacement is $8.17$.  An ideal first-order response predicts zero there, so it cannot explain the record without a baseline.  The median empirical Fano factor is $2.50$, with a fifth-to-ninety-fifth percentile range of $1.85$ to $3.39$.  Since ideal Poisson counts would have $F=1$, their fluctuations are too small to describe the repetitions.  The largest signed-distance asymmetry is $3.84$ counts, which also motivates retaining the signed scan rather than averaging positive and negative displacements too early.
 
 \begin{table}[htbp]
     \centering
@@ -220,19 +409,19 @@ The data first determine which idealizations are untenable.  Across the scan, th
     \end{tabular}
 \end{table}
 
-\todo[]{insert image 3}
+\todo[]{Insert plot 1: raw-count means, zero-displacement baseline, signed asymmetry, and Fano-factor diagnostics.}
 
 \noindent\emph{Plot brief.} Insert the raw-data diagnostic panel: mean $n_1$ versus signed $d_a$, the $d_a=0$ baseline, residual signed asymmetry, and variance-versus-mean or Fano-factor summaries over the scan.
 
-\subsection{Calibration curves and effective models}
+\subsection{What the successive fits showed}
 
-The first phenomenological check fitted the usual quadratic and linear calibration curves.  At fixed $\epsilon$, $n_1=a+b d_a^2$ is equivalent to a physical reparameterization $n_1=\chi\eta_n+c\epsilon d_a^2$ when both coefficients are free.  For the reference $\eta_n=40{,}000$, the pooled fit gives a baseline $\chi\eta_n=8.297$ counts, $\chi=2.074\times10^{-4}$, response coefficient $c=272.83$, and $R^2=0.8850$.  The baseline-like coefficient varies by only $4.4\%$ across curves, whereas the response coefficient varies by $52.6\%$.  This is evidence that the simple response model is incomplete; it is not an independent measurement of $\chi$.
+The first check was deliberately phenomenological.  At fixed $\epsilon$, the quadratic curve $n_1=a+b d_a^2$ can be rewritten as $n_1=\chi\eta_n+c\epsilon d_a^2$ when both coefficients are free.  The two expressions contain the same fitting freedom; the second form only gives the coefficients a possible physical interpretation.  For the reference $\eta_n=40{,}000$, the pooled fit gives a baseline $\chi\eta_n=8.297$ counts, $\chi=2.074\times10^{-4}$, response coefficient $c=272.83$, and $R^2=0.8850$.  The baseline-like coefficient varies by only $4.4\%$ across curves, whereas the response coefficient varies by $52.6\%$.  Thus the baseline is comparatively stable, but a single response coefficient does not describe all source ratios.  This is evidence that the simple response model is incomplete; it is not an independent measurement of $\chi$.
 
-\todo[]{insert image 4}
+\todo[]{Insert plot 2: quadratic separation calibrations and linear source-ratio calibrations.}
 
 \noindent\emph{Plot brief.} Insert the paper-style quadratic separation calibrations and linear intensity calibrations.  Show the approximately stable offsets and the visibly less stable response slopes, rather than presenting the regressions as a complete physical calibration.
 
-The progression from ideal to effective models makes the same point quantitatively.  A scaled ideal HG1 response has $R^2=-7.1845$ because it lacks a baseline.  Adding a baseline and first-order contrast gives $R^2=0.8858$.  Allowing a source-ratio exponent and a small signed-displacement offset raises it only to $R^2=0.8904$, with effective baseline $8.282$, HG1 scale $7716$, offset $0.0073$, and exponent $1.201$.  These are useful descriptors of the observed mean surface, but they are not unique optical calibrations.
+The model sequence makes the same point quantitatively.  A scaled ideal HG1 response has $R^2=-7.1845$ because it lacks a baseline and is worse than predicting one constant mean.  Adding a baseline and first-order contrast raises the fit to $R^2=0.8858$.  Allowing a source-ratio exponent and a small signed-displacement offset raises it only to $R^2=0.8904$, with effective baseline $8.282$, HG1 scale $7716$, offset $0.0073$, and exponent $1.201$.  These numbers summarize the observed mean surface.  They should not be read as unique measurements of separate optical components.
 
 Attempts to fit the higher-order tail illustrate why physical constraints matter.  A flexible tail term raises a mean-model fit from $R^2=0.8858$ to $0.9127$, but requires $A_{\mathrm{tail}}=-221290$.  A negative effective leakage is not a physical channel parameter; it is a warning that the flexible term is absorbing missing structure.  Likewise, exploratory fits that let the PSF scale float can drive it to a bound.  Such behaviour is diagnostic evidence for missing calibration information, not evidence for an exotic optical effect.
 
@@ -262,11 +451,34 @@ Attempts to fit the higher-order tail illustrate why physical constraints matter
 \end{remark}
 
 % ==============================================================================
-\section{Conditional Inference and Configuration Tests}
+\section{Testing a Complete Channel Configuration}
 \label{sec:spade_conditional_inference}
 % ==============================================================================
 
-The central inferential rule is simple: fix what an independent calibration specifies, fit only what the count record can identify, and test the complete configuration against all repetitions.  This prevents the mutually degenerate factors in Eq.~\eqref{eq:spade_sector_count_model} from being reported as if they had been separately measured.
+The aggregate count does not determine every parameter in Eq.~\eqref{eq:spade_sector_count_model}.  The practical solution is therefore conditional inference: fix the quantities supplied by independent calibration or by an explicitly declared reference scenario, fit only the small number of remaining identifiable parameters, and test the complete configuration against all $52{,}500$ observations.
+
+\begin{Verbatim}[fontsize=\small]
+ independent calibrations or stated assumptions
+                       |
+                       v
+          fix N_in, b, l0, l1, ltail,
+             geometry, F, and visibility
+                       |
+ repeated n1 data --> fit eta --> profile interval
+                       |
+                       v
+       simulate the fitted complete configuration
+                       |
+                       v
+ compare simulations with data --> bootstrap p-value
+                       |
+                       v
+      if compatible: calculate model QFI and SPADE CFI
+\end{Verbatim}
+
+\todo[]{Draw diagram 5: the conditional-fit and bootstrap workflow shown above.}
+
+This procedure prevents degenerate products such as $N_{\mathrm{in}}\eta l_1$ from being reported as separately measured quantities.  It also changes the meaning of the result: the analysis tests a complete assumed configuration, not one parameter in isolation.
 
 \begin{table}[htbp]
     \centering
@@ -285,9 +497,14 @@ The central inferential rule is simple: fix what an independent calibration spec
     \end{tabular}
 \end{table}
 
-\subsection{Reference conditional configuration}
+\subsection{A reference configuration}
 
-One transparent reference scenario fixes $N_{\mathrm{in}}=40{,}000$, $b=0$, $l_0=0.002$, $l_1=1$, $l_{\mathrm{tail}}=0.002$, $d_0=0$, $w_{\mathrm{scale}}=1$, $\alpha=1$, $F=2.6$, and $v=1$.  With these choices stated in advance, the remaining survival parameter has the conditional maximum-likelihood estimate
+To demonstrate the procedure, one transparent reference scenario fixes
+\[
+    N_{\mathrm{in}}=40{,}000,\quad b=0,\quad
+    l_0=l_{\mathrm{tail}}=0.002,\quad l_1=1,
+\]
+together with $d_0=0$, $w_{\mathrm{scale}}=1$, $\alpha=1$, $F=2.6$, and $v=1$.  These values define the scenario; the current count file does not measure all of them independently.  Once they are fixed, the remaining survival parameter has the conditional maximum-likelihood estimate
 \begin{equation}
     \hat{\eta}=0.10480,
     \qquad
@@ -295,30 +512,46 @@ One transparent reference scenario fixes $N_{\mathrm{in}}=40{,}000$, $b=0$, $l_0
     \quad\text{at }99.9\%\text{ profile confidence}.
     \label{eq:spade_conditional_eta}
 \end{equation}
-The fitted configuration has Pearson statistic $52{,}171.9$, compared with bootstrap median $52{,}440.2$, and a parametric-bootstrap $p$-value of $0.8060$ in $200$ simulations.  It is therefore compatible with the observed repeated-count fluctuations under the stated configuration.
+The fitted configuration has Pearson statistic $52{,}171.9$, compared with bootstrap median $52{,}440.2$, and a parametric-bootstrap $p$-value of $0.8060$ in $200$ simulations.  In plain terms, simulated datasets from this fitted scenario commonly look at least as discrepant as the real dataset.  The configuration is therefore compatible with the repeated counts.
 
 For the identical optical assumptions but ideal Poisson fluctuations ($F=1$), the conditional estimate changes to $\hat{\eta}=0.11258$ and the bootstrap gives $p=0.00498$.  This rejects the ideal-Poisson count-noise assumption for this configuration.  It does \emph{not} by itself select a value of $\eta$, because changing the fixed input flux, leakage, background, PSF, or source-ratio calibration changes the conditional estimate.
 
-\todo[]{insert image 5}
+\todo[]{Insert plot 3: conditional mean fit, standardized residuals, eta profile, and bootstrap discrepancy distribution.}
 
 \noindent\emph{Plot brief.} Insert a conditional-fit figure with the predicted and observed count means, standardised residuals, the profile likelihood for $\eta$, and the parametric-bootstrap discrepancy distribution.  Contrast the accepted $F=2.6$ configuration with the rejected $F=1$ version.
 
 \begin{remark}[Meaning of the bootstrap result]
-    The bootstrap asks whether simulated data from the fitted, fully specified configuration have a discrepancy at least as large as the real count cube.  A large $p$-value is a compatibility result, not proof that the configuration is unique or physically true.  The narrow profile interval in Eq.~\eqref{eq:spade_conditional_eta} is statistical and conditional; it does not include systematic uncertainty in the fixed calibration constants.
+    A large bootstrap $p$-value means that the configuration has not been rejected by this discrepancy test.  It does not prove that the configuration is unique or physically true.  Likewise, the narrow interval in Eq.~\eqref{eq:spade_conditional_eta} measures statistical precision only after all the other values have been fixed.  It does not contain their systematic calibration uncertainty.
 \end{remark}
 
 The channel implementation also provides useful conditional profiles.  Varying the HG dephasing visibility over $v=0,0.5,1$ leaves the aggregate-count likelihood flat and returns the same $\hat\eta=0.10480$, as expected because this measurement records only diagonal modal information.  Its model QFI changes only from $0.00245187$ to $0.00245203$ at the reference setting.  In contrast, a profile of fixed sorter displacement, while holding the source offset fixed, has its optimum close to zero; the change in negative log likelihood is $15.1$ at $-0.02$ and $66.6$ at $+0.02$.  Releasing both offsets would reintroduce their degeneracy, which is why an alignment reference is needed.
 
-\section{QFI as Model Validation and Measurement Design}
+\section{What QFI Adds After the Model Test}
 \label{sec:spade_qfi_role}
 
-The QFI used here is the QFI of a specified parameterized state family, evaluated using the SLD formalism of Chapter~\ref{ch:MathBackground}.  For the post-quantum-channel state in Eq.~\eqref{eq:spade_quantum_sequence},
+The count likelihood and the QFI answer different questions.  The likelihood asks whether a complete model could plausibly have produced the recorded repetitions.  The QFI asks how much separation information is present in the quantum state predicted by that model before it is measured.  For the post-quantum-channel state in Eq.~\eqref{eq:spade_quantum_sequence}, the SLD formalism of Chapter~\ref{ch:MathBackground} gives
 \begin{equation}
     \mathcal{F}_{\mathrm{Q}}(d_a)
     =\mathcal{F}_{\mathrm{Q}}\!\left[\rho_{\mathrm{q}}(d_a,\epsilon)\right].
     \label{eq:spade_model_qfi}
 \end{equation}
 It is a per-launched-photon upper bound for the assumed model.  It is not obtained by substituting the empirical count variance into a QFI formula.
+
+\noindent For every configuration that remains compatible with the counts, the comparison has the following structure:
+\begin{Verbatim}[fontsize=\small]
+ assumed post-channel state rho_q(d_a, epsilon)
+                       |
+                       +--> model QFI: maximum allowed information
+                       |
+                       +--> full ideal-SPADE CFI
+                       |
+                       +--> ideal first-order CFI
+                       |
+                       +--> imperfect binary-readout CFI
+                       |
+                       +--> final noisy-count CFI
+\end{Verbatim}
+The first quantity belongs to the quantum state.  The remaining quantities belong to increasingly practical measurements or count models.  Their comparison locates where information is lost; it does not turn the final count CFI into QFI.
 
 \begin{infobox}{What QFI does and does not mean in this chapter}
     The count record tests the final likelihood of an assumed channel configuration.  It does not tomographically reconstruct the quantum wire before the SPADE POVM, and it cannot yield an ``experimental QFI'' from $n_1$ alone.  Once a configuration passes the count test, its model QFI can be compared with the CFI of (i) a complete ideal HG measurement, (ii) an ideal first-order measurement, (iii) the imperfect binary POVM, and (iv) the final noisy count distribution.  This identifies where information is lost and which additional measurements would be valuable.
@@ -347,22 +580,22 @@ At exactly $d_a=0$, the source model changes rank.  The derivative SLD QFI and a
     \end{tabular}
 \end{table}
 
-The ideal first-order fraction and the imperfect binary-readout fraction answer different questions.  The former asks what a perfect first-order projector would retain; the latter includes the assumed $HG_{00}$ leakage, which creates a large baseline relative to the small planetary signal.  Their difference is therefore a useful design result, not a contradiction.
+The ideal first-order fraction and the imperfect binary-readout fraction answer different questions.  The former asks how much information a perfect first-order projection would retain.  The latter asks how much survives after the assumed $HG_{00}$ leakage and binary aggregation.  Since the planetary signal is small compared with the leakage-induced baseline, the practical fraction can be far lower.  This difference is a measurement-design result, not a contradiction.
 
-\todo[]{insert image 6}
+\todo[]{Insert plot 4: model QFI, full ideal-SPADE CFI, and ideal first-order CFI over an extended displacement range.}
 
 \noindent\emph{Plot brief.} Insert QFI, full ideal-SPADE CFI, and ideal first-order CFI across a wider displacement interval.  Shade the experimental scan range and plot the ratios to QFI, so that the separation at which higher HG orders become useful is visible.
 
-\todo[]{insert image 7}
+\todo[]{Insert diagram or plot 5: the information-loss ladder from model QFI to the final noisy-count CFI.}
 
 \noindent\emph{Plot brief.} Insert the information-loss ladder for the accepted reference configuration: post-channel QFI, full-SPADE CFI, ideal first-order CFI, imperfect binary-POVM CFI, and final noisy-count CFI.  State the normalisation of each quantity in the caption.
 
 % ==============================================================================
-\section{Practical Conclusions and the Next Measurement}
+\section{What Was Learned and What Should Be Measured Next}
 \label{sec:spade_conclusions}
 % ==============================================================================
 
-The completed reasoning process is therefore as follows.  The original low-mode/TQFI intuition correctly identified that spatial-mode structure is the relevant resource.  The actual record, however, is a single noisy aggregate output rather than a calibrated multi-mode state measurement.  The appropriate result is consequently a channel-resolved likelihood model, with QFI used only after its state and channel assumptions are declared and tested.
+The original low-mode/TQFI intuition correctly identified that spatial-mode structure is the relevant resource.  What failed was not that physical intuition, but the assumption that the present file contained enough outcomes to reconstruct the required reduced state.  The available observable is one noisy aggregate output.  The defensible result is therefore a channel-resolved likelihood model, followed by a conditional QFI and CFI comparison after the state and channel assumptions have been declared and tested.
 
 \begin{remark}[Supported conclusions]
     The current counts require a baseline component and overdispersed noise; a simple ideal HG1 Poisson model is rejected.  The repeated data support constrained likelihood fits and bootstrap tests of complete channel configurations.  Under the reference assumptions, the $F=2.6$ configuration is compatible with the data whereas its $F=1$ counterpart is not.  The validated quantum model shows that complete ideal SPADE is nearly QFI-optimal in the tested regime, but that real binary readout can lose much of this information.
@@ -373,6 +606,30 @@ The completed reasoning process is therefore as follows.  The original low-mode/
 \end{remark}
 
 The most valuable next data products are listed in Table~\ref{tab:spade_calibration_handoff}.  They turn the conditional analysis into a progressively calibrated experiment: every independently measured quantity removes a degeneracy rather than adding another unconstrained fit parameter.
+
+\noindent The proposed future measurement can be summarized as
+\begin{Verbatim}[fontsize=\small]
+ source and alignment calibration
+               |
+ triggered acquisition with known normalization
+               |
+               v
+ [multi-output SPADE]
+    |--> HG00 counts
+    |--> HG01 counts
+    |--> HG10 counts
+    |--> selected higher-mode counts
+    +--> complement / no-click counts
+               |
+ source-blocked data + mode-injection confusion matrix
+               |
+               v
+ calibrated modal probabilities --> experimental SPADE CFI
+               |
+ validated state/channel model --> comparison with model QFI
+               |
+ coherence-sensitive data, if available --> state-level QFI or TQFI
+\end{Verbatim}
 
 \begin{table}[htbp]
     \centering
@@ -393,7 +650,7 @@ The most valuable next data products are listed in Table~\ref{tab:spade_calibrat
     \end{tabular}
 \end{table}
 
-\todo[]{insert image 8}
+\todo[]{Draw diagram 6: the calibrated future multi-mode SPADE protocol shown above.}
 
 \noindent\emph{Diagram brief.} Draw the proposed calibrated future protocol: source and alignment metadata, triggered trials, per-mode counts including the complement, source-blocked runs, and a mode-injection confusion-matrix calibration.  Show the resulting hierarchy: calibrated modal CFI first; model-QFI comparison second; state-level/TQFI analysis only when coherence information is supplied or justified.
 
