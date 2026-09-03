@@ -56,7 +56,7 @@ For each `(epsilon, d_a)` setting, it combines 100 independent measurements of
 | Median Fano factor `Var(n1)/E[n1]` | `2.497` |
 | Largest signed-distance asymmetry | `3.84` counts |
 
-![Raw data and count-noise diagnostics](../exoplanets/figures/spade_raw_diagnostics.png)
+![Raw data and count-noise diagnostics](TeXtured/figures/exoplanets/spade_raw_diagnostics.png)
 
 Only the aggregate first-order result is present. The file does not contain
 HG00 counts, separate HG01/HG10 streams, higher-order outputs, source-blocked
@@ -117,7 +117,7 @@ gives the following conditional values:
 | `40,000` | `0.020743 +/- 0.000109` | `27,282.7 +/- 430.1` | `0.88499` |
 | `80,000` | `0.010371 +/- 0.000054` | `27,282.7 +/- 430.1` | `0.88499` |
 
-![One-second paper-style calibration](../exoplanets/figures/spade_paper_calibration.png)
+![One-second paper-style calibration](TeXtured/figures/exoplanets/spade_paper_calibration.png)
 
 These fractions are **effective baseline fractions**, not measurements of pure
 HG00-to-HG1 cross-talk. For comparison, the paper's independent cross-talk
@@ -240,7 +240,7 @@ normalization is about `2,038` photons per 10 ms, or `203,800` per second,
 which is also inconsistent with directly identifying this illustrative input
 with the paper's `40,000--80,000` detected photons per second.
 
-![Rejected fixed model and effective affine comparison](../exoplanets/figures/spade_model_comparison.png)
+![Rejected fixed model and effective affine comparison](TeXtured/figures/exoplanets/spade_model_comparison.png)
 
 ## Effective mean models do not yet close the gap
 
@@ -307,7 +307,7 @@ higher-order amplitude.
 probability only if background is negligible and the first-order transmission
 normalization is known.
 
-![Hierarchical channel and grouped holdout validation](../exoplanets/figures/spade_hierarchical_channel.png)
+![Hierarchical channel and grouped holdout validation](TeXtured/figures/exoplanets/spade_hierarchical_channel.png)
 
 The primary evidence is grouped five-fold cross-validation. Every fold refits
 the physical mean, variance law, GP amplitudes, and length scales without using
@@ -393,7 +393,7 @@ the more useful indication of calibration and transport sensitivity.
 | Complete distance rows | `0.752` | `1.061` | `95.05%` |
 | Complete epsilon columns | `0.610` | `1.023` | `93.52%` |
 
-![Identifiable sequential-channel fit](../exoplanets/figures/spade_identifiable_quantum_channel.png)
+![Identifiable sequential-channel fit](TeXtured/figures/exoplanets/spade_identifiable_quantum_channel.png)
 
 The fitted conditional scale corresponds to `130,425` per second, above the
 paper's quoted detected-photon range `40,000--80,000` per second (`400--800`
@@ -421,7 +421,7 @@ physically valid channels, but their example values are **invented sensitivity
 placeholders**, not fitted discoveries.
 
 Each parameter in
-[`spade_plausible_channels.example.json`](../exoplanets/spade_plausible_channels.example.json)
+[`spade_plausible_channels.example.json`](exoplanets/spade_plausible_channels.example.json)
 has four fields: value, provenance status, phenomenon represented, and the
 measurement needed to calibrate it. The fit policy freezes all such values and
 fits only `T`, background, displacement offset, and a zero-mean coupling
@@ -445,7 +445,7 @@ numbers must retain their provenance labels: invented modal loss and mixing
 can be traded against the throughput scale. The workbench reports one-at-a-time
 identity ablations so that this dependence is visible rather than buried.
 
-![Replaceable provisional-channel fit and sensitivity](../exoplanets/figures/spade_plausible_channel_workbench.png)
+![Replaceable provisional-channel fit and sensitivity](TeXtured/figures/exoplanets/spade_plausible_channel_workbench.png)
 
 ## QFI and information retention
 
@@ -459,7 +459,7 @@ ideal quantum model gives:
 | Maximum SLD-vs-fidelity QFI relative difference | `0.322%` |
 | Maximum HG cutoff change, order 8 to 12 | `5.1e-12` relative |
 
-![Ideal information retained by accessible HG outcomes](../exoplanets/figures/spade_information_retention.png)
+![Ideal information retained by accessible HG outcomes](TeXtured/figures/exoplanets/spade_information_retention.png)
 
 This supports the conceptual point: low-order SPADE retains a large fraction
 of the separation information in the sub-Rayleigh regime, while full ideal
@@ -537,13 +537,13 @@ PYTHONPATH=. conda run -n space python cqes/exoplanets/spade_generate_figures.py
 ```
 
 The machine-readable plot summary is
-[`spade_corrected_summary.json`](../exoplanets/results/spade_corrected_summary.json).
+[`spade_corrected_summary.json`](exoplanets/results/spade_corrected_summary.json).
 The full hierarchical fit and held-out predictions are in
-[`spade_hierarchical_channel.json`](../exoplanets/results/spade_hierarchical_channel.json).
+[`spade_hierarchical_channel.json`](exoplanets/results/spade_hierarchical_channel.json).
 The identifiable sequential fit and information ladder are in
-[`spade_identifiable_quantum_channel.json`](../exoplanets/results/spade_identifiable_quantum_channel.json).
+[`spade_identifiable_quantum_channel.json`](exoplanets/results/spade_identifiable_quantum_channel.json).
 The replaceable provisional-channel run is in
-[`spade_plausible_channel_workbench.json`](../exoplanets/results/spade_plausible_channel_workbench.json).
+[`spade_plausible_channel_workbench.json`](exoplanets/results/spade_plausible_channel_workbench.json).
 The regression checks are in
 [`test_spade_corrected_model.py`](../tests/test_spade_corrected_model.py).
 
