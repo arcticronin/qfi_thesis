@@ -1,5 +1,5 @@
 \chapter{High-Contrast Sub-Rayleigh Imaging}
-\label{sec:astrophysical_metrology_spade}
+\label{ch:astrophysical_theory}
 
 This chapter applies the quantum parameter-estimation framework developed in the preceding chapters to astronomical imaging, focusing on the direct detection and characterization of exoplanets~\cite{Santamaria2024single}.
 In this setting, the achievable precision is fundamentally limited by the quantum and statistical properties of weak thermal light~\cite{Tsang2016quantum}.
@@ -9,70 +9,64 @@ The aim is to show how the theoretical tools introduced earlier can be translate
 Dire qual è teoria già sviluppata in Ref  \cite{Santamaria2024single} e cosa è stato fatto in questa tesi
 \end{Todo}
 
-\section{Problem Setting: High-Contrast Sources}
-
-\subsection{The Exoplanet Characterization Problem}
-Direct imaging of an exoplanet situated adjacent to its host star is exceptionally challenging due to the extreme disparity in their emission intensities. Let a primary bright source (the star, $A$) have an intensity $I_A$, and a secondary dim source (the exoplanet, $B$) have an intensity $I_B$~\cite{Santamaria2024single}.
-The physical system is characterized by the relative intensity ratio (or contrast ratio) $\epsilon$~\cite{Santamaria2024single}:
+\section{The exoplanet characterization problem}
+Consider a star, denoted by $A$, with intensity $I_A$, and an exoplanet, denoted by $B$, with intensity $I_B$. This system is characterized by the relative intensity ratio (or contrast ratio) $\epsilon$
 \begin{equation}
-    \epsilon \coloneqq \frac{I_B}{I_A+I_B}, \qquad 0<\epsilon\ll1
+    \epsilon \coloneqq \frac{I_B}{I_A+I_B}
     \label{eq:intensity_ratio_epsilon}
 \end{equation}
-representing a high dynamic range typically exceeding four to ten orders of magnitude ($\epsilon \sim 10^{-4}$ to $10^{-10}$)~\cite{Santamaria2024single}. 
-When the angular separation between the star and the planet is small, their light fields overlap on the telescope's aperture, creating a composite field where the weak planetary signal is obscured by the classical shot noise \textcolor{red}{si usa dopo shot noise?} of the starlight~\cite{Santamaria2024single}. Detecting and characterizing the faint source therefore requires separating the two fields at sub-Rayleigh scales (\textit{ie} smaller than the classic Rayleigh diffraction limit).
-
+Since the exoplanet is typically much fainter than its host star, so that $I_B \ll I_A$, $\epsilon$ can be approximated as ~\cite{Santamaria2024single}
+\begin{equation}
+    \epsilon \approx \frac{I_B}{I_A}
+    \label{eq:intensity_ratio_epsilon_approx}
+\end{equation}
+The approximation defined in Eq. \ref{eq:intensity_ratio_epsilon_approx} is the one used throughout the whole thesis.
 % \subsection{Space Domain Awareness: Deep Sub-Rayleigh Constellations}
 % Beyond exoplanet detection, Space Domain Awareness (SDA) aims to continuously detect, track, catalog, and identify artificial space objects, for example satellites, spacecraft, and orbital debris, to ensure safe space operations~\cite{choi2024adaptive}. Ground-based imaging observations of these targets are severely restricted by their dim appearance, small separation, and dense distributions~\cite{choi2024adaptive}. These challenges render space targets as point-like objects in the sub-Rayleigh regime, possessing extreme brightness contrast but low photon budgets, often further degraded by atmospheric turbulence~\cite{choi2024adaptive}. To resolve these targets, the iterative Quantum-Accelerated Imaging (QAI) framework adaptively varies the measurement basis in response to initial data, maximizing the extracted Quantum Fisher Information (QFI) per photon~\cite{choi2024adaptive}.
 
 % ==============================================================================
-\section{Rayleigh's Curse, Failure of Direct Imaging}
+\section{The sub-Rayleigh regime}
 % ==============================================================================
+When the angular separation between the star and the planet is small, their light fields overlap at the telescope's aperture, making the faint planet difficult to distinguish from the much brighter star. Detecting and characterizing the planet therefore requires resolving the two sources at sub-Rayleigh scales, i.e., separations smaller than the classic Rayleigh diffraction limit.
+This limit arises because, due to diffraction at the telescope's finite aperture, light from a point source cannot be focused to an infinitesimal point. Instead, the telescope produces a finite intensity distribution. 
+This distribution is the result of the incoming image and the telescope's own response, quantified by a function known as the point-spread function (PSF). The PSF is a property of the instrument, not of the source. For point-like sources, such as those considered here, the observed image is described directly by the PSF itself.
+The PSF is commonly modeled as a Gaussian of width $w_0$ ~\cite{Santamaria2024single}. The Rayleigh limit is then reached when the transverse separation $d$ between the two emitters becomes comparable to or smaller than $w_0$ ($d\lesssim w_0$)~\cite{Santamaria2024single}. This transition from the resolved to the sub-Rayleigh regime is illustrated in Fig.~\ref{fig:rayleigh_criterion}, where the increasing overlap between the two PSFs causes the distinct intensity peaks to merge into a single dominant profile.
 
-According to the classical Rayleigh criterion, a diffraction-limited imaging system possesses a fundamental spatial resolution limit. When light from a point source passes through a telescope's circular pupil, diffraction broadens the image into a finite spot on the image plane~\cite{Santamaria2024single}. Modeling this point-spread function (PSF) via a Gaussian approximation of the physical Airy disk, let the profile have a spatial width $w_0$. The Rayleigh limit is then reached when the transverse spatial separation $d$ between two point emitters becomes comparable to or smaller than $w_0$~\cite{Santamaria2024single}.
-
-\begin{Suggestion}
-    Fare un disegnino dove si mostrano d e w0
-\end{Suggestion}
 
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=0.48\textwidth]{figures/scripts_for_figures/rayleigh_resolved.png}\hfill
     \includegraphics[width=0.48\textwidth]{figures/scripts_for_figures/rayleigh_unresolved.png}
-    \caption{Two unequal point sources in a diffraction-limited image. When their separation is large compared with the PSF width (left), two features can be distinguished directly. In the sub-Rayleigh regime (right), the intensity profiles overlap into one dominant feature. The faint source is still present, but its displacement is encoded only as a small change in the combined profile.}
+    \caption{In this Figure, we recreated two point sources with different intensities ($I_1$ and $I_2$ respectively) in a diffraction-limited image. When their separation $d$ is large compared with the PSF width $w_0$ (left), two peaks can be distinguished directly. In the sub-Rayleigh regime (right), the intensity profiles overlap into one dominant peak. The faint source is still present, but its displacement is encoded only as a small change in the combined profile.}
     \label{fig:rayleigh_criterion}
 \end{figure}
 
-\begin{remark}[What ``sub-Rayleigh'' means here]
-    The Rayleigh criterion is a useful visual rule, not a statement that estimation becomes mathematically impossible below a sharp boundary. The issue is statistical: as the PSFs overlap, an intensity measurement contains progressively less accessible information about the faint source per detected photon. With enough resources a direct image may still reveal it, the problem is that the required resources can simply become prohibitive at high contrast.
-\end{remark}
-
 \section{Why an intensity image is poorly conditioned}
+Direct imaging is a common astronomical technique for detecting exoplanets. It involves capturing photographs or light spectra of an exoplanet by pointing a telescope directly at it.
 
-For clarity, consider two incoherent sources separated along the $x$ direction, with the bright star used as a known position reference, and approximate the PSF by a Gaussian of width $w_0$. Conditional on detecting a photon, direct imaging samples its position from
+Unfortunately, this detection method is not suitable for the sub-Rayleigh regime we want to treat in this thesis. To address this point more formally, below we compute the Fisher information for the system under study.
+
+We consider the exoplanet and the star separated by a distance $d$ along the $x$ direction, with the star's position taken as known, and we model the PSF as a Gaussian of width $w_0$. Direct imaging records the transverse position at which each detected photon lands on the image plane. Conditional on a photon being detected, this position is distributed according to
 \begin{equation}
     p_{\mathrm{DI}}(x,y\mid d,\epsilon)
     = \frac{e^{-y^2/(2w_0^2)}}{2\pi w_0^2}
     \left[(1-\epsilon)e^{-x^2/(2w_0^2)}
-        +\epsilon e^{-(x-d)^2/(2w_0^2)}\right].
+        +\epsilon e^{-(x-d)^2/(2w_0^2)}\right],
     \label{eq:di_probability_distribution}
 \end{equation}
-The density in Eq.~\eqref{eq:di_probability_distribution} integrates to one: it describes the \emph{position conditional on a detection}.
-The separate probability that a temporal mode produces a detected photon is denoted by $\eta$ below.
-Direct imaging is therefore a position-basis measurement of the field.
-SPADE will implement a different spatial-basis measurement before photon counting.
-For $d\ll w_0$, changing $d$ changes the image only weakly, while the change is weighted by the already small factor $\epsilon$.
+Note that Eq.~\eqref{eq:di_probability_distribution} describes only the \emph{spatial} distribution of a detected photon; it says nothing about whether a photon is detected at all in a given temporal mode. Here, a temporal mode can be thought of simply as one elementary time slot into which the incoming light is divided, short enough that at most one photon is expected in it; the probability that this slot actually yields a detected photon is denoted $\eta$, introduced below. In other words, direct imaging is fundamentally a position-basis measurement of the field: it reads out the intensity pattern pixel by pixel.
 
-When the star position and $\epsilon$ are treated as known, and the scalar separation along $x$ is the parameter to be estimated, the Fisher information per temporal mode has the leading high-contrast behaviour
+%This is in contrast to SPADE, discussed in the following sections, which instead projects the field onto a different, non-local set of spatial modes before the photon is counted.
+
+Equation~\eqref{eq:di_probability_distribution} already makes the origin of the Rayleigh curse visually plausible: in the sub-Rayleigh regime $d\ll w_0$, the two Gaussian terms in brackets are nearly identical, so shifting the faint source by $d$ barely deforms the overall image; on top of this weak effect, the deformation itself enters only through the small prefactor $\epsilon$, since the companion contributes just a fraction $\epsilon$ of the detected photons. Both effects work in the same direction, and their combination is what ultimately suppresses the information about $d$ carried by the image.
+
+This intuition is made quantitative by computing the Fisher information for the estimation of $d$, treating the star's position and the contrast $\epsilon$ as known. In the high-contrast, sub-Rayleigh limit, the Fisher information per temporal mode behaves as
 \begin{equation}
     \mathcal{I}_{\mathrm{DI}}(d) \sim \frac{\eta\epsilon^2}{w_0^2},
     \qquad d\ll w_0,
     \label{eq:di_fisher_collapse}
 \end{equation}
-where $\eta$ is the probability that a photon is detected in that temporal mode. The important feature is the $\epsilon^2$ dependence: the displacement signal in the intensity image is suppressed twice, once by the faint-source brightness and again when its weak deformation is estimated against the bright background. This high-contrast form of Rayleigh's curse is the limitation that motivates a different measurement basis~\cite{Santamaria2024single,Tsang2016quantum}.
-
-\subsection{How direct-imaging data are normally used}
-
-In a conventional analysis, the detector pixels provide counts sampled from Eq.~\eqref{eq:di_probability_distribution} (or from a more realistic PSF model, i.e. using Bessel functions). A forward model is fitted to those counts to estimate $\boldsymbol d$, $\epsilon$, and any other parameter such as the star position or background. The fit may be formulated as maximum likelihood or Bayesian inference. The statistical issue above is not that these procedures are invalid, it is that their likelihood changes very slowly with the faint-source displacement in the regime of interest.
+where $\eta$ is, as above, the probability that a given temporal mode yields a detected photon. The key feature of Eq.~\eqref{eq:di_fisher_collapse} is the quadratic dependence on $\epsilon$: the displacement signal is suppressed twice over, once because the companion is faint to begin with, and a second time because its already-weak imprint on the image must be estimated against the much brighter stellar background. This double suppression is the high-contrast manifestation of Rayleigh's curse, and it is precisely the limitation that motivates moving to a different measurement basis~\cite{Santamaria2024single,Tsang2016quantum}.
 
 \section{Weak astronomical light as a spatial quantum state}
 
