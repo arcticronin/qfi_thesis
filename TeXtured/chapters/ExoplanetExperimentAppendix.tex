@@ -1,0 +1,265 @@
+\chapter{Supplementary SPADE Diagnostics and Sensitivity Tests}
+\label{app:spade_diagnostics}
+
+This appendix collects the numerical diagnostics and provisional sensitivity tests that support Chapter~\ref{ch:exoplanet_experiment}.  They are kept here to make the analysis reproducible without interrupting the main channel-model argument.  None of the assumed workbench parameters is presented as an experimental measurement.
+
+\section{Channel Classification and Parameter Provenance}
+
+Table~\ref{tab:spade_channel_sequence} records the role and provenance of every stage in the sequential model.  ``Conditional'' means that a result can be calculated only after the relevant parameters have been supplied by an external calibration or stated as assumptions.
+
+\begin{table}[htbp]
+    \centering
+    \caption{Experiment-specific channel sequence, parameter provenance, and possible information effect.}
+    \label{tab:spade_channel_sequence}
+    \begin{tabularx}{\textwidth}{p{3cm} p{5cm} X}
+        \toprule
+        \rowcolor{gray!5} \textbf{Stage}  & \textbf{Parameter provenance}                                              & \textbf{Information effect}                                            \\
+        \midrule
+        \rowcolor{gray!15} \multicolumn{3}{l}{\textbf{Quantum preparation and channels}}                                                                                                         \\
+        \midrule
+        Bright / \newline faint mixture   & $d_a,\epsilon$ programmed. Source form assumed                             & Defines the source-state QFI                                           \\
+        Survival / \newline erasure       & $\eta$ unidentifiable without launched flux                                & Can change QFI per launched photon                                     \\
+        Alignment / \newline displacement & Effective offset fitted. Physical sorter offset not isolated               & Fixed unitary preserves state QFI but can reduce fixed-measurement CFI \\
+        Dephasing                         & Cannot be identified. Provisional visibility used only in the workbench    & Can reduce state QFI while leaving recorded populations unchanged      \\
+        Coherent HG mixing                & Provisional angle and phase used only in the workbench                     & Fixed unitary preserves QFI but redistributes measurement CFI          \\
+        Modal transmission                & Provisional transmissions used only in the workbench                       & Can reduce accessible QFI and CFI                                      \\
+        Accessible-mode reduction         & Selected HG subspace specified. Complement outcome unrecorded              & Can reduce state QFI while keeping the failure probability             \\
+        \midrule
+        \rowcolor{gray!15} \multicolumn{3}{l}{\textbf{Quantum measurement}}                                                                                                                     \\
+        \midrule
+        SPADE                             & Modal basis specified. Full outcome vector unrecorded                      & Produces measurement-dependent CFI                                     \\
+        \midrule
+        \rowcolor{gray!15} \multicolumn{3}{l}{\textbf{Classical models}}                                                                                                                        \\
+        \midrule
+        Readout / \newline confusion      & One paper value externally fixed. Matrix symmetry assumed                  & Can reduce CFI, not pre-measurement QFI                                \\
+        Background / \newline calibration & Background and field fitted as nuisance terms                             & Changes final means and their identifiable combinations                \\
+        Repeated counts                   & Dispersion diagnosed from repetitions                                      & Determines final count uncertainty and CFI                             \\
+        \bottomrule
+    \end{tabularx}
+\end{table}
+
+\section{Raw Counts and Exposure Accounting}
+
+Across the setting grid, the mean $10\,\mathrm{ms}$ count is $6.93$--$19.44$.  The median zero-separation mean is $8.17$, the median Fano factor is $2.497$, and the largest positive/negative-distance asymmetry is $3.84$ counts.  These observations show a baseline, super-Poissonian variation, and structured setting dependence, but they do not identify a unique physical cause.
+
+\begin{table}[htbp]
+    \centering
+    \caption{Direct raw-count diagnostics and their modelling implications.}
+    \label{tab:spade_raw_diagnostics}
+    \begin{tabularx}{\textwidth}{p{4.4cm} p{2.7cm} X}
+        \toprule
+        \textbf{Diagnostic}                                    & \textbf{Observed} & \textbf{Implication}                                                   \\
+        \midrule
+        Mean $n_1$ per $10\,\mathrm{ms}$                       & $6.93$--$19.44$   & The signal is measured on top of a large baseline                      \\
+        Median mean at $d_a=0$                                 & $8.17$            & Ideal first-order response alone is insufficient                       \\
+        Median $\operatorname{Var}(n_1)/\operatorname{E}(n_1)$ & $2.497$           & Poisson counting alone understates repeated-count variation            \\
+        Largest signed-distance asymmetry                      & $3.84$ counts     & Signed settings should not be averaged before calibration diagnostics \\
+        \bottomrule
+    \end{tabularx}
+\end{table}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=\textwidth]{figures/exoplanets/spade_raw_diagnostics.png}
+    \caption{Diagnostics of the recorded $10\,\mathrm{ms}$ aggregate first-order counts.  The panels show setting means, setting-wise Fano factors, the nonzero $d_a=0$ baseline, and variance against mean.  They summarize the $100$ repetitions directly and do not represent predictions from a fitted quantum state.}
+    \label{fig:spade_data_record}
+\end{figure}
+
+Every stored value is a $10\,\mathrm{ms}$ count.  The paper instead combines the $100$ repetitions and quotes about $40{,}000$--$80{,}000$ detected photons for one second.  The comparable first-order observable is
+\begin{equation}
+    n_{1,\mathrm{1\,s}}=\sum_{r=1}^{100}n_{1,r}
+    \label{eq:spade_one_second_count}
+\end{equation}
+The median zero-separation aggregate is $817$ counts per second.  The paper-style regression is
+\begin{equation}
+    n_{1,\mathrm{1\,s}}
+    =\chi_{\mathrm{eff}}(\eta n)_{\mathrm{1\,s}}
+    +c\epsilon d_a^2
+    \label{eq:spade_paper_calibration}
+\end{equation}
+For the assumed normalization $(\eta n)_{\mathrm{1\,s}}=40{,}000$, the fitted values are
+\begin{equation}
+    \chi_{\mathrm{eff}}=0.020743\pm0.000109
+    \qquad
+    c=27{,}282.7\pm430.1
+    \qquad R^2=0.88499
+    \label{eq:spade_paper_calibration_values}
+\end{equation}
+For an $80{,}000$ normalization, $c$ is unchanged and $\chi_{\mathrm{eff}}=0.010371\pm0.000054$.  These are effective baseline fractions, not measurements of pure $HG_{00}$-to-$HG_1$ cross-talk.  The paper value $\chi=0.0035$ would contribute only $140$ or $280$ baseline counts at the two one-second normalizations, well below the observed offset of about $830$ counts.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=\textwidth]{figures/exoplanets/spade_paper_calibration.png}
+    \caption{Paper-style calibration after summing the $100$ independent $10\,\mathrm{ms}$ repetitions at each setting.  The curves and effective baseline fractions are fitted using Eq.~\eqref{eq:spade_paper_calibration}.  The dashed comparison uses the externally reported $\chi=0.0035$.  The fitted baseline is too large to interpret $\chi_{\mathrm{eff}}$ as a measured sorter-transfer probability.}
+    \label{fig:spade_paper_calibration}
+\end{figure}
+
+The incident-photon, detected-photon, and exposure quantities must remain distinct.  The quantity $N_{\mathrm{in}}$ is the unrecorded number incident in one $10\,\mathrm{ms}$ repetition.  The product $\eta N_{\mathrm{in}}=T$ is a conditional throughput for that repetition.  The paper's $40{,}000$--$80{,}000$ is a one-second detected-photon normalization, not $N_{\mathrm{in}}$ or a per-repeat count.
+
+\section{Discrete Counts and Rejected Benchmark Models}
+
+The setting means are only about $7$--$19$ counts, so Gaussian parametric bootstraps can produce non-integer or negative observations.  The following moments define the NB1 diagnostic family.
+\begin{equation}
+    \operatorname{E}(Y)=\mu
+    \qquad
+    \operatorname{Var}(Y)=F\mu
+    \label{eq:spade_nb1_moments}
+\end{equation}
+With saturated setting means, NB1 gives $F=2.4188$ and a negative log likelihood of $153{,}969.7$.  A Poisson--lognormal model gives a log-rate standard deviation of $0.3765$ and a negative log likelihood of $153{,}893.2$, which improves AIC by $153.0$.  The Poisson--lognormal model reproduces the observed number of zero counts, but still fails checks of variance differences and median skewness within settings.  The two-sided bootstrap $p$-values are $0.00664$ and $0.0133$.  Neither one-parameter family reproduces all individual-count variance and tail structure.
+
+The fixed benchmark uses the illustrative normalization $N_{\mathrm{in}}=40{,}000$ per $10\,\mathrm{ms}$, together with $\chi=0.0035$, $HG_1$ transmission $0.9965$, zero higher-order leakage and background, zero offset, unit PSF scale and source-ratio exponent, and fixed $F=2.6$.  The normalization is a scenario assumption and is not the paper's one-second detected-photon number.  Within this conditional model,
+\begin{equation}
+    \begin{aligned}
+        \widehat{\eta}=0.0509391
+        \qquad &
+        \eta\in[0.0505743,0.0513051]
+        \\
+               & \text{at conditional }99.9\%\text{ profile confidence}
+    \end{aligned}
+    \label{eq:spade_conditional_eta}
+\end{equation}
+The observed setting-mean Pearson discrepancy is $4327.62$, compared with a bootstrap median of $524.73$.  With $200$ discrete, refitted simulations,
+\begin{equation}
+    p=\frac{1}{201}\simeq0.00498
+    \label{eq:spade_fixed_rejection}
+\end{equation}
+The benchmark is rejected.  Its fitted $\widehat\eta$ is an optimizer within a rejected conditional model, not a measured efficiency.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.92\textwidth]{figures/exoplanets/spade_model_comparison.png}
+    \caption{Comparison of the fixed paper-based benchmark channel (left) and an effective affine mean model (right).  Points and residual maps compare fitted and observed $10\,\mathrm{ms}$ setting means.  The discrete bootstrap rejects both models.  Neither panel validates a complete apparatus channel.}
+    \label{fig:spade_model_comparison}
+\end{figure}
+
+Three more flexible deterministic surfaces were tested with a fitted NB1 Fano factor and a refitted discrete bootstrap.
+
+\begin{table}[htbp]
+    \centering
+    \caption{Deterministic mean-model diagnostics.  The bootstrap $p$-values use $100$ simulations.}
+    \label{tab:spade_explorer_scenarios}
+    \begin{tabularx}{\textwidth}{p{3.1cm} c c c c X}
+        \toprule
+        \textbf{Model}                  & \textbf{$R^2$} & \textbf{$F$} & \textbf{Pearson} & \textbf{$p$} & \textbf{Interpretation}                                        \\
+        \midrule
+        Affine background + first order & $0.89355$      & $2.4796$     & $1271.1$         & $1/101$      & Useful description, but not a validated data generator         \\
+        Source/calibration deformation  & $0.90911$      & $2.4710$     & $1097.7$         & $1/101$      & PSF scale reaches lower bound $0.6$                            \\
+        Added higher-order tail         & $0.91650$      & $2.4673$     & $1025.1$         & $1/101$      & Negative tail coefficient absorbs calibration structure        \\
+        \bottomrule
+    \end{tabularx}
+\end{table}
+
+The increasing $R^2$ improves the visual mean fit but does not fix the discrete-count discrepancy.  A PSF scale at its boundary and a negative tail coefficient show that flexible terms are absorbing missing calibration structure.  The negative coefficient is not a physical negative leakage probability.  The standardized repeat average across settings has standard deviation $0.0427$, close to the independent-repeat expectation $0.0436$, and lag-one correlation $0.044$.  This gives no evidence of one repeat-index drift shared by all settings.  The bootstrap-median Pearson discrepancies are $524.5$, $519.8$, and $523.1$, far below the observed values in Table~\ref{tab:spade_explorer_scenarios}.
+
+\section{Hierarchical Calibration Details}
+
+The central mean and calibration field are defined in Eqs.~\eqref{eq:spade_effective_count_model} and~\eqref{eq:spade_calibration_gp}.  The all-grid fit gives $B=8.23045$ counts per $10\,\mathrm{ms}$, $A=1225.58$ counts, and $\delta=0.009824$.  The correlated and independent log-response standard deviations are $0.05248$ and $0.02520$, which correspond to about $5.25\%$ and $2.52\%$.  The correlation lengths are $0.0597w_0$ in displacement and $0.0228$ in $\epsilon$.  The ratio $B/A=0.006716$ is not an optical cross-talk probability unless the background is negligible and the first-order normalization is known independently.
+
+\begin{table}[htbp]
+    \centering
+    \caption{Grouped five-fold validation of the hierarchical mean channel.  Every fold refits the physical mean, variance law, GP amplitudes, and length scales without the held-out setting means.}
+    \label{tab:spade_hierarchical_validation}
+    \begin{tabularx}{\textwidth}{Xccc}
+        \toprule
+        \textbf{Held-out structure}    & \textbf{RMSE} & \textbf{Standardized SD} & \textbf{95\% coverage} \\
+        \midrule
+        Interleaved checkerboard cells & $0.606$       & $1.004$                  & $93.52\%$              \\
+        Complete distance rows         & $0.734$       & $1.041$                  & $94.67\%$              \\
+        Complete source-ratio columns  & $0.609$       & $1.009$                  & $93.71\%$              \\
+        \bottomrule
+    \end{tabularx}
+\end{table}
+
+On the full grid, the conditional GP Mahalanobis discrepancy is $527.10$ for about $518$ degrees of freedom, with $p=0.381$ when hyperparameters are fixed after fitting.  Since these hyperparameters were estimated from the grid, grouped holdout prediction is the stronger test.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=\textwidth]{figures/exoplanets/spade_hierarchical_channel.png}
+    \caption{Hierarchical mean channel and grouped holdout validation.  The top row compares observed setting means, the physical center in Eq.~\eqref{eq:spade_effective_count_model}, and the response after the fitted classical calibration field.  The bottom row shows the fitted multiplicative field and held-out predictions.  This validates prediction of the $100$-repeat setting mean, not a complete distribution for each $10\,\mathrm{ms}$ count.}
+    \label{fig:spade_hierarchical_channel}
+\end{figure}
+
+\section{Identifiable Throughput Details}
+
+\begin{table}[htbp]
+    \centering
+    \caption{Identifiable sequential-channel results.  The intervals and envelopes are conditional and do not measure an absolute efficiency.}
+    \label{tab:spade_identifiability}
+    \begin{tabularx}{\textwidth}{p{5.4cm} p{3.5cm} X}
+        \toprule
+        \textbf{Quantity}                   & \textbf{Result}                   & \textbf{Status}                                      \\
+        \midrule
+        Fixed $HG_0/HG_1$ cross-talk $\chi$ & $0.0035$                          & External paper value. Symmetric full matrix assumed  \\
+        Raw physical-base background        & $3.9099$ counts/$10\,\mathrm{ms}$ & Fitted conditional nuisance                          \\
+        Raw physical-base $T$               & $1234.43$ per $10\,\mathrm{ms}$   & Fitted before the calibrated coupling adjustment     \\
+        Calibrated $T$                      & $1304.25$ per $10\,\mathrm{ms}$   & Main conditional throughput scale                    \\
+        Repeat-resampling 95\% interval     & $[1295.88,1313.06]$               & Conditional on fixed nuisance calibration            \\
+        Grouped cross-fit envelope          & $[1251.49,1359.47]$               & Sensitivity to calibration and held-out prediction   \\
+        \bottomrule
+    \end{tabularx}
+\end{table}
+
+The grouped sequential fit gives held-out standardized-residual standard deviations $1.018$, $1.061$, and $1.023$ for checkerboard cells, distance rows, and source-ratio columns.  The corresponding coverages are $93.71\%$, $95.05\%$, and $93.52\%$.  The fitted scale corresponds to $130{,}425$ per second, above the paper's quoted $40{,}000$--$80{,}000$ detected photons per second.  These quantities cannot be equated without the missing flux and modal-throughput metadata.
+
+Changing the assumed $\chi$ from $0$ to $0.0065$ changes the raw throughput only from about $1226$ to $1242$, but changes the fitted background from $8.23$ to $0.16$ counts.  The throughput is fairly stable under this check, while background and cross-talk cannot be identified separately from the aggregate stream.
+
+\section{Provisional Channel Workbench}
+
+The full implementation also provides a sensitivity-analysis workbench.  Its random displacement, dephasing, coherent mixing, modal loss, and asymmetric readout values are fixed while $T$, background, displacement offset, and a zero-mean coupling field are fitted.  The assumed values below were not inferred from the count cube.
+
+\begin{table}[htbp]
+    \centering
+    \caption{Provenance registry for the provisional workbench.  ``Assumed'' denotes a sensitivity value that was not measured in this experiment.}
+    \label{tab:spade_workbench_provenance}
+    \begin{tabularx}{\textwidth}{p{3.6cm} p{2.3cm} p{3.4cm} X}
+        \toprule
+        \textbf{Parameter}        & \textbf{Value}       & \textbf{Provenance} & \textbf{Required calibration}                         \\
+        \midrule
+        Pointing-jitter SD        & $0.01w_0$            & Assumed             & Acquisition-synchronized centroid or alignment series \\
+        HG dephasing visibility   & $0.98$               & Assumed             & Phase-sensitive coherent mode tomography              \\
+        $HG_0/HG_1$ mixing angle  & $0.01\,\mathrm{rad}$ & Assumed             & Complex mode-injection transfer matrix                \\
+        Mixing phase              & $0$                  & Assumed             & Phase-sensitive transfer matrix                       \\
+        $HG_0$ transmission       & $0.99$               & Assumed             & Absolute $HG_0$ injection throughput                  \\
+        $HG_1$ transmission       & $0.97$               & Assumed             & Separate absolute $HG_{01}$ and $HG_{10}$ throughputs \\
+        $HG_0\to HG_1$ readout    & $0.0035$             & Externally reported & Repeat the paper's injection calibration              \\
+        $HG_1\to HG_0$ readout    & $0.0035$             & Assumed symmetry    & Inject first-order modes and record every output      \\
+        Failure$\to HG_1$ readout & $0$                  & Assumed             & Inject higher modes and record aggregate $HG_1$       \\
+        \bottomrule
+    \end{tabularx}
+\end{table}
+
+The workbench gives $T=1342.35$ per $10\,\mathrm{ms}$ and a grouped cross-fit envelope $[1289.62,1399.11]$.  Its difference from the main estimate shows how provisional modal loss and mixing trade against throughput.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.92\textwidth]{figures/exoplanets/spade_plausible_channel_workbench.png}
+    \caption{Replaceable channel workbench using the provisional values in Table~\ref{tab:spade_workbench_provenance}.  Identity tests show how the inferred throughput depends on individual assumptions.  This is a sensitivity analysis, not an estimate of jitter, dephasing, mixing, transmission, or asymmetric readout.}
+    \label{fig:spade_workbench}
+\end{figure}
+
+The workbench is modular.  A measured transfer matrix, jitter distribution, or modal transmission can replace the corresponding assumption without changing the inference and QFI pipeline.
+
+\section{Numerical QFI and CFI Checks}
+
+The ideal source calculation uses the bright-source-aligned $\alpha=d_a/2$ convention, an HG-order-$12$ basis, and a flagged numerical tail.  At regular nonzero settings, the maximum relative difference between the SLD and independent finite-fidelity QFI calculations is $0.322\%$.  Increasing the cutoff from order $8$ to order $12$ changes the QFI by at most $5.1\times10^{-12}$ relative.  The point $d_a=0$ is a rank boundary and is excluded from the regular-point validation ranges, consistent with Appendix~\ref{app:mathematical_background}.
+
+Table~\ref{tab:spade_information_comparison} gives fractions of source-state QFI for estimating $d_a$, normalized per surviving one-photon trial.  The first two rows use twelve regular points from the measured grid, formed from three nonzero signed distances and four source fractions.  The other rows use a nine-point ladder with $d_a\in\{0.06667,0.4,0.66667\}$ and $\epsilon\in\{0.00427,0.02854,0.09593\}$.
+
+\begin{table}[htbp]
+    \centering
+    \caption{Theoretical information kept when estimating $d_a$.  All values are fractions of source-state QFI per surviving photon and are conditional model calculations.}
+    \label{tab:spade_information_comparison}
+    \begin{tabularx}{\textwidth}{p{4.7cm} p{3.1cm} p{2.3cm} X}
+        \toprule
+        \textbf{Checkpoint}                      & \textbf{Fraction}    & \textbf{Settings} & \textbf{Status}                                        \\
+        \midrule
+        Full ideal-SPADE CFI                     & $0.99899$--$1.00000$ & 12 regular points & Theoretical, complete ideal HG outcomes                \\
+        First-order-only binary CFI              & $0.78434$--$0.94485$ & Same 12 points    & Theoretical, $HG_1$ versus all other outcomes          \\
+        Flagged $HG_0/HG_1$ accessible-state QFI & $0.99777$--$1.00000$ & Nine-point ladder & Theoretical flagged quantum channel                    \\
+        Resolved accessible-outcome CFI          & $0.99681$--$1.00000$ & Same nine points  & Theoretical measurement of $HG_0$, $HG_1$, and failure \\
+        Binary CFI after $\chi=0.0035$ confusion & $0.00134$--$0.57026$ & Same nine points  & Conditional on the assumed symmetric classical readout \\
+        \bottomrule
+    \end{tabularx}
+\end{table}
+
+These calculations are theoretical or conditional.  They do not reconstruct experimental QFI from the aggregate counts.
