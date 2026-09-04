@@ -1,10 +1,10 @@
 \chapter{Methods: Variational Quantum Sensing and Optimization} \label{ch:methods}
 
-We want to evaluate the metrological utility of critical many-body systems under realistic open-system conditions, to assess the behaviour of a real sensor in real scenarios.
+We want to evaluate the metrological utility of many-body systems under realistic open-system conditions, to measure the behaviour of a real sensor in real scenarios.
 
 We establish a computational and algorithmic framework that bridges many-body spin physics with Noisy Intermediate-Scale Quantum (NISQ) algorithms. Real-world quantum sensors inevitably undergo decoherence and dissipation, rendering standard pure-state metrological protocols inapplicable. We tried to fill this gap in the literature, where QFI is always computable in a simple way due to the purity of the initial state.
 
-In this chapter we describe the methodology used to generate realistic mixed-state probes from a Transverse-Field Ising Model (TFIM), compute their exact Quantum Fisher Information (QFI) as a numerical ground truth, and implement the Variational Quantum Fisher Information Estimation (VQFIE) protocol as proposed in~\cite{beckey2022vqfiea}. By coupling VQFIE with the Variational Quantum State Eigensolver (VQSE, as shown in~\cite{cerezo2022vqse}), we variationally bound and optimize the QFI without requiring prior knowledge of the underlying encoding dynamics.
+In this chapter we describe the methodology used to generate realistic mixed-state probes from a Transverse-Field Ising Model (TFIM), compute their exact Quantum Fisher Information (QFI) as a numerical ground truth, and implement the Variational Quantum Fisher Information Estimation (VQFIE) protocol as proposed in~\cite{beckey2022vqfiea}. By coupling VQFIE with the Variational Quantum State Eigensolver (VQSE, as shown theoretically in~\cite{cerezo2022vqse}, implemented in this work), we variationally bound and optimize the QFI without requiring prior knowledge of the underlying encoding dynamics.
 
 % ==============================================================================
 \section{Physical Toy Model: Open 1-D TFIM}
@@ -145,7 +145,14 @@ To avoid eigenspace truncation entirely, we implement bounds based on polynomial
 
 % ==============================================================================
 \section{The VQFIE Metrological Optimization Loop}
-We embed the TQFI lower bound $H_\delta(\theta; \rho_\theta)$ into a closed-loop variational pipeline to prepare probe states $\rho_{\boldsymbol{\alpha}} = U(\boldsymbol{\alpha}) \rho_{\text{in}} U^\dagger(\boldsymbol{\alpha})$ that maximize magnetic-field sensitivity. At each outer-loop iteration, VQSE supplies the dominant eigenspace of the encoded state, overlap circuits evaluate the truncated fidelity, and the classical optimizer updates the preparation parameters using the resulting lower bound.
+We embed the TQFI lower bound $H_\delta(\theta; \rho_\theta)$ into a closed-loop variational pipeline to prepare probe states $\rho_{\boldsymbol{\alpha}} = U(\boldsymbol{\alpha}) \rho_{\text{in}} U^\dagger(\boldsymbol{\alpha})$ that maximize magnetic-field sensitivity. At each outer-loop iteration, VQSE supplies the dominant eigenspace of the encoded state, overlap circuits evaluate the truncated fidelity, and the classical optimizer updates the preparation parameters using the resulting lower bound, see Figure~\ref{fig:vqfie_schema}.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.45\textwidth]{figures/asi_report/vqfie.png}
+    \caption{Schematic representation of the VQFIE loop, from the paper.}
+    \label{fig:vqfie_schema}
+\end{figure}
 
 \begin{algorithm}[H]
     \caption{Variational Quantum Fisher Information Estimation (VQFIE)}
@@ -181,7 +188,9 @@ Both the probe preparation unitary $U(\boldsymbol{\alpha})$ and the VQSE diagona
         U(\boldsymbol{\alpha}) = \prod_{\ell=1}^L \left( U_{\text{ent}} \prod_{j=1}^n R_y(\alpha_{\ell, j}^{(y)}) R_z(\alpha_{\ell, j}^{(z)}) \right),
     \end{equation}
     where $R_y, R_z$ are single-qubit rotations and $U_{\text{ent}} = \prod_{(i,j) \in E} \text{CNOT}_{i,j}$ entangles nearest-neighbor qubits along a 1D chain topology (see Fig.~\ref{fig:lhea_circuit}).
+    \label{def:lhea}
 \end{definition}
+
 
 \begin{figure}[htbp]
     \centering
@@ -205,6 +214,8 @@ The evaluation of the SSQFI bounds and the off-diagonal $T$ matrix elements $T_{
           \begin{equation}
               P(\text{Ancilla} = 0) = \frac{1}{2} \left( 1 + \operatorname{Tr}[\rho_\theta \rho_{\theta+\delta} \rho_\theta \rho_{\theta+\delta}] \right).
           \end{equation}
+
+          For this reason we will focus more on the Truncated Subfidelity $E(\rho,\sigma)$ rather than the full fourth-order overlap, as it provides a more practical and resource-efficient approach for near-term quantum devices.
 \end{enumerate}
 
 \begin{table}[h!]
