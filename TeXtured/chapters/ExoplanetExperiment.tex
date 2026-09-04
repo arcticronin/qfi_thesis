@@ -1,43 +1,44 @@
 \chapter{SPADE as a Quantum-to-Classical Channel}
 \label{ch:exoplanet_experiment}
 
-Chapter~\ref{sec:astrophysical_metrology_spade} introduced SPADE.  This chapter develops a sequential channel method for fitting practical SPADE data and studies how SPADE measurements can be related to the truncated-QFI methods of Chapter~\ref{ch:methods}.  The method separates the parameterized source state, quantum propagation, accessible-mode reduction, SPADE measurement, classical readout, calibration, and count process.  It also states which parameters are fitted, fixed by external calibration, assumed, or not identifiable.
+Chapter~\ref{sec:astrophysical_metrology_spade} introduced SPADE.  This project began with the aim of applying the truncated-QFI methods of Chapter~\ref{ch:methods} to experimental SPADE data provided by \textbf{ASI Matera}~\cite{Santamaria2024single}.  The experiment had already ended when the dataset became available for this thesis.  It was therefore not possible to add the extra measurements needed for state reconstruction.  The recorded data contain one aggregate first-order count for each repetition, but not the separate modal outputs and coherence-sensitive measurements needed to build a reduced optical state.  This record cannot support experimental state reconstruction or an experimental TQFI calculation.
 
-The dataset provided us by ASI Matera, contains one aggregate first-order count for each repetition~\cite{Santamaria2024single}.  It does not contain the separate modes and coherence measurements needed to build a reduced optical state.  After some analysis we concluded that the data cannot support experimental state reconstruction or an experimental TQFI calculation, as it may appear at first glance, but the .  They can still be used to fit the population-level projection of the sequential model and test its predictions for the measured counts.  The assumed quantum model also provides clear checkpoints for conditional QFI and CFI calculations.
+This limitation led to a change in perspective.  First, a classical statistical model was fitted to determine which features of the measured counts could be predicted reliably.  The experiment was then described as a sequential quantum-to-classical channel model.  This model separates the parameterized source state, quantum propagation, accessible-mode reduction, measurement, classical readout, calibration, and count process.  It also states which parameters are fitted, fixed by external calibration, assumed, or not identifiable.  The data constrain only the population-level projection of this sequence, while the assumed quantum model provides checkpoints for conditional QFI and CFI calculations.
+
+The resulting framework is foundation work for future SPADE experiments.  It shows how a practical channel model can be fitted without claiming that the available counts reconstruct the full quantum channel.  It also provides a clear basis for possible future collaboration with ASI Matera.  A new experiment could be planned from the start to record the separate modal, flux, failure, and coherence-sensitive measurements required for an experimental link between SPADE and TQFI.
 
 \begin{remark}[Central conclusion of this chapter]
-    The quantum-channel framework provides a physically complete and modular description of the experiment and enables conditional QFI calculations.  The current aggregate-count data constrain only its population-level classical projection.  They do not reconstruct the complete quantum channel or its coherence dynamics.
+    The quantum-channel framework provides a physically complete and modular description of the experiment and enables conditional QFI calculations. The current aggregate-count data constrain only its population-level classical projection~\footnote{the classical probabilities of the model, or diagonal elements of its density matrix} . They do not reconstruct the complete quantum channel or its coherence dynamics
 \end{remark}
 
-The analysis tests a fixed paper-based benchmark channel and several flexible deterministic mean models.  Discrete-count bootstrap checks reject all of them.  A hierarchical classical calibration channel does predict held-out \emph{100-repeat setting means}.  The optical scale that the data identify is the conditional throughput $T=N_{\mathrm{in}}\eta$, not the survival efficiency $\eta$ alone.  The QFI and CFI results are theoretical or conditional sensitivity calculations for the assumed source and channels.
 
-% ==============================================================================
-\section{Measurements Needed for TQFI and the Available Record}
+
+\section{SPADE integration into TQFI formalism}
 \label{sec:spade_question_record}
-% ==============================================================================
 
 \subsection{The low-mode link to TQFI}
 
-The link to TQFI comes from the low-order SPADE receiver in Chapter~\ref{sec:astrophysical_metrology_spade} and the rank-truncation methods in Chapter~\ref{ch:methods}.  A displaced point-spread function occupies an infinite HG ladder.  Near the aligned sub-Rayleigh regime, however, its lowest orders carry the main displacement response.  The key question is if the accessible experimental ports can define a reduced optical description and a truncated-QFI-type quantity.
+The connection to TQFI comes from the low-order SPADE receiver in Chapter~\ref{sec:astrophysical_metrology_spade} and the rank-truncation methods in Chapter~\ref{ch:methods}.  A displaced point-spread function has support in an infinite-dimensional HG space, although its lowest orders carry most of the displacement response near alignment.  Relating these measured modes to TQFI requires three different reductions to be kept separate.
 
-Three different reductions must be kept separate.  A numerical HG cutoff is a controlled approximation to an infinite-dimensional model.  An accessible-mode channel keeps a fixed set of apparatus modes and a clear complementary outcome.  Rank-$m$ TQFI instead keeps the main eigenvectors of the parameterized density operator.  An HG measurement basis does not have to match that eigenspace.
+\paragraph{Numerical HG cutoff.}
+A numerical cutoff approximates the infinite-dimensional source model by keeping HG modes up to a stated order.  Its accuracy is checked by increasing the cutoff until the calculated quantities converge.  It is a computational approximation, not a restriction imposed by the apparatus.
 
-\begin{table}[htbp]
-    \centering
-    \caption{Different reductions related to a low-mode TQFI analysis.  Only the first is currently available as a model calculation.  The other two require measurements that are absent from the aggregate record.}
-    \label{tab:spade_reduction_distinctions}
-    \begin{tabularx}{\textwidth}{p{3.0cm} p{4.4cm} X}
-        \toprule
-        \textbf{Construction}   & \textbf{Object kept}                                                 & \textbf{Status for the current data}                                                                                        \\
-        \midrule
-        Numerical HG cutoff     & HG basis states up to a stated order, with the tail probability kept & Used to obtain a converged theoretical state and QFI.  Order $12$ is sufficient for the reported checks.                    \\
-        Accessible-mode channel & Fixed experimental modes plus a complement or failure flag           & Can be evaluated conditionally from an assumed channel, but the current record does not measure the full outcome vector.    \\
-        Rank-$m$ TQFI           & Dominant eigenvectors of $\rho(d_a)$                                 & Cannot be constructed from aggregate $n_1$ counts because neither the density operator nor its eigenspace is reconstructed. \\
-        \bottomrule
-    \end{tabularx}
-\end{table}
+\paragraph{Accessible-mode channel.}
+The apparatus gives access to a fixed set of modes.  A physical reduction to this set must keep the probability outside it as a complement or failure outcome.  For a selected subspace with projector $P_M$, we use the following flagged channel.
+\begin{equation}
+    \mathcal{E}_M(\rho)
+    =P_M\rho P_M
+    +\operatorname{Tr}\!\left[(\mathbb{I}-P_M)\rho\right]
+    |\mathrm{fail}\rangle\langle\mathrm{fail}|
+    \label{eq:spade_accessible_projection}
+\end{equation}
+The failure flag keeps the probability in unobserved modes.  Discarding this probability and renormalizing $P_M\rho P_M$ would introduce postselection and could overstate the available information.
 
-\subsection{The available count cube}
+\paragraph{Rank-$m$ TQFI.}
+Rank-$m$ TQFI instead keeps the $m$ dominant eigenvectors of the parameterized density operator.  These state-dependent eigenvectors do not have to match the HG modes selected by the apparatus.  This reduction therefore requires a reconstructed parameterized state rather than a chosen set of detector ports.
+
+
+\subsection{The available count \enquote{cube}}
 
 The recorded observable is defined below.
 \begin{equation}
@@ -46,25 +47,17 @@ The recorded observable is defined below.
     \texttt{H\_data}[d_a,\epsilon,r]=n_{1,r}
     \label{eq:spade_recorded_count}
 \end{equation}
-Here, $d_a=d/w_0$ is the signed nominal displacement, $\epsilon$ is the faint-source fraction defined in Eq.~\eqref{eq:intensity_ratio_epsilon}, and $r$ indexes repetitions.  The cube contains $21\times25\times100=52{,}500$ integer counts, with $d_a\in[-0.66667,0.66667]$, $\epsilon\in[0.00427,0.09593]$, and $100$ independent $10\,\mathrm{ms}$ repetitions at every setting.
+Here, $d_a=d/w_0$ is the signed nominal displacement, $\epsilon$ is the faint-source fraction defined in Eq.~\eqref{eq:intensity_ratio_epsilon}, and $r$ indexes repetitions.  The cube contains $21\times25\times100=52{,}500$ integer counts, with $d_a\in[-0.66667,0.66667]$, $\epsilon\in[0.00427,0.09593]$, and $100$ independent $10\,\mathrm{ms}$ repetitions at every setting, see Figure~\ref{fig:spade_count_data}.
 
-\begin{table}[htbp]
+\begin{figure}[htbp]
     \centering
-    \caption{What is and is not contained in the SPADE count record.}
-    \label{tab:spade_data_record}
-    \begin{tabularx}{\textwidth}{p{5.0cm} X}
-        \toprule
-        \textbf{Available}                                                                    & \textbf{Absent from the count cube}                                                                                    \\
-        \midrule
-        Aggregate first-order $n_1$ for every repetition and nominal $(d_a,\epsilon)$ setting & Simultaneous $HG_{00}$, separate $HG_{01}$ and $HG_{10}$, higher-order, complement, and no-click streams               \\
-        Repeated measurements that allow empirical setting means, variances, and resampling   & Incident-photon monitoring, accepted-trial normalization, and an absolute modal throughput                             \\
-        Signed scan coordinates and programmed source fractions                               & Source-blocked background, acquisition timestamps, detector diagnostics, and a complete mode-injection transfer matrix \\
-        Population-level information for one coarse-grained outcome                           & Phase-sensitive observables that can constrain HG coherences                                                           \\
-        \bottomrule
-    \end{tabularx}
-\end{table}
+    \includegraphics[width=0.43\textwidth]{figures/asi_report/sample_1_exoplanet_2026.png}
+    \includegraphics[width=0.52\textwidth]{figures/asi_report/average_sample_exoplanet_2026.png}
+    \caption{Sample and average SPADE count data for the exoplanet experiment. The left panel shows a single repetition, while the right panel shows the average over all repetitions.}
+    \label{fig:spade_count_data}
+\end{figure}
 
-The missing channels matter.  A nonzero $n_1$ at $d_a=0$ may contain detector background, bright-mode leakage, flux or coupling variation, alignment error, or higher-order leakage.  The aggregate data cannot fully separate these effects.  Even a complete normalized vector of modal populations would determine only the diagonal of the state in the selected HG basis.  The single aggregate recorded here cannot determine off-diagonal coherences.  As a result, many different quantum channels can produce the same recorded probability.
+The count cube provides the aggregate $n_1$ at every nominal $(d_a,\epsilon)$ setting, the signed scan coordinates, and the programmed source fractions.  Its repetitions support estimates of setting means, variances, and empirical uncertainties.  It does not include simultaneous $HG_{00}$ counts, separate $HG_{01}$ and $HG_{10}$ streams, higher-order modes, the complement, or no-click events.  Incident-flux monitoring, source-blocked background, timestamps, detector diagnostics, and a complete mode-injection transfer matrix are also absent.
 
 \begin{figure}[htbp]
     \centering
@@ -73,38 +66,7 @@ The missing channels matter.  A nonzero $n_1$ at $d_a=0$ may contain detector ba
     \label{fig:spade_data_record}
 \end{figure}
 
-% ==============================================================================
-\section{Why the Available Data Do Not Support Experimental TQFI}
-\label{sec:spade_tqfi_boundary}
-% ==============================================================================
-
-Two low-mode descriptions show what measurements a TQFI analysis would need.  The pair $HG_{01},HG_{10}$ would resolve two orthogonal first-order directions, but only their sum is stored.  The pair formed by $HG_{00}$ and the aggregate first-order sector would provide a reference and a displacement-sensitive outcome, but $HG_{00}$ is absent.  Neither pair is a measured two-dimensional quantum state.
-
-\begin{table}[htbp]
-    \centering
-    \caption{Two natural low-mode descriptions and the missing observables that prevent their reconstruction from the current file.}
-    \label{tab:spade_two_mode_meanings}
-    \begin{tabularx}{\textwidth}{p{3.8cm} p{4.6cm} X}
-        \toprule
-        \textbf{Candidate description} & \textbf{Physical role}                             & \textbf{Present limitation}               \\
-        \midrule
-        $HG_{01}$ and $HG_{10}$        & Orthogonal first-order displacement directions     & Only $n_{HG_{01}}+n_{HG_{10}}$ is stored. \\
-        $HG_{00}$ and aggregate $HG_1$ & Reference and leading separation-sensitive sectors & The $HG_{00}$ outcome is not stored.      \\
-        \bottomrule
-    \end{tabularx}
-\end{table}
-
-A physical accessible-mode reduction must also keep its complement.  For a selected modal subspace with projector $P_M$, the experiment-specific flagged channel is defined below.
-\begin{equation}
-    \mathcal{E}_M(\rho)
-    =P_M\rho P_M
-    +\operatorname{Tr}\!\left[(\mathbb{I}-P_M)\rho\right]
-    |\mathrm{fail}\rangle\langle\mathrm{fail}|
-    \label{eq:spade_accessible_projection}
-\end{equation}
-The orthogonal failure outcome keeps the probability outside the accessible modes.  Renormalizing $P_M\rho P_M$ after discarding that probability would describe postselection and could make the apparent information too high.  This flagged map is different from both a bare numerical cutoff and rank-$m$ TQFI.
-
-The recorded $n_1$ cannot be converted into a density matrix by dividing it by an assumed photon number and defining the remainder as $p_0=1-p_1$.  Such a remainder would combine vacuum, missed photons, $HG_{00}$, higher modes, and background without showing the difference.  It would also contain no information about coherences.  The file cannot support an experimental TQFI calculation.  It can instead test forward models of the recorded counts.  The matching assumed quantum model can then be used to calculate conditional information bounds.
+The missing outcomes set the limit of the analysis.  Separate $HG_{01}$ and $HG_{10}$ counts would resolve two orthogonal first-order directions, while $HG_{00}$ together with aggregate $HG_1$ would provide a reference and a separation-sensitive outcome.  The record contains neither pair.  A nonzero $n_1$ at $d_a=0$ can also combine background, bright-mode leakage, coupling variation, alignment error, and higher-order leakage.  Dividing $n_1$ by an assumed photon number and setting $p_0=1-p_1$ would hide these contributions in the remainder.  Since the data contain no phase-sensitive observable, they also cannot determine off-diagonal HG coherences.  The record can test forward count models, but experimental TQFI requires additional modal and coherence-sensitive measurements.
 
 % ==============================================================================
 \section{The Sequential Quantum-to-Classical Fitting Method}
