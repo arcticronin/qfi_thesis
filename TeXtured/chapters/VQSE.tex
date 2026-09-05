@@ -1,6 +1,17 @@
 \section{Variational Quantum State Eigensolver (VQSE)} \label{sec:vqse_deep_dive}
 
-The VQSE subroutine supplies the dominant eigenspace required by the TQFI bounds. It variationally learns the $m$ largest eigenvalues $\{\lambda_i\}_{i=1}^m$ and prepares the corresponding eigenbasis $\{|\lambda_i\rangle\}_{i=1}^m$ of an unknown $n$-qubit density matrix $\rho$~\cite{cerezo2022vqse}. In contrast, VQE targets the ground state of a known Hamiltonian.
+The VQSE subroutine extracts the most important components of the eigenspace required by the TQFI bounds.
+It is a quantum generalization of a Principal Component Analysis (PCA), it is bit-frugal (uses the smallest overhead of ancillary qubits between the algorithms we analyzed), but it had no implementation yet. So we implemented it for our study, and benchmarked it.
+
+
+It variationally learns the $m$ largest eigenvalues $\{\lambda_i\}_{i=1}^m$ and prepares the corresponding eigenbasis $\{|\lambda_i\rangle\}_{i=1}^m$ of an unknown $n$-qubit density matrix $\rho$~\cite{cerezo2022vqse}. In contrast, VQE targets the ground state of a known Hamiltonian.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=\textwidth]{figures/asi_report/VQSE_frompaper.jpg}
+    \caption{Schematic representation of the Variational Quantum State Eigensolver (VQSE) algorithm as presented in the original paper. The circuit variationally diagonalizes the input density matrix $\rho$ by optimizing the parameters $\theta$ to minimize the cost function. We used $\beta$ to denote the parameters.}
+    \label{fig:vqse_from_paper}
+\end{figure}
 % ==============================================================================
 \subsection{Mathematical Foundation: Diagonalization via Majorization}
 % ==============================================================================
@@ -64,14 +75,14 @@ Once the hybrid quantum-classical loop converges to the optimal parameter set $\
 \end{figure}
 
 % ==============================================================================
-\subsection{Adaptive Cost Function Schedule: Mitigating NISQ Landscape Bottlenecks}
+\subsection{Adaptive Cost Function:}
 % ==============================================================================
 
 The choice of the VQSE target Hamiltonian introduces a fundamental trade-off between trainability and optimization-landscape structure:
 \begin{itemize}
 
-    \item \textbf{Fixed Local Hamiltonian ($H_L = \sum_j r_j Z_j$):} Yields local cost functions whose gradients do not exponentially vanish at shallow circuit depths, successfully avoiding barren plateaus. However, strict non-degeneracy restricts the solution space, leading to a high density of sub-optimal local minima.
-    \item \textbf{Fixed Global Hamiltonian ($H_G = \sum_{i=1}^m q_i |z_i\rangle\langle z_i|$):} Possesses a $(2^n - m)$-fold degenerate subspace, creating a large, flexible solution space . However, global cost functions exhibit exponentially vanishing gradients (barren plateaus) across random hardware-efficient Ansätze.
+    \item \textbf{Fixed Local Hamiltonian ($H_L = \sum_j r_j Z_j$):} local cost functions, with gradients that do not exponentially vanish at shallow circuit depths, it is introduced to avoid barren plateaus. However, strict non-degeneracy restricts the solution space, it has an high density of sub-optimal local minima.
+    \item \textbf{Fixed Global Hamiltonian ($H_G = \sum_{i=1}^m q_i |z_i\rangle\langle z_i|$):} Possesses a $(2^n - m)$-fold degenerate subspace, creating a large, flexible solution space. However, global cost functions exhibit exponentially vanishing gradients (barren plateaus) across random hardware-efficient Ansätze. This is the real function we ultimately aim to optimize.
 \end{itemize}
 
 As an optional optimization extension, we consider a time-dependent, adaptively updated Hamiltonian schedule that interpolates between these two costs:
@@ -81,19 +92,8 @@ As an optional optimization extension, we consider a time-dependent, adaptively 
 \end{equation}
 where $t = k / N_{\text{max}}$ represents the normalized optimization progress.
 
-\begin{figure}[h!]
-    \centering
-    \begin{center}
-        % Conceptual illustration of adaptive schedule
-        \textbf{Adaptive Optimization Dynamics:}
-        $t=0 \implies H_{\mathrm{cost}}(0)=H_L$ (local and trainable)
-        $\longrightarrow t=1 \implies H_{\mathrm{cost}}(1)=H_G$ (global and highly degenerate)
-    \end{center}
-    \caption{The proposed adaptive schedule interpolates from a local Hamiltonian $H_L$ to a measurement-informed global Hamiltonian $H_G(t)$, aiming to retain gradient signal while reducing trapping.}
-    \label{fig:adaptive_schedule}
-\end{figure}
 
-As outlined in Algorithm~\ref{alg:adaptive_vqse}, $H_G(t) = \sum_{i=1}^m q_i |z_i(t)\rangle\langle z_i(t)|$ is periodically re-centered around the dominant bitstrings $z_i(t)$ sampled from intermediate measurements of $V(\boldsymbol{\beta})\rho V^\dagger(\boldsymbol{\beta})$. This dynamic shift changes the cost landscape during training; its effectiveness should be assessed empirically for the chosen ansatz and noise model.
+As outlined in Algorithm~\ref{alg:adaptive_vqse}, $H_G(t) = \sum_{i=1}^m q_i |z_i(t)\rangle\langle z_i(t)|$ is periodically re-centered (that is why it is local) around the dominant bitstrings $z_i(t)$ sampled from intermediate measurements of $V(\boldsymbol{\beta})\rho V^\dagger(\boldsymbol{\beta})$. This dynamic shift changes the cost landscape during training. Its effectiveness should be assessed empirically for the chosen ansatz and noise model.
 
 \begin{algorithm}[H]
     \caption{Adaptive VQSE Optimization Schedule}
@@ -118,7 +118,7 @@ As outlined in Algorithm~\ref{alg:adaptive_vqse}, $H_G(t) = \sum_{i=1}^m q_i |z_
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=0.8\textwidth]{asi_report/VQSE_Adaptive_Cost_Evolution_8037.png}
-    \caption{Observed evolution of the adaptive VQSE cost during optimization.}
+    \caption{Observed evolution of the adaptive VQSE cost during optimization in one of our optimization runs. $n=8$ qubits, $L=10$ layers.}
     \label{fig:vqse_adaptive_cost}
 \end{figure}
 
@@ -162,50 +162,70 @@ Compared to existing quantum state diagonalization and principal component extra
     \label{tab:vqse_comparison}
     \begin{tabular}{p{2.25cm} p{2.2cm} p{2.6cm} p{5.75cm}}
         \toprule
-        \textbf{Algorithm} & \textbf{Qubit Count} & \textbf{Input State}               & \textbf{Primary NISQ Bottlenecks}                                                                                 \\
+        \textbf{Algorithm} & \textbf{Qubit Count} & \textbf{Input State}           & \textbf{Primary NISQ Bottlenecks}                                                                               \\
         \midrule
-        \textbf{qPCA}      & $n + a$ qubits       & $\rho^{\otimes k}$ copies          & Requires Phase Estimation and matrix exponentiation $e^{-i\rho t}$; prohibitive circuit depth \cite{qpca_2014}.   \\
-        \textbf{VQSD}      & $2n$ qubits          & $\rho \otimes \rho$ (2 copies)     & Requires joint 2-register gates; vulnerable to asymmetric inter-register noise \cite{LaRose2019_vqsd}.            \\
-        \textbf{QSVD}      & $n$ to $2n$ qubits   & $|\psi_{AB}\rangle$ (Purification) & Requires explicit state purification; fails under uncharacterized incoherent noise \cite{Bravo_Prieto_2020_qsvd}. \\
-        \textbf{VQSE}      & \textbf{$n$ qubits}  & \textbf{$\rho$ (1 copy)}           & \textbf{Single-copy execution, short depth, uses majorization for qubit frugality} \cite{cerezo2022vqse}.         \\
+        \textbf{qPCA}      & $n + a$ qubits       & $\rho^{\otimes k}$ copies      & Requires Phase Estimation and matrix exponentiation $e^{-i\rho t}$; prohibitive circuit depth \cite{qpca_2014}. \\
+        \textbf{VQSD}      & $2n$ qubits          & $\rho \otimes \rho$ (2 copies) & Requires joint 2-register gates; vulnerable to asymmetric inter-register noise \cite{LaRose2019_vqsd}.          \\
+        \textbf{QSVD}      & $n$ to $2n$ qubits   & \makecell{$|\psi_{AB}\rangle$                                                                                                                    \\ (Purification)} & Requires explicit state purification; fails under uncharacterized incoherent noise \cite{Bravo_Prieto_2020_qsvd}. \\
+        \textbf{VQSE}      & \textbf{$n$ qubits}  & \textbf{$\rho$ (1 copy)}       & \textbf{Single-copy execution, short depth, uses majorization for qubit frugality} \cite{cerezo2022vqse}.       \\
         \bottomrule
     \end{tabular}
 \end{table}
 
 \begin{infobox}[label={sec:vqse_qng_optimization}]{Optimizing VQSE using Quantum Natural Gradient}
-        The VQSE cost can be optimized with the quantum natural gradient (QNG), an optional variant of the baseline loop above. It minimizes $C(\boldsymbol{\beta}) = \operatorname{Tr}[H_{\mathrm{VQSE}} V(\boldsymbol{\beta})\rho V^\dagger(\boldsymbol{\beta})]$, where $H_{\mathrm{VQSE}}$ is a known non-degenerate Hamiltonian and $V(\boldsymbol{\beta})$ is a parameterized circuit \cite{cerezo2022vqse}. Standard gradient descent evaluates steepest descent in Euclidean parameter space, ignoring the local geometry of the ansatz-state manifold \cite{kolotouros2024RNG}.
 
-        QNG replaces the Euclidean metric with the QFIM of the ansatz state. We denote this circuit-parameter metric by $F^{\mathrm{ans}}(\boldsymbol{\beta})$ to distinguish it from the QFIM of a sensed physical parameter; for a pure ansatz, it is four times the Fubini--Study metric \cite{gacon2021_perturbation_stochastic_qfi}.
+    Quantum Natural Gradient descent (QNG) is an optimization technique that takes into account the geometry of the parameter space, where the curvature of the cost function landscape is obtained by computing the quantum Fisher information matrix (QFIM) of the ansatz state.
 
-        \subsubsection*{Methodology}
+    We are using VQSE for truncated QFI estimation,
+    We can use the ansatz QFI matrix for optimizing the circuit parameters efficiently.
 
-        Implementing QNG within the VQSE framework requires modifying the parameter update step. The procedure is formulated as follows:
+    This yields an \enquote{inception-like} approach, where the QFI of the ansatz is used for the optimization of the QFI estimation itself \inceptiontop[0.2]~\cite{nolan2010inception}.
 
-        \begin{enumerate}
-            \item \textbf{Gradient evaluation:} The first-order gradient of the VQSE cost function, $\nabla_{\boldsymbol{\beta}} C(\boldsymbol{\beta})$, is evaluated. For hardware-efficient ansatzes, this can be implemented with the parameter-shift rule \cite{cerezo2022vqse, kolotouros2024RNG}.
-            \item \textbf{Ansatz-metric evaluation:} The ansatz QFIM, $F^{\mathrm{ans}}(\boldsymbol{\beta})$, captures the local geometry of the parameterized circuit state. Its elements are state-derivative overlaps and can require structural modifications to the circuit, such as a SWAP test or a compute--uncompute sequence \cite{kolotouros2024RNG, gacon2021_perturbation_stochastic_qfi}.
-            \item \textbf{Parameter Update:} The classical optimizer updates the circuit parameters using the natural gradient descent rule:
-                  \begin{equation}
-                      \boldsymbol{\beta}_{k+1} = \boldsymbol{\beta}_k - \eta
-                      \left(F^{\mathrm{ans}}(\boldsymbol{\beta}_k)+\lambda\mathbb{I}\right)^+
-                      \nabla_{\boldsymbol{\beta}} C(\boldsymbol{\beta}_k),
-                      \qquad \lambda\geq0,
-                  \end{equation}
-                  where $\eta$ represents the learning rate, $\lambda$ regularizes an ill-conditioned metric, and $+$ denotes the Moore--Penrose pseudoinverse \cite{kolotouros2024RNG}.
-        \end{enumerate}
+    The VQSE cost can be optimized with the quantum natural gradient (QNG), an optional variant of the baseline loop above.
 
-        \subsubsection*{Advantages and Limitations}
+    It minimizes $C(\boldsymbol{\beta}) = \operatorname{Tr}[H_{\mathrm{VQSE}} V(\boldsymbol{\beta})\rho V^\dagger(\boldsymbol{\beta})]$, where $H_{\mathrm{VQSE}}$ is a known non-degenerate Hamiltonian and $V(\boldsymbol{\beta})$ is a parameterized circuit \cite{cerezo2022vqse}.
 
-        The integration of QNG into VQSE yields several significant advantages. Primarily, QNG adjusts the step size based on the sensitivity of the quantum state to parameter variations, rather than employing a global learning rate. This dynamic scaling facilitates faster convergence in terms of optimization iterations and enables the algorithm to effectively navigate complex cost landscapes with high densities of local minima.
+    Standard gradient descent evaluates steepest descent in Euclidean parameter space, ignoring the local geometry of the ansatz-state manifold \cite{kolotouros2024RNG}.
 
-        However, exactly evaluating the ansatz QFIM poses severe scalability challenges for near-term quantum hardware. For an ansatz parameterized by $m$ variables, evaluating $F^{\mathrm{ans}}(\boldsymbol{\beta})$ requires $\mathcal{O}(m^2)$ distinct quantum state preparations per iteration \cite{kolotouros2024RNG, gacon2021_perturbation_stochastic_qfi}. Furthermore, measuring state overlaps inherently introduces circuit overhead, requiring either a doubling of the circuit width (e.g., using ancilla qubits for a SWAP test) or circuit depth, thereby exacerbating vulnerabilities to decoherence and gate infidelities. Finally, the pseudoinverse can be numerically unstable when the metric is ill-conditioned, motivating the regularization shown above \cite{gacon2021_perturbation_stochastic_qfi}.
+    QNG replaces the Euclidean metric with the QFIM of the ansatz state. We denote this circuit-parameter metric by $F^{\mathrm{ans}}(\boldsymbol{\beta})$ to distinguish it from the QFIM of a sensed physical parameter; for a pure ansatz, it is four times the Fubini--Study metric \cite{gacon2021_perturbation_stochastic_qfi}.
 
-        To mitigate these computational bottlenecks, stochastic approximations such as the Random Natural Gradient (RNG), Stochastic-Coordinate QNG, or Simultaneous Perturbation Stochastic Approximation (SPSA) can be substituted for the exact ansatz QFIM. These methods construct unbiased estimators or reduced-rank approximations using only $\mathcal{O}(1)$ or $\mathcal{O}(m)$ resources, drastically reducing the quantum overhead while preserving the geometric advantages of the natural gradient.
+    \subsubsection*{Methodology}
+
+    Implementing QNG within the VQSE framework requires modifying the parameter update step.
+
+    \faLightbulb \hspace{5pt} \textbf{In simple terms}: we take a step in the direction of the inverse of the ansatz QFIM, left multiplied to the gradient, i.e. $F^{-1} \nabla$
+
+    \vspace{5pt}
+
+    The procedure, has to avoid some instabilities and numerical issues, so it is formally formulated as follows:
+
+    \begin{enumerate}
+        \item \textbf{Gradient evaluation:} The first-order gradient of the VQSE cost function, $\nabla_{\boldsymbol{\beta}} C(\boldsymbol{\beta})$, is evaluated. For hardware-efficient ansatzes, this can be implemented with the parameter-shift rule \cite{cerezo2022vqse, kolotouros2024RNG}.
+        \item \textbf{Ansatz-metric evaluation:} The ansatz QFIM, $F^{\mathrm{ans}}(\boldsymbol{\beta})$, captures the local geometry of the parameterized circuit state. Its elements are state-derivative overlaps and can require structural modifications to the circuit, such as a SWAP test or a compute--uncompute sequence \cite{kolotouros2024RNG, gacon2021_perturbation_stochastic_qfi}.
+        \item \textbf{Parameter Update:} The classical optimizer updates the circuit parameters using the natural gradient descent rule:
+              \begin{equation}
+                  \boldsymbol{\beta}_{k+1} = \boldsymbol{\beta}_k - \eta
+                  \left(F^{\mathrm{ans}}(\boldsymbol{\beta}_k)+\lambda\mathbb{I}\right)^+
+                  \nabla_{\boldsymbol{\beta}} C(\boldsymbol{\beta}_k),
+                  \qquad \lambda\geq0,
+              \end{equation}
+              where $\eta$ represents the learning rate, $\lambda$ regularizes an ill-conditioned metric, and $+$ denotes the Moore--Penrose pseudoinverse \cite{kolotouros2024RNG}.
+    \end{enumerate}
+
+    \subsubsection*{Advantages and Limitations}
+
+    The integration of QNG into VQSE yields several significant advantages. Primarily, QNG adjusts the step size based on the sensitivity of the quantum state to parameter variations, rather than employing a global learning rate. This dynamic scaling facilitates faster convergence in terms of optimization iterations and enables the algorithm to effectively navigate complex cost landscapes with high densities of local minima. Quantum states are oscillating rapidly in the high-dimensional Hilbert space, and the natural gradient helps to account for this intricate geometry, leading to more efficient and stable optimization, taking the straight euclidean path, might be inefficient (\cite{Park2020_geometry_learning_neural_quantum_states}).
+
+    However, exactly evaluating the ansatz QFIM is a scalability challenges for near-term quantum hardware. For an ansatz parameterized by $m$ variables, evaluating $F^{\mathrm{ans}}(\boldsymbol{\beta})$ requires $\mathcal{O}(m^2)$ distinct quantum state preparations per iteration \cite{kolotouros2024RNG, gacon2021_perturbation_stochastic_qfi}. Also, measuring state overlaps inherently introduces circuit overhead, requiring either a doubling of the circuit width (e.g., using ancilla qubits for a SWAP test) or circuit depth, exposing vulnerabilities to decoherence and gate infidelities. Finally, the pseudoinverse can be numerically unstable when the metric is ill-conditioned, motivating the regularization shown above \cite{gacon2021_perturbation_stochastic_qfi}.
+
+    To mitigate these bottlenecks, stochastic approximations such as the Random Natural Gradient (RNG), Stochastic-Coordinate QNG, or Simultaneous Perturbation Stochastic Approximation (SPSA) can be substituted for the exact ansatz QFIM. These methods construct unbiased estimators or reduced-rank approximations using only $\mathcal{O}(1)$ or $\mathcal{O}(m)$ resources, drastically reducing the quantum overhead while preserving the geometric advantages of the natural gradient.
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=\textwidth]{misc/sgd_vs_sr_comparison-set2-palette.png}
+        \caption{
+            Energy minimization for a round of training of a Neural Quantum State~\cite{carleo2017nqs}.
+            For this example we used a restricted Boltzmann machine (RBM) modeling the TFIM quantum state, of which we studied the geometry of the learning process~\cite{Park2020_geometry_learning_neural_quantum_states}. The natural gradient approach (orange, called Stochastic Reconfiguration in this plot) demonstrates improved optimization performance over standard SGD (red, stochastic gradient descent), characterized by both a faster rate of convergence and a lower final energy minimum that approaches the ground state of the actual wavefunction. Note that the RBM possesses a simple structure, making it easy to compute the Fisher Information Matrix (FIM) compared to the multi-layer hardware-efficient ansatze that we used for VQSE.
+            (See Def.~\ref{def:lhea} and Fig.~\ref{fig:lhea_circuit}).}
+        \label{fig:sgd_vs_ng}
+    \end{figure}
 \end{infobox}
-
-\begin{figure}[h]
-    \centering
-    \includegraphics[width=\textwidth]{misc/sgd_vs_sr_comparison-set2-palette.png}
-    \caption{Illustration of natural-gradient preconditioning in an independent TFIM wavefunction-learning example. The complex restricted-Boltzmann-machine calculation is not a VQSE benchmark; it illustrates why an ansatz-state metric can improve optimization relative to standard gradient descent.}
-    \label{fig:sgd_vs_ng}
-\end{figure}

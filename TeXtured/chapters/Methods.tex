@@ -144,10 +144,12 @@ To avoid eigenspace truncation entirely, we implement bounds based on polynomial
 \input{chapters/VQSE}
 
 % ==============================================================================
+
 \section{The VQFIE Metrological Optimization Loop}
+
 We embed the TQFI lower bound $H_\delta(\theta; \rho_\theta)$ into a closed-loop variational pipeline to prepare probe states $\rho_{\boldsymbol{\alpha}} = U(\boldsymbol{\alpha}) \rho_{\text{in}} U^\dagger(\boldsymbol{\alpha})$ that maximize magnetic-field sensitivity. At each outer-loop iteration, VQSE supplies the dominant eigenspace of the encoded state, overlap circuits evaluate the truncated fidelity, and the classical optimizer updates the preparation parameters using the resulting lower bound, see Figure~\ref{fig:vqfie_schema}.
 
-\begin{figure}[htbp]
+\begin{figure}[H]
     \centering
     \includegraphics[width=0.45\textwidth]{figures/asi_report/vqfie.png}
     \caption{Schematic representation of the VQFIE loop, from the paper.}
@@ -195,7 +197,7 @@ Both the probe preparation unitary $U(\boldsymbol{\alpha})$ and the VQSE diagona
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=0.9\textwidth]{misc/lhea_pennylane.png}
-    \caption{Layered Hardware-Efficient Ansatz (LHEA) circuit diagram, 2 layers.}
+    \caption{Layered Hardware-Efficient Ansatz (LHEA) circuit diagram, 2 layers. The 16 parameters are in the single-qubit rotation gates.}
     \label{fig:lhea_circuit}
 \end{figure}
 

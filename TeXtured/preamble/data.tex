@@ -2,7 +2,7 @@
 \newcommand*{\ThesisType}{master}
 
 %% Thesis title (exactly as in the formal assignment)
-\newcommand*{\ThesisTitle}{Estimation of quantum Fisher information by variational quantum circuits on a quantum computer}
+\newcommand*{\ThesisTitle}{Estimation of Quantum Fisher Information by variational quantum circuits on a quantum computer}
 %% Plaintext version for PDF metadata, uncomment if needed (defauls to \ThesisTitle)
 \newcommand*{\ThesisTitlePlaintext}{TeXtured Manual \TeXturedVERSION}
 %% Thesis title (if custom formatting is needed for the title page, defauls to \ThesisTitle)
@@ -31,10 +31,10 @@
 %% Name of the department or institute, where the work was officially assigned
 %% (according to the Organizational Structure of MFF UK in English,
 %% or a full name of a department outside MFF)
-\newcommand*{\Department}{\textcolor{red}{Name of the Department/Institute}}
+\newcommand*{\Department}{Department of Physics \enquote{Giuseppe Occhialini}}
 
 %% Is it a Department (katedra), or an Institute (ústav)?
-\newcommand*{\DeptType}{Department of Physics}
+\newcommand*{\DeptType}{Department}
 
 %% Thesis supervisor: name, surname and titles
 \newcommand*{\Supervisor}{Prof. Enrico Prati}
@@ -42,26 +42,26 @@
 \newcommand*{\CoSupervisor}{Dr. Sebastiano Corli}
 
 %% Supervisor's department/institute (again according to Organizational structure of MFF)
-\newcommand*{\SupervisorsDepartment}{\textcolor{red}{Supervisor's Department/Institute}}
+\newcommand*{\SupervisorsDepartment}{Dipartimento di Fisica \enquote{Aldo Pontremoli}, Università degli Studi di Milano}
 
 %% Study programme and specialization
-\newcommand*{\StudyProgramme}{AI for Science and Technology, Quantum Computing and Complex Systems}
+\newcommand*{\StudyProgramme}{AI for Science and Technology, \\ Quantum Computing and Complex Systems}
 
 %% Abstract (recommended length around 80-200 words; this is not a copy of your thesis assignment!)
 \newcommand*{\Abstract}{%
-    \textcolor{red}{Write abstract here.}
+    Quantum Fisher information (QFI) sets the ultimate sensitivity of a parameterized quantum state, but its practical use requires scalable calculations and a model of the complete sensing process.  This thesis studies both needs.  First, it implements the Variational Quantum State Eigensolver within a variational QFI estimation pipeline to obtain truncated and fidelity-based bounds without full density-matrix diagonalization.  Numerical studies of a finite Transverse-Field Ising Model magnetometer show that restricted access can decrease the available QFI and that fixed depolarization lowers it uniformly across the range.  Gibbs preparation can, even considering finite-temperature regimes, outperform reduced ground-state preparation away from its narrow optimum, showing that sensor design must account for the expected operating regime.  Second, the thesis studies high-contrast exoplanet imaging with spatial-mode demultiplexing (SPADE).  Per surviving photon, ideal full SPADE is nearly QFI-optimal for the assumed source model.  However, aggregate first-order counts from a completed ASI Matera experiment cannot support the intended state reconstruction and truncated-QFI analysis.  The experiment is therefore recast as a modular quantum-to-classical channel sequence, together with a predictive classical calibration model.  This framework enables conditional QFI and CFI calculations while showing that the available data constrain only population-level count statistics, not the complete quantum channel or its coherences.
 }
 
 %% Subject (short description for PDF metadata)
 \newcommand*{\Subject}{%
-    Write subject here.
+    Quantum Fisher Information Thesis
 }
 
 %% Keywords (about 3-7)
 \newcommand*{\Keywords}{%
-    \textcolor{red}{Manual, Demo, Draft, WIP}
+    Quantum Information, Quantum Fisher Information, QFI, Variational Quantum State Eigensolver, VQSE, Spatial-Mode Demultiplexing, SPADE,
 }
 %% Plaintext version for PDF metadata, uncomment if needed (defauls to \Keywords)
-\newcommand*{\KeywordsPlaintext}{%
-    Manual, Demo, Draft, WIP
-}
+% \newcommand*{\KeywordsPlaintext}{%
+%    Quantum Fisher Information, QFI, Variational Quantum State Eigensolver, VQSE, Spatial-Mode Demultiplexing, SPADE
+% }

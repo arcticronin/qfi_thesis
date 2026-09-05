@@ -29,29 +29,29 @@
 %% Only uncommented files are included (faster compilation)
 %% NOTE: If no files are uncommented, all files are included
 \includeonlysmart{
-    % frontmatter/title,
+    frontmatter/title,
     % frontmatter/declaration,
     % frontmatter/dedication,
-    % frontmatter/information,
-    % chapters/Intro,
-    % chapters/MathBackground,
-    % chapters/Methods,
+    frontmatter/information,
+    chapters/Intro,
+    chapters/MathBackground,
+    chapters/Methods,
     % chapters/NoiseAnalysis,
     % chapters/Astrophysical,
-    chapters/ExoplanetExperiment,
-    chapters/ExoplanetExperimentAppendix,
+    % chapters/ExoplanetExperiment,
     % chapters/Conclusions,
     % chapters/MathematicalAppendix,
     % chapters/NoiseAnalysisAppendix,
+    % chapters/ExoplanetExperimentAppendix,
 }
 
 \begin{document}
 
 \frontmatter
-%\include{frontmatter/title}
+\include{frontmatter/title}
 % \include{frontmatter/declaration}
-% \include{frontmatter/dedication}
-% \include{frontmatter/information}
+\include{frontmatter/dedication}
+\include{frontmatter/information}
 
 \contentsandlists
 

@@ -13,27 +13,27 @@ Table~\ref{tab:spade_channel_sequence} records the role and provenance of every 
     \label{tab:spade_channel_sequence}
     \begin{tabularx}{\textwidth}{p{3cm} p{5cm} X}
         \toprule
-        \rowcolor{gray!5} \textbf{Stage}  & \textbf{Parameter provenance}                                              & \textbf{Information effect}                                            \\
+        \rowcolor{gray!5} \textbf{Stage}  & \textbf{Parameter provenance}                                           & \textbf{Information effect}                                            \\
         \midrule
-        \rowcolor{gray!15} \multicolumn{3}{l}{\textbf{Quantum preparation and channels}}                                                                                                         \\
+        \rowcolor{gray!15} \multicolumn{3}{l}{\textbf{Quantum preparation and channels}}                                                                                                     \\
         \midrule
-        Bright / \newline faint mixture   & $d_a,\epsilon$ programmed. Source form assumed                             & Defines the source-state QFI                                           \\
-        Survival / \newline erasure       & $\eta$ unidentifiable without launched flux                                & Can change QFI per launched photon                                     \\
-        Alignment / \newline displacement & Effective offset fitted. Physical sorter offset not isolated               & Fixed unitary preserves state QFI but can reduce fixed-measurement CFI \\
-        Dephasing                         & Cannot be identified. Provisional visibility used only in the workbench    & Can reduce state QFI while leaving recorded populations unchanged      \\
-        Coherent HG mixing                & Provisional angle and phase used only in the workbench                     & Fixed unitary preserves QFI but redistributes measurement CFI          \\
-        Modal transmission                & Provisional transmissions used only in the workbench                       & Can reduce accessible QFI and CFI                                      \\
-        Accessible-mode reduction         & Selected HG subspace specified. Complement outcome unrecorded              & Can reduce state QFI while keeping the failure probability             \\
+        Bright / \newline faint mixture   & $d_a,\epsilon$ programmed. Source form assumed                          & Defines the source-state QFI                                           \\
+        Survival / \newline erasure       & $\eta$ unidentifiable without launched flux                             & Can change QFI per launched photon                                     \\
+        Alignment / \newline displacement & Effective offset fitted. Physical sorter offset not isolated            & Fixed unitary preserves state QFI but can reduce fixed-measurement CFI \\
+        Dephasing                         & Cannot be identified. Provisional visibility used only in the workbench & Can reduce state QFI while leaving recorded populations unchanged      \\
+        Coherent HG mixing                & Provisional angle and phase used only in the workbench                  & Fixed unitary preserves QFI but redistributes measurement CFI          \\
+        Modal transmission                & Provisional transmissions used only in the workbench                    & Can reduce accessible QFI and CFI                                      \\
+        Accessible-mode reduction         & Selected HG subspace specified. Complement outcome unrecorded           & Can reduce state QFI while keeping the failure probability             \\
         \midrule
-        \rowcolor{gray!15} \multicolumn{3}{l}{\textbf{Quantum measurement}}                                                                                                                     \\
+        \rowcolor{gray!15} \multicolumn{3}{l}{\textbf{Quantum measurement}}                                                                                                                  \\
         \midrule
-        SPADE                             & Modal basis specified. Full outcome vector unrecorded                      & Produces measurement-dependent CFI                                     \\
+        SPADE                             & Modal basis specified. Full outcome vector unrecorded                   & Produces measurement-dependent CFI                                     \\
         \midrule
-        \rowcolor{gray!15} \multicolumn{3}{l}{\textbf{Classical models}}                                                                                                                        \\
+        \rowcolor{gray!15} \multicolumn{3}{l}{\textbf{Classical models}}                                                                                                                     \\
         \midrule
-        Readout / \newline confusion      & One paper value externally fixed. Matrix symmetry assumed                  & Can reduce CFI, not pre-measurement QFI                                \\
-        Background / \newline calibration & Background and field fitted as nuisance terms                             & Changes final means and their identifiable combinations                \\
-        Repeated counts                   & Dispersion diagnosed from repetitions                                      & Determines final count uncertainty and CFI                             \\
+        Readout / \newline confusion      & One paper value externally fixed. Matrix symmetry assumed               & Can reduce CFI, not pre-measurement QFI                                \\
+        Background / \newline calibration & Background and field fitted as nuisance terms                           & Changes final means and their identifiable combinations                \\
+        Repeated counts                   & Dispersion diagnosed from repetitions                                   & Determines final count uncertainty and CFI                             \\
         \bottomrule
     \end{tabularx}
 \end{table}
@@ -48,11 +48,11 @@ Across the setting grid, the mean $10\,\mathrm{ms}$ count is $6.93$--$19.44$.  T
     \label{tab:spade_raw_diagnostics}
     \begin{tabularx}{\textwidth}{p{4.4cm} p{2.7cm} X}
         \toprule
-        \textbf{Diagnostic}                                    & \textbf{Observed} & \textbf{Implication}                                                   \\
+        \textbf{Diagnostic}                                    & \textbf{Observed} & \textbf{Implication}                                                  \\
         \midrule
-        Mean $n_1$ per $10\,\mathrm{ms}$                       & $6.93$--$19.44$   & The signal is measured on top of a large baseline                      \\
-        Median mean at $d_a=0$                                 & $8.17$            & Ideal first-order response alone is insufficient                       \\
-        Median $\operatorname{Var}(n_1)/\operatorname{E}(n_1)$ & $2.497$           & Poisson counting alone understates repeated-count variation            \\
+        Mean $n_1$ per $10\,\mathrm{ms}$                       & $6.93$--$19.44$   & The signal is measured on top of a large baseline                     \\
+        Median mean at $d_a=0$                                 & $8.17$            & Ideal first-order response alone is insufficient                      \\
+        Median $\operatorname{Var}(n_1)/\operatorname{E}(n_1)$ & $2.497$           & Poisson counting alone understates repeated-count variation           \\
         Largest signed-distance asymmetry                      & $3.84$ counts     & Signed settings should not be averaged before calibration diagnostics \\
         \bottomrule
     \end{tabularx}
@@ -140,11 +140,11 @@ Three more flexible deterministic surfaces were tested with a fitted NB1 Fano fa
     \label{tab:spade_explorer_scenarios}
     \begin{tabularx}{\textwidth}{p{3.1cm} c c c c X}
         \toprule
-        \textbf{Model}                  & \textbf{$R^2$} & \textbf{$F$} & \textbf{Pearson} & \textbf{$p$} & \textbf{Interpretation}                                        \\
+        \textbf{Model}                  & \textbf{$R^2$} & \textbf{$F$} & \textbf{Pearson} & \textbf{$p$} & \textbf{Interpretation}                                 \\
         \midrule
-        Affine background + first order & $0.89355$      & $2.4796$     & $1271.1$         & $1/101$      & Useful description, but not a validated data generator         \\
-        Source/calibration deformation  & $0.90911$      & $2.4710$     & $1097.7$         & $1/101$      & PSF scale reaches lower bound $0.6$                            \\
-        Added higher-order tail         & $0.91650$      & $2.4673$     & $1025.1$         & $1/101$      & Negative tail coefficient absorbs calibration structure        \\
+        Affine background + first order & $0.89355$      & $2.4796$     & $1271.1$         & $1/101$      & Useful description, but not a validated data generator  \\
+        Source/calibration deformation  & $0.90911$      & $2.4710$     & $1097.7$         & $1/101$      & PSF scale reaches lower bound $0.6$                     \\
+        Added higher-order tail         & $0.91650$      & $2.4673$     & $1025.1$         & $1/101$      & Negative tail coefficient absorbs calibration structure \\
         \bottomrule
     \end{tabularx}
 \end{table}
@@ -187,14 +187,14 @@ On the full grid, the conditional GP Mahalanobis discrepancy is $527.10$ for abo
     \label{tab:spade_identifiability}
     \begin{tabularx}{\textwidth}{p{5.4cm} p{3.5cm} X}
         \toprule
-        \textbf{Quantity}                   & \textbf{Result}                   & \textbf{Status}                                      \\
+        \textbf{Quantity}                   & \textbf{Result}                   & \textbf{Status}                                     \\
         \midrule
-        Fixed $HG_0/HG_1$ cross-talk $\chi$ & $0.0035$                          & External paper value. Symmetric full matrix assumed  \\
-        Raw physical-base background        & $3.9099$ counts/$10\,\mathrm{ms}$ & Fitted conditional nuisance                          \\
-        Raw physical-base $T$               & $1234.43$ per $10\,\mathrm{ms}$   & Fitted before the calibrated coupling adjustment     \\
-        Calibrated $T$                      & $1304.25$ per $10\,\mathrm{ms}$   & Main conditional throughput scale                    \\
-        Repeat-resampling 95\% interval     & $[1295.88,1313.06]$               & Conditional on fixed nuisance calibration            \\
-        Grouped cross-fit envelope          & $[1251.49,1359.47]$               & Sensitivity to calibration and held-out prediction   \\
+        Fixed $HG_0/HG_1$ cross-talk $\chi$ & $0.0035$                          & External paper value. Symmetric full matrix assumed \\
+        Raw physical-base background        & $3.9099$ counts/$10\,\mathrm{ms}$ & Fitted conditional nuisance                         \\
+        Raw physical-base $T$               & $1234.43$ per $10\,\mathrm{ms}$   & Fitted before the calibrated coupling adjustment    \\
+        Calibrated $T$                      & $1304.25$ per $10\,\mathrm{ms}$   & Main conditional throughput scale                   \\
+        Repeat-resampling 95\% interval     & $[1295.88,1313.06]$               & Conditional on fixed nuisance calibration           \\
+        Grouped cross-fit envelope          & $[1251.49,1359.47]$               & Sensitivity to calibration and held-out prediction  \\
         \bottomrule
     \end{tabularx}
 \end{table}
@@ -209,21 +209,22 @@ The full implementation also provides a sensitivity-analysis workbench.  Its ran
 
 \begin{table}[htbp]
     \centering
-    \caption{Provenance registry for the provisional workbench.  ``Assumed'' denotes a sensitivity value that was not measured in this experiment.}
+    \caption{Provenance registry for the provisional workbench. The shaded row highlights the single externally reported parameter. All unshaded rows represent plausible, invented sensitivity values (or mathematically assumed symmetries) that must not be described as measured.}
     \label{tab:spade_workbench_provenance}
-    \begin{tabularx}{\textwidth}{p{3.6cm} p{2.3cm} p{3.4cm} X}
+    \begin{tabularx}{\textwidth}{p{4.5cm} p{2.5cm} X}
         \toprule
-        \textbf{Parameter}        & \textbf{Value}       & \textbf{Provenance} & \textbf{Required calibration}                         \\
+        \textbf{Parameter}        & \textbf{Value}       & \textbf{Required calibration}                         \\
         \midrule
-        Pointing-jitter SD        & $0.01w_0$            & Assumed             & Acquisition-synchronized centroid or alignment series \\
-        HG dephasing visibility   & $0.98$               & Assumed             & Phase-sensitive coherent mode tomography              \\
-        $HG_0/HG_1$ mixing angle  & $0.01\,\mathrm{rad}$ & Assumed             & Complex mode-injection transfer matrix                \\
-        Mixing phase              & $0$                  & Assumed             & Phase-sensitive transfer matrix                       \\
-        $HG_0$ transmission       & $0.99$               & Assumed             & Absolute $HG_0$ injection throughput                  \\
-        $HG_1$ transmission       & $0.97$               & Assumed             & Separate absolute $HG_{01}$ and $HG_{10}$ throughputs \\
-        $HG_0\to HG_1$ readout    & $0.0035$             & Externally reported & Repeat the paper's injection calibration              \\
-        $HG_1\to HG_0$ readout    & $0.0035$             & Assumed symmetry    & Inject first-order modes and record every output      \\
-        Failure$\to HG_1$ readout & $0$                  & Assumed             & Inject higher modes and record aggregate $HG_1$       \\
+        Pointing-jitter SD        & $0.01w_0$            & Acquisition-synchronized centroid or alignment series \\
+        HG dephasing visibility   & $0.98$               & Phase-sensitive coherent mode tomography              \\
+        $HG_0/HG_1$ mixing angle  & $0.01\,\mathrm{rad}$ & Complex mode-injection transfer matrix                \\
+        Mixing phase              & $0$                  & Phase-sensitive transfer matrix                       \\
+        $HG_0$ transmission       & $0.99$               & Absolute $HG_0$ injection throughput                  \\
+        $HG_1$ transmission       & $0.97$               & Separate absolute $HG_{01}$ and $HG_{10}$ throughputs \\
+        \rowcolor{gray!20}
+        $HG_0\to HG_1$ readout    & $0.0035$             & Repeat the paper's injection calibration              \\
+        $HG_1\to HG_0$ readout    & \makecell{$0.0035$                                                           \\ (sym.)}      & Inject first-order modes and record every output      \\
+        Failure$\to HG_1$ readout & $0$                  & Inject higher modes and record aggregate $HG_1$       \\
         \bottomrule
     \end{tabularx}
 \end{table}

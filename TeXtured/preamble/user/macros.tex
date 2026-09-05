@@ -4,3 +4,29 @@
 \newcommand*{\TeXtured}{\texorpdfstring{\textsf{\TeX{}tured}}{TeXtured}}
 
 \usepackage{hologo} % Provides *TeX logos (for example `\hologo{pdfLaTeX}`)
+
+
+% Define the custom tilted Inception top macro
+% The optional argument controls the size (default is 0.2)
+\newcommand{\inceptiontop}[1][0.2]{%
+    \begin{tikzpicture}[scale=#1, baseline=-0.3em]
+        % Rotate the entire drawing 30 degrees to the left
+        \begin{scope}[rotate=20]
+            % Stem
+            \shade[left color=gray!40, right color=gray!70] (-0.1, 0.5) rectangle (0.1, 1.6);
+            \fill[gray!30] (0, 1.6) ellipse (0.1 and 0.03);
+
+            % Upper disk / rim
+            \shade[top color=gray!30, bottom color=gray!70]
+            (-0.1, 0.5) .. controls (-0.8, 0.2) .. (-1.2, 0)
+            .. controls (0, -0.15) .. (1.2, 0)
+            .. controls (0.8, 0.2) .. (0.1, 0.5) -- cycle;
+
+            % Lower cone pointing downwards
+            \shade[top color=gray!70, bottom color=black!80]
+            (-1.2, 0) .. controls (0, -0.15) .. (1.2, 0)
+            .. controls (0.6, -0.6) .. (0, -1.3)
+            .. controls (-0.6, -0.6) .. (-1.2, 0);
+        \end{scope}
+    \end{tikzpicture}%
+}
