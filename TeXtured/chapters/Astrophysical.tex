@@ -1,13 +1,11 @@
-\chapter{High-Contrast Sub-Rayleigh Imaging}
+\chapter{The Exoplanet Problem, Theory}
 \label{ch:astrophysical_theory}
 
-This chapter applies the quantum parameter-estimation framework developed in the preceding chapters to astronomical imaging, focusing on the direct detection and characterization of exoplanets~\cite{Santamaria2024single}.
-In this setting, the achievable precision is fundamentally limited by the quantum and statistical properties of weak thermal light~\cite{Tsang2016quantum}.
-The aim is to show how the theoretical tools introduced earlier can be translated into a practical strategy for resolving high-contrast sources below the Rayleigh limit, using a star-centric SPADE receiver and testing its robustness to experimental imperfections.
+This chapter establishes the theoretical basis for applying quantum parameter estimation to high-contrast astronomical imaging.  The problem is to estimate the separation between a bright star and a much fainter exoplanet when their images overlap below the Rayleigh limit.  In this regime, the attainable precision depends on both the quantum state of the weak thermal light and the measurement used to detect it~\cite{Tsang2016quantum}.
 
-\begin{Todo}
-Dire qual è teoria già sviluppata in Ref  \cite{Santamaria2024single} e cosa è stato fatto in questa tesi
-\end{Todo}
+The source model and the spatial-mode demultiplexing (SPADE) receiver presented here are based mainly on the established framework of Refs.~\cite{Santamaria2024single,Tsang2016quantum}.  Direct imaging measures the position of each detected photon, while SPADE projects the light onto spatial modes matched to the telescope's point-spread function (PSF).  We use a star-centred coordinate convention and assume that the mode sorter is ideally aligned with the star.  This makes it possible to show how a small planetary displacement appears in the first-order Hermite--Gaussian modes.
+
+The work of this chapter is to express this optical model consistently in the density-operator, measurement, and Fisher-information notation introduced earlier in the thesis.  It also makes explicit the assumptions needed to connect the ideal source model to the available experimental observables.  The original experimental analysis is developed in Chapter~\ref{ch:exoplanet_experiment}.
 
 \section{The exoplanet characterization problem}
 Consider a star, denoted by $A$, with intensity $I_A$, and an exoplanet, denoted by $B$, with intensity $I_B$. This system is characterized by the relative intensity ratio (or contrast ratio) $\epsilon$
@@ -28,7 +26,7 @@ The approximation defined in Eq. \ref{eq:intensity_ratio_epsilon_approx} is the 
 \section{The sub-Rayleigh regime}
 % ==============================================================================
 When the angular separation between the star and the planet is small, their light fields overlap at the telescope's aperture, making the faint planet difficult to distinguish from the much brighter star. Detecting and characterizing the planet therefore requires resolving the two sources at sub-Rayleigh scales, i.e., separations smaller than the classic Rayleigh diffraction limit.
-This limit arises because, due to diffraction at the telescope's finite aperture, light from a point source cannot be focused to an infinitesimal point. Instead, the telescope produces a finite intensity distribution. 
+This limit arises because, due to diffraction at the telescope's finite aperture, light from a point source cannot be focused to an infinitesimal point. Instead, the telescope produces a finite intensity distribution.
 This distribution is the result of the incoming image and the telescope's own response, quantified by a function known as the point-spread function (PSF). The PSF is a property of the instrument, not of the source. For point-like sources, such as those considered here, the observed image is described directly by the PSF itself.
 The PSF is commonly modeled as a Gaussian of width $w_0$ ~\cite{Santamaria2024single}. The Rayleigh limit is then reached when the transverse separation $d$ between the two emitters becomes comparable to or smaller than $w_0$ ($d\lesssim w_0$)~\cite{Santamaria2024single}. This transition from the resolved to the sub-Rayleigh regime is illustrated in Fig.~\ref{fig:rayleigh_criterion}, where the increasing overlap between the two PSFs causes the distinct intensity peaks to merge into a single dominant profile.
 
@@ -122,16 +120,17 @@ Spatial-mode demultiplexing (SPADE) provides such an alternative under ideal con
     Here $m$ and $n$ are non-negative integers that label the modal orders in the two transverse directions.  Each basis function consists of a Gaussian envelope multiplied by Hermite polynomials.  Increasing either index changes the transverse structure of the one-photon state; it does not add another photon.
 \end{definition}
 
-To describe the lowest-order modes ($m,n=0,1$), let $(x,y)$ denote transverse coordinates measured from the centre of the HG basis (these are the coordinates measured by the telescope).  In the index convention used in Ref.~\cite{Santamaria2024single}, $HG_{01}$ varies along the first coordinate and $HG_{10}$ along the second.\footnote{The ordering of the two HG indices is not universal.  This thesis follows Ref.~\cite{Santamaria2024single}, in which $HG_{01}$ is associated with the $x$ direction and $HG_{10}$ with the $y$ direction.  Other sources adopt the opposite ordering; for example, R.~Paschotta, \emph{RP Photonics Encyclopedia, article on ``Hermite--Gaussian Modes''}, assigns the first index to $x$ and the second to $y$, so that the corresponding labels are exchanged: \url{https://www.rp-photonics.com/hermite_gaussian_modes.html}.}  The three relevant normalized amplitudes are
+To describe the lowest-order modes ($m,n=0,1$), let $(x,y)$ denote transverse coordinates measured from the centre of the HG basis (these are the coordinates measured by the telescope).  In the index convention used in Ref.~\cite{Santamaria2024single}, $HG_{01}$ varies along the first coordinate and $HG_{10}$ along the second.\footnote{The ordering of the two HG indices is not universal.  This thesis follows Ref.~\cite{Santamaria2024single}, in which $HG_{01}$ is associated with the $x$ direction and $HG_{10}$ with the $y$ direction.  Other sources adopt the opposite ordering, for example the Photonics Encyclopedia~\cite{paschotta_hermite_gaussian} assigns the first index to $x$ and the second to $y$, so that the corresponding labels are exchanged.}
+The three relevant normalized amplitudes are
 \begin{align}
     \langle x,y|HG_{00}\rangle
      & =\left(\frac{1}{2\pi w_0^2}\right)^{1/2}
-     \exp\!\left[-\frac{x^2+y^2}{4w_0^2}\right]
-     \eqqcolon \psi_0(x,y) ,
-    \label{eq:hg00_def}           \\
+    \exp\!\left[-\frac{x^2+y^2}{4w_0^2}\right]
+    \eqqcolon \psi_0(x,y) ,
+    \label{eq:hg00_def}                         \\
     \langle x,y|HG_{01}\rangle
      & =\frac{x}{w_0}\psi_0(x,y),
-    \label{eq:hg01_def}           \\
+    \label{eq:hg01_def}                         \\
     \langle x,y|HG_{10}\rangle
      & =\frac{y}{w_0}\psi_0(x,y).
     \label{eq:hg10_def}
@@ -146,7 +145,7 @@ Figure~\ref{fig:hg_modes} shows the fundamental and first-order HG amplitudes an
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=\textwidth]{figures/scripts_for_figures/hg_modes_visualization.png}
-    \caption{The fundamental and first-order Hermite--Gaussian spatial modes for an illustrative vertical sorter offset, $\delta_x=0$ and $\delta_y=0.3w_0$.  The first-order amplitudes change sign across one transverse axis, whereas their intensities remain non-negative.  Perfect alignment with the star corresponds instead to $\delta_x=\delta_y=0$.}
+    \caption{The fundamental and first-order Hermite--Gaussian spatial modes for an illustrative vertical sorter offset, $\delta_x=0$ and $\delta_y=0.3$.  The first-order amplitudes change sign across one transverse axis, whereas their intensities remain non-negative.  Perfect alignment with the star corresponds instead to $\delta_x=\delta_y=0$.}
     \label{fig:hg_modes}
 \end{figure}
 
@@ -158,12 +157,12 @@ The fundamental-port measurement is represented by the projector
 Consequently, the probability $p_0$ of a count in this port is the projection of $\rho_d$ onto $HG_{00}$.  Following Eqs.~(7) and (8) of Ref.~\cite{Santamaria2024single},
 \begin{align}
     p_0
-    &\coloneqq\operatorname{Tr}[\rho_d\Pi_0]
-     =\langle HG_{00}|\rho_d|HG_{00}\rangle \notag\\
-    &=\eta(1-\epsilon)
-      e^{-(\delta_x^2+\delta_y^2)/(4w_0^2)}
-      +\eta\epsilon
-      e^{-[(d_x-\delta_x)^2+(d_y-\delta_y)^2]/(4w_0^2)}.
+     & \coloneqq\operatorname{Tr}[\rho_d\Pi_0]
+    =\langle HG_{00}|\rho_d|HG_{00}\rangle \notag \\
+     & =\eta(1-\epsilon)
+    e^{-(\delta_x^2+\delta_y^2)/(4w_0^2)}
+    +\eta\epsilon
+    e^{-[(d_x-\delta_x)^2+(d_y-\delta_y)^2]/(4w_0^2)}.
     \label{eq:p0_alignment}
 \end{align}
 The first term is the stellar contribution and the second is the planetary contribution.  Because the star dominates in the high-contrast regime, maximizing $p_0$ centres the sorter on the star.  This alignment is essential: a residual offset allows the bright stellar field to leak into the displacement-sensitive ports and can obscure the much weaker planetary signal. Here we assume ideal alignment, $\bmdelta=\boldsymbol 0$.
@@ -198,14 +197,14 @@ Equations~\eqref{eq:pi0_def}, \eqref{eq:pi1_def}, and \eqref{eq:hg_low_order_cut
 The individual first-order probabilities are the projections of $\rho_d$ onto $HG_{01}$ and $HG_{10}$.  Specializing Eqs.~(12) and (13) of Ref.~\cite{Santamaria2024single} to perfect alignment gives
 \begin{align}
     p_{01}
-    &\coloneqq\langle HG_{01}|\rho_d|HG_{01}\rangle
-      =\eta\epsilon\frac{d_x^2}{4w_0^2}
-       \exp\!\left(-\frac{d^2}{4w_0^2}\right),
-    \label{eq:p01_ideal}\\
+     & \coloneqq\langle HG_{01}|\rho_d|HG_{01}\rangle
+    =\eta\epsilon\frac{d_x^2}{4w_0^2}
+    \exp\!\left(-\frac{d^2}{4w_0^2}\right),
+    \label{eq:p01_ideal}                              \\
     p_{10}
-    &\coloneqq\langle HG_{10}|\rho_d|HG_{10}\rangle
-      =\eta\epsilon\frac{d_y^2}{4w_0^2}
-       \exp\!\left(-\frac{d^2}{4w_0^2}\right).
+     & \coloneqq\langle HG_{10}|\rho_d|HG_{10}\rangle
+    =\eta\epsilon\frac{d_y^2}{4w_0^2}
+    \exp\!\left(-\frac{d^2}{4w_0^2}\right).
     \label{eq:p10_ideal}
 \end{align}
 The probability of a count in either first-order port is their sum,
