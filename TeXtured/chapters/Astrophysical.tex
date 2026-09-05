@@ -103,9 +103,9 @@ $p_{\mathrm{DI}}(x,y\mid d,\epsilon)=\langle x,y|\rho_d^{(1)}|x,y\rangle$ (with 
 
 \section{SPADE: measuring in spatial modes}
 
-The density-operator description above separates the state carried by the incoming light from the measurement performed on it.  Direct imaging measures each detected photon in the position basis $\{|x,y\rangle\}$ and therefore records the intensity distribution pixel by pixel. The poor performance found in the sub-Rayleigh regime is therefore a limitation of this measurement strategy, rather than evidence that the collected light contains no information about the separation.  This observation motivates looking for a measurement that uses the same detected photons more efficiently.
+The density-operator description above separates the state carried by the incoming light from the measurement performed on it. Direct imaging measures each detected photon in the position basis $\{|x,y\rangle\}$ and therefore records the intensity distribution pixel by pixel. The poor performance found in the sub-Rayleigh regime is therefore a limitation of this measurement strategy, rather than evidence that the collected light contains no information about the separation. This observation motivates looking for a measurement that uses the same detected photons more efficiently.
 
-Spatial-mode demultiplexing (SPADE) provides such an alternative under ideal conditions.  Instead of determining where each photon lands, SPADE decomposes the transverse field into orthogonal spatial modes and directs the modes to separate photon-counting ports~\cite{Tsang2016quantum,Santamaria2024single}.  Because these projections combine field amplitudes from different image-plane positions, they can access displacement information that is poorly represented in an unresolved intensity image.  For a Gaussian PSF, the natural modes for this purpose are the Hermite--Gaussian (HG) modes.
+Spatial-mode demultiplexing (SPADE) provides such an alternative under ideal conditions. A SPADE receiver consists of a spatial-mode sorter followed by photon-counting detectors and the associated readout system. The mode sorter is the optical component that decomposes the transverse field into orthogonal spatial modes and directs each mode to a separate output port, where its photon counts are recorded~\cite{Tsang2016quantum,Santamaria2024single}. Thus, instead of determining where each photon lands, the receiver determines which spatial mode the photon occupies. Because these modal projections combine field amplitudes from different image-plane positions, they can access displacement information that is poorly represented in an unresolved intensity image. For a Gaussian PSF, the natural modes for this purpose are the Hermite--Gaussian (HG) modes.
 
 \subsection{The Hermite--Gaussian spatial basis}
 
@@ -166,7 +166,7 @@ Consequently, the probability $p_0$ of a count in this port is the projection of
       e^{-[(d_x-\delta_x)^2+(d_y-\delta_y)^2]/(4w_0^2)}.
     \label{eq:p0_alignment}
 \end{align}
-The first term is the stellar contribution and the second is the planetary contribution.  Because the star dominates in the high-contrast regime, maximising $p_0$ centres the sorter on the star.  This alignment is essential: a residual offset allows the bright stellar field to leak into the displacement-sensitive ports and can obscure the much weaker planetary signal. Here we assume ideal alignment, $\bmdelta=\boldsymbol 0$.
+The first term is the stellar contribution and the second is the planetary contribution.  Because the star dominates in the high-contrast regime, maximizing $p_0$ centres the sorter on the star.  This alignment is essential: a residual offset allows the bright stellar field to leak into the displacement-sensitive ports and can obscure the much weaker planetary signal. Here we assume ideal alignment, $\bmdelta=\boldsymbol 0$.
 
 Under ideal alignment, the fundamental HG mode coincides with the stellar spatial state.  Expanding the displaced planetary Gaussian in powers of $d/w_0$ gives
 \begin{equation}
@@ -195,7 +195,7 @@ The low-order modal cutoff is therefore
 \end{equation}
 Equations~\eqref{eq:pi0_def}, \eqref{eq:pi1_def}, and \eqref{eq:hg_low_order_cutoff} retain the three lowest modes---one fundamental and two first-order modes---and collect all higher orders in the complementary outcome $\Pi_{\mathrm{rest}}$.  This is a fixed measurement subspace selected by the receiver, not a truncation based on the eigenvalues of $\rho_d$.  The distinction becomes important when SPADE is related to truncated QFI in the next chapter.
 
-The individual first-order probabilities are the projections of $\rho_d$ onto $HG_{01}$ and $HG_{10}$.  Specialising Eqs.~(12) and (13) of Ref.~\cite{Santamaria2024single} to perfect alignment gives
+The individual first-order probabilities are the projections of $\rho_d$ onto $HG_{01}$ and $HG_{10}$.  Specializing Eqs.~(12) and (13) of Ref.~\cite{Santamaria2024single} to perfect alignment gives
 \begin{align}
     p_{01}
     &\coloneqq\langle HG_{01}|\rho_d|HG_{01}\rangle
