@@ -7,7 +7,7 @@ The central issue is \emph{local metrology}.  Quantum Fisher information (QFI) m
 
 The calculations follow Chapter~\ref{ch:methods}.  We evaluate QFI using the formalism of Chapter~\ref{ch:MathBackground}, and use the finite-displacement fidelity quantities from Section~\ref{sec:bounds} as complementary diagnostics.  The preparation history matters: a ground state, a globally Gibbs-prepared state, and a depolarized state can all give mixed states on $S$, but they are not the same physical experiment.
 
-\begin{remark}[This chapter takeaways]
+\begin{remark}[Chapter takeaways]
     For the finite TFIM geometries, field windows, and state families studied here, retaining more qubits leaves more local QFI.  Depolarization provides a simple baseline and lowers local QFI monotonically in the sampled sweep.  In selected regimes, global Gibbs preparation leaves more local QFI than the reduced ground-state family.  This does not mean that a fixed thermal-noise channel increases QFI, nor does it establish a universal scaling law or a general benefit of temperature.
 \end{remark}
 % ==============================================================================
@@ -16,10 +16,17 @@ The calculations follow Chapter~\ref{ch:methods}.  We evaluate QFI using the for
 % ==============================================================================
 \subsection{Accessible and inaccessible qubits}
 
-Let $S$ denote the accessible $n$-qubit subsystem and $E$ the inaccessible complement of $N-n$ qubits\footnote{Standard convention in quantum information, $S$ stands for State, the one accessible to the observer and $E$ for the environment or the part that is traced out.}.  The parameter $h_x$ serves as the estimation parameter $\theta$ of Chapters~\ref{ch:MathBackground} and~\ref{ch:methods}.  In all scenarios, restricted access is modeled by taking the partial trace $\operatorname{Tr}_E$ over $E$.  Here, \emph{local} means that only the subsystem $S$ is accessible, it does not restrict the observer to product measurements on the qubits within $S$.
+Let $S$ denote the accessible $n$-qubit subsystem and $E$ the inaccessible complement of $N-n$ qubits\footnote{In the standard quantum-information notation used here, $S$ denotes the system or subsystem of interest and $E$ its inaccessible complement.}.  The parameter $h_x$ serves as the estimation parameter $\theta$ of Chapters~\ref{ch:MathBackground} and~\ref{ch:methods}.  In all scenarios, restricted access is modeled by taking the partial trace $\operatorname{Tr}_E$ over $E$.  Here, \emph{local} means that only the subsystem $S$ is accessible; it does not restrict the observer to product measurements on the qubits within $S$.
+
+The common open-chain Hamiltonian, and the bulk part of every geometry used in the numerical studies, is the $N$-qubit TFIM defined in Eq.~\eqref{eq:tfim_hamiltonian}, with nearest-neighbor $ZZ$ coupling and a transverse field along $X$:
+\begin{equation}
+    H_N(h_x)=-J\sum_{i=0}^{N-2}Z_iZ_{i+1}-h_x\sum_{i=0}^{N-1}X_i.
+    \label{eq:noise_tfim_hamiltonian}
+\end{equation}
+In each numerical subsection, $H_N(h_x)$ denotes the finite-chain Hamiltonian for the geometry stated there. The numerical results use $J=1$, so the reported field values also equal the dimensionless ratio $h_x/J$.
 
 \begin{infobox}{What is being compared}
-    Every comparison starts from the same parameter-dependent TFIM Hamiltonian $H_N(h_x)$ and retains the same subsystem $S$.  What changes is how the full probe is prepared before the partial trace:
+    Within each comparison, every branch starts from the same parameter-dependent TFIM Hamiltonian $H_N(h_x)$ and retains the same subsystem $S$.  What changes is how the full probe is prepared before the partial trace:
     \begin{enumerate}
         \item \textbf{Ground-state baseline.}  Prepare the full probe in its ground state and trace out $E$.  The resulting reduced state of $S$ can already be mixed, because $S$ and $E$ may be entangled.
         \item \textbf{Depolarizing control.}  Prepare the ground state, apply a fixed depolarizing channel to the full probe, and then trace out $E$.  This is the only fixed, parameter-independent noise channel considered here.
@@ -47,10 +54,27 @@ Let $S$ denote the accessible $n$-qubit subsystem and $E$ the inaccessible compl
          & \coloneqq \operatorname{Tr}[\exp[-\beta H_N(h_x)]]
         \label{eq:noise_state_families}
     \end{align}
-    Here $\Lambda^{(N)}_P$ is a full-system depolarizing channel with fixed probability $P$, and $\beta$ is the inverse temperature of the Gibbs preparation: larger $\beta$ means a colder Gibbs state.  When the ground state is nondegenerate, the Gibbs family approaches the ground-state reference as $\beta\to\infty$. At a degeneracy, it instead approaches the normalized projector onto the ground-state subspace.
+    Here $\beta$ is the inverse temperature of the Gibbs preparation: larger $\beta$ means a colder Gibbs state.  When the ground state is nondegenerate, the Gibbs family approaches the ground-state reference as $\beta\to\infty$. At a degeneracy, it instead approaches the normalized projector onto the ground-state subspace.
 \end{definition}
 
-The three primary local states are $\rho_{\mathrm{G},S}$, $\rho_{\mathrm{dep},S}$, and $\rho_{\mathrm{th},S}$.  They have the same accessible Hilbert-space dimension, but not the same spectrum or dependence on $h_x$.  The corresponding full-system curves are reference ceilings and consistency checks. The physical question is always what an observer can learn only having access to $S$.
+The full-system depolarizing channel used in this chapter is
+\begin{equation}
+    \Lambda_P^{(N)}(\rho)
+    =(1-P)\rho+P\frac{\mathbb{I}_{2^N}}{2^N},
+    \qquad 0\leq P\leq1.
+    \label{eq:full_depolarizing_channel}
+\end{equation}
+It replaces the input by the maximally mixed $N$-qubit state with probability $P$. Since depolarization is applied before the partial trace,
+\begin{equation}
+    \rho_{\mathrm{dep},S}(h_x;P)
+    =(1-P)\rho_{\mathrm{G},S}(h_x)
+    +P\frac{\mathbb{I}_{2^n}}{2^n}.
+    \label{eq:reduced_depolarizing_state}
+\end{equation}
+
+The three primary local states are $\rho_{\mathrm{G},S}$, $\rho_{\mathrm{dep},S}$, and $\rho_{\mathrm{th},S}$.  They have the same accessible Hilbert-space dimension, but not the same spectrum or dependence on $h_x$.  Each full-system curve is a reference ceiling for the reduced state in the corresponding preparation family. The physical question is always what an observer can learn while having access only to $S$.
+
+These equilibrium calculations obtain the ground and Gibbs states by exact diagonalization and matrix exponentiation. They do not use the Trotterized real-time evolution introduced as a circuit construction in Chapter~\ref{ch:methods}.
 
 Related work has studied the estimation of Hamiltonian parameters from Gibbs states at known inverse temperature~\cite{Garcia2024}.  Here, the additional question is how much of that information remains after access is restricted to $S$.
 
@@ -67,13 +91,13 @@ There is no external noise map. The subsystem is mixed because it is correlated 
 
 \noindent\emph{ASCII draft.}  The double lines stand for the ket and bra indices of each subsystem.  Closing the $E$ line denotes the partial trace, while the remaining $S$ indices define $\rho_{\mathrm{G},S}$.
 \begin{Verbatim}[fontsize=\small]
-                 +---------------------+
- S ==============|                     |============== S --> [ QFI / TQFI ]
-                 |    rho_G,N(h_x)     |
- E ======+=======|                     |=======+====== E
-         |       +---------------------+       |
-         +=====================================+
-                         Tr_E
+    +---------------------+
+    S ==============|                     |============== S --> [ QFI / TQFI ]
+    |    rho_G,N(h_x)     |
+    E ======+=======|                     |=======+====== E
+    |       +---------------------+       |
+    +=====================================+
+    Tr_E
 \end{Verbatim}
 
 \todo[]{insert diagram 2}
@@ -89,19 +113,19 @@ The channel is parameter independent when $P$ is fixed.
 
 \noindent\emph{ASCII draft.}  In the Choi-matrix view, $J(\Lambda_P^{(N)})$ represents the depolarizing channel $\Lambda_P^{(N)}$.  It is kept distinct from the channel symbol itself.  The input contraction follows Eq.~\eqref{eq:choi_channel_action}, after which the output environment is traced out.
 \begin{Verbatim}[fontsize=\small]
- rho_G,N(h_x)^T ======+
-                       |
-                 +-----+------------------+
-                 | J(Lambda_P^(N))        |============== S
-                 |                        |=======+====== E
-                 +------------------------+       |
-                    input contraction            +======+
-                                                   Tr_E |
-                                                        v
-                                             rho_dep,S(h_x;P)
-                                                        |
-                                                        v
-                                                 [ QFI / TQFI ]
+    rho_G,N(h_x)^T ======+
+    |
+    +-----+------------------+
+    | J(Lambda_P^(N))        |============== S
+    |                        |=======+====== E
+    +------------------------+       |
+    input contraction            +======+
+    Tr_E |
+    v
+    rho_dep,S(h_x;P)
+    |
+    v
+        [ QFI / TQFI ]
 \end{Verbatim}
 
 \todo[]{insert diagram 3}
@@ -116,14 +140,14 @@ The diagram should state explicitly that both $H_N$ and the Gibbs state depend o
 
 \noindent\emph{ASCII draft.}  This branch begins from a separately prepared Gibbs state.  It does not apply a thermal channel to $\rho_{\mathrm{G},N}$.
 \begin{Verbatim}[fontsize=\small]
-               depends on h_x and beta
-                 +---------------------+
- S ==============|                     |============== S --> [ QFI / TQFI ]
-                 |   rho_th,N(h_x;beta)|
- E ======+=======|                     |=======+====== E
-         |       +---------------------+       |
-         +=====================================+
-                         Tr_E
+    depends on h_x and beta
+    +---------------------+
+    S ==============|                     |============== S --> [ QFI / TQFI ]
+    |   rho_th,N(h_x;beta)|
+    E ======+=======|                     |=======+====== E
+    |       +---------------------+       |
+    +=====================================+
+    Tr_E
 \end{Verbatim}
 
 
@@ -176,30 +200,32 @@ At fixed $\beta$, Gibbs preparation defines a different $h_x$-dependent family, 
 
 \subsection{Fixed controls and matched purity}
 
-Most results keep the physical control fixed while sweeping $h_x$ :
-\begin{itemize}
-    \item The depolarizing branch is a fixed noise channel with depolarizing probability $P$ (probability of obtaining the maximally mixed state $\frac{1}{2^N} \cdot \mathbb{I}$)
-    \item The thermal branch fixes the inverse temperature $\beta$ used to prepare the Gibbs family.  These are the primary physical comparisons.
-\end{itemize}
+Most comparisons keep the physical preparation control fixed while sweeping
+$h_x$: the depolarizing probability $P$ is fixed for the depolarizing family,
+and the inverse temperature $\beta$ is fixed for the Gibbs family.  This is
+the setting that describes one preparation protocol operated across the field
+scan.
 
-A separate control, used only in one of the experiments, matches the local purities at every field value:
+Matched purity is used as a separate diagnostic.  Writing
+$\gamma(\rho)=\operatorname{Tr}(\rho^2)$, it chooses $P(h_x)$ and
+$\beta(h_x)$ so that
 \begin{equation}
-    \operatorname{Tr}[\rho_{\mathrm{dep},S}^2(h_x;P(h_x))]
-    =\operatorname{Tr}[\rho_{\mathrm{G},S}^2(h_x)],
-    \qquad
-    \operatorname{Tr}[\rho_{\mathrm{th},S}^2(h_x;\beta(h_x))]
-    =\operatorname{Tr}[\rho_{\mathrm{G},S}^2(h_x)]
+    \gamma\!\left(\rho_{\mathrm{dep},S}(h_x;P(h_x))\right)
+    =
+    \gamma\!\left(\rho_{\mathrm{th},S}(h_x;\beta(h_x))\right)
+    =
+    \gamma_{\mathrm{target}}(h_x).
     \label{eq:purity_matching_cond}
 \end{equation}
-
-This control asks whether matching reduced purity along the full $h_x$ path makes purity an effective predictor of local QFI.  It is not a fixed-channel experiment: $P$ and $\beta$ are selected as functions of $h_x$.  It therefore compares deliberately selected paths through state space, rather than one apparatus operated at fixed settings.
-
-\todo[]{insert diagram 4}
-
-\noindent\emph{TODO, Diagram:} Show $\rho_{\mathrm{G},S}(h_x)$ setting a target purity, then a choice of $P(h_x)$ and $\beta(h_x)$ before reduction to equal-purity local comparison families.
+The target can be the purity of a reference reduced state.  This asks a simple
+question: if two local states are equally mixed according to their purity, do
+they also have the same local QFI?  The matched-purity results are discussed
+in Section~\ref{sec:project10_peak_purity}.
 
 \begin{infobox}{Why matched-purity QFI requires care}
-    The matching settings $P$ and $\beta$ are chosen separately at every value of $h_x$, including the neighbouring points used to evaluate the numerical derivative.  The corresponding QFI must therefore follow the resulting curve through state space, rather than differentiate a state at fixed $P$ or fixed $\beta$.  In general, if $\rho$ depends on a setting $\lambda(h_x)$, then
+    In a field-by-field purity match, $P$ and $\beta$ change with $h_x$.
+    The QFI must follow that chosen path through state space.  If
+    $\rho$ depends on a control $\lambda(h_x)$, then
     \begin{equation}
         \frac{\mathrm{d}\rho}{\mathrm{d}h_x}
         =
@@ -209,22 +235,41 @@ This control asks whether matching reduced purity along the full $h_x$ path make
         \frac{\mathrm{d}\lambda}{\mathrm{d}h_x}
         \label{eq:matched_path_total_derivative}
     \end{equation}
-    Here $\lambda$ is $P$ or $\beta$.  Omitting the second term would calculate the QFI of a different family.  Because $P$ or $\beta$ now depends on $h_x$, the fixed-channel comparison with the ground-state reference does not apply to these matched paths.  The Project~9 calculations include the total-derivative terms; the branch-specific expressions are recorded in Appendix~\ref{app:matched_purity_derivatives}.
+    Here $\lambda$ is $P$ or $\beta$.  This is different from the
+    fixed-control calculations, where the second term is absent.  The
+    field-by-field match is therefore useful for testing the role of purity,
+    but it is not the response of one fixed noisy device.
 \end{infobox}
+
 
 % ==============================================================================
 \section{What Is Calculated and Compared}
 \label{sec:noise_observables}
 % ==============================================================================
 
-For each $h_x$, the calculation constructs a state family, discards $E$, and asks how strongly the resulting local state changes.  We also evaluate fidelity quantities from $\rho(h_x)$ and $\rho(h_x+\delta h_x)$, because these are the quantities accessible to a truncation-based metrology protocol.  The calculation and central-difference convention follow Chapter~\ref{ch:methods}, the finite-displacement functional is Eq.~\eqref{eq:qfi_difference_quotient}.
+For each $h_x$, the calculation constructs a state family, discards $E$, and asks how strongly the resulting local state changes.  We also evaluate fidelity quantities from $\rho(h_x)$ and $\rho(h_x+\delta h_x)$, because these are the quantities accessible to a truncation-based metrology protocol.  The finite-displacement functional is defined in Eq.~\eqref{eq:qfi_difference_quotient}. For the exact SLD benchmarks reported here, the density-matrix derivatives are evaluated analytically; the matched-purity families additionally include the chain-rule contribution in Eq.~\eqref{eq:matched_path_total_derivative}. The central-difference formula in Eq.~\eqref{eq:central_difference} is a fallback for cases in which an analytical derivative is unavailable, and its derivative step must not be confused with the forward displacement $\delta h_x$ used by TQFI.
 
 \begin{remark}[Exact QFI and TQFI serve different purposes]
-    Exact SLD QFI is the local, infinitesimal benchmark that supports the physical claims in this chapter.  TQFI is a finite-displacement, truncation-aware proxy.
-    % At the selected displacements, \texttt{reduced\_lower\_tqfi} can exceed exact local SLD QFI: the largest observed excesses are $0.112$ in the latest Project~1 size sweep, $1.068$ in the Project~1 subsystem-size sweep, and $1.071$ in the open-boundary Project~7 data.  In contrast, \texttt{reduced\_sub\_qfi\_bound} never exceeds local SLD QFI in the current arrays.  TQFI is therefore a useful diagnostic, not a substitute for exact local SLD QFI.
-    % For reproducibility, the saved \texttt{.npz} outputs were generated between 2026-08-22 and 2026-08-25: \texttt{project1\_scaling\_N\_20260822\_162213.npz} and \texttt{project1\_scaling\_n\_20260822\_162301.npz}, six Project~7 outputs dated 2026-08-23, and twenty-one Project~9 outputs dated 2026-08-25.  Projects~1 and~7 use $\delta h_x=0.1$ and $m=2$; Project~9 uses $\delta h_x=0.05$ and normally $m=3$.  
-    Exact SLD values may be compared when the physical families agree, but raw TQFI magnitudes should not be compared across projects without accounting for the different displacement and truncation settings.
+    Exact SLD QFI is the local, infinitesimal benchmark that supports the physical claims in this chapter. TQFI is a finite-displacement, truncation-aware diagnostic. At nonzero $\delta h_x$, its lower and upper endpoints bound the finite-displacement functional $\mathcal I_{\delta}$, not the exact SLD QFI. A finite-displacement lower TQFI value can therefore exceed the exact SLD value without violating the TQFI inequality. Exact SLD values may be compared when the physical families agree, but raw TQFI magnitudes should not be compared across projects without accounting for different displacement and truncation settings.
 \end{remark}
+
+The numerical settings relevant to these comparisons are summarized below:
+\begin{table}[htbp]
+    \centering
+    \caption{Field grids and finite-displacement settings. The truncation rank $m$ applies only to TQFI calculations; SSQFI does not use spectral truncation.}
+    \label{tab:noise_numerical_settings}
+    \begin{tabular}{l c c c}
+        \toprule
+        Study & Field grid & $\delta h_x$ & $m$ \\
+        \midrule
+        Restricted-access study (Project~1) & $50$ points on $[0.1,2.1]$ & $0.1$ & $2$ \\
+        Gibbs-temperature study (Project~7) & $60$ points on $[0.1,2.5]$ & $0.1$ & $2$ \\
+        Three-family comparison (Project~9) & $60$ points on $[0.1,2.5]$ & $0.05$ & $3$ \\
+        Fixed-control purity comparison      & $60$ points on $[0.1,2.5]$ & ---   & --- \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+For the one-qubit Project~9 subsystem, $m$ is capped at the Hilbert-space dimension, so $m=2$. Where a result is explicitly described as a refined maximum, a bounded continuous optimization is performed within the bracket containing the coarse-grid maximum; otherwise the reported maximum is over the stated field grid.
 
 The results are presented in three steps.  First, we establish the loss caused by restricting access to part of the probe.  Then we examine the thermal family and its temperature dependence.  Finally, we compare the three preparation histories at fixed accessible size.
 % ==============================================================================
@@ -240,7 +285,7 @@ The open-chain sequence $(N,n)=(4,2),(6,4),(8,6)$ changes both total size and ac
 
 \begin{table}[htbp]
     \centering
-    \caption{Project~1 open-chain scaling sequence with $n=N-2$. Values and locations are refined interior maxima.}
+    \caption{Open-chain scaling sequence with $n=N-2$. Values and locations are refined interior maxima.}
     \label{tab:project1_size_sequence}
     \begin{tabularx}{\textwidth}{
             c
@@ -270,7 +315,7 @@ The open-chain sequence $(N,n)=(4,2),(6,4),(8,6)$ changes both total size and ac
 \begin{figure}[H]%[htbp]
     \centering
     \includegraphics[width=0.8\textwidth]{figures/noise/project1/proj1_fig_1_1.png}
-    \caption{Project~1 main-text figure P1.1: local bounds and exact local SLD in small multiples for the three rows of Table~\ref{tab:project1_size_sequence}.}
+    \caption{Exact local SLD QFI and finite-displacement fidelity diagnostics for the three open-chain size pairs in Table~\ref{tab:project1_size_sequence}.}
     \label{fig:project1_fig_1_1}
 \end{figure}
 
@@ -281,7 +326,7 @@ The local peak rises strongly, while the retained fraction of the full peak incr
 
 \begin{table}[H]%[htbp]
     \centering
-    \caption{Project~1 recovery of the full-system peak as the accessible subsystem grows at fixed open-chain size $N=8$. The full-system maximum is $10.068$ at $h_x^\star=0.719$.}
+    \caption{Recovery of the full-system peak as the accessible subsystem grows at fixed open-chain size $N=8$. The full-system maximum is $10.068$ at $h_x^\star=0.719$.}
     \label{tab:project1_subsystem_sequence}
     \begin{tabular}{c c c c}
         \toprule
@@ -303,7 +348,7 @@ Retaining more qubits gives rapid, monotonic recovery of the critical response. 
     \centering
     \includegraphics[width=0.43\textwidth, valign=c]{figures/noise/project1/subsystem_SLD_varying_n_fixing_N8.png}\hfill
     \includegraphics[width=0.53\textwidth, valign=c]{figures/noise/project1/local_bounds_and_exact_over_n_subsystem.png}
-    \caption{Project~1 main-text figure P1.3: local bounds and exact over $n$}
+    \caption{Recovery of the exact local SLD QFI and finite-displacement diagnostics as the accessible subsystem size $n$ increases at fixed $N=8$.}
     \label{fig:project1_fig_1_3}
 \end{figure}
 
@@ -313,21 +358,21 @@ Retaining more qubits gives rapid, monotonic recovery of the critical response. 
     \includegraphics[width=0.48\textwidth]{figures/noise/project1/subsystem_SLD_varying_n_fixing_N8_heatmap.png}
     \includegraphics[width=0.48\textwidth]{figures/noise/project1/subsystem_TQFI_varying_n_fixing_N8_heatmap.png}
 
-    \caption{Project~1 main-text figure P1.2 heatmaps}
+    \caption{Field-resolved exact local SLD QFI (left) and lower-TQFI diagnostic (right) as the accessible subsystem size increases at fixed $N=8$.}
     \label{fig:project1_fig_1_2_heatmaps}
 \end{figure}
 
 
-At the local-SLD peak, the lower TQFI /SLD ratio ranges from about $0.42$ to $0.96$ and the corresponding sub QFI /SLD ratio ranges from about $0.05$ to $0.60$. The finite-displacement quantities are informative but can be loose when the reduced state is strongly mixed, the TQFI proved to conserve more information for what concerns the best domain of recovery.
+At the local-SLD peak, the lower-TQFI/SLD ratio ranges from about $0.42$ to $0.96$, and the corresponding sub-QFI/SLD ratio ranges from about $0.05$ to $0.60$. The finite-displacement quantities are informative but can be loose when the reduced state is strongly mixed. In the tested cases, the lower TQFI endpoint is closer to the exact SLD benchmark than the sub-QFI endpoint over the region of best recovery.
 
 % ==============================================================================
 \section{Global Thermal Preparation}
 \label{sec:project7_noise}
 % ==============================================================================
 
-Temperature is introduced here at the preparation stage. For every value of $h_x$, the entire $N$-qubit probe is prepared in the Gibbs state $\rho_{\mathrm{th},N}(h_x;\beta)$ and only then reduced to the same accessible subsystem $S$. We keep $\beta$ fixed to define a parameterized thermal family, and we compare the local response at different temperatures and boundary conditions.
+Temperature is introduced here at the preparation stage. For every value of $h_x$, the entire $N$-qubit probe is prepared in the Gibbs state $\rho_{\mathrm{th},N}(h_x;\beta)$ and only then reduced to the same accessible subsystem $S$. We keep $\beta$ fixed to define a parameterized thermal family and compare the local response at different inverse temperatures.
 
-This calculation asks a practical question: as the global probe is cooled, how much of the field sensitivity of the low-temperature reference becomes accessible locally? The answer depends on both temperature and the finite-size spectrum, which is why the geometry and boundary condition are varied as well.
+This calculation asks a practical question: as the global probe is cooled, how much of the field sensitivity of the low-temperature reference becomes accessible locally? The answer depends on both inverse temperature and the finite-size spectrum.
 
 Related full-probe work has reported temperature-enhanced QFI in critical models~\cite{osterma2024}, lending context to the temperature-dependent behaviour found here.
 
@@ -342,7 +387,7 @@ Larger $\beta$ corresponds to a colder Gibbs state. To summarize the recovery of
 For $N=6$, $n=4$, and open boundaries:
 \begin{table}[htbp]
     \centering
-    \caption{Project~7 open-chain local recovery for $N=6$ and $n=4$. Each entry is the maximum over the scanned field interval; peaks at different temperatures need not occur at the same $h_x$.}
+    \caption{Open-chain local recovery for $N=6$ and $n=4$. Each entry is the maximum over the scanned field interval; peaks at different inverse temperatures need not occur at the same $h_x$.}
     \label{tab:project7_open_recovery}
     \begin{tabular}{c c c c}
         \toprule
@@ -357,7 +402,7 @@ For $N=6$, $n=4$, and open boundaries:
     \end{tabular}
 \end{table}
 
-For this run, the ground-state \texttt{lower\_tqfi} peak is $5.019$, so the $90\%$ target used to define $\beta_\star$ is $4.517$. Interpolation gives $\beta_\star=6.216$. The table should be read as a comparison of the \emph{best sensing point} available at each temperature, rather than a point-by-point comparison at one fixed field. As the Gibbs state is cooled, the local thermal response grows and its dominant feature moves from the edge of the scan towards the finite-size critical region.
+For this run, the ground-state \texttt{lower\_tqfi} peak is $5.019$, so the $90\%$ target used to define $\beta_\star$ is $4.517$. Interpolation gives $\beta_\star=6.216$. The table should be read as a comparison of the \emph{best sensing point} available at each inverse temperature, rather than a point-by-point comparison at one fixed field. As the Gibbs state is cooled, the local thermal response grows and its dominant feature moves from the edge of the scan towards the finite-size critical region.
 
 At $\beta=10$, the peak local and full SLD values are larger than the corresponding ground-state peaks. This is not a fixed noisy channel undoing its own information loss. A fixed, parameter-independent channel would act on one already encoded family and could only reduce its QFI. Here the Gibbs state is prepared afresh for every $h_x$: changing $h_x$ changes both the eigenvectors and the thermal populations. The thermal and ground-state rows are consequently different parameterized families, with no universal ordering of their peak QFIs.
 
@@ -373,7 +418,7 @@ At $\beta=10$, the peak local and full SLD values are larger than the correspond
 \begin{figure}[H]%[htbp]
     \centering
     \includegraphics[width=1\textwidth]{figures/noise/project7/recovery_peak_vs_beta.png}
-    \caption{Project~7 main-text figure P7.1: recovery of peak local information versus $\beta$}
+    \caption{Recovery of the peak local information as the inverse temperature $\beta$ increases for the open $N=6$, $n=4$ chain.}
     \label{fig:project7_fig_7_1}
 \end{figure}
 
@@ -381,32 +426,11 @@ At $\beta=10$, the peak local and full SLD values are larger than the correspond
 
 % \noindent\emph{Plot brief.} Insert Project~7 figure P7.2: ground-state local bounds and local SLD with the thermal \texttt{lower\_tqfi} overlay, showing peak migration.
 
-% \subsection{Changing geometry and boundary conditions}
-
-% \begin{table}[htbp]
-%     \centering
-%     \caption{Project~7 operational recovery scales.}
-%     \label{tab:project7_beta_star}
-%     \begin{tabular}{c c}
-%         \toprule
-%         Geometry                    & $\beta_\star$ from peak \texttt{lower\_tqfi} \\
-%         \midrule
-%         Open, $N=4$, $n=2$          & $5.170$                                      \\
-%         Open, $N=6$, $n=4$          & $6.216$                                      \\
-%         Periodic, $N=6$, $n=4$      & $3.122$                                      \\
-%         Anti-periodic, $N=6$, $n=4$ & $0.517$                                      \\
-%         \bottomrule
-%     \end{tabular}
-% \end{table}
-
-% The larger sampled open chain needs a somewhat colder Gibbs state for the selected threshold. Boundary conditions have a greater effect: periodic boundaries recover at lower $\beta_\star$ than open ones, and anti-periodic boundaries qualitatively reshape the low-energy sector. In the anti-periodic run, the local thermal maximum lies at the lower scan boundary $h_x=0.1$, where the first two gaps are approximately $0.0295$. This is evidence of strong low-field susceptibility in the sampled window, not yet a bulk critical claim.
-
-
 \begin{figure}[H]%[htbp]
     \centering
     \includegraphics[width=0.48\textwidth]{figures/noise/project7/heatmap_proj7_TQFI_tight.png}
     \includegraphics[width=0.48\textwidth]{figures/noise/project7/heatmap_proj7_subQFI_tight.png}
-    \caption{separate local-SLD and TQFI-tightness heatmaps across $\beta$.}
+    \caption{Tightness of the lower TQFI endpoint (left) and sub-QFI endpoint (right) relative to the exact local SLD benchmark across inverse temperature $\beta$.}
     \label{fig:project7_tightness_heatmaps}
 \end{figure}
 
@@ -415,48 +439,70 @@ At $\beta=10$, the peak local and full SLD values are larger than the correspond
 \label{sec:project9_noise}
 % ==============================================================================
 
-This is the main controlled comparison.  It places $\rho_{\mathrm{G},S}$, $\rho_{\mathrm{dep},S}$, and $\rho_{\mathrm{th},S}$ on equal $n$-qubit footing: the observer retains the same size subsystem while the full probe is prepared in different ways.  Exact local SLD QFI is the primary output; the full-system curves serve only as the consistency checks of Eqs.~\eqref{eq:depolarizing_data_processing} and~\eqref{eq:local_global_data_processing}.  All data sets analysed here satisfy these checks.
+This is the main controlled comparison.  It places $\rho_{\mathrm{G},S}$, $\rho_{\mathrm{dep},S}$, and $\rho_{\mathrm{th},S}$ on equal $n$-qubit footing: the observer retains the same size subsystem while the full probe is prepared in different ways. Exact local SLD QFI is the primary output. The fixed-control data satisfy the consistency checks in Eqs.~\eqref{eq:depolarizing_data_processing} and~\eqref{eq:local_global_data_processing}. For the field-by-field matched-purity paths, $P$ and $\beta$ depend on $h_x$, so the fixed-channel ordering relative to the ground family does not apply; only the full-to-local inequality within each matched family remains required.
 
-The five comparisons answer different questions:
+The four comparisons answer different questions:
 \begin{itemize}
-    \item the first checks the matched-purity construction
-    \item the second asks how the three local families change as access to the probe grows
-    \item the third changes the boundary-condition-dependent spectrum
-    \item the fourth isolates the fixed depolarizing channel
-    \item and the fifth is the central temperature sweep of the globally Gibbs-prepared family.
+    \item the first tests whether matching purity makes distinct local state families metrologically equivalent;
+    \item the second asks how the three local families change as access to the probe grows;
+    \item the third isolates the fixed depolarizing channel; and
+    \item the fourth is the central inverse-temperature sweep of the globally Gibbs-prepared family.
 \end{itemize}
 
-\subsection{Matched-purity control}
+\subsection{Matched purity regime}
+\label{sec:project10_peak_purity}
 
-\begin{table}[htbp]
+We use the matched-purity construction to test whether equal purity alone can make distinct local state families metrologically equivalent.
+
+\paragraph{Field-by-field matched-purity diagnostic.}
+Almost zero depolarization and a very cold Gibbs state can match each other and the reduced ground-state subsystem in the near-pure limit. This is a useful numerical consistency check, but it is too close to the ground-state limit to isolate the role of purity.
+
+The non-trivial version retains $n=5$ qubits of an open $N=6$ chain and uses
+the purity of a further reduced ground-state $n=4$ state as the target.  The
+globally depolarized and globally Gibbs-prepared $n=5$ states match that target
+at every sampled field\footnote{The absolute purity-matching residuals are below $10^{-8}$.}. Their local QFI
+curves still differ.  This is the basic result: equal purity does not make the
+two local state families metrologically equivalent.
+
+In this field-by-field construction, however, both $P$ and $\beta$ are
+retuned as $h_x$ changes.  It is therefore best read as a clean test of the
+role of purity, not as the performance of one fixed sensor.  In particular,
+very steep changes in the matched inverse temperature can strongly affect the
+derivative used in the QFI.
+
+The numerical QFI for these matched paths includes the total-derivative terms; the branch-specific expressions are given in Appendix~\ref{app:matched_purity_derivatives}.
+
+\paragraph{Fixed-control comparison.}
+For the experimentally more direct comparison, we keep $P$ or $\beta$ fixed
+throughout each field scan and then find the best local-SLD peak.  The left
+panel of Figure~\ref{fig:project10_peak_purity} compares the peak QFI with the
+purity at that same peak, $\gamma_\star=\operatorname{Tr}[\rho_S^2(h_x^\star)]$. At a given horizontal position, the higher point
+corresponds to the family with the better peak sensitivity.  The ordering
+changes: near $\gamma_\star=0.439$, the $\beta=2$ thermal peak is lower than
+the depolarized one, $3.531$ versus $5.167$, while near
+$\gamma_\star=0.586$, the $\beta=5$ thermal peak is higher, $7.938$ versus
+$6.157$.  At $\beta=50$, a similar peak purity gives a peak QFI of $16.342$,
+compared with $6.139$ for the depolarized reference.
+
+The right panel shows that purity also does not select a unique operating
+field.  The depolarized peaks remain close to $h_x^\star=0.62$, whereas the
+thermal peaks move over the sampled range.  The conclusion is limited to this
+finite system and these controls: thermal preparation is not always better,
+but purity by itself does not determine either the best local QFI or where the
+best operating point lies.
+
+\begin{figure}[H]
     \centering
-    \caption{Ground-state reference values for the matched-purity control.}
-    \label{tab:project9_preset_a}
-    \begin{tabular}{c c c c}
-        \toprule
-        $(N,n)$ & Peak full SLD & Peak reduced SLD & Reduced/full ratio \\
-        \midrule
-        $(4,2)$ & $4.388$       & $3.215$          & $0.733$            \\
-        $(6,4)$ & $6.771$       & $6.013$          & $0.888$            \\
-        $(8,6)$ & $10.057$      & $9.436$          & $0.938$            \\
-        \bottomrule
-    \end{tabular}
-\end{table}
-
-This is a consistency check, rather than the main noise experiment.  At every sampled value of $h_x$, we adjust the depolarizing strength $P$ and the inverse temperature $\beta$ until the two reduced states have the same purity as the reduced ground state.  Put simply, we ask whether three local states that are equally mixed at each field value also have similar QFI curves.  Because the settings are retuned as $h_x$ changes, this is not the response of one apparatus with fixed noise settings; the QFI follows the matched paths described above.
-
-The required settings are very close to the ground-state limit: $P_{\mathrm{matched}}$ lies between $3.725\times10^{-9}$ and $1.490\times10^{-8}$, while $\beta_{\mathrm{matched}}$ lies between $500$ and $1.2\times10^5$.  Thus the matched depolarized and thermal states are, as expected, very close to their respective ground-state references.  Table~\ref{tab:project9_preset_a} gives the reference full and reduced ground-state peaks; Figure~\ref{fig:project9_matched_purity_curves} shows the complete field-dependent comparison.
-
-The figure contains two separate comparisons.  Among the three full-system curves, the QFI curves almost overlap. The same is true among the three reduced-system curves (see Figure~\ref{fig:project9_matched_purity_curves}).  For $N=4$ and $N=6$, the differences cannot be resolved in the plot.  For $N=8$, the reduced curves remain indistinguishable at that scale, while the full-system thermal curve differs slightly, by about $0.12\%$ of its peak scale.  The gap between a full-system curve and the corresponding reduced curve is different: it is the real information loss caused by discarding qubits through the partial trace.
-
-The conclusion is deliberately limited.  In this near-pure, carefully matched control, equal reduced purity accompanies an almost identical local SLD-QFI curve.  This makes purity a useful diagnostic \emph{in this construction}, but it does not mean that purity alone determines QFI.  States with the same purity can still have different spectra, eigenvectors, or changes with $h_x$, and so different QFI.  Also this control does not make depolarization, thermal preparation, and partial trace physically equivalent.  The fixed-$P$ and fixed-$\beta$ results below are the appropriate comparisons for their distinct physical effects.
-
-
-\begin{figure}[H]%[htbp]
-    \centering
-    \includegraphics[width=\textwidth]{figures/noise/project9/3Dwaterfall.png}
-    \caption{matched-purity curves for full-system and reduced-system QFI.}
-    \label{fig:project9_matched_purity_curves}
+    \includegraphics[width=\textwidth]{figures/noise/project9/project10_fixed_control_peak_purity.png}
+    \caption{Fixed-control peak comparison for the open $N=6$, $n=5$ chain.
+        Each orange square is one fixed depolarizing probability $P$; each coloured
+        circle is one fixed inverse temperature $\beta$.  Left: peak local SLD QFI
+        versus the purity at that peak.  At the same horizontal position, the
+        higher point has the larger peak sensitivity.  Right: the field at which
+        the same peak occurs.  The shaded region is the range of peak purities
+        sampled by both families; the dotted thermal line is only a guide between
+        the sampled temperatures.}
+    \label{fig:project10_peak_purity}
 \end{figure}
 
 
@@ -465,7 +511,7 @@ The conclusion is deliberately limited.  In this near-pure, carefully matched co
 For $N=6$ with periodic boundaries:
 \begin{table}[htbp]
     \centering
-    \caption{Project~9 local SLD peaks versus accessible subsystem size at fixed preparation controls.}
+    \caption{Local SLD-QFI peaks versus accessible subsystem size at fixed preparation controls. The full $N=6$ ground-state reference has peak QFI $4.344$ over the same grid.}
     \label{tab:project9_preset_b}
     \begin{tabular}{c c c c}
         \toprule
@@ -488,39 +534,16 @@ At the principal peak in this $\beta=1$ baseline,
 \]
 Peak ordering is not the full field-resolved story.  In every $n$ run, the thermal family exceeds the reduced ground-state family over broad off-peak intervals; for $n=4$, the largest pointwise thermal advantage is $0.456$ at $h_x=1.686$.  A state family can be inferior by maximum QFI while being superior over a useful interval of the operating field, which is why the chapter reports both peak tables and field-resolved plots.
 
-\todo[]{insert diagram 13}
+% \todo[]{insert diagram 13}
 
-\noindent\emph{Plot brief.} Insert Project~9 figure P9.1: peak local SLD QFI versus $n$ for the three local families.
-
-% \subsection{Boundary conditions}
-
-% \begin{table}[htbp]
-%     \centering
-%     \caption{Project~9 local SLD peaks at fixed $N=6$ and $n=4$.}
-%     \label{tab:project9_preset_c}
-%     \begin{tabular}{c c c c}
-%         \toprule
-%         Boundary condition & $\rho_{\mathrm{G},S}$ & $\rho_{\mathrm{dep},S}$ & $\rho_{\mathrm{th},S}$ \\
-%         \midrule
-%         Open               & $6.014$               & $5.287$                 & $1.714$                \\
-%         Periodic           & $3.926$               & $3.419$                 & $1.393$                \\
-%         Anti-periodic      & $1.293$               & $1.096$                 & $1.892$                \\
-%         \bottomrule
-%     \end{tabular}
-% \end{table}
-
-% The anti-periodic branch is the clearest thermal-advantage example: the thermal family exceeds the reduced ground-state family at all $60/60$ sampled fields and has the larger peak, $1.892$ versus $1.293$. The thermal maximum is at the lower scan boundary $h_x=0.1$. The supported statement is that boundary-condition-dependent spectral structure changes the local channel hierarchy in the sampled window, it is not a bulk critical conclusion.
-
-% \todo[]{insert diagram 14}
-
-% \noindent\emph{Plot brief.} Insert Project~9 figure P9.5: field-resolved open, periodic, and anti-periodic panels. The anti-periodic panel should make the hierarchy reversal explicit.
+% \noindent\emph{Plot brief.} Insert Project~9 figure P9.1: peak local SLD QFI versus $n$ for the three local families.
 
 \subsection{Depolarizing strength}
 
 For $N=6$, $n=4$, periodic boundaries, and varying only $P$:
 \begin{table}[htbp]
     \centering
-    \caption{Project~9 depolarizing baseline.}
+    \caption{Peak local SLD QFI under the fixed full-system depolarizing channel in Eq.~\eqref{eq:full_depolarizing_channel}.}
     \label{tab:project9_preset_d}
     \begin{tabular}{c c c}
         \toprule
@@ -540,14 +563,14 @@ Depolarization lowers local QFI smoothly and monotonically.  The ground-subsyste
 \begin{figure}[H]
     \centering
     \includegraphics[width=\textwidth]{figures/noise/project9/polarization_comparison.png}
-    \caption{local SLD QFI versus depolarizing probability $P$.}
+    \caption{Field-resolved local SLD QFI for several fixed depolarizing probabilities $P$.}
     \label{localqfi_vs_depolarizing}
 \end{figure}
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.7\textwidth]{figures/noise/project9/polarization_evolution.png}
-    \caption{local SLD QFI peak versus depolarizing probability $P$.}
+    \caption{Peak local SLD QFI versus depolarizing probability $P$.}
     \label{localqfi_vs_depolarizing_evo}
 \end{figure}
 
@@ -557,7 +580,7 @@ Depolarization lowers local QFI smoothly and monotonically.  The ground-subsyste
 For $N=6$, $n=4$, and periodic boundaries, the depolarized comparator uses fixed $P=0.1$ while the thermal branch varies $\beta$:
 \begin{table}[htbp]
     \centering
-    \caption{Project~9 thermal sweep. The ground-subsystem peak is $3.926$.}
+    \caption{Thermal inverse-temperature sweep at fixed accessible size. The ground-subsystem peak is $3.926$, and each thermal entry is the maximum over the field grid.}
     \label{tab:project9_preset_e}
     \begin{tabular}{c c c c}
         \toprule
@@ -590,7 +613,7 @@ For the finite TFIM geometries and field windows studied here, thermal preparati
 \begin{figure}[H]
     \centering
     \includegraphics[width=\textwidth]{figures/noise/project9/thermal_comparison.png}
-    \caption{local SLD QFI versus temperature $\beta$.}
+    \caption{Field-resolved local SLD QFI for several fixed inverse temperatures $\beta$.}
     \label{localqfi_vs_thermal}
 \end{figure}
 
@@ -598,7 +621,7 @@ For the finite TFIM geometries and field windows studied here, thermal preparati
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.7\textwidth]{figures/noise/project9/thermal_evolution.png}
-    \caption{local SLD QFI evolution versus temperature $\beta$.}
+    \caption{Peak local SLD QFI versus inverse temperature $\beta$.}
     \label{localqfi_vs_thermal_evo}
 \end{figure}
 
@@ -610,7 +633,7 @@ For the finite TFIM geometries and field windows studied here, thermal preparati
 
 
 
-Critical metrological response is spatially distributed.  Partial trace removes a variable fraction of it, and the retained fraction grows strongly with accessible subsystem size.  Keeping all but one qubit recovers essentially all of the full-system peak QFI in the tested $N=8$ open-chain and $N=6$ periodic cases.
+Critical metrological response is spatially distributed.  Partial trace removes a variable fraction of it, and the retained fraction grows strongly with accessible subsystem size. In the tested ground-state families, retaining $n=7$ of the $N=8$ open chain and $n=5$ of the $N=6$ periodic chain recovers the corresponding full-system peak QFI within the reported numerical precision.
 
 Entanglement-induced mixedness, depolarization, and thermal population are not interchangeable.  Purity alone does not predict local QFI: the field dependence of the state and the part of the spectrum populated by the preparation both matter.
 
@@ -626,8 +649,6 @@ Entanglement-induced mixedness, depolarization, and thermal population are not i
 % \subsection{Limitations and outlook}
 
 % The present data establish finite-system trends rather than asymptotic laws.  A controlled size study, performed separately at fixed accessible size $n$ and fixed retained fraction $n/N$, is required before assigning scaling exponents to peak heights or locations.  The low-temperature limit should likewise be checked through pointwise convergence of the thermal family to the reduced ground-state family and through more than one well-defined crossover diagnostic.
-
-% Several boundary-condition runs have their largest thermal response at the lower edge of the sampled field interval.  Their peak location should therefore be tested with a wider scan, or supported by an analytic argument for the chosen boundary.  Finally, examining the lowest excitation gaps alongside the strongest thermal-enhancement curves would provide a more direct spectral interpretation of the observed hierarchy changes.
 
 For the finite probes studied here, local metrological performance depends on the full sequence that produces the accessible state.  Access to the relevant subsystem, the low-energy spectrum, and the way mixedness is prepared all matter.
 

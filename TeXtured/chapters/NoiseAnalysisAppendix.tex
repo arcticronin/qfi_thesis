@@ -1,7 +1,27 @@
-\chapter{Supplementary Numerical Details for the Noise Analysis}
+\chapter{Supplementary Numerical Details}
 \label{app:noise_analysis}
 
-This appendix records the derivative convention used for the matched-purity control in Chapter~\ref{ch:noise_analysis}, that was analyzed and corrected while studying the case, because the naive approach we followed in the beginning, led to inconsistencies.  It is included to make the numerical comparison reproducible. This part does not introduce any additional physical assumptions or conclusions.
+This appendix records the proof for the non commutation of the operators of the Transverse-Field Ising Model (TFIM) Hamiltonian introduced in Chapter~\ref{ch:methods}, and the derivative convention used for the matched-purity control in Chapter~\ref{ch:noise_analysis}, that was analyzed and corrected while studying the case, because the naive approach we followed in the beginning, led to inconsistencies.  It is included to make the numerical comparison reproducible. This part does not introduce any additional physical assumptions or conclusions.
+
+
+\section{Non-commutation of the operators}
+\label{app:non_commutation}
+
+To demonstrate that the operators do not commute, the global commutator can be evaluated by isolating the overlapping local terms. Because operators on distinct qubits commute ($Z_{i+1}X_i = X_iZ_{i+1}$), the $X$ operator passes freely through the adjacent $Z$, reducing the expression to the standard Pauli commutation relation $[X, Z] = -2iY$ on the shared qubit:
+\begin{equation}
+    \begin{aligned}
+        [X_i, Z_iZ_{i+1}]
+         & = X_i (Z_i Z_{i+1}) - (Z_i Z_{i+1}) X_i \\
+         & = X_i Z_i Z_{i+1} - Z_i X_i Z_{i+1}     \\
+         & = (X_i Z_i - Z_i X_i) Z_{i+1}           \\
+         & = [X_i, Z_i] Z_{i+1}                    \\
+         & = -2iY_i Z_{i+1}
+    \end{aligned}
+\end{equation}
+
+Because this local evaluation yields a non-zero operator, the macroscopic Hamiltonians $H_X$ and $H_{ZZ}$ do not commute.
+This non-commutation necessitates the use of a Trotterized decomposition for the time evolution, as discussed in Section~\ref{sec:trotterization}.
+
 
 \section{Derivative conventions for matched-purity paths}
 \label{app:matched_purity_derivatives}
