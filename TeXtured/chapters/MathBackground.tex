@@ -256,7 +256,7 @@ The Bures distance converts this measure of similarity into a geometric distance
         +
         o\,\,\!\left(
         \lVert d\boldsymbol{\theta}\rVert^2
-        \right),
+        \right)
         \label{eq:bures_local_expansion}
     \end{equation}
 \end{definition}
@@ -280,7 +280,7 @@ Quantum Fisher information appears in this thesis in two conceptually distinct s
             +
             \ell_\nu\ell_\mu
             \right)
-            \right].
+            \right]
         \label{eq:ansatz_qfim}
     \end{equation}
     This matrix quantifies the local distinguishability of ansatz states produced by infinitesimal changes in the circuit parameters.
@@ -312,7 +312,7 @@ Quantum Fisher information appears in this thesis in two conceptually distinct s
         -
         \eta
         \nabla_{\boldsymbol{\alpha}}
-        \mathcal{L}(\boldsymbol{\alpha}_t),
+        \mathcal{L}(\boldsymbol{\alpha}_t)
     \end{equation}
     where $\eta$ is the learning rate. This update treats the circuit parameters as coordinates in a Euclidean space and does not account for how strongly different parameter variations change the prepared quantum state.
 
@@ -331,7 +331,7 @@ Quantum Fisher information appears in this thesis in two conceptually distinct s
         \nabla_{\boldsymbol{\alpha}}
         \mathcal{L}(\boldsymbol{\alpha}_t),
         \qquad
-        \lambda\geq0.
+        \lambda\geq0
         \label{eq:qng_update}
     \end{equation}
     Here, $\lambda$ is a regularization parameter and ${}^{+}$ denotes the Moore--Penrose pseudoinverse. Regularization stabilizes the update when the ansatz QFIM is singular or poorly conditioned, as may occur when some circuit parameters are redundant or have little effect on the prepared state.
@@ -345,4 +345,4 @@ For an $n$-qubit mixed state, the density matrix has dimension $d=2^n$, and its 
 
 To avoid this bottleneck, Chapter~\ref{ch:methods} introduces two complementary families of fidelity-based QFI bounds. The Truncated Quantum Fisher Information (TQFI) bounds retain the dominant eigenspace of the state, while the Sub- and Super-Fidelity QFI (SSQFI) bounds use trace-based quantities that do not require explicit eigenspace truncation. Both approaches provide finite-difference bounds on the QFI without requiring direct evaluation of the SLD for the full density matrix.
 
-The Variational Quantum State Eigensolver (VQSE) supplies the dominant eigenvalues and eigenvectors required to evaluate the TQFI bounds. These quantities are then incorporated into the Variational Quantum Fisher Information Estimation (VQFIE) procedure, which uses fidelity measurements to bound the QFI and, in the probe-optimization setting, to identify circuit parameters that improve the sensitivity of the sensor. The present chapter provides the information-geometric foundation for these methods, while their circuits, optimization procedures, computational costs, and hardware requirements are developed in Chapter~\ref{ch:methods}.
+The Variational Quantum State Eigensolver (VQSE) supplies the most important eigenvalues and eigenvectors required to evaluate the TQFI bounds. These quantities are then incorporated into the Variational Quantum Fisher Information Estimation (VQFIE) procedure, which uses fidelity measurements to bound the QFI and, in the probe-optimization setting, to identify circuit parameters that improve the sensitivity of the sensor. The present chapter provides the information-geometric foundation for these methods, while their circuits, optimization procedures, computational costs, and hardware requirements are developed in Chapter~\ref{ch:methods}.

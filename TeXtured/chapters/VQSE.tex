@@ -172,59 +172,56 @@ Compared to existing quantum state diagonalization and principal component extra
     \end{tabular}
 \end{table}
 
-\begin{infobox}[sec:vqse_qng_optimization]{Optimizing VQSE using Quantum Natural Gradient}
+\begin{infobox}[sec:vqse_qng_optimization]{Optimizing VQSE with Quantum Natural Gradient}
 
-    Quantum Natural Gradient descent (QNG) is an optimization technique that takes into account the geometry of the parameter space, where the curvature of the cost function landscape is obtained by computing the quantum Fisher information matrix (QFIM) of the ansatz state.
 
-    We are using VQSE for truncated QFI estimation,
-    We can use the ansatz QFI matrix for optimizing the circuit parameters efficiently.
 
-    This yields an \enquote{inception-like} approach, where the QFI of the ansatz is used for the optimization of the QFI estimation itself \inceptiontop[0.2]~\cite{nolan2010inception}.
+    Quantum Natural Gradient descent (QNG) is an optimization technique that takes into account the local geometry of the parameter space, where the local curvature of the cost function landscape is obtained by computing the quantum Fisher information matrix (QFIM) of the ansatz state.
+    Quantum states are oscillating rapidly in the high-dimensional Hilbert space, and the natural gradient helps to account for this intricate geometry, leading to more efficient and stable optimization. Taking the straight Euclidean path might be inefficient \cite{Park2020_geometry_learning_neural_quantum_states}.
 
-    The VQSE cost can be optimized with the quantum natural gradient (QNG), an optional variant of the baseline loop above.
+    \tcbline
+    \faLightbulb \hspace{5pt}\textbf{In simple terms}: the QFIM
+    preconditions the standard gradient. Omitting learning rate and
+    regularization, the geometry-aware descent direction is
+    $-F^{-1}\nabla C$
+    \tcbline
 
-    It minimizes $C(\boldsymbol{\beta}) = \operatorname{Tr}[H_{\mathrm{VQSE}} V(\boldsymbol{\beta})\rho V^\dagger(\boldsymbol{\beta})]$, where $H_{\mathrm{VQSE}}$ is a known non-degenerate Hamiltonian and $V(\boldsymbol{\beta})$ is a parameterized circuit \cite{cerezo2022vqse}.
+    The ansatz QFIM and the general quantum natural-gradient update are defined in Eqs.~\eqref{eq:ansatz_qfim} and~\eqref{eq:qng_update}.  In VQSE, the trainable variables are the circuit parameters $\boldsymbol{\beta}$ and the objective is
+    $C(\boldsymbol{\beta})=\operatorname{Tr}[H_{\mathrm{VQSE}}V(\boldsymbol{\beta})\rho V^\dagger(\boldsymbol{\beta})]$~\cite{cerezo2022vqse}.  A geometry-aware optimizer preconditions the ordinary gradient of this cost with a metric on the circuit-parameter space.  This metric concerns the training parameters and must be distinguished from the QFI for estimating the physical field $h_x$.
 
-    Standard gradient descent evaluates steepest descent in Euclidean parameter space, ignoring the local geometry of the ansatz-state manifold \cite{kolotouros2024RNG}.
+    This is an \enquote{inception-like} structure: QFIM of the ansatz state helps to train an algorithm that is itself used to estimate QFI \inceptiontop[0.2]~\cite{nolan2010inception}.
 
-    QNG replaces the Euclidean metric with the QFIM of the ansatz state. We denote this circuit-parameter metric by $F^{\mathrm{ans}}(\boldsymbol{\beta})$ to distinguish it from the QFIM of a sensed physical parameter; for a pure ansatz, it is four times the Fubini--Study metric \cite{gacon2021_perturbation_stochastic_qfi}.
+    Stochastic reconfiguration (SR) provides a sampled form of natural-gradient optimization for a neural quantum state~\cite{Park2020_geometry_learning_neural_quantum_states}.  For a wavefunction $\Psi_{\boldsymbol{\vartheta}}(\boldsymbol{\sigma})$, define the logarithmic derivatives and their covariance matrix by
+    \begin{equation}
+        \mathcal{O}_i(\boldsymbol{\sigma})
+        =\partial_{\vartheta_i}\log\Psi_{\boldsymbol{\vartheta}}(\boldsymbol{\sigma})
+        \qquad
+        S_{ij}
+        =\operatorname{Re}\!\left[
+            \langle\mathcal{O}_i^*\mathcal{O}_j\rangle
+            -\langle\mathcal{O}_i^*\rangle\langle\mathcal{O}_j\rangle
+            \right]
+        \label{eq:sr_covariance_metric}
+    \end{equation}
+    For a normalized pure wavefunction, $S$ represents the Fubini--Study metric up to the chosen normalization convention.  The regularized SR update is
+    \begin{equation}
+        \boldsymbol{\vartheta}_{k+1}
+        =\boldsymbol{\vartheta}_k
+        -\eta\left(S+\lambda\mathbb{I}\right)^{-1}
+        \nabla_{\boldsymbol{\vartheta}}E
+        \qquad
+        \lambda\geq0
+        \label{eq:sr_parameter_update}
+    \end{equation}
 
-    \subsubsection*{Methodology}
+    We tested this principle with a real, positive restricted Boltzmann machine (RBM) wavefunction for the TFIM.  The implementation evaluates the logarithmic derivatives in Eq.~\eqref{eq:sr_covariance_metric}, estimates $S$ and the energy gradient from Variational Monte Carlo samples, adds the diagonal regularization $\lambda\mathbb{I}$, and solves the resulting linear system.  Figure~\ref{fig:sgd_vs_ng} compares SR with ordinary stochastic gradient descent in this tractable pure-state example.
 
-    Implementing QNG within the VQSE framework requires modifying the parameter update step.
-
-    \faLightbulb \hspace{5pt} \textbf{In simple terms}: we take a step in the direction of the inverse of the ansatz QFIM, left multiplied to the gradient, i.e. $F^{-1} \nabla$
-
-    \vspace{5pt}
-
-    The procedure, has to avoid some instabilities and numerical issues, so it is formally formulated as described in Eq.\eqref{eq:qng_update}, See also~\cite{kolotouros2024RNG}.
-    \begin{enumerate}
-        \item \textbf{Gradient evaluation:} The first-order gradient of the VQSE cost function, $\nabla_{\boldsymbol{\beta}} C(\boldsymbol{\beta})$, is evaluated. For hardware-efficient ansatzes, this can be implemented with the parameter-shift rule \cite{cerezo2022vqse, kolotouros2024RNG}.
-        \item \textbf{Ansatz-metric evaluation:} The ansatz QFIM, $F^{\mathrm{ans}}(\boldsymbol{\beta})$, captures the local geometry of the parameterized circuit state. Its elements are state-derivative overlaps and can require structural modifications to the circuit, such as a SWAP test or a compute--uncompute sequence \cite{kolotouros2024RNG, gacon2021_perturbation_stochastic_qfi}.
-        \item \textbf{Parameter Update:} The classical optimizer updates the circuit parameters using the natural gradient descent rule, described in \eqref{}:
-              \begin{equation}
-                  \boldsymbol{\beta}_{k+1} = \boldsymbol{\beta}_k - \eta
-                  \left(F^{\mathrm{ans}}(\boldsymbol{\beta}_k)+\lambda\mathbb{I}\right)^+
-                  \nabla_{\boldsymbol{\beta}} C(\boldsymbol{\beta}_k),
-                  \qquad \lambda\geq0,
-              \end{equation}
-              where $\eta$ represents the learning rate, $\lambda$ regularizes an ill-conditioned metric, and $+$ denotes the Moore--Penrose pseudoinverse \cite{kolotouros2024RNG}.
-    \end{enumerate}
-
-    \subsubsection*{Advantages and Limitations}
-
-    The integration of QNG into VQSE yields several significant advantages. Primarily, QNG adjusts the step size based on the sensitivity of the quantum state to parameter variations, rather than employing a global learning rate. This dynamic scaling facilitates faster convergence in terms of optimization iterations and enables the algorithm to effectively navigate complex cost landscapes with high densities of local minima. Quantum states are oscillating rapidly in the high-dimensional Hilbert space, and the natural gradient helps to account for this intricate geometry, leading to more efficient and stable optimization, taking the straight euclidean path, might be inefficient (\cite{Park2020_geometry_learning_neural_quantum_states}).
-
-    However, exactly evaluating the ansatz QFIM is a scalability challenges for near-term quantum hardware. For an ansatz parameterized by $m$ variables, evaluating $F^{\mathrm{ans}}(\boldsymbol{\beta})$ requires $\mathcal{O}(m^2)$ distinct quantum state preparations per iteration \cite{kolotouros2024RNG, gacon2021_perturbation_stochastic_qfi}. Also, measuring state overlaps inherently introduces circuit overhead, requiring either a doubling of the circuit width (e.g., using ancilla qubits for a SWAP test) or circuit depth, exposing vulnerabilities to decoherence and gate infidelities. Finally, the pseudoinverse can be numerically unstable when the metric is ill-conditioned, motivating the regularization shown above \cite{gacon2021_perturbation_stochastic_qfi}.
-
-    To mitigate these bottlenecks, stochastic approximations such as the Random Natural Gradient (RNG), Stochastic-Coordinate QNG, or Simultaneous Perturbation Stochastic Approximation (SPSA) can be substituted for the exact ansatz QFIM. These methods construct unbiased estimators or reduced-rank approximations using only $\mathcal{O}(1)$ or $\mathcal{O}(m)$ resources, drastically reducing the quantum overhead while preserving the geometric advantages of the natural gradient.
     \begin{figure}[H]
         \centering
-        \includegraphics[width=\textwidth]{misc/sgd_vs_sr_comparison-set2-palette.png}
-        \caption{
-            Energy minimization for a round of training of a Neural Quantum State~\cite{carleo2017nqs}.
-            For this example we used a restricted Boltzmann machine (RBM) modeling the TFIM quantum state, of which we studied the geometry of the learning process~\cite{Park2020_geometry_learning_neural_quantum_states}. The natural gradient approach (orange, called Stochastic Reconfiguration in this plot) demonstrates improved optimization performance over standard SGD (red, stochastic gradient descent), characterized by both a faster rate of convergence and a lower final energy minimum that approaches the ground state of the actual wavefunction. Note that the RBM possesses a simple structure, making it easy to compute the Fisher Information Matrix (FIM) compared to the multi-layer hardware-efficient ansatze that we used for VQSE.
-            (See Def.~\ref{def:lhea} and Fig.~\ref{fig:lhea_circuit}).}
+        \includegraphics[width=\linewidth]{misc/sgd_vs_sr_comparison-set2-palette.png}
+        \caption{Energy minimization for an $L=8$  TFIM at $g=1=\frac{h_x}{J}$ using an RBM neural quantum state~\cite{carleo2017nqs}.  Both optimizers use $80$ steps, $300$ Monte Carlo samples per step, a learning rate of $0.05$, and the same random seed.  SR uses the diagonal regularization $\lambda=10^{-4}$.  The left panel shows the estimated energy, and the right panel shows its absolute error from the exact ground-state energy on a logarithmic scale.  In this run, SR reaches a lower error than stochastic gradient descent, and also converges it faster. $L$ indicates the complexity of the ansatz, as~\eqref{def:lhea}. In this RBM scenario it indicates the factor of the number of hidden units relative to the number of visible units.}
         \label{fig:sgd_vs_ng}
     \end{figure}
+
+    Applying the same idea to VQSE requires care because $V(\boldsymbol{\beta})\rho V^\dagger(\boldsymbol{\beta})$ remains mixed when the input $\rho$ is mixed.  The exact intrinsic metric is then the mixed-state ansatz QFIM, while a pure-state Fubini--Study or SR metric is a surrogate preconditioner unless we use a suitable purification or mixed-state estimator.  Anyway, the approach remains viable, but it becomes slow for a highly parameterized circuit.  A full metric for $N_{\mathrm{par}}$ parameters contains $\mathcal{O}(N_{\mathrm{par}}^2)$ elements, and solving the regularized update adds a substantial classical cost~\cite{kolotouros2024RNG,gacon2021_perturbation_stochastic_qfi}.
 \end{infobox}
