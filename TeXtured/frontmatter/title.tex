@@ -1,16 +1,12 @@
-\pdfbookmark{Title Page}{titlepage} % add PDF outline entry
-
 \begin{titlepage}
     \thispagestyle{empty} % no number on the title page
     \begin{center}
+
+
         % Header
         {\large INTER-UNIVERSITY MASTER'S DEGREE PROGRAMME} \\[5ex]
-        {\large Department of Physics} \\[1ex]
-        {\large Master Degree Program} \\[1ex]
-        {\large \StudyProgramme} \\[7ex]
 
         % Logos and university names
-
         \begin{tabularx}{\textwidth}{>{\centering\arraybackslash}X >{\centering\arraybackslash}X >{\centering\arraybackslash}X}
             \includegraphics[height=3cm]{images/logos/logo1.png}  &
             \includegraphics[height=3cm]{images/logos/logo2.jpeg} &
@@ -20,6 +16,14 @@
             \makecell{Università                                    \\ degli Studi di \\ Milano - Bicocca} &
             \makecell{Università                                    \\ degli Studi di \\ Pavia}
         \end{tabularx} \\[10ex]
+
+        %{\large Department of Physics} \\[1ex]
+
+        % Logo spanning both "Master Degree Programme" and the Study Program name
+        \begin{tabular}{c c}
+            \makecell{\includegraphics[height=2cm]{images/logos/logo-ai4st.png}} &
+            \makecell{\large Master Degree Programme                               \\[1ex] \large \StudyProgramme}
+        \end{tabular} \\[7ex]
 
         % Title
         {\LARGE\bfseries \ThesisTitle} \\[5ex]

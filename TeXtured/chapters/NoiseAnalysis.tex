@@ -65,6 +65,17 @@ Related work has studied the estimation of Hamiltonian parameters from Gibbs sta
 \]
 There is no external noise map. The subsystem is mixed because it is correlated with the discarded degrees of freedom.
 
+\noindent\emph{ASCII draft.}  The double lines stand for the ket and bra indices of each subsystem.  Closing the $E$ line denotes the partial trace, while the remaining $S$ indices define $\rho_{\mathrm{G},S}$.
+\begin{Verbatim}[fontsize=\small]
+                 +---------------------+
+ S ==============|                     |============== S --> [ QFI / TQFI ]
+                 |    rho_G,N(h_x)     |
+ E ======+=======|                     |=======+====== E
+         |       +---------------------+       |
+         +=====================================+
+                         Tr_E
+\end{Verbatim}
+
 \todo[]{insert diagram 2}
 
 \noindent\emph{TODO, Diagram:} Project~9 depolarizing branch:
@@ -76,6 +87,23 @@ There is no external noise map. The subsystem is mixed because it is correlated 
 \]
 The channel is parameter independent when $P$ is fixed.
 
+\noindent\emph{ASCII draft.}  In the Choi-matrix view, $J(\Lambda_P^{(N)})$ represents the depolarizing channel $\Lambda_P^{(N)}$.  It is kept distinct from the channel symbol itself.  The input contraction follows Eq.~\eqref{eq:choi_channel_action}, after which the output environment is traced out.
+\begin{Verbatim}[fontsize=\small]
+ rho_G,N(h_x)^T ======+
+                       |
+                 +-----+------------------+
+                 | J(Lambda_P^(N))        |============== S
+                 |                        |=======+====== E
+                 +------------------------+       |
+                    input contraction            +======+
+                                                   Tr_E |
+                                                        v
+                                             rho_dep,S(h_x;P)
+                                                        |
+                                                        v
+                                                 [ QFI / TQFI ]
+\end{Verbatim}
+
 \todo[]{insert diagram 3}
 
 \noindent\emph{TODO, Diagram:} Thermal branch:
@@ -85,6 +113,18 @@ The channel is parameter independent when $P$ is fixed.
     \longrightarrow \text{local SLD QFI/TQFI}.
 \]
 The diagram should state explicitly that both $H_N$ and the Gibbs state depend on $h_x$.
+
+\noindent\emph{ASCII draft.}  This branch begins from a separately prepared Gibbs state.  It does not apply a thermal channel to $\rho_{\mathrm{G},N}$.
+\begin{Verbatim}[fontsize=\small]
+               depends on h_x and beta
+                 +---------------------+
+ S ==============|                     |============== S --> [ QFI / TQFI ]
+                 |   rho_th,N(h_x;beta)|
+ E ======+=======|                     |=======+====== E
+         |       +---------------------+       |
+         +=====================================+
+                         Tr_E
+\end{Verbatim}
 
 
 \begin{infobox}{Scope of the Thermal Model}

@@ -172,7 +172,7 @@ Compared to existing quantum state diagonalization and principal component extra
     \end{tabular}
 \end{table}
 
-\begin{infobox}[label={sec:vqse_qng_optimization}]{Optimizing VQSE using Quantum Natural Gradient}
+\begin{infobox}[sec:vqse_qng_optimization]{Optimizing VQSE using Quantum Natural Gradient}
 
     Quantum Natural Gradient descent (QNG) is an optimization technique that takes into account the geometry of the parameter space, where the curvature of the cost function landscape is obtained by computing the quantum Fisher information matrix (QFIM) of the ansatz state.
 
@@ -197,12 +197,11 @@ Compared to existing quantum state diagonalization and principal component extra
 
     \vspace{5pt}
 
-    The procedure, has to avoid some instabilities and numerical issues, so it is formally formulated as follows:
-
+    The procedure, has to avoid some instabilities and numerical issues, so it is formally formulated as described in Eq.\eqref{eq:qng_update}, See also~\cite{kolotouros2024RNG}.
     \begin{enumerate}
         \item \textbf{Gradient evaluation:} The first-order gradient of the VQSE cost function, $\nabla_{\boldsymbol{\beta}} C(\boldsymbol{\beta})$, is evaluated. For hardware-efficient ansatzes, this can be implemented with the parameter-shift rule \cite{cerezo2022vqse, kolotouros2024RNG}.
         \item \textbf{Ansatz-metric evaluation:} The ansatz QFIM, $F^{\mathrm{ans}}(\boldsymbol{\beta})$, captures the local geometry of the parameterized circuit state. Its elements are state-derivative overlaps and can require structural modifications to the circuit, such as a SWAP test or a compute--uncompute sequence \cite{kolotouros2024RNG, gacon2021_perturbation_stochastic_qfi}.
-        \item \textbf{Parameter Update:} The classical optimizer updates the circuit parameters using the natural gradient descent rule:
+        \item \textbf{Parameter Update:} The classical optimizer updates the circuit parameters using the natural gradient descent rule, described in \eqref{}:
               \begin{equation}
                   \boldsymbol{\beta}_{k+1} = \boldsymbol{\beta}_k - \eta
                   \left(F^{\mathrm{ans}}(\boldsymbol{\beta}_k)+\lambda\mathbb{I}\right)^+
