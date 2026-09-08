@@ -8,34 +8,83 @@ VQSE variationally estimates the $m$ largest eigenvalues $\{\lambda_i\}_{i=1}^m$
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=\textwidth]{figures/asi_report/VQSE_frompaper.jpg}
-    \caption{Schematic representation of VQSE, adapted from~\cite{cerezo2022vqse}. The circuit variationally diagonalizes the input density matrix $\rho$ in its dominant subspace by minimizing a cost function. The source uses $\boldsymbol{\theta}$ for the circuit parameters; this thesis uses $\boldsymbol{\beta}$ to distinguish them from the sensed parameter.}
+    \caption{Schematic representation of VQSE, adapted from~\cite{cerezo2022vqse}. The circuit variationally diagonalizes the input density matrix $\rho$ in its dominant subspace by minimizing a cost function. The source uses $\boldsymbol{\theta}$ for the circuit parameters. We use $\boldsymbol{\beta}$ to distinguish them from the sensed parameter.}
     \label{fig:vqse_from_paper}
 \end{figure}
 % ==============================================================================
 \subsection{Mathematical Foundation: Diagonalization via Majorization}
 % ==============================================================================
 
-Rather than explicitly measuring off-diagonal matrix elements to quantify how far a state is from diagonal form, VQSE exploits the mathematical equivalence between matrix diagonalization and \textbf{quantum majorization}.
+The main idea of VQSE can be understood as a sorting problem. The unitary $V(\boldsymbol{\beta})$ does not change the eigenvalues of $\rho$. Instead, it changes how those eigenvalues contribute to the probabilities observed in the computational basis. VQSE trains $V(\boldsymbol{\beta})$ so that the largest eigenvalues appear as the largest measurement probabilities, assigned in a known order to selected computational-basis states~\cite{cerezo2022vqse}.
 
-\begin{definition}[Quantum Majorization]
-    Let $\rho$ be an $n$-qubit density matrix with sorted, non-increasing eigenvalues $\boldsymbol{\lambda} = (\lambda_1, \lambda_2, \dots, \lambda_{2^n})$ where $\lambda_1 \ge \lambda_2 \ge \dots \ge \lambda_{2^n} \ge 0$. Let $\mathbf{p}(\boldsymbol{\beta}) = (p_1, p_2, \dots, p_{2^n})$ denote the diagonal elements of the transformed state $\tilde{\rho} = V(\boldsymbol{\beta})\rho V^\dagger(\boldsymbol{\beta})$ measured in the computational basis $\{|z_k\rangle\}$:
+\begin{definition}[Majorization of the Diagonal]
+    Let $d=2^n$, and let the eigenvalues of $\rho$ be ordered as $\lambda_1\geq\lambda_2\geq\cdots\geq\lambda_d\geq0$. After applying $V(\boldsymbol{\beta})$, measurement in the computational basis $\{|z_k\rangle\}$ gives the probabilities
     \begin{equation}
-        p_k(\boldsymbol{\beta}) = \langle z_k | V(\boldsymbol{\beta})\rho V^\dagger(\boldsymbol{\beta}) | z_k \rangle.
+        p_k(\boldsymbol{\beta})
+        =\langle z_k|V(\boldsymbol{\beta})\rho
+        V^\dagger(\boldsymbol{\beta})|z_k\rangle
     \end{equation}
-    By the Schur--Horn theorem, the eigenvalue vector $\boldsymbol{\lambda}$ majorizes the diagonal probability vector $\mathbf{p}(\boldsymbol{\beta})$, denoted $\boldsymbol{\lambda} \succ \mathbf{p}(\boldsymbol{\beta})$.
+    Using the spectral decomposition $\rho=\sum_j\lambda_j|\lambda_j\rangle\langle\lambda_j|$, the same probability can be written as
+    \begin{equation}
+        \begin{aligned}
+            p_k(\boldsymbol{\beta}) & = \langle z_k|V(\boldsymbol{\beta}) \left( \sum_{j=1}^d \lambda_j |\lambda_j\rangle\langle\lambda_j| \right) V^\dagger(\boldsymbol{\beta})|z_k\rangle \\
+                                    & = \sum_{j=1}^d \lambda_j \langle z_k|V(\boldsymbol{\beta})|\lambda_j\rangle \langle\lambda_j|V^\dagger(\boldsymbol{\beta})|z_k\rangle                 \\
+                                    & = \sum_{j=1}^d \lambda_j \left| \langle z_k|V(\boldsymbol{\beta})|\lambda_j\rangle \right|^2
+        \end{aligned}
+        \label{eq:vqse_probability_mixing}
+    \end{equation}
+
+
+    Thus, the basis change redistributes the eigenvalue weights among the measurement outcomes. The coefficients in this sum are non-negative, and each row and column of the coefficient matrix sums to one.
+    If $\mathbf{p}^{\downarrow}$ denotes these probabilities sorted in non-increasing order, the Schur--Horn theorem gives
+    \begin{equation}
+        \sum_{k=1}^{\ell}p_k^{\downarrow}(\boldsymbol{\beta})
+        \leq \sum_{k=1}^{\ell}\lambda_k,
+        \qquad \ell=1,\ldots,d-1,
+        \qquad
+        \sum_{k=1}^{d}p_k(\boldsymbol{\beta})=\sum_{k=1}^{d}\lambda_k=1
+        \label{eq:vqse_majorization}
+    \end{equation}
+    This relation is written $\boldsymbol{\lambda}\succ\mathbf{p}(\boldsymbol{\beta})$. In simple terms, the diagonal probabilities in an arbitrary basis cannot be more concentrated than the eigenvalues. When $V$ rotates the eigenbasis of $\rho$ onto the computational basis, the two lists agree up to a permutation.
 \end{definition}
 
 \begin{theorem}[VQSE Cost Function Minimization]
-    Let $H_{\mathrm{VQSE}}$ be an $n$-qubit Hamiltonian diagonal in the computational basis, with non-negative eigenenergies ordered as $0\leq E_1\leq E_2\leq\dots\leq E_{2^n}$. To resolve the $m$ dominant components, its $m$ lowest eigenenergies are chosen to be non-degenerate. The VQSE cost function is the energy expectation value
+    VQSE introduces an auxiliary Hamiltonian that is diagonal in the computational basis,
     \begin{equation}
-        C(\boldsymbol{\beta}) = \operatorname{Tr}\left[ H_{\mathrm{VQSE}} V(\boldsymbol{\beta})\rho V^\dagger(\boldsymbol{\beta}) \right] = \sum_{k=1}^{2^n} E_k p_k(\boldsymbol{\beta}) = \mathbf{E} \cdot \mathbf{p}(\boldsymbol{\beta}).
+        H_{\mathrm{VQSE}}=\sum_{k=1}^{d}E_k|z_k\rangle\langle z_k|,
+        \qquad 0\leq E_1\leq E_2\leq\cdots\leq E_d
+    \end{equation}
+    Its expectation value on the transformed state defines the cost
+    \begin{equation}
+        C(\boldsymbol{\beta})
+        =\operatorname{Tr}\!\left[H_{\mathrm{VQSE}}
+            V(\boldsymbol{\beta})\rho V^\dagger(\boldsymbol{\beta})\right]
+        =\sum_{k=1}^{d}E_kp_k(\boldsymbol{\beta})
         \label{eq:vqse_cost_dot_product}
     \end{equation}
-    Because the inner product of an increasingly ordered vector $\mathbf{E}$ with a vector $\mathbf{p}$ majorized by $\boldsymbol{\lambda}$ is Schur-concave, $C(\boldsymbol{\beta})$ is minimized when $V(\boldsymbol{\beta}_{\text{opt}})$ maps the eigenvectors associated with the largest eigenvalues of $\rho$ to the computational-basis states with the lowest energies:
+    Majorization and the ordering of the energies imply
     \begin{equation}
-        C_{\text{min}} = \mathbf{E} \cdot \boldsymbol{\lambda} = \sum_{k=1}^{2^n} E_k \lambda_k.
+        C(\boldsymbol{\beta})\geq\sum_{k=1}^{d}E_k\lambda_k
+        \label{eq:vqse_cost_lower_bound}
     \end{equation}
+    We should assume that the ansatz can represent the required unitary (See \ref{infobox:adaptive_cost_fn} for the details). Then equality is reached when the largest eigenvalue is mapped to the lowest-energy basis state, the second largest to the second-lowest, and so on. Thus, for the components that are resolved,
+    \begin{equation}
+        V(\boldsymbol{\beta}_{\mathrm{opt}})|\lambda_k\rangle
+        =e^{i\phi_k}|z_k\rangle
+        \label{eq:vqse_eigenvector_mapping}
+    \end{equation}
+    The transformed state is then diagonal in those computational-basis states, and their measured probabilities are the corresponding eigenvalues of $\rho$.
 \end{theorem}
+
+\begin{remark}[Why the cost sorts the probabilities]
+    Consider two basis states with $E_i<E_j$ but $p_i<p_j$. Exchanging their probabilities lowers the cost by $(E_j-E_i)(p_j-p_i)>0$. Therefore, minimization favors placing large probabilities on low-energy basis states. The majorization bound guarantees that the best possible sorted probabilities are the eigenvalues themselves.
+\end{remark}
+
+\begin{remark}[How to interpret $H_{\mathrm{VQSE}}$]
+    The auxiliary Hamiltonian is a scoring observable chosen by the algorithm; it is not the physical Hamiltonian that produced $\rho$. To extract the $m$ dominant components, its $m$ lowest levels must be non-degenerate so that they give those components distinct labels. The remaining levels may be degenerate because their individual eigenvectors are not needed. Likewise, if $\rho$ itself has a degenerate eigenvalue, VQSE identifies the associated eigenspace, but there is no unique eigenvector basis inside it.
+\end{remark}
+
+Operationally, Eq.~\eqref{eq:vqse_cost_dot_product} requires only the measurement probabilities of the transformed state and the known weights $E_k$. VQSE therefore avoids full tomography and does not need to measure every off-diagonal element of $V\rho V^\dagger$.
 
 % ==============================================================================
 \subsection{Ansatz Execution and Readout Subroutines}
@@ -44,13 +93,13 @@ Rather than explicitly measuring off-diagonal matrix elements to quantify how fa
 Once the hybrid quantum--classical loop converges to the parameter set $\boldsymbol{\beta}_{\text{opt}}$, the $m$ dominant eigenvalues and eigenvectors are retrieved as follows:
 \begin{enumerate}
     \item \textbf{Eigenvalue readout.} Prepare $V(\boldsymbol{\beta}_{\text{opt}})\rho V^\dagger(\boldsymbol{\beta}_{\text{opt}})$ and sample it in the computational basis for $N_{\text{runs}}$ shots. The estimated eigenvalue associated with bitstring $z_i\in\{0,1\}^n$ is its relative frequency,
-    \begin{equation}
-        \tilde{\lambda}_i^{\mathrm{est}}=\frac{f_i}{N_{\text{runs}}}.
-    \end{equation}
+          \begin{equation}
+              \tilde{\lambda}_i^{\mathrm{est}}=\frac{f_i}{N_{\text{runs}}}
+          \end{equation}
     \item \textbf{Eigenvector preparation on demand.} Given the computational-basis state $|z_i\rangle=X^{z_{i,1}}\otimes\dots\otimes X^{z_{i,n}}|0\rangle^{\otimes n}$, the corresponding approximate eigenvector is prepared as
-    \begin{equation}
-        |\tilde{\lambda}_i\rangle=V^\dagger(\boldsymbol{\beta}_{\text{opt}})|z_i\rangle.
-    \end{equation}
+          \begin{equation}
+              |\tilde{\lambda}_i\rangle=V^\dagger(\boldsymbol{\beta}_{\text{opt}})|z_i\rangle
+          \end{equation}
 \end{enumerate}
 
 \begin{algorithm}[H]
@@ -75,57 +124,61 @@ Once the hybrid quantum--classical loop converges to the parameter set $\boldsym
 \end{figure}
 
 % ==============================================================================
-\subsection{Adaptive Cost Function}
-% ==============================================================================
 
-The choice of the VQSE target Hamiltonian introduces a trade-off between trainability and the structure of the optimization landscape~\cite{cerezo2022vqse}:
-\begin{itemize}
+\begin{infobox}[infobox:adaptive_cost_fn]{Adaptive Cost Function}
+    % ==============================================================================
+    Sometimes the variational circuit risks being too shallow, or too deep.
+    If it is too shallow, its image in the Hilbert Space is not expressive enough to represent a state accurately. On the other hand, if it is too deep, it may have optimization difficulties. This is a big problem for Variational Quantum Eigensolvers, called the \textit{barren plateaus}. Basically they refer to regions in the parameter space where the gradient of the cost function vanishes exponentially with the system size, making it extremely difficult finding the global minimum.
+    A paper introduces a trade-off between trainability and the structure of the optimization landscape focusing on the choice of the target Hamiltonian~\cite{cerezo2022vqse}.
+    For our experiment, since it was proved to be effective, we implemented and tested the Adaptive Cost Function.
 
-    \item \textbf{Fixed local Hamiltonian.} A choice such as $H_L=\mathbb{I}-\sum_j r_jZ_j$, with coefficients selected so that its $m$ lowest levels are non-degenerate, defines a local cost that can avoid barren plateaus for shallow ansatzes. Its smaller degeneracy restricts the solution space, and the landscape may still contain suboptimal local minima.
-    \item \textbf{Fixed global Hamiltonian.} The choice
+    \begin{itemize}
+
+        \item \textbf{Fixed local Hamiltonian.} A choice such as $H_L=\mathbb{I}-\sum_j r_jZ_j$, with coefficients selected so that its $m$ lowest levels are non-degenerate, defines a local cost that can avoid barren plateaus for shallow ansatzes. Its smaller degeneracy restricts the solution space, and the landscape may still contain suboptimal local minima.
+        \item \textbf{Fixed global Hamiltonian.} The choice
+              \begin{equation}
+                  H_G=\mathbb{I}-\sum_{i=1}^m q_i|z_i\rangle\langle z_i|,
+                  \qquad 1\geq q_1>q_2>\dots>q_m>0,
+                  \label{eq:vqse_global_hamiltonian}
+              \end{equation}
+              has $m$ non-degenerate low-energy levels and a $(2^n-m)$-fold degenerate complementary subspace. This enlarges the solution space, but a global cost can exhibit exponentially vanishing gradients for random hardware-efficient ansatzes.
+    \end{itemize}
+
+    Following~\cite{cerezo2022vqse}, we consider a time-dependent schedule that interpolates between these two costs:
     \begin{equation}
-        H_G=\mathbb{I}-\sum_{i=1}^m q_i|z_i\rangle\langle z_i|,
-        \qquad 1\geq q_1>q_2>\dots>q_m>0,
-        \label{eq:vqse_global_hamiltonian}
+        H_{\mathrm{cost}}(t)=[1-f(t)]H_L+f(t)H_G(t),
+        \qquad f(0)=0,\quad f(1)=1,
+        \label{eq:adaptive_hamiltonian}
     \end{equation}
-    has $m$ non-degenerate low-energy levels and a $(2^n-m)$-fold degenerate complementary subspace. This enlarges the solution space, but a global cost can exhibit exponentially vanishing gradients for random hardware-efficient ansatzes.
-\end{itemize}
-
-Following~\cite{cerezo2022vqse}, we consider a time-dependent schedule that interpolates between these two costs:
-\begin{equation}
-    H_{\mathrm{cost}}(t)=[1-f(t)]H_L+f(t)H_G(t),
-    \qquad f(0)=0,\quad f(1)=1,
-    \label{eq:adaptive_hamiltonian}
-\end{equation}
-where $t=k/N_{\max}$ represents normalized optimization progress. The schedule $f(t)$ should increase gradually so that the early optimization is governed mainly by the trainable local cost.
+    where $t=k/N_{\max}$ represents normalized optimization progress. The schedule $f(t)$ should increase gradually so that the early optimization is governed mainly by the trainable local cost.
 
 
-As outlined in Algorithm~\ref{alg:adaptive_vqse}, the global component
-\begin{equation}
-    H_G(t)=\mathbb{I}-\sum_{i=1}^m q_i|z_i(t)\rangle\langle z_i(t)|
-\end{equation}
-is periodically updated using the dominant bitstrings sampled from $V(\boldsymbol{\beta})\rho V^\dagger(\boldsymbol{\beta})$. The operator remains a global cost. Here ``adaptive'' means that the selected basis states change during training. This update reshapes the cost landscape and should be assessed empirically for the chosen ansatz and noise model.
+    As outlined in Algorithm~\ref{alg:adaptive_vqse}, the global component
+    \begin{equation}
+        H_G(t)=\mathbb{I}-\sum_{i=1}^m q_i|z_i(t)\rangle\langle z_i(t)|
+    \end{equation}
+    is periodically updated using the dominant bitstrings sampled from $V(\boldsymbol{\beta})\rho V^\dagger(\boldsymbol{\beta})$. The operator remains a global cost. Here ``adaptive'' means that the selected basis states change during training. This update reshapes the cost landscape and should be assessed empirically for the chosen ansatz and noise model, and it is theoretically proved in \cite{cerezo2022vqse} (See also the finite shot sampling in Appendix~\ref{appendix:finite_shot_sampling}).
 
-\begin{algorithm}[H]
-    \caption{Adaptive VQSE Optimization Schedule}
-    \label{alg:adaptive_vqse}
-    \begin{algorithmic}[1]
-        \Require Input state $\rho$, rank $m$, ansatz $V(\boldsymbol{\beta})$, maximum iteration count $N_{\max}$, update interval $s$, schedule $f$, local $H_L$, weights $\{q_i\}_{i=1}^m$.
-        \State Initialize $\boldsymbol{\beta}$ randomly and set $H_{\mathrm{cost}}(0)\leftarrow H_L$.
-        \For{$k=1,2,\ldots,N_{\max}$}
-        \State Set $t\leftarrow k/N_{\max}$.
-        \If{$k=1$ or $k\bmod s=0$}
-        \State Measure $V(\boldsymbol{\beta})\rho V^\dagger(\boldsymbol{\beta})$ in the computational basis.
-        \State Identify $m$ most frequent bitstrings $Z(t) = \{z_1(t), \dots, z_m(t)\}$.
-        \State Update $H_G(t)\leftarrow\mathbb{I}-\sum_{i=1}^m q_i|z_i(t)\rangle\langle z_i(t)|$.
-        \EndIf
-        \State Update $H_{\mathrm{cost}}(t)\leftarrow[1-f(t)]H_L+f(t)H_G(t)$.
-        \State Execute a classical optimization step: $\boldsymbol{\beta} \leftarrow \text{Optimizer}(\boldsymbol{\beta}, \nabla_{\boldsymbol{\beta}} C(t, \boldsymbol{\beta}))$.
-        \EndFor
-        \State \textbf{Return:} $\boldsymbol{\beta}_{\text{opt}} \leftarrow \boldsymbol{\beta}$.
-    \end{algorithmic}
-\end{algorithm}
-
+    \begin{algorithm}[H]
+        \caption{Adaptive VQSE Optimization Schedule}
+        \label{alg:adaptive_vqse}
+        \begin{algorithmic}[1]
+            \Require Input state $\rho$, rank $m$, ansatz $V(\boldsymbol{\beta})$, maximum iteration count $N_{\max}$, update interval $s$, schedule $f$, local $H_L$, weights $\{q_i\}_{i=1}^m$.
+            \State Initialize $\boldsymbol{\beta}$ randomly and set $H_{\mathrm{cost}}(0)\leftarrow H_L$.
+            \For{$k=1,2,\ldots,N_{\max}$}
+            \State Set $t\leftarrow k/N_{\max}$.
+            \If{$k=1$ or $k\bmod s=0$}
+            \State Measure $V(\boldsymbol{\beta})\rho V^\dagger(\boldsymbol{\beta})$ in the computational basis.
+            \State Identify $m$ most frequent bitstrings $Z(t) = \{z_1(t), \dots, z_m(t)\}$.
+            \State Update $H_G(t)\leftarrow\mathbb{I}-\sum_{i=1}^m q_i|z_i(t)\rangle\langle z_i(t)|$.
+            \EndIf
+            \State Update $H_{\mathrm{cost}}(t)\leftarrow[1-f(t)]H_L+f(t)H_G(t)$.
+            \State Execute a classical optimization step: $\boldsymbol{\beta} \leftarrow \text{Optimizer}(\boldsymbol{\beta}, \nabla_{\boldsymbol{\beta}} C(t, \boldsymbol{\beta}))$.
+            \EndFor
+            \State \textbf{Return:} $\boldsymbol{\beta}_{\text{opt}} \leftarrow \boldsymbol{\beta}$.
+        \end{algorithmic}
+    \end{algorithm}
+\end{infobox}
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=0.8\textwidth]{asi_report/VQSE_Adaptive_Cost_Evolution_8037.png}
@@ -134,41 +187,6 @@ is periodically updated using the dominant bitstrings sampled from $V(\boldsymbo
 \end{figure}
 
 % ==============================================================================
-\subsection{Finite Shot Sampling Complexity and Verification Bounds}
-% ==============================================================================
-
-Evaluating eigenvalues via empirical bitstring frequencies $f_i / N_{\text{runs}}$ introduces statistical sampling noise.
-
-\begin{theorem}[Shot Complexity for Relative Accuracy]
-    For one target probability $\tilde{\lambda}_i$, Hoeffding's inequality gives
-    \begin{equation}
-        \Pr\!\left[
-        \frac{|\tilde{\lambda}_i^{\mathrm{est}}-\tilde{\lambda}_i|}{\tilde{\lambda}_i}
-        \geq c\right]
-        \leq 2\exp\!\left[-2N_{\mathrm{runs}}c^2\tilde{\lambda}_i^2\right].
-    \end{equation}
-    Applying a union bound to the $m$ retained eigenvalues, a sufficient condition for all relative errors to remain below $c>0$ with probability at least $1-\delta$ is
-    \begin{equation}
-        N_{\text{runs}}
-        \geq\frac{\log(2m/\delta)}{2c^2\tilde{\lambda}_m^2}
-        =\mathcal{O}\!\left(\frac{\log(m/\delta)}{c^2\tilde{\lambda}_m^2}\right),
-        \label{eq:shot_scaling}
-    \end{equation}
-    where $\tilde{\lambda}_m$ is the smallest probability among the retained components.
-\end{theorem}
-
-\begin{theorem}[Operational Error Verification Bound]
-    The total eigenvalue error $\epsilon_\lambda = \sum_{i=1}^m (\lambda_i - \tilde{\lambda}_i)^2$ and eigenvector alignment error $\epsilon_v = \sum_{i=1}^m \langle \delta_i | \delta_i \rangle$ (where $|\delta_i\rangle = (\mathbb{I} - |\tilde{\lambda}_i\rangle\langle\tilde{\lambda}_i|)\rho|\tilde{\lambda}_i\rangle$) are bounded by the convergence value of the cost function $C(\boldsymbol{\beta}_{\mathrm{opt}})$:
-    \begin{equation}
-        \epsilon_\lambda, \, \epsilon_v \le \operatorname{Tr}[\rho^2] - \frac{(E_{m+1} - C(\boldsymbol{\beta}_{\mathrm{opt}}))^2}{\sum_{i=1}^m (E_{m+1} - E_i)^2}.
-        \label{eq:operational_error_bound}
-    \end{equation}
-    Furthermore, an optional two-copy verification protocol using $b_m$ sampled bitstrings, with $m\leq b_m<2^n$, establishes a tighter hardware-verifiable bound:
-    \begin{equation}
-        \epsilon_\lambda, \, \epsilon_v \le \operatorname{Tr}[\rho^2] - \sum_{i=1}^{b_m} \tilde{\lambda}_i^2 - \frac{\left(1 - \sum_{i=1}^{b_m} \tilde{\lambda}_i\right)^2}{2^n - b_m}.
-        \label{eq:verification_bound_2copy}
-    \end{equation}
-\end{theorem}
 
 % ==============================================================================
 \subsection{Comparative Resource Scaling: Why VQSE is Qubit-Frugal}
@@ -178,7 +196,7 @@ Compared with the other state-diagonalization and principal-component methods co
 
 \begin{table}[h!]
     \centering
-    \caption{Comparison of quantum state spectrum extraction algorithms for an $n$-qubit density matrix $\rho$.}
+    \caption{Comparison of quantum state spectrum extraction algorithms that were evaluated for this project, for this task on a $n$-qubit density matrix $\rho$.}
     \label{tab:vqse_comparison}
     \begin{tabular}{p{2.25cm} p{2.2cm} p{2.6cm} p{5.75cm}}
         \toprule
@@ -187,7 +205,7 @@ Compared with the other state-diagonalization and principal-component methods co
         \textbf{qPCA}      & $n + a$ qubits       & $\rho^{\otimes k}$ copies      & Requires Phase Estimation and matrix exponentiation $e^{-i\rho t}$; prohibitive circuit depth \cite{qpca_2014}. \\
         \textbf{VQSD}      & $2n$ qubits          & $\rho \otimes \rho$ (2 copies) & Requires joint 2-register gates; vulnerable to asymmetric inter-register noise \cite{LaRose2019_vqsd}.          \\
         \textbf{QSVD}      & $n$ to $2n$ qubits   & \makecell{$|\psi_{AB}\rangle$                                                                                                                    \\ (Purification)} & Requires explicit access to a purification, whose preparation is sensitive to uncharacterized noise \cite{Bravo_Prieto_2020_qsvd}. \\
-        \textbf{VQSE}      & \textbf{$n$ qubits}  & \textbf{$\rho$ (1 copy)}       & \textbf{Uses a single-copy, majorization-based cost evaluation} \cite{cerezo2022vqse}.       \\
+        \textbf{VQSE}      & \textbf{$n$ qubits}  & \textbf{$\rho$ (1 copy)}       & \textbf{Uses a single-copy, majorization-based cost evaluation} \cite{cerezo2022vqse}.                          \\
         \bottomrule
     \end{tabular}
 \end{table}

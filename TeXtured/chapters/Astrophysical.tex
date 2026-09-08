@@ -7,7 +7,7 @@ The source model and the spatial-mode demultiplexing (SPADE) receiver presented 
 
 The work of this chapter is to express this optical model consistently in the density-operator, measurement, and Fisher-information notation introduced earlier in the thesis.  It also makes explicit the assumptions needed to connect the ideal source model to the available experimental observables.  The original experimental analysis is developed in Chapter~\ref{ch:exoplanet_experiment}.
 
-\section{The exoplanet characterization problem}
+\subsection{The exoplanet characterization problem}
 Consider a star, denoted by $A$, with intensity $I_A$, and an exoplanet, denoted by $B$, with intensity $I_B$. This system is characterized by the relative intensity ratio (or contrast ratio) $\epsilon$
 \begin{equation}
     \epsilon \coloneqq \frac{I_B}{I_A+I_B}
@@ -23,11 +23,14 @@ The approximation defined in Eq. \ref{eq:intensity_ratio_epsilon_approx} is the 
 % Beyond exoplanet detection, Space Domain Awareness (SDA) aims to continuously detect, track, catalog, and identify artificial space objects, for example satellites, spacecraft, and orbital debris, to ensure safe space operations~\cite{choi2024adaptive}. Ground-based imaging observations of these targets are severely restricted by their dim appearance, small separation, and dense distributions~\cite{choi2024adaptive}. These challenges render space targets as point-like objects in the sub-Rayleigh regime, possessing extreme brightness contrast but low photon budgets, often further degraded by atmospheric turbulence~\cite{choi2024adaptive}. To resolve these targets, the iterative Quantum-Accelerated Imaging (QAI) framework adaptively varies the measurement basis in response to initial data, maximizing the extracted Quantum Fisher Information (QFI) per photon~\cite{choi2024adaptive}.
 
 % ==============================================================================
-\section{The sub-Rayleigh regime}
+\subsection{The sub-Rayleigh regime}
 % ==============================================================================
 When the angular separation between the star and the planet is small, their light fields overlap at the telescope's aperture, making the faint planet difficult to distinguish from the much brighter star. Detecting and characterizing the planet therefore requires resolving the two sources at sub-Rayleigh scales, i.e., separations smaller than the classic Rayleigh diffraction limit.
 This limit arises because, due to diffraction at the telescope's finite aperture, light from a point source cannot be focused to an infinitesimal point. Instead, the telescope produces a finite intensity distribution.
-This distribution is the result of the incoming image and the telescope's own response, quantified by a function known as the point-spread function (PSF). The PSF is a property of the instrument, not of the source. For point-like sources, such as those considered here, the observed image is described directly by the PSF itself.
+This distribution is the result of the incoming image and the telescope's own response, quantified by a function known as the point-spread function (PSF).
+
+\faLightbulb \hspace{5pt} The PSF is a property of the instrument, not of the source. For point-like sources, such as those considered here, the observed image is described directly by the PSF itself.
+
 The PSF is commonly modeled as a Gaussian of width $w_0$ ~\cite{Santamaria2024single}. The Rayleigh limit is then reached when the transverse separation $d$ between the two emitters becomes comparable to or smaller than $w_0$ ($d\lesssim w_0$)~\cite{Santamaria2024single}. This transition from the resolved to the sub-Rayleigh regime is illustrated in Fig.~\ref{fig:rayleigh_criterion}, where the increasing overlap between the two PSFs causes the distinct intensity peaks to merge into a single dominant profile.
 
 
@@ -39,7 +42,7 @@ The PSF is commonly modeled as a Gaussian of width $w_0$ ~\cite{Santamaria2024si
     \label{fig:rayleigh_criterion}
 \end{figure}
 
-\section{Why an intensity image is poorly conditioned}
+\subsection{Problem with Intensity Imaging}
 Direct imaging is a common astronomical technique for detecting exoplanets. It involves capturing photographs or light spectra of an exoplanet by pointing a telescope directly at it.
 
 Unfortunately, this detection method is not suitable for the sub-Rayleigh regime we want to treat in this thesis. To address this point more formally, below we compute the Fisher information for the system under study.
@@ -49,14 +52,14 @@ We consider the exoplanet and the star separated by a distance $d$ along the $x$
     p_{\mathrm{DI}}(x,y\mid d,\epsilon)
     = \frac{e^{-y^2/(2w_0^2)}}{2\pi w_0^2}
     \left[(1-\epsilon)e^{-x^2/(2w_0^2)}
-        +\epsilon e^{-(x-d)^2/(2w_0^2)}\right],
+        +\epsilon e^{-(x-d)^2/(2w_0^2)}\right]
     \label{eq:di_probability_distribution}
 \end{equation}
-Note that Eq.~\eqref{eq:di_probability_distribution} describes only the \emph{spatial} distribution of a detected photon; it says nothing about whether a photon is detected at all in a given temporal mode. Here, a temporal mode can be thought of simply as one elementary time slot into which the incoming light is divided, short enough that at most one photon is expected in it; the probability that this slot actually yields a detected photon is denoted $\eta$, introduced below. In other words, direct imaging is fundamentally a position-basis measurement of the field: it reads out the intensity pattern pixel by pixel.
+Note that Eq.~\eqref{eq:di_probability_distribution} describes only the \emph{spatial} distribution of a detected photon. It says nothing about whether a photon is detected at all in a given temporal mode. Here, a temporal mode can be thought of simply as one elementary time slot into which the incoming light is divided, short enough that at most one photon is expected in it. The probability that this slot actually yields a detected photon is denoted $\eta$, introduced below. In other words, direct imaging is fundamentally a position-basis measurement of the field: it reads out the intensity pattern pixel by pixel.
 
 %This is in contrast to SPADE, discussed in the following sections, which instead projects the field onto a different, non-local set of spatial modes before the photon is counted.
 
-Equation~\eqref{eq:di_probability_distribution} already makes clear the difficulty of direct imaging in the sub-Rayleigh regime: when $d\ll w_0$, the two Gaussian terms in brackets are nearly identical, so shifting the faint source by $d$ barely deforms the overall image; on top of this weak effect, the deformation itself enters only through the small prefactor $\epsilon$, since the companion contributes just a fraction $\epsilon$ of the detected photons. Both effects work in the same direction, and their combination is what ultimately suppresses the information about $d$ carried by the image.
+Equation~\eqref{eq:di_probability_distribution} already makes clear the difficulty of direct imaging in the sub-Rayleigh regime: when $d\ll w_0$, the two Gaussian terms in brackets are nearly identical, so shifting the faint source by $d$ barely deforms the overall image. On top of this weak effect, the deformation itself enters only through the small prefactor $\epsilon$, since the companion contributes just a fraction $\epsilon$ of the detected photons. Both effects work in the same direction, and their combination is what ultimately suppresses the information about $d$ carried by the image.
 
 This intuition is made quantitative by computing the Fisher information for the estimation of $d$, treating the star's position and the contrast $\epsilon$ as known. In the high-contrast, sub-Rayleigh limit, the Fisher information per temporal mode behaves as
 \begin{equation}
@@ -68,7 +71,7 @@ where $\eta$ is, as above, the probability that a given temporal mode yields a d
 
 \section{Weak astronomical light as a spatial quantum state}
 
-The probability distribution in Eq.~\eqref{eq:di_probability_distribution} can be recast as a quantum description of the transverse spatial degree of freedom of the collected light.  To do so, the observation time is divided into temporal modes short enough that the mean photon number in each mode is much smaller than one.  With probability $1-\eta$ no photon is detected and the mode is in the vacuum state $\ket{0}$; with probability $\eta$ one photon is detected.  Neglecting the much less likely multiphoton events, the state of one temporal mode is therefore~\cite{Santamaria2024single}
+The probability distribution in Eq.~\eqref{eq:di_probability_distribution} can be recast as a quantum description of the transverse spatial degree of freedom of the collected light.  To do so, the observation time is divided into temporal modes short enough that the mean photon number in each mode is much smaller than one.  With probability $1-\eta$ no photon is detected and the mode is in the vacuum state $\ket{0}$. With probability $\eta$ one photon is detected.  The reason to consider $\eta$ to be really small is to neglect the multiphoton events since they become much less likely. The state of one temporal mode is therefore~\cite{Santamaria2024single}
 \begin{equation}
     \rho_d=(1-\eta)|0\rangle\langle0|
     +\eta(1-\epsilon)|\psi_0\rangle\langle\psi_0|
@@ -81,11 +84,11 @@ The spatial wavefunction is the probability amplitude for detecting the photon a
 \begin{align}
     \langle x,y|\psi_0\rangle
      & =\left(\frac{1}{2\pi w_0^2}\right)^{1/2}
-    \exp\!\left[-\frac{x^2+y^2}{4w_0^2}\right],
+    \exp\!\left[-\frac{x^2+y^2}{4w_0^2}\right]
     \label{eq:star_wavefunction}                \\
     \langle x,y|\psi_d\rangle
      & =\left(\frac{1}{2\pi w_0^2}\right)^{1/2}
-    \exp\!\left[-\frac{(x-d_x)^2+(y-d_y)^2}{4w_0^2}\right].
+    \exp\!\left[-\frac{(x-d_x)^2+(y-d_y)^2}{4w_0^2}\right]
     \label{eq:planet_wavefunction}
 \end{align}
 where $\boldsymbol d=(d_x,d_y)$ is the planet's transverse displacement from the star and $d=\sqrt{d_x^2+d_y^2}$.  The factor of $4w_0^2$ in the amplitudes becomes $2w_0^2$ after taking the modulus squared, so $|\langle x,y|\psi_0\rangle|^2$ and $|\langle x,y|\psi_d\rangle|^2$ reproduce the Gaussian intensity profiles used in Eq.~\eqref{eq:di_probability_distribution}.
@@ -93,7 +96,7 @@ where $\boldsymbol d=(d_x,d_y)$ is the planet's transverse displacement from the
 Conditioned on the detection of one photon, the vacuum term is removed and the spatial state becomes
 \begin{equation}
     \rho_d^{(1)}=(1-\epsilon)|\psi_0\rangle\langle\psi_0|
-    +\epsilon|\psi_d\rangle\langle\psi_d|.
+    +\epsilon|\psi_d\rangle\langle\psi_d|
     \label{eq:conditional_one_photon_state}
 \end{equation}
 Direct imaging measures this state in the position basis: indeed,
@@ -105,10 +108,10 @@ The density-operator description above separates the state carried by the incomi
 
 Spatial-mode demultiplexing (SPADE) provides such an alternative under ideal conditions. A SPADE receiver consists of a spatial-mode sorter followed by photon-counting detectors and the associated readout system. The mode sorter is the optical component that decomposes the transverse field into orthogonal spatial modes and directs each mode to a separate output port, where its photon counts are recorded~\cite{Tsang2016quantum,Santamaria2024single}. Thus, instead of determining where each photon lands, the receiver determines which spatial mode the photon occupies. Because these modal projections combine field amplitudes from different image-plane positions, they can access displacement information that is poorly represented in an unresolved intensity image. For a Gaussian PSF, the natural modes for this purpose are the Hermite--Gaussian (HG) modes.
 
-\subsection{The Hermite--Gaussian spatial basis}
+\subsection{The Hermite--Gauss spatial basis}
 
-\begin{definition}[Hermite--Gaussian spatial basis]
-    The transverse spatial state of one detected photon is described by a square-integrable complex wavefunction of the coordinates $(x,y)$.  The Hermite--Gaussian modes form a complete orthonormal basis of this infinite-dimensional spatial Hilbert space:
+\begin{definition}[Hermite--Gauss spatial basis]
+    The transverse spatial state of one detected photon is described by a square-integrable complex wavefunction of the coordinates $(x,y)$. The Hermite--Gaussian modes form a complete orthonormal basis of this infinite-dimensional spatial Hilbert space.
     \begin{equation}
         \langle HG_{mn}|HG_{pq}\rangle=\delta_{mp}\delta_{nq},
         \qquad
@@ -117,7 +120,7 @@ Spatial-mode demultiplexing (SPADE) provides such an alternative under ideal con
         c_{mn}=\langle HG_{mn}|\psi\rangle
         \label{eq:hg_complete_basis}
     \end{equation}
-    Here $m$ and $n$ are non-negative integers that label the modal orders in the two transverse directions.  Each basis function consists of a Gaussian envelope multiplied by Hermite polynomials.  Increasing either index changes the transverse structure of the one-photon state; it does not add another photon.
+    Here $m$ and $n$ are non-negative integers that label the modal orders in the two transverse directions.  Each basis function consists of a Gaussian envelope multiplied by Hermite polynomials (see Fig.~\ref{fig:hg_modes}).  Increasing either index changes the transverse structure of the one-photon state. It does not add another photon.
 \end{definition}
 
 To describe the lowest-order modes ($m,n=0,1$), let $(x,y)$ denote transverse coordinates measured from the centre of the HG basis (these are the coordinates measured by the telescope).  In the index convention used in Ref.~\cite{Santamaria2024single}, $HG_{01}$ varies along the first coordinate and $HG_{10}$ along the second.\footnote{The ordering of the two HG indices is not universal.  This thesis follows Ref.~\cite{Santamaria2024single}, in which $HG_{01}$ is associated with the $x$ direction and $HG_{10}$ with the $y$ direction.  Other sources adopt the opposite ordering, for example the Photonics Encyclopedia~\cite{paschotta_hermite_gaussian} assigns the first index to $x$ and the second to $y$, so that the corresponding labels are exchanged.}
@@ -135,7 +138,7 @@ The three relevant normalized amplitudes are
      & =\frac{y}{w_0}\psi_0(x,y).
     \label{eq:hg10_def}
 \end{align}
-The fundamental mode $HG_{00}$ is Gaussian.  Each first-order mode has one sign change in its field amplitude along one transverse direction.  Although the corresponding intensity remains non-negative, this sign change is important because the sorter acts on field amplitudes before the photons are counted.  Equations~\eqref{eq:hg00_def}--\eqref{eq:hg10_def} are the position-space version of the one-photon mode definitions in Ref.~\cite{Santamaria2024single}; they avoid the creation-operator notation used there, which is not needed for the present discussion.
+The fundamental mode $HG_{00}$ is Gaussian.  Each first-order mode has one sign change in its field amplitude along one transverse direction.  Although the corresponding intensity remains non-negative, this sign change is important because the sorter acts on field amplitudes before the photons are counted.  Equations~\eqref{eq:hg00_def}--\eqref{eq:hg10_def} are the position-space version of the one-photon mode definitions in Ref.~\cite{Santamaria2024single}; they avoid the creation-operator notation (from second quantization theory) used there, which is not needed for this discussion.
 
 \subsection{Alignment and SPADE inference}
 
@@ -151,7 +154,7 @@ Figure~\ref{fig:hg_modes} shows the fundamental and first-order HG amplitudes an
 
 The fundamental-port measurement is represented by the projector
 \begin{equation}
-    \Pi_0=|HG_{00}\rangle\langle HG_{00}|.
+    \Pi_0=|HG_{00}\rangle\langle HG_{00}|
     \label{eq:pi0_def}
 \end{equation}
 Consequently, the probability $p_0$ of a count in this port is the projection of $\rho_d$ onto $HG_{00}$.  Following Eqs.~(7) and (8) of Ref.~\cite{Santamaria2024single},
@@ -162,7 +165,7 @@ Consequently, the probability $p_0$ of a count in this port is the projection of
      & =\eta(1-\epsilon)
     e^{-(\delta_x^2+\delta_y^2)/(4w_0^2)}
     +\eta\epsilon
-    e^{-[(d_x-\delta_x)^2+(d_y-\delta_y)^2]/(4w_0^2)}.
+    e^{-[(d_x-\delta_x)^2+(d_y-\delta_y)^2]/(4w_0^2)}
     \label{eq:p0_alignment}
 \end{align}
 The first term is the stellar contribution and the second is the planetary contribution.  Because the star dominates in the high-contrast regime, maximizing $p_0$ centres the sorter on the star.  This alignment is essential: a residual offset allows the bright stellar field to leak into the displacement-sensitive ports and can obscure the much weaker planetary signal. Here we assume ideal alignment, $\bmdelta=\boldsymbol 0$.
@@ -174,7 +177,7 @@ Under ideal alignment, the fundamental HG mode coincides with the stellar spatia
     +\frac{d_x}{2w_0}|HG_{01}\rangle
     +\frac{d_y}{2w_0}|HG_{10}\rangle
     +\mathcal{O}\!\left(\frac{d^2}{w_0^2}\right),
-    \qquad d\ll w_0.
+    \qquad d\ll w_0
     \label{eq:hg_small_displacement_expansion}
 \end{equation}
 Equation~\eqref{eq:hg_small_displacement_expansion} shows that a small planetary displacement transfers amplitude from the fundamental mode to the two first-order modes.  Higher-order contributions enter at progressively higher powers of $d/w_0$, so the lowest-order modes carry the leading displacement response in the sub-Rayleigh regime even though the complete HG basis is infinite.
@@ -219,7 +222,7 @@ The probability of a count in either first-order port is their sum,
 \end{equation}
 The factor $\eta\epsilon$ reflects that a first-order count requires both a detection and a photon from the faint source, while the quadratic factor $d^2/(4w_0^2)$ is the leading probability transferred by the displacement.  At leading order, $HG_{01}$ carries the $d_x^2$ contribution and $HG_{10}$ carries the $d_y^2$ contribution; their sum depends only on $d^2=d_x^2+d_y^2$.  First-order counts therefore determine the magnitude of the displacement but not its sign along either axis.  Recovering the sign would require an additional phase-sensitive measurement or an appropriate spatial reference.
 
-Experimentally, the observed counts $n_0$, $n_{01}$, and $n_{10}$, or their relative frequencies, are compared with a calibrated forward model for $p_0$, $p_{01}$, and $p_{10}$.  The unknown parameter (which can be either $d$ or $\epsilon$) is then obtained by maximizing the corresponding likelihood, or equivalently by inverting a calibrated probability relation when only one parameter is unknown. At leading order, the impossibility to determine $d$ and $\epsilon$ separately is caused by the fact that $p_1$ depends on the product $\epsilon d^2$.  A joint estimate would require additional independent outcomes, measurement settings, or prior calibration.
+Experimentally, the observer could count $n_0$, $n_{01}$, and $n_{10}$, or their relative frequencies. They are then compared with a calibrated forward model for $p_0$, $p_{01}$, and $p_{10}$.  The unknown parameter (which can be either $d$ or $\epsilon$) is then obtained by maximizing the corresponding likelihood, or equivalently by inverting a calibrated probability relation when only one parameter is unknown. At leading order, the impossibility to determine $d$ and $\epsilon$ separately is caused by the fact that $p_1$ depends on the product $\epsilon d^2$.  A joint estimate would require additional independent outcomes, measurement settings, or prior calibration.
 
 
 \section{Takeaway}

@@ -23,6 +23,46 @@ Because this local evaluation yields a non-zero operator, the macroscopic Hamilt
 This non-commutation necessitates the use of a Trotterized decomposition for the time evolution, as discussed in Section~\ref{sec:trotterization}.
 
 
+\subsection{Finite Shot Sampling Complexity and Verification Bounds}
+\label{appendix:finite_shot_sampling}
+% ==============================================================================
+
+Evaluating eigenvalues for VQSE, via empirical bitstring frequencies $f_i / N_{\text{runs}}$ introduces statistical sampling noise.
+
+\begin{theorem}[Shot Complexity for Relative Accuracy]
+    For one target probability $\tilde{\lambda}_i$, Hoeffding's inequality gives
+    \begin{equation}
+        \Pr\!\left[
+            \frac{|\tilde{\lambda}_i^{\mathrm{est}}-\tilde{\lambda}_i|}{\tilde{\lambda}_i}
+            \geq c\right]
+        \leq 2\exp\!\left[-2N_{\mathrm{runs}}c^2\tilde{\lambda}_i^2\right]
+    \end{equation}
+    Applying a union bound to the $m$ retained eigenvalues, a sufficient condition for all relative errors to remain below $c>0$ with probability at least $1-\delta$ is
+    \begin{equation}
+        N_{\text{runs}}
+        \geq\frac{\log(2m/\delta)}{2c^2\tilde{\lambda}_m^2}
+        =\mathcal{O}\!\left(\frac{\log(m/\delta)}{c^2\tilde{\lambda}_m^2}\right)
+        \label{eq:shot_scaling}
+    \end{equation}
+    where $\tilde{\lambda}_m$ is the smallest probability among the retained components.
+\end{theorem}
+
+\begin{theorem}[Operational Error Verification Bound]
+    The total eigenvalue error $\epsilon_\lambda = \sum_{i=1}^m (\lambda_i - \tilde{\lambda}_i)^2$ and eigenvector alignment error $\epsilon_v = \sum_{i=1}^m \langle \delta_i | \delta_i \rangle$ (where $|\delta_i\rangle = (\mathbb{I} - |\tilde{\lambda}_i\rangle\langle\tilde{\lambda}_i|)\rho|\tilde{\lambda}_i\rangle$) are bounded by the convergence value of the cost function $C(\boldsymbol{\beta}_{\mathrm{opt}})$:
+    \begin{equation}
+        \epsilon_\lambda, \, \epsilon_v \le \operatorname{Tr}[\rho^2] - \frac{(E_{m+1} - C(\boldsymbol{\beta}_{\mathrm{opt}}))^2}{\sum_{i=1}^m (E_{m+1} - E_i)^2}
+        \label{eq:operational_error_bound}
+    \end{equation}
+    Furthermore, an optional two-copy verification protocol using $b_m$ sampled bitstrings, with $m\leq b_m<2^n$, establishes a tighter hardware-verifiable bound:
+    \begin{equation}
+        \epsilon_\lambda, \, \epsilon_v \le \operatorname{Tr}[\rho^2] - \sum_{i=1}^{b_m} \tilde{\lambda}_i^2 - \frac{\left(1 - \sum_{i=1}^{b_m} \tilde{\lambda}_i\right)^2}{2^n - b_m}
+        \label{eq:verification_bound_2copy}
+    \end{equation}
+\end{theorem}
+
+
+
+
 \section{Derivative conventions for matched-purity paths}
 \label{app:matched_purity_derivatives}
 

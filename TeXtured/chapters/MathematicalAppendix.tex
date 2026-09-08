@@ -30,9 +30,10 @@ This appendix records several standard results that provide useful context but a
     It explains why optimizing over POVMs in the definition of QFI is physically meaningful, even when the receiver is implemented through a larger apparatus.
 \end{remark}
 
-\section{Choi-Matrix View of a Quantum Channel}
+\section{Choi-Matrix Representation of a Quantum Channel}
+\label{sec:choi_quantum_channel}
 
-A quantum channel and its Choi matrix are equivalent representations, but they are not the same mathematical object.  Let $J(\mathcal{E})$ denote the Choi matrix of a channel $\mathcal{E}:\mathcal{L}(\mathcal{X})\rightarrow\mathcal{L}(\mathcal{Y})$.  In the column Choi convention, its action on an input state is~\cite{wood2015graphical}
+Chapter~\ref{ch:MathBackground} introduces quantum channels through their action on density operators and their Kraus representation. Here we record only the equivalent Choi-matrix representation. A quantum channel and its Choi matrix contain the same information, but they are not the same mathematical object. Let $J(\mathcal{E})$ denote the Choi matrix of a channel $\mathcal{E}:\mathcal{L}(\mathcal{X})\rightarrow\mathcal{L}(\mathcal{Y})$. In the column Choi convention, the channel acts on an input state as~\cite{wood2015graphical}
 \begin{equation}
     \mathcal{E}(\rho)
     =\operatorname{Tr}_{\mathcal{X}}\!\left[
@@ -41,7 +42,7 @@ A quantum channel and its Choi matrix are equivalent representations, but they a
         \right]
     \label{eq:choi_channel_action}
 \end{equation}
-The transpose and the contracted subsystem depend on the chosen Choi convention.  Equation~\eqref{eq:choi_channel_action} fixes the convention used in the ASCII diagrams below.
+The transpose and the contracted subsystem depend on the chosen Choi convention. Equation~\eqref{eq:choi_channel_action} fixes the convention used in the ASCII diagram below.
 
 \begin{Verbatim}[fontsize=\small]
     rho_X^T ============+
@@ -52,7 +53,7 @@ The transpose and the contracted subsystem depend on the chosen Choi convention.
     contraction Tr_X
 \end{Verbatim}
 
-Each double line represents the ket and bra indices of one density-operator subsystem.  Joining the input line of $J(\mathcal{E})$ to $\rho^{\mathsf{T}}$ represents contraction over $\mathcal{X}$.  The uncontracted $\mathcal{Y}$ line is the output state.  These sketches are reading aids, not additional definitions or circuit implementations.
+Each double line represents the ket and bra indices of one density-operator subsystem. Joining the input line of $J(\mathcal{E})$ to $\rho^{\mathsf{T}}$ represents contraction over $\mathcal{X}$. The uncontracted $\mathcal{Y}$ line is the output state. This sketch is a reading aid, not an additional definition or a circuit implementation.
 
 \section{Classical Statistical Distance and Metrological Scaling}
 

@@ -20,7 +20,7 @@ Table~\ref{tab:spade_channel_sequence} records the role and provenance of every 
         Bright / \newline faint mixture   & $d_a,\epsilon$ programmed. Source form assumed                          & Defines the source-state QFI                                           \\
         Survival / \newline erasure       & $\eta$ unidentifiable without launched flux                             & Can change QFI per launched photon                                     \\
         Alignment / \newline displacement & Effective offset fitted. Physical sorter offset not isolated            & Fixed unitary preserves state QFI but can reduce fixed-measurement CFI \\
-        Dephasing                         & Cannot be identified. Provisional visibility used only in the workbench & Can reduce state QFI while leaving recorded populations unchanged      \\
+        Dephasing                         & Cannot be identified. Provisional visibility used only in the workbench & Can reduce state QFI. Immediate HG populations remain unchanged        \\
         Coherent HG mixing                & Provisional angle and phase used only in the workbench                  & Fixed unitary preserves QFI but redistributes measurement CFI          \\
         Modal transmission                & Provisional transmissions used only in the workbench                    & Can reduce accessible QFI and CFI                                      \\
         Accessible-mode reduction         & Selected HG subspace specified. Complement outcome unrecorded           & Can reduce state QFI while keeping the failure probability             \\
@@ -37,6 +37,35 @@ Table~\ref{tab:spade_channel_sequence} records the role and provenance of every 
         \bottomrule
     \end{tabularx}
 \end{table}
+
+\section{Source Incoherence and HG-Mode Coherence}
+\label{sec:spade_hg_coherence}
+
+The two sources are mutually incoherent.  This means that the source state is a statistical mixture and contains no star--planet cross terms such as $|\psi_0\rangle\langle\psi_{d_a}|$.  It does not mean that the same density operator is diagonal in every spatial-mode basis.  In the bright-source-aligned convention, the one-photon state is
+\begin{equation}
+    \rho_S
+    =(1-\epsilon)|\psi_0\rangle\langle\psi_0|
+    +\epsilon|\psi_{d_a}\rangle\langle\psi_{d_a}|
+    \label{eq:spade_incoherent_source_appendix}
+\end{equation}
+The displaced component is a coherent spatial wavefunction that can be expanded in the HG basis as
+\begin{equation}
+    |\psi_{d_a}\rangle
+    =\sum_n c_n(d_a)|HG_n\rangle
+    \label{eq:spade_hg_coherent_expansion_appendix}
+\end{equation}
+Its projector therefore contains
+\begin{equation}
+    |\psi_{d_a}\rangle\langle\psi_{d_a}|
+    =\sum_{m,n}c_m(d_a)c_n^*(d_a)
+    |HG_m\rangle\langle HG_n|
+    \label{eq:spade_hg_coherences_appendix}
+\end{equation}
+The terms with $m\neq n$ are coherences between HG modes.  They describe one displaced spatial wavefunction and do not represent coherence between the star and the planet.  Thus, mutual source incoherence and HG-basis coherence are compatible.
+
+This distinction explains why dephasing and coherent mode mixing are meaningful parts of the channel workbench.  HG-basis dephasing can suppress the off-diagonal terms in Eq.~\eqref{eq:spade_hg_coherences_appendix}.  A direct HG population measurement is insensitive to that suppression if no later operation converts coherence into population.  If coherent mode mixing follows the dephasing, the final populations can depend on both effects.  The aggregate record can then constrain only their combined population-level action.  It cannot identify the dephasing strength, mixing angle, or mixing phase separately.
+
+The recorded observable $n_1=n_{HG_{01}}+n_{HG_{10}}$ contains only one coarse-grained diagonal statistic at each setting.  It therefore cannot reconstruct the off-diagonal HG elements or the dominant eigenvectors required for an experimental TQFI analysis.  A TQFI value can still be calculated from a fully specified source and channel model, but it is then a conditional model result rather than a reconstruction from the counts.  Coherence-sensitive measurements in additional modal bases would be needed to test this part of the channel experimentally.
 
 \section{Raw Counts and Exposure Accounting}
 
