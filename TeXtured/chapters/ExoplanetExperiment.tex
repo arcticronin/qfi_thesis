@@ -3,8 +3,8 @@
 
 Chapter~\ref{ch:astrophysical_theory} introduced SPADE.  This project began with the aim of applying the truncated-QFI methods of Chapter~\ref{ch:methods} to experimental SPADE data provided by \textbf{ASI Matera}~\cite{Santamaria2024single}.
 
-SPADE (Spatial-mode Demultiplexing) separates incoming light into the lowest orders of the orthogonal Hermite--Gauss modes.  HG modes are an infinite-dimensional basis for weak light.
-So the idea was that having the measurement in the low-order HG modes would provide the necessary information for a truncated-QFI analysis, using the concept of the majorized probabilities of Chapter.~\ref{eq:vqse_majorization}.
+SPADE (Spatial-mode Demultiplexing) separates incoming light into the lowest orders of the orthogonal Hermite--Gauss modes.  HG modes are an infinite-dimensional basis for weak light.The initial idea was that the low-order HG populations might provide the dominant spectral information required for a truncated-QFI analysis, in connection with the majorization relation in Eq.~\eqref{eq:vqse_majorization}.  This identification would be valid only if the optical state were diagonal in the HG basis.  In general, SPADE probabilities are diagonal matrix elements rather than eigenvalues, and the HG modes need not be eigenvectors of the state.
+
 
 The dataset became available only after the experiment had ended, so the extra measurements needed for state reconstruction could not be added.  The recorded data contain one aggregate first-order count for each repetition, but not the separate modal outputs and coherence-sensitive measurements needed to build a reduced optical state for an experimental TQFI calculation.
 
@@ -88,7 +88,7 @@ The complete ordering is
     -> discrete repeated-count observation
 \end{Verbatim}
 
-This ordering also classifies every stage.  The source mixture is a quantum state preparation.  Survival, alignment, dephasing, coherent mixing, modal loss, and accessible-mode reduction are quantum channels.  SPADE is the quantum measurement that produces classical outcome probabilities.  Readout confusion is a classical stochastic channel.  Background and calibration variation form a classical calibration layer, while repeated counts form a classical statistical model.  Appendix~\ref{app:spade_diagnostics} lists the parameter source and information role of every stage. A question that naturally arises is if it makes sense to try to find the coherence of a model in Eq.~\eqref{eq:optical_density_matrix_chap} that we state is a incoherent mixture, we analyzed and answered to this question, stating that incoherent sources can still have HG coherences in
+This ordering also classifies every stage.  The source mixture is a quantum state preparation.  Survival, alignment, dephasing, coherent mixing, modal loss, and accessible-mode reduction are quantum channels.  SPADE is the quantum measurement that produces classical outcome probabilities.  Readout confusion is a classical stochastic channel.  Background and calibration variation form a classical calibration layer, while repeated counts form a classical statistical model.  Appendix~\ref{app:spade_diagnostics} lists the parameter source and information role of every stage. A question that naturally arises is if it makes sense to try to find the coherence of a model in Eq.~\eqref{eq:optical_density_matrix_chap} that we state is a incoherent mixture (In Section~\ref{sec:weak_light_as_quantum_state}), we analyzed and answered to this question, stating that incoherent sources can still have HG coherences in
 Appendix~\ref{sec:spade_hg_coherence}.
 
 \subsection{Classical and quantum objects in the model}
