@@ -3,7 +3,7 @@
 
 Chapter~\ref{ch:astrophysical_theory} introduced SPADE.  This project began with the aim of applying the truncated-QFI methods of Chapter~\ref{ch:methods} to experimental SPADE data provided by \textbf{ASI Matera}~\cite{Santamaria2024single}.
 
-SPADE (Spatial-mode Demultiplexing) separates incoming light into the lowest orders of the orthogonal Hermite--Gauss modes.  HG modes are an infinite-dimensional basis for weak light.The initial idea was that the low-order HG populations might provide the dominant spectral information required for a truncated-QFI analysis, in connection with the majorization relation in Eq.~\eqref{eq:vqse_majorization}.  This identification would be valid only if the optical state were diagonal in the HG basis.  In general, SPADE probabilities are diagonal matrix elements rather than eigenvalues, and the HG modes need not be eigenvectors of the state.
+SPADE (Spatial-mode Demultiplexing) resolves incoming light in orthogonal Hermite--Gauss modes.  The initial idea was to test if this modal readout could provide the dominant spectral information required by TQFI.  Section~\ref{sec:spade_question_record} explains the proposed connection and the measurements that it would require.
 
 
 The dataset became available only after the experiment had ended, so the extra measurements needed for state reconstruction could not be added.  The recorded data contain one aggregate first-order count for each repetition, but not the separate modal outputs and coherence-sensitive measurements needed to build a reduced optical state for an experimental TQFI calculation.
@@ -21,9 +21,38 @@ The resulting framework is foundation work for future SPADE experiments.  It sho
 \section{SPADE integration into TQFI formalism}
 \label{sec:spade_question_record}
 
-\subsection{The low-mode link to TQFI}
+\subsection{The proposed V-SPADE, as optical VQSE}
 
-The connection to TQFI comes from the low-order SPADE receiver in Chapter~\ref{ch:astrophysical_theory} and the rank-truncation methods in Chapter~\ref{ch:methods}.  A displaced point-spread function has support in an infinite-dimensional HG space, although its lowest orders carry most of the displacement response near alignment.  Relating these measured modes to TQFI requires three different reductions to be kept separate.
+The basic idea was to use SPADE as the measurement stage of an optical version of VQSE.  In the VQSE protocol of Section~\ref{sec:vqse_deep_dive}, a trainable unitary rotates the dominant eigenvectors of a mixed state onto known computational-basis outcomes.  The measured probabilities then approach the dominant eigenvalues through the majorization relation in Eq.~\eqref{eq:vqse_majorization}.  In the optical setting, a programmable coherent mode transformation $V(\boldsymbol\beta)$ could play the role of the VQSE unitary, while resolved SPADE ports could replace the computational-basis measurement.  For an optical state $\rho(d_a)$, the measured probabilities would be
+\begin{equation}
+    p_k(\boldsymbol\beta;d_a)
+    =\langle HG_k|V(\boldsymbol\beta)\rho(d_a)
+    V^\dagger(\boldsymbol\beta)|HG_k\rangle
+    \label{eq:spade_optical_vqse_probabilities}
+\end{equation}
+A classical optimizer could minimize a weighted VQSE cost built from these probabilities.  At an ideal optimum, the transformation would satisfy
+\begin{equation}
+    V(\boldsymbol\beta_{\mathrm{opt}})|\lambda_k(d_a)\rangle
+    =e^{i\phi_k}|HG_k\rangle
+    \qquad
+    p_k(\boldsymbol\beta_{\mathrm{opt}};d_a)=\lambda_k(d_a)
+    \label{eq:spade_optical_vqse_mapping}
+\end{equation}
+The resolved output frequencies would then estimate the dominant eigenvalues, while $V^\dagger(\boldsymbol\beta_{\mathrm{opt}})$ would define the corresponding eigenvectors.  The HG modes would serve as known output labels.  They would not be assumed to be eigenvectors of the incoming state.
+
+This diagonalization step would provide the dominant spectral data of $\rho(d_a)$, but TQFI also requires the response of a nearby state $\rho(d_a+\Delta)$.  In the notation of the VQFIE procedure in Algorithm~\ref{alg:vqfie}, the required quantities include
+\begin{equation}
+    M_{ij}
+    =\langle\lambda_i(d_a)|\rho(d_a+\Delta)|\lambda_j(d_a)\rangle
+    \label{eq:spade_tqfi_required_overlaps}
+\end{equation}
+A full optical implementation would therefore require fresh copies of the states, a controllable modal transformation, resolved and normalized SPADE outcomes, and additional overlap or interferometric measurements.  Since the eigenbasis generally depends on the source parameters, the optimized transformation would be fixed around a calibrated operating point or updated in an adaptive estimation procedure.
+
+The available experiment contained no scan over programmable coherent transformations and did not record resolved, normalized modal probabilities.  A unitary rotation cannot be applied retrospectively to counts collected after a fixed and destructive measurement.  The aggregate $HG_{01}+HG_{10}$ record therefore cannot train the optical VQSE transformation or supply the matrix elements in Eq.~\eqref{eq:spade_tqfi_required_overlaps}.  The original idea remains a possible design for a future experiment, but it cannot be implemented from the stored data.
+
+\subsection{The low-mode link and three distinct reductions}
+
+The motivation for this proposal comes from the low-order SPADE receiver in Chapter~\ref{ch:astrophysical_theory} and the rank-truncation methods in Chapter~\ref{ch:methods}.  A displaced point-spread function has support in an infinite-dimensional HG space, although its lowest orders carry most of the displacement response near alignment.  This makes a low-mode implementation plausible near the operating point, but it does not make an HG cutoff equal to a rank truncation.  Three different reductions must be kept separate.
 
 \paragraph{Numerical HG cutoff.}
 A numerical cutoff approximates the infinite-dimensional source model by keeping HG modes up to a stated order.  Its accuracy is checked by increasing the cutoff until the calculated quantities converge.  It is a computational approximation, not a restriction imposed by the apparatus.
