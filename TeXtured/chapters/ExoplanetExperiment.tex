@@ -188,7 +188,7 @@ Even if $|\psi_{d_a}\rangle$ has nonzero amplitudes in infinitely many HG modes,
 The channels in this subsection act on the optical state before SPADE produces a classical outcome.  They describe different physical effects.  The survival channel describes loss common to all modes.  Alignment changes the position of the image relative to the sorter.  Dephasing changes HG coherences, while coherent mixing transfers amplitude between HG modes.  Mode-dependent loss then gives different transmissions to different modes.  Finally, the accessible-mode channel keeps track of light outside the measured subspace.
 
 \paragraph{Survival or erasure.}
-A photon can be lost during propagation, collection, or detection before it gives a usable SPADE outcome.  We group these common losses into a survival probability\footnote{It is not the same $\eta$ used for the model in Eq.~\eqref{eq:optical_density_matrix_chap}, but it has the same meaning, so it feel natural to use it here} $\eta$. If the photon survives, its one-photon state remains $\rho_S$.  If it is lost, the output is the vacuum state $|\mathrm{vac}\rangle$.  The two possibilities are represented by
+A photon can be lost during propagation, collection, or detection before it gives a usable SPADE outcome.  We group these common losses into a survival probability $\eta$. Here, $\eta$ is conditional on the incident-photon normalization $N_{\mathrm{in}}$. It must not be identified directly with the temporal-mode detection probability in Eq.~\eqref{eq:optical_density_matrix_chap}, which uses a different photon-number convention. If the photon survives, its one-photon state remains $\rho_S$.  If it is lost, the output is the vacuum state $|\mathrm{vac}\rangle$.  The two possibilities are represented by
 \begin{equation}
     \rho_{\mathrm{surv}}
     =\mathcal{S}_{\eta}(\rho_S)
@@ -197,27 +197,40 @@ A photon can be lost during propagation, collection, or detection before it give
 \end{equation}
 The first term has total probability $\eta$, while the vacuum term has probability $1-\eta$.  Their sum therefore keeps the total probability equal to one.  We assume that $\eta$ does not depend on the separation $d_a$.  Under this assumption, lost photons carry no information about $d_a$, so this channel reduces the information per launched photon.  It does not alter the state of the photons that survive.
 
+The optical response used by the count model and the information-retention ratios is written per surviving photon. Let $\Pi_1$ project onto the one-photon sector. The normalized state conditional on common survival is
+\begin{equation}
+    \widetilde{\rho}_{\mathrm{surv}}
+    =
+    \frac{\Pi_1\rho_{\mathrm{surv}}\Pi_1}
+    {\operatorname{Tr}(\Pi_1\rho_{\mathrm{surv}})}
+    =\rho_S
+    \qquad
+    \operatorname{Tr}(\Pi_1\rho_{\mathrm{surv}})=\eta
+    \label{eq:spade_conditional_survival_state}
+\end{equation}
+This conditioning does not discard the survival probability. The factor $\eta$ is carried into the count scale $T=N_{\mathrm{in}}\eta$. Mode-dependent loss and inaccessible modes are still kept as explicit failure outcomes later in the sequence.
+
 The count data do not determine $\eta$ on its own because the incident photon number $N_{\mathrm{in}}$ was not recorded for each acquisition.  The data mainly constrain the product $T=N_{\mathrm{in}}\eta$.  The parameter $\eta$ is therefore not reported as a measured efficiency.
 
 \paragraph{Alignment and displacement.}
 The SPADE sorter defines the origin of the HG basis.  A fixed offset $\delta_{\mathrm{sorter}}$ means that this origin does not exactly match the origin used for the source.  The corresponding displacement is reversible and is described by a unitary transformation
 \begin{equation}
-    \rho_{\mathrm{align}}
+    \widetilde{\rho}_{\mathrm{align}}
     =U_{\mathrm{align}}(\delta_{\mathrm{sorter}})
-    \rho_{\mathrm{surv}}
+    \widetilde{\rho}_{\mathrm{surv}}
     U_{\mathrm{align}}^{\dagger}(\delta_{\mathrm{sorter}})
     \label{eq:spade_alignment_channel}
 \end{equation}
-The operators on the two sides of $\rho_{\mathrm{surv}}$ shift both the ket and bra parts of the density operator.  Because the offset is fixed and does not depend on $d_a$, this transformation preserves state QFI.  It can still lower the CFI of a fixed SPADE receiver because the receiver is now measured in a misaligned basis.
+The tilde marks a state conditional on common photon survival. The operators on the two sides of $\widetilde{\rho}_{\mathrm{surv}}$ shift both the ket and bra parts of the density operator.  Because the offset is fixed and does not depend on $d_a$, this transformation preserves state QFI.  It can still lower the CFI of a fixed SPADE receiver because the receiver is now measured in a misaligned basis.
 
 The fitted offset $\delta$ in the empirical mean model also absorbs calibration shifts.  It is therefore not a separate measurement of $\delta_{\mathrm{sorter}}$.  Random displacement has a different meaning.  It averages over several offsets, as would happen under position jitter, and can reduce coherence.
 
 \paragraph{HG-basis dephasing.}
 The displaced optical field can be coherent across several HG modes.  Phase fluctuations may weaken the off-diagonal elements that describe this coherence without changing the probability in each mode.  We represent this effect by
 \begin{equation}
-    \rho_{\mathrm{deph}}
-    =\mathcal{D}_{v}(\rho_{\mathrm{align}})
-    =v\rho_{\mathrm{align}}+(1-v)\operatorname{diag}_{HG}(\rho_{\mathrm{align}})
+    \widetilde{\rho}_{\mathrm{deph}}
+    =\mathcal{D}_{v}(\widetilde{\rho}_{\mathrm{align}})
+    =v\widetilde{\rho}_{\mathrm{align}}+(1-v)\operatorname{diag}_{HG}(\widetilde{\rho}_{\mathrm{align}})
     \qquad 0\leq v\leq1
     \label{eq:spade_quantum_sequence}
 \end{equation}
@@ -245,7 +258,7 @@ multiplies the amplitude of mode $j$ by $\sqrt{\tau_j}$, which multiplies its pr
     |\mathrm{fail}\rangle\langle\mathrm{fail}|
     \label{eq:spade_modal_loss}
 \end{equation}
-Here $\rho$ denotes the one-photon block that enters this stage.  The vacuum branch already produced by Eq.~\eqref{eq:spade_loss_channel} remains vacuum.  The first term is the part that passes through the apparatus.  The trace in the second term is the total probability lost from all modes.  Adding the failure state keeps the complete output normalized.  A value $\tau_j=1$ means full transmission of mode $j$, while $\tau_j=0$ means complete loss of that mode.
+Here $\rho$ denotes the one-photon block conditional on common survival. In the complete unconditional description, the vacuum branch produced by Eq.~\eqref{eq:spade_loss_channel} remains vacuum. The first term is the part that passes through the apparatus.  The trace in the second term is the total probability lost from all modes.  Adding the failure state keeps the conditional output normalized.  A value $\tau_j=1$ means full transmission of mode $j$, while $\tau_j=0$ means complete loss of that mode.
 
 Mode-dependent loss can change both accessible-state QFI and SPADE CFI.  The experiment did not provide an absolute transmission calibration for each mode.
 
@@ -263,10 +276,10 @@ Using the POVM convention of Chapter~\ref{ch:MathBackground}, we specify the ide
     M_{\mathrm{fail}} & =\mathbb{I}-M_0-M_1
     \label{eq:spade_imperfect_povm}
 \end{align}
-The accessible state gives probabilities $p_y=\operatorname{Tr}(M_y\rho_M)$.  As said, we could wait for a complete low-order experiment that would record all three outcomes.  In the present model, the pre-measurement quantum channels contain optical mixing and collection loss. The available record stores only repeated counts assigned to the coarse-grained $M_1$ result. It is a coarse-graining of the POVM.
+Let $\widetilde{\rho}_M$ denote the accessible state conditional on common survival. It includes the explicit failure outcome from mode-dependent loss and inaccessible modes. The corresponding probabilities are $\widetilde{p}_y=\operatorname{Tr}(M_y\widetilde{\rho}_M)$. A complete low-order experiment would record all three outcomes. The available record instead stores only repeated counts assigned to the coarse-grained $M_1$ result.
 
 \paragraph{Classical readout and cross-talk.}
-The POVM produces a probability vector $\boldsymbol p$ with components $p_0$, $p_1$, and $p_{\mathrm{fail}}$.  Confusion between reported ports is then described by the classical stochastic channel $\boldsymbol p_{\mathrm{rep}}=R\boldsymbol p$.  The sequential fit uses the readout matrix below.
+The POVM produces the conditional probability vector $\widetilde{\boldsymbol p}$ with components $\widetilde{p}_0$, $\widetilde{p}_1$, and $\widetilde{p}_{\mathrm{fail}}$.  Confusion between reported ports is then described by the classical stochastic channel $\widetilde{\boldsymbol p}_{\mathrm{rep}}=R\widetilde{\boldsymbol p}$.  The sequential fit uses the readout matrix below.
 \begin{equation}
     R_{\chi}=
     \begin{pmatrix}
@@ -283,12 +296,21 @@ The value $\chi=0.0035$ is fixed externally from the paper's reported cross-talk
 In the final stages, an additive background $B$, a multiplicative coupling field $g(d_a,\epsilon)$, and a discrete repeated-count law act on the reported probability.  We use the following sequential mean.
 \begin{equation}
     \mu(d_a,\epsilon)
-    =B+T\,g(d_a,\epsilon)\,p_{\mathrm{rep},1}(d_a,\epsilon)
+    =B+T\,g(d_a,\epsilon)\,\widetilde{p}_{\mathrm{rep},1}(d_a,\epsilon)
     \qquad
     T=N_{\mathrm{in}}\eta
     \label{eq:spade_count_channel}
 \end{equation}
-Here $N_{\mathrm{in}}$ is the number of incident photons in one $10\,\mathrm{ms}$ acquisition, and $\eta$ is their survival probability under the stated pre-measurement convention.  Their product $T$ is the identifiable conditional throughput scale.  The repeated counts follow $n_{1,r}\sim P_{\mathrm{count}}(\mu,\boldsymbol\zeta)$, where $\boldsymbol\zeta$ contains classical dispersion or tail parameters.  Background, calibration variation, and the count law may change the final count statistics and count CFI.  They do not change the state QFI before the POVM.
+Here $N_{\mathrm{in}}$ is the number of incident photons in one $10\,\mathrm{ms}$ acquisition, and $\eta$ is their common survival probability. Their product $T$ is the identifiable conditional throughput scale. The probability $\widetilde{p}_{\mathrm{rep},1}$ is conditional on survival and therefore does not contain another factor of $\eta$. Equivalently, the unconditional probability per incident photon is
+\begin{equation}
+    p_{\mathrm{rep},1}^{(\mathrm{in})}
+    =\eta\widetilde{p}_{\mathrm{rep},1}
+    \qquad
+    B+N_{\mathrm{in}}g\,p_{\mathrm{rep},1}^{(\mathrm{in})}
+    =B+Tg\,\widetilde{p}_{\mathrm{rep},1}
+    \label{eq:spade_conditional_unconditional_counts}
+\end{equation}
+The two forms are identical and count survival only once. The repeated counts follow $n_{1,r}\sim P_{\mathrm{count}}(\mu,\boldsymbol\zeta)$, where $\boldsymbol\zeta$ contains classical dispersion or tail parameters.  Background, calibration variation, and the count law may change the final count statistics and count CFI.  They do not change the state QFI before the POVM.
 
 The mean also shows the main quantities that cannot be separated.  The signal constrains products such as $N_{\mathrm{in}}\eta$ and modal transmission more directly than their separate factors.  The baseline can trade optical leakage against additive background.  A good fit to $\mu$ cannot uniquely validate all pre-measurement quantum maps at the same time.
 
@@ -301,13 +323,19 @@ This structure also gives clear information checkpoints.  Source-state QFI, post
 For parameter-independent maps, information cannot increase along the sequence.
 \begin{equation}
     \mathcal{F}_Q(\rho_S)
-    \geq \mathcal{F}_Q(\rho_{\mathrm{post}})
-    \geq \mathcal{F}_Q[\mathcal{E}_M(\rho_{\mathrm{post}})]
+    \geq \mathcal{F}_Q(\widetilde{\rho}_{\mathrm{post}})
+    \geq \mathcal{F}_Q[\mathcal{E}_M(\widetilde{\rho}_{\mathrm{post}})]
     \geq \mathcal{F}_{C}(\text{SPADE})
     \geq \mathcal{F}_{C}(\text{readout})
     \label{eq:spade_information_processing_chain}
 \end{equation}
-Equality holds across a fixed unitary at the state-QFI checkpoint.  Converting per-surviving-photon information into per-acquisition information requires a known photon number or throughput.  The behavior of the stochastic calibration field during an unknown-source measurement must also be defined before a final count CFI can be calculated.
+This chain is normalized per surviving photon. Equality holds across a fixed unitary at the state-QFI checkpoint. For the complete erasure state in Eq.~\eqref{eq:spade_loss_channel}, a separation-independent survival probability gives
+\begin{equation}
+    \mathcal{F}_Q(\rho_{\mathrm{surv}})
+    =\eta\mathcal{F}_Q(\rho_S)
+    \label{eq:spade_qfi_survival_scaling}
+\end{equation}
+The left side is the QFI per incident photon trial, while $\mathcal{F}_Q(\rho_S)$ is the QFI per surviving photon. Converting either quantity into information per acquisition requires a known photon number or throughput.  The behavior of the stochastic calibration field during an unknown-source measurement must also be defined before a final count CFI can be calculated.
 
 \subsection{Limitations}
 
@@ -404,11 +432,11 @@ The definitions and numerical methods are those of Chapter~\ref{ch:MathBackgroun
 \begin{equation}
     \mathcal{F}_{Q}^{\mathrm{model}}(d_a)
     =\mathcal{F}_{Q}\!\left[
-        \rho_{\mathrm{post}}(d_a,\epsilon;\boldsymbol\lambda)
+        \widetilde{\rho}_{\mathrm{post}}(d_a,\epsilon;\boldsymbol\lambda)
         \right]
     \label{eq:spade_model_qfi}
 \end{equation}
-This is the QFI of the assumed pre-measurement state for estimating $d_a$.  We then calculate the measurement CFI after the stated SPADE and readout maps.  These calculations show where the modeled receiver can lose information.  They do not reconstruct experimental QFI from $n_1$.
+This is the QFI of the assumed pre-measurement state conditional on common survival for estimating $d_a$.  We then calculate the measurement CFI after the stated SPADE and readout maps with the same normalization.  These calculations show where the modeled receiver can lose information.  They do not reconstruct experimental QFI from $n_1$.
 
 \subsection{Conditional information retention}
 

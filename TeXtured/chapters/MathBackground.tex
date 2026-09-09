@@ -1,7 +1,7 @@
 \chapter{Mathematical Background}
 \label{ch:MathBackground}
 
-This chapter introduces the mathematical tools used in the thesis: mixed quantum states, Fisher information, the symmetric logarithmic derivative, fidelity-based QFI bounds, and the quantum natural gradient. Supplementary material on generalized measurements, geometric extensions, and multiparameter bounds is collected in Appendix~\ref{app:mathematical_background}.
+This chapter introduces the mathematical tools used in the Thesis: mixed quantum states, Fisher information, the symmetric logarithmic derivative, fidelity-based QFI bounds, and the quantum natural gradient. Supplementary material on generalized measurements, geometric extensions, and multiparameter bounds is collected in Appendix~\ref{app:mathematical_background}.
 
 \section{Quantum States, Mixedness, and Open Systems}
 
@@ -32,7 +32,7 @@ This chapter introduces the mathematical tools used in the thesis: mixed quantum
 \end{definition}
 
 \begin{remark}[Ontic versus Epistemic Uncertainty]
-    The distinction between pure and mixed states highlights two fundamentally different types of uncertainty. A pure state represents a perfectly known system. Any unpredictability in measurement is purely intrinsic to quantum mechanics (it is an \emph{ontic} uncertainty, from greek \emph{ontos}, meaning \enquote{being}). A mixed state introduces classical uncertainty (\emph{epistemic} uncertainty, from greek \emph{episteme}, meaning \enquote{knowledge}), meaning the exact state of the system is unknown. This lack of knowledge typically arises either because the system was randomly prepared in one of several possible pure states, or because the system is entangled with an unobservable environment. Because completely different preparation methods can result in the exact same mixed state, quantities like the quantum Fisher information depend solely on the final parameterized density operator $\rho(\theta)$, rather than the specific ensemble of pure states used to create it.
+    The distinction between pure and mixed states highlights two fundamentally different types of uncertainty. A pure state represents a perfectly known system. Any unpredictability in measurement is purely intrinsic to quantum mechanics (it is an \emph{ontic} uncertainty, from greek \emph{ontos}, meaning \enquote{being}). A mixed state introduces also classical uncertainty (\emph{epistemic} uncertainty, from greek \emph{episteme}, meaning \enquote{knowledge}), meaning the exact state of the system is unknown. This lack of knowledge typically arises either because the system was randomly prepared in one of several possible pure states, or because the system is entangled with an unobservable environment. Because completely different preparation methods can result in the exact same mixed state, quantities like the quantum Fisher information depend solely on the final parameterized density operator $\rho(\theta)$, rather than the specific ensemble of pure states used to create it.
 \end{remark}
 
 \subsection{Parameterized States and Measurements}
@@ -64,11 +64,19 @@ This chapter introduces the mathematical tools used in the thesis: mixed quantum
     Projective measurements are a special case of POVMs. Further details on projective measurements and general POVMs are provided in Appendix~\ref{app:mathematical_background}.
 \end{definition}
 
-The two definitions above give the basic quantum-to-classical sequence used throughout the thesis.  The first arrow prepares a parameterized quantum state.  The measurement then converts that state into a classical probability distribution.
-\begin{Verbatim}[fontsize=\small]
-    quantum                         classical
-    rho_0 --> [ channel E_theta ] --> rho(theta) --> [ POVM {M_x} ] --> p(x|theta)
-\end{Verbatim}
+The two definitions above give the basic quantum-to-classical sequence used throughout the Thesis.  The first arrow prepares a parameterized quantum state.  The measurement then converts that state into a classical probability distribution.
+\begin{equation}
+    \underbrace{
+        \rho_0
+        \xrightarrow{\mathcal{E}_\theta}
+        \rho(\theta)
+    }_{\text{quantum state and evolution}}
+    \xrightarrow{\text{POVM }\{M_x\}_x}
+    \underbrace{
+        p(x\mid\theta)
+    }_{\text{classical outcome probabilities}}
+    \label{eq:quantum_to_classical_sequence}
+\end{equation}
 Noise and restricted access that act before the POVM belong inside the quantum part of this sequence.  Detector processing or statistical noise that acts on $p(x|\theta)$ belongs to the classical part.
 
 \section{From Classical to Quantum Fisher Information}
@@ -212,15 +220,21 @@ The optimization over all POVMs in Definition~\ref{eq:qfi_def} can be evaluated 
     This expression is exact but requires diagonalizing a $d\times d$ density matrix, with cost $\mathcal{O}(d^3)$.
 \end{remark}
 \begin{remark}[Vectorized evaluation of the QFIM]
-    For the small systems used to obtain classical reference values, the QFIM may also be evaluated through the support-restricted vectorized formula
+    For the small systems used to obtain classical reference values, the QFIM may also be evaluated through the support-restricted vectorized formula~\cite{safranek_2018}
     \begin{equation}
         H_{ij}
         =2\,\operatorname{vec}[\partial_i\rho]^\dagger
-        \left(\rho\otimes\mathbb{I}+\mathbb{I}\otimes\rho^T\right)^+
+        \left(\rho^T\otimes\mathbb{I}+\mathbb{I}\otimes\rho\right)^+
         \operatorname{vec}[\partial_j\rho]
         \label{eq:safranek_vectorized}
     \end{equation}
-    Here, the $\operatorname{vec}$ operator flattens the partial derivative matrix into a single column vector by stacking its columns. The Kronecker product structure $\left(\rho\otimes\mathbb{I}+\mathbb{I}\otimes\rho^T\right)$ defines a superoperator, which transforms standard left- and right-sided matrix multiplications into a single large matrix acting directly on the flattened vector space. Finally, ${}^{+}$ denotes the Moore--Penrose pseudoinverse, which restricts the matrix inversion strictly to the non-zero support of the density matrix to avoid division by zero in the null space. This is the formula used for the model QFI calculation in Chapter~\ref{ch:exoplanet_experiment}.
+    Here, $\operatorname{vec}$ stacks the columns of a matrix into one column vector. With this convention,
+    \begin{equation}
+        \operatorname{vec}(ABC)
+        =
+        \left(C^T\otimes A\right)\operatorname{vec}(B)
+    \end{equation}
+    The two Kronecker-product terms therefore represent multiplication by $\rho$ from the right and from the left. The symbol ${}^{+}$ denotes the Moore--Penrose pseudoinverse. It avoids inverting the zero-eigenvalue sector of the density operator. This is the formula used for the model QFI calculation in Chapter~\ref{ch:exoplanet_experiment}.
 \end{remark}
 
 \section{Fidelity and the Bures Geometry}
@@ -264,7 +278,7 @@ The Bures distance converts this measure of similarity into a geometric distance
 
 \section{Ansatz Geometry and the Quantum Natural Gradient}
 
-Quantum Fisher information appears in this thesis in two conceptually distinct settings. In quantum sensing, the parameters $\boldsymbol{\theta}$ represent unknown physical quantities encoded in a state $\rho(\boldsymbol{\theta})$. The corresponding QFI or QFIM quantifies how accurately these quantities can be estimated. In a variational quantum circuit, by contrast, the parameters $\boldsymbol{\alpha}$ are adjustable controls chosen by an optimization algorithm. The associated QFIM describes the geometry of the family of states that the circuit can prepare.
+Quantum Fisher information appears in this Thesis in two conceptually distinct settings. In quantum sensing, the parameters $\boldsymbol{\theta}$ represent unknown physical quantities encoded in a state $\rho(\boldsymbol{\theta})$. The corresponding QFI or QFIM quantifies how accurately these quantities can be estimated. In a variational quantum circuit, by contrast, the parameters $\boldsymbol{\alpha}$ are adjustable controls chosen by an optimization algorithm. The associated QFIM describes the geometry of the family of states that the circuit can prepare.
 
 \begin{definition}[Ansatz quantum Fisher information matrix]
     Let $\rho_{\boldsymbol{\alpha}}$ be the state prepared by an ansatz, with circuit parameters $\boldsymbol{\alpha}$. Its \emph{ansatz QFIM} is defined by the SLDs $\ell_\mu$ satisfying $\partial_\mu\rho_{\boldsymbol{\alpha}}=\{\rho_{\boldsymbol{\alpha}},\ell_\mu\}/2$:

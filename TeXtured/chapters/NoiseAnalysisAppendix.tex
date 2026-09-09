@@ -97,34 +97,43 @@ For the matched thermal family, it is
 The matched-purity construction therefore compares chosen parameterized state paths.  It is not a fixed-channel experiment.  The full-to-local QFI inequalities in Chapter~\ref{ch:noise_analysis} provide a direct consistency check for these calculations.
 
 
-\section{Graphical calculus}
+\section{Graphical Calculus for Quantum Channels}
+\label{app:noise_graphical_calculus}
 
-We report some diagrammatic proofs of the Stinespring representation and its equivalence to the Kraus representation.  The graphical calculus is a powerful tool for reasoning about quantum processes, and it can simplify complex algebraic manipulations, and represent quantum operations in a more intuitive and visual manner.  The diagrams we used are based on \cite{wood2015graphical}
+The diagrams in Chapter~\ref{ch:noise_analysis} provide visual bookkeeping for quantum channels.  A wire represents a system index.  Joining two wires means that the corresponding indices are contracted.  Closing an output wire means that the system is traced out.  A box represents a state, an operator, or a channel, as indicated by its label.  The diagrams follow the tensor-network notation of Ref.~\cite{wood2015graphical}.  Reference~\cite{picturing_quantum_processes_2017} uses a related process-box notation.
 
-
-Another convenient reference is \cite{picturing_quantum_processes_2017} that uses another notation, but the one we used is more faithful to the formulas and more intuitive in my opinion. Here a small equivalence between the two notations is shown in Fig.~\ref{fig:diagram_extra_equivalence}.
+Figure~\ref{fig:diagram_extra_equivalence} compares the two styles.  Their shapes and wire directions differ, but they describe the same channel action.  The equations remain the definition of each map.  This is important for the Choi representation because bending an input wire depends on the chosen transpose convention.
 
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=0.7\textwidth]{figures/diagrams/diagram_extra_equivalence.jpg}
-    \caption{Equivalence between the graphical notations used in \cite{wood2015graphical} (left) and \cite{picturing_quantum_processes_2017} (right). Both depict a quantum channel acting on a state $\rho$, and a trace operation.}
+    \caption{Two graphical notations for the same channel action.  The tensor-network form from Ref.~\cite{wood2015graphical} is shown on the left.  The process-box form used in Ref.~\cite{picturing_quantum_processes_2017} is shown on the right.  In both cases, closing the environment output represents a trace.}
     \label{fig:diagram_extra_equivalence}
 \end{figure}
 
-Here we report the proof of the equivalence between the Stinespring representation and the Kraus representation, which is a fundamental result in quantum information theory. The Stinespring representation expresses a quantum channel as a unitary operation on a larger Hilbert space, while the Kraus representation expresses it as a sum of operators acting on the original Hilbert space.
+A Stinespring representation introduces an auxiliary environment $A$ in a fixed state $|\psi_A\rangle$.  A unitary $U$ acts on the input and this environment.  The environment is then traced out.  Choosing an orthonormal basis $\{|i\rangle_A\}$ gives the Kraus operators $K_i={}_A\langle i|U|\psi_A\rangle_A$ and the equivalent expressions
+\begin{equation}
+    \mathcal{E}(\rho)
+    =\operatorname{Tr}_A\!\left[
+        U(\rho\otimes|\psi_A\rangle\langle\psi_A|)U^\dagger
+        \right]
+    =\sum_i K_i\rho K_i^\dagger
+    \label{eq:noise_graphical_stinespring_kraus}
+\end{equation}
+The closed environment wire in Figure~\ref{fig:diagram_stinespring_to_kraus_extended_proof} represents the sum over $i$.  The environment used for this dilation is a mathematical part of the channel representation.  It is not automatically the physical subsystem $E$ discarded in the TFIM calculation.
 
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=0.7\textwidth]{figures/diagrams/diagram_stinespring_to_kraus_extended_proof.jpg}
-    \caption{Equivalence between the Stinespring representation and the Kraus representation.}
+    \caption{Graphical reduction from Stinespring form to Kraus form.  The first line applies $U$ and $U^\dagger$ around the input state and closes the environment wire.  Inserting an environment basis resolves this closed wire into Kraus factors.  Grouping the remaining contractions gives $\sum_iK_i\rho K_i^\dagger$, as in Eq.~\eqref{eq:noise_graphical_stinespring_kraus}.}
     \label{fig:diagram_stinespring_to_kraus_extended_proof}
 \end{figure}
 
-
+The Choi matrix is another representation of the same channel.  It contains the channel information in one operator, but it is not the channel map itself.  With the column Choi convention used in this Thesis, its action on $\rho$ is fixed by Eq.~\eqref{eq:choi_channel_action}.  The transpose in that equation is represented graphically by bending the input wire before contracting it with the Choi tensor.  Decomposing the Choi matrix into Kraus factors then gives the same operator-sum expression as Eq.~\eqref{eq:noise_graphical_stinespring_kraus}.
 
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=0.7\textwidth]{figures/diagrams/diagram_Choi_to_kraus_extended_proof.jpg}
-    \caption{Equivalence between the Choi representation and the Kraus representation.}
+    \caption{Graphical relation between Choi and Kraus representations.  The input density operator is contracted with the Choi tensor using the convention of Eq.~\eqref{eq:choi_channel_action}.  Factoring the Choi tensor and regrouping its contractions gives the Kraus form.  The closed wire denotes the implicit sum over the Kraus index.}
     \label{fig:diagram_Choi_to_kraus_extended_proof}
 \end{figure}

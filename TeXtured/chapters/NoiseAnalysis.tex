@@ -20,10 +20,10 @@ Let $S$ denote the accessible $n$-qubit subsystem and $E$ the inaccessible compl
 
 The common open-chain Hamiltonian, and the backbone of every geometry used in studies, is the $N$-qubit TFIM defined in Eq.~\eqref{eq:tfim_hamiltonian}, with nearest-neighbor $ZZ$ coupling and a transverse field along $X$ (reported here for clarity).
 \begin{equation}
-    H_N(h_x)=-J\sum_{i=0}^{N-2}Z_iZ_{i+1}-h_x\sum_{i=0}^{N-1}X_i.
+    H_N(h_x)=-J\sum_{i=0}^{N-2}Z_iZ_{i+1}-h_x\sum_{i=0}^{N-1}X_i
     \label{eq:noise_tfim_hamiltonian}
 \end{equation}
-In each numerical subsection, $H_N(h_x)$ denotes the finite-chain Hamiltonian for the geometry stated there. The numerical results use $J=1$, so that the phase transition occurs around $h_x\approx 1$ (we will see that it is typically before due to finite-size of the chain).
+In each numerical subsection, $H_N(h_x)$ denotes the finite-chain Hamiltonian for the stated geometry.  The numerical results use $J=1$.  The infinite-chain critical point is then $h_x/J=1$, while the finite systems studied here can have their largest response at a smaller field.
 
 \begin{infobox}{What is being compared}
     Within each comparison, every branch starts from the same parameter-dependent TFIM Hamiltonian $H_N(h_x)$ and retains the same subsystem $S$.  What changes is how the full probe is prepared before the partial trace:
@@ -32,114 +32,118 @@ In each numerical subsection, $H_N(h_x)$ denotes the finite-chain Hamiltonian fo
         \item \textbf{Depolarizing control.}  Prepare the ground state, apply a fixed depolarizing channel to the full probe, and then trace out $E$.  This is the only fixed, parameter-independent noise channel considered here.
         \item \textbf{Thermal family.}  Prepare the full probe in the Gibbs state at fixed inverse temperature $\beta$, and then trace out $E$.  This is a distinct parameter-dependent preparation family, not a fixed channel applied to the ground-state family.
     \end{enumerate}
-    An important note is that the main comparison is not ``the same state with two kinds of noise.''  It is a comparison of three reduced states produced by three distinct physical histories.  Secondly, the traced-out subsystem $E$ is not the external bath used to prepare a Gibbs state, it is simply the finite portion of the probe to which the observer has no local access.
+    The main comparison is not ``the same state with two kinds of noise.''  It compares three reduced states produced by three different physical histories.  The traced-out subsystem $E$ is not the external bath used to prepare a Gibbs state.  It is the finite part of the probe that the observer cannot access.
 \end{infobox}
 
 \begin{definition}[Prepared and reduced state families]
     The ground-state reference, depolarized, and thermal families are
     \begin{align}
         \rho_{\mathrm{G},N}(h_x)
-         & \coloneqq |\psi_0(h_x)\rangle\langle\psi_0(h_x)|,              &
+         & \coloneqq |\psi_0(h_x)\rangle\langle\psi_0(h_x)|               &
         \rho_{\mathrm{G},S}(h_x)
          & \coloneqq \operatorname{Tr}_E[\rho_{\mathrm{G},N}(h_x)]          \\
         \rho_{\mathrm{dep},N}(h_x;P)
-         & \coloneqq \Lambda^{(N)}_P[\rho_{\mathrm{G},N}(h_x)],           &
+         & \coloneqq \Lambda^{(N)}_P[\rho_{\mathrm{G},N}(h_x)]            &
         \rho_{\mathrm{dep},S}(h_x;P)
          & \coloneqq \operatorname{Tr}_E[\rho_{\mathrm{dep},N}(h_x;P)]      \\
         \rho_{\mathrm{th},N}(h_x;\beta)
-         & \coloneqq \frac{\exp[-\beta H_N(h_x)]}{Z(h_x,\beta)},          &
+         & \coloneqq \frac{\exp[-\beta H_N(h_x)]}{Z(h_x,\beta)}           &
         \rho_{\mathrm{th},S}(h_x;\beta)
          & \coloneqq \operatorname{Tr}_E[\rho_{\mathrm{th},N}(h_x;\beta)]   \\
-        \text{Where: } Z(h_x,\beta)
+        Z(h_x,\beta)
          & \coloneqq \operatorname{Tr}[\exp[-\beta H_N(h_x)]]
         \label{eq:noise_state_families}
     \end{align}
-    Here $\beta$ is the inverse temperature of the Gibbs preparation: larger $\beta$ means a colder Gibbs state.  When the ground state is nondegenerate, the Gibbs family approaches the ground-state reference as $\beta\to\infty$. At a degeneracy, it instead approaches the normalized projector onto the ground-state subspace. The notation follows    $\rho_{\text{family}, \text{ system\_size}}$.
+    Here $\beta$ is the inverse temperature of the Gibbs preparation.  A larger $\beta$ means a colder state.  When the ground state is nondegenerate, the Gibbs family approaches the ground-state reference as $\beta\to\infty$.  At a degeneracy, it approaches the normalized projector onto the ground-state subspace.  We use $\rho_{\text{family},\text{system size}}$ to identify both the preparation and the number of retained qubits.
 \end{definition}
 
 
-The full-system depolarizing channel used in this chapter is
-\begin{equation}
-    \Lambda_P^{(N)}(\rho)
-    =(1-P)\rho+P\frac{\mathbb{I}_{2^N}}{2^N},
-    \qquad 0\leq P\leq1.
-    \label{eq:full_depolarizing_channel}
-\end{equation}
-It replaces the input by the maximally mixed $N$-qubit state with probability $P$. Since depolarization is applied before the partial trace,
-\begin{equation}
-    \rho_{\mathrm{dep},S}(h_x;P)
-    =(1-P)\rho_{\mathrm{G},S}(h_x)
-    +P\frac{\mathbb{I}_{2^n}}{2^n}.
-    \label{eq:reduced_depolarizing_state}
-\end{equation}
+\subsection{The three preparation paths}
 
-The three primary local states are $\rho_{\mathrm{G},S}$, $\rho_{\mathrm{dep},S}$, and $\rho_{\mathrm{th},S}$.  They have the same accessible Hilbert-space dimension, but not the same spectrum or dependence on $h_x$.  Each full-system curve is a reference ceiling for the reduced state in the corresponding preparation family. The physical question is always what an observer can learn while having access only to $S$.
+The three local states $\rho_{\mathrm{G},S}$, $\rho_{\mathrm{dep},S}$, and $\rho_{\mathrm{th},S}$ act on the same $n$-qubit Hilbert space.  However, they are produced in different ways and need not have the same spectrum or dependence on $h_x$.  Within each preparation family, the full-system QFI is a reference ceiling for the local QFI after $E$ is discarded.
 
-A diagrammatic summary is:
+The arrows below show the physical order of each calculation.  The accompanying figures use the graphical notation of Ref.~\cite{wood2015graphical}.  They are visual representations of the same maps, not extra stages in the model.  Appendix~\ref{app:noise_graphical_calculus} explains how to read the diagrams.
 
+\paragraph{Ground-state branch.}
+The first branch prepares the ground state of the field-dependent Hamiltonian and then restricts access to $S$.
 \[
     h_x\longrightarrow H_N(h_x)\longrightarrow |\psi_0(h_x)\rangle
     \longrightarrow \rho_{\mathrm{G},N}(h_x)
     \xrightarrow{\operatorname{Tr}_E}\rho_{\mathrm{G},S}(h_x)
-    \longrightarrow \text{Local QFI}.
+    \longrightarrow \text{local QFI}
 \]
-There is no external noise map. The subsystem is mixed because it is correlated with the discarded degrees of freedom. We also picture a category theory graphical calculus version of the channels, based on \cite{wood2015graphical}.
-
+There is no added noise channel in this branch.  The global ground state is pure, but it can be entangled across the $S$--$E$ partition.  Tracing out $E$ can therefore leave a mixed state on $S$.
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=\textwidth]{figures/diagrams/diagram_encoding_hamiltonian.jpg}
-    \caption{Diagrammatic summary of how the parameter $h_x$ is encoded in the Hamiltonian, the state and the density matrix are created, in this initial phase the system is still separable.}
+    \includegraphics[width=0.7\textwidth]{figures/diagrams/diagram_encoding_hamiltonian.jpg}
+    \caption{Graphical construction of the ground-state density operator.  The field $h_x$ enters the Hamiltonian and therefore the ground-state vector.  Joining the state vector to its adjoint forms the global density operator.  The outgoing wires are divided into the accessible subsystem $S$ and the discarded subsystem $E$.  The global state is not assumed to factorize across this division.}
     \label{fig:diagram_encoding_hamiltonian}
 \end{figure}
 
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.6\textwidth]{figures/diagrams/diagram_stinespring_to_kraus.jpg}
-    \caption{Stinespring system representation.  The system $S$ is the accessible subsystem, while $E$ is the inaccessible complement.  The Stinespring representation is useful because we can consider a unitary $U$ acting on the state state and on the environment. The partial trace over $E$, represented as a closed loop, connecting the wires, produces the reduced state of $S$. It is equivalent to the channel representation of the same process, which is obtained by applying the Kraus operators $K_i$ to the state of $S$ (See. the graphical proof in Fig.~\ref{fig:diagram_stinespring_to_kraus_extended_proof}).}
-    \label{fig:diagram_stinespring_evolution}
-\end{figure}
-
-The depolarizing channel is parameter independent when $P$ is fixed, it can also be described clearly with a Choi, Stinespring, or Kraus representation.
+\paragraph{Depolarized branch.}
+The second branch applies a depolarizing channel to the full ground state before $E$ is discarded.  The channel is
+\begin{equation}
+    \Lambda_P^{(N)}(\rho)
+    =(1-P)\rho+P\frac{\mathbb{I}_{2^N}}{2^N}
+    \qquad 0\leq P\leq1
+    \label{eq:full_depolarizing_channel}
+\end{equation}
+At $P=0$, the input is unchanged.  At $P=1$, it is replaced by the maximally mixed $N$-qubit state.  The channel is independent of $h_x$ when $P$ is fixed.  Since the partial trace is linear, its action on the accessible subsystem is
+\begin{equation}
+    \rho_{\mathrm{dep},S}(h_x;P)
+    =(1-P)\rho_{\mathrm{G},S}(h_x)
+    +P\frac{\mathbb{I}_{2^n}}{2^n}
+    \label{eq:reduced_depolarizing_state}
+\end{equation}
+The full path is therefore
 \[
     \rho_{\mathrm{G},N}(h_x)
     \xrightarrow{\Lambda_P^{(N)}}\rho_{\mathrm{dep},N}(h_x;P)
     \xrightarrow{\operatorname{Tr}_E}\rho_{\mathrm{dep},S}(h_x;P)
-    \longrightarrow \text{local QFI}.
+    \longrightarrow \text{local QFI}
 \]
+
+A quantum channel can be drawn in Stinespring, Kraus, or Choi form.  These forms describe the same input--output map.  In a generic Stinespring diagram, the environment is an auxiliary system used to represent the channel.  It should not automatically be identified with the physical TFIM subsystem $E$.  For the partial-trace step itself, $E$ does denote the qubits that the observer cannot access.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\textwidth]{figures/diagrams/diagram_stinespring_to_kraus.jpg}
+    \caption{Generic Stinespring representation of a quantum channel.  A unitary $U$ acts on the input and an auxiliary environment prepared in a fixed state.  Closing the environment wire represents the partial trace and gives the channel output $\mathcal{E}(\rho)$.  This auxiliary environment is not automatically the inaccessible TFIM subsystem $E$.  Figure~\ref{fig:diagram_stinespring_to_kraus_extended_proof} gives the graphical reduction to Kraus form.}
+    \label{fig:diagram_stinespring_evolution}
+\end{figure}
 
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=0.7\textwidth]{figures/diagrams/diagram_Choi_to_kraus.jpg}
-    \caption{Equivalence between the Choi representation and the Kraus representation.}
+    \caption{Generic Choi and Kraus representations of the same channel action.  The closed wires denote index contractions, including the sum over the Kraus index.  In the drawing, $\Lambda$ denotes a Choi tensor.  In the chapter equations, $\Lambda_P^{(N)}$ denotes the depolarizing map itself, whose Choi matrix is written $J(\Lambda_P^{(N)})$.  The convention is fixed by Eq.~\eqref{eq:choi_channel_action}.}
     \label{fig:diagram_Choi_to_kraus}
 \end{figure}
 
-
-Thermal branch has a different initialization,that both $H_N$ and the Gibbs state depend on $h_x$.This branch begins from a separately prepared Gibbs state.  It does not apply a thermal channel to $\rho_{\mathrm{G},N}$.
+\paragraph{Thermal branch.}
+The third branch starts from a separately prepared Gibbs state.  It does not apply a thermal channel to $\rho_{\mathrm{G},N}$.  Both the Hamiltonian and the Gibbs state depend on $h_x$, while $\beta$ is fixed during a field scan.
 \[
     h_x\longrightarrow H_N(h_x)\longrightarrow\rho_{\mathrm{th},N}(h_x;\beta)
     \xrightarrow{\operatorname{Tr}_E}\rho_{\mathrm{th},S}(h_x;\beta)
-    \longrightarrow \text{local QFI}.
+    \longrightarrow \text{local QFI}
 \]
 
-
-
 \begin{infobox}{Scope of the Thermal Model}
-    The thermal branch does not model dynamical thermalization of the accessible subsystem by the discarded qubits. Instead, we assume that the full finite TFIM probe has been prepared in the Gibbs state
+    We assume that an external preparation process creates the full finite TFIM probe in the Gibbs state
     \[
         \rho_{\mathrm{th},N}(h_x;\beta)
         =
         \frac{e^{-\beta H_N(h_x)}}{Z(h_x,\beta)}
     \]
-    by an external, unmodelled equilibrium-preparation mechanism. We then restrict access to the subsystem $S$ by tracing out the complementary degrees of freedom $E$. So $E$ represents an inaccessible part of the prepared probe, not to be confused with the macroscopic thermal bath. In general,
+    The preparation process itself is not modelled.  The subsystem $E$ is the part of the prepared probe that the observer cannot access.  It is not the thermal bath, and it is separate from the auxiliary environment in a generic Stinespring representation.
+
+    The reduced state is not generally the Gibbs state of an isolated subsystem Hamiltonian
     \[
         \operatorname{Tr}_E[\rho_{\mathrm{th},N}]
         \neq
         \frac{e^{-\beta H_S}}{\operatorname{Tr}[e^{-\beta H_S}]}
     \]
-    because interactions across the $S$--$E$ boundary and their correlations remain encoded in the reduced state. Our model  studies the local metrological consequences of global thermal preparation, rather than a microscopic thermalization dynamics.
+    Interactions across the $S$--$E$ boundary create correlations that remain visible in the reduced state.  This branch studies the local sensitivity produced by global Gibbs preparation.  It does not model thermalization dynamics.
 \end{infobox}
 
 
@@ -630,4 +634,3 @@ Entanglement-induced mixedness, depolarization, and thermal population are not i
 % The present data establish finite-system trends rather than asymptotic laws.  A controlled size study, performed separately at fixed accessible size $n$ and fixed retained fraction $n/N$, is required before assigning scaling exponents to peak heights or locations.  The low-temperature limit should likewise be checked through pointwise convergence of the thermal family to the reduced ground-state family and through more than one well-defined crossover diagnostic.
 
 For the finite probes studied here, local metrological performance depends on the full sequence that produces the accessible state.  Access to the relevant subsystem, the low-energy spectrum, and the way mixedness is prepared all matter.
-
