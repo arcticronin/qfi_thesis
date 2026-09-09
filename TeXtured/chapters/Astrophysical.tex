@@ -5,7 +5,7 @@ This chapter establishes the theoretical basis for applying quantum parameter es
 
 The source model and the spatial-mode demultiplexing (SPADE) receiver presented here are based mainly on the established framework of Refs.~\cite{Santamaria2024single,Tsang2016quantum}.  Direct imaging measures the position of each detected photon, while SPADE projects the light onto spatial modes matched to the telescope's point-spread function (PSF).  We use a star-centred coordinate convention and assume that the mode sorter is ideally aligned with the star.  This makes it possible to show how a small planetary displacement appears in the first-order Hermite--Gaussian modes.
 
-The work of this chapter is to express this optical model consistently in the density-operator, measurement, and Fisher-information notation introduced earlier in the thesis.  It also makes explicit the assumptions needed to connect the ideal source model to the available experimental observables.  The original experimental analysis is developed in Chapter~\ref{ch:exoplanet_experiment}.
+The work of this chapter is to express this optical model consistently in the density-operator, measurement, and Fisher-information notation introduced earlier in the Thesis.  It also makes explicit the assumptions needed to connect the ideal source model to the available experimental observables.  The original experimental analysis is developed in Chapter~\ref{ch:exoplanet_experiment}.
 
 \subsection{The exoplanet characterization problem}
 Consider a star, denoted by $A$, with intensity $I_A$, and an exoplanet, denoted by $B$, with intensity $I_B$. This system is characterized by the relative intensity ratio (or contrast ratio) $\epsilon$
@@ -45,7 +45,7 @@ The PSF is commonly modeled as a Gaussian of width $w_0$ ~\cite{Santamaria2024si
 \subsection{Problem with Intensity Imaging}
 Direct imaging is a common astronomical technique for detecting exoplanets. It involves capturing photographs or light spectra of an exoplanet by pointing a telescope directly at it.
 
-Unfortunately, this detection method is not suitable for the sub-Rayleigh regime we want to treat in this thesis. To address this point more formally, below we compute the Fisher information for the system under study.
+Unfortunately, this detection method is not suitable for the sub-Rayleigh regime we want to treat in this Thesis. To address this point more formally, below we compute the Fisher information for the system under study.
 
 We consider the exoplanet and the star separated by a distance $d$ along the $x$ direction, with the star's position taken as known, and we model the PSF as a Gaussian of width $w_0$. Direct imaging records the transverse position at which each detected photon lands on the image plane. Conditional on a photon being detected, this position is distributed according to
 \begin{equation}
@@ -201,7 +201,7 @@ The low-order modal cutoff is therefore
     \Pi_{\mathrm{rest}}\coloneqq\mathbb{I}-\Pi_{\leq1}.
     \label{eq:hg_low_order_cutoff}
 \end{equation}
-Equations~\eqref{eq:pi0_def}, \eqref{eq:pi1_def}, and \eqref{eq:hg_low_order_cutoff} retain the three lowest modes---one fundamental and two first-order modes---and collect all higher orders in the complementary outcome $\Pi_{\mathrm{rest}}$.  This is a fixed measurement subspace selected by the receiver, not a truncation based on the eigenvalues of $\rho_d$.  The distinction becomes important when SPADE is related to truncated QFI in the next chapter.
+Equations~\eqref{eq:pi0_def}, \eqref{eq:pi1_def}, and \eqref{eq:hg_low_order_cutoff} retain the three lowest modes---one fundamental and two first-order modes---and collect all higher orders in the complementary outcome $\Pi_{\mathrm{rest}}$.  This is a fixed measurement subspace selected by the receiver, not a truncation based on the eigenvalues of $\rho_d$.  The next chapter uses this distinction when it separates the recorded SPADE data from a possible future variational extension of the receiver.
 
 The individual first-order probabilities are the projections of $\rho_d$ onto $HG_{01}$ and $HG_{10}$.  Specializing Eqs.~(12) and (13) of Ref.~\cite{Santamaria2024single} to perfect alignment gives
 \begin{align}

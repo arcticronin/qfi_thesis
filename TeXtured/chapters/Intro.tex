@@ -1,7 +1,7 @@
 \chapter{Introduction}
 \label{ch:introduction}
 
-\section{Problem and Research Context}
+\section{The Problem}
 
 Quantum metrology studies how physical parameters can be estimated from quantum systems with the best possible precision~\cite{Maccone2020squeezing}.  Its practical question is broader than finding the largest ideal sensitivity.  A useful sensor must work over a known parameter range, with a state that can be prepared, a measurement that can be performed, and noise and limited access that can be described.
 
@@ -11,17 +11,21 @@ A quantum magnetometer gives a clear example.  A many-body spin system, here rep
 
 A second version of the design problem appears in high-contrast imaging.  A faint exoplanet close to a bright star produces only a small change in a diffraction-limited image.  Spatial-mode demultiplexing (SPADE) can move this information into low-order spatial modes and improve separation estimation in the sub-Rayleigh regime~\cite{Santamaria2024single,Tsang2016quantum}.  Its practical value still depends on alignment, loss, mode mixing, readout, background, and the outcomes recorded by the experiment.
 
-The institutional setting brought these two problems together.  This work was carried out within a research contract between the Quantum Intelligence Lab and the Italian Space Agency (ASI) for the project \emph{Quantum Computers for Space Exploration}.  The problem was about using QFI to analyse quantum sensors.  The collaboration also provided data from a completed SPADE experiment at ASI Matera.  These inputs led to two connected research lines: computational analysis of quantum sensors and physical modelling of an optical receiver.
+The institutional setting brought these two problems together.  This work was carried out within a research contract between our Quantum Intelligence Lab at Università degli Studi di Milano and the Italian Space Agency (ASI) for the project \emph{Quantum Computers for Space Exploration}.  The problem was about using QFI to analyse quantum sensors.  The collaboration also provided data from a completed SPADE experiment at ASI Matera.  These inputs led to two connected research lines: computational analysis of quantum sensors and physical modelling of an optical receiver.
 
-\section{Approach and Key Findings}
+We ask one quantitative question: \emph{how does the accessible QFI change when preparation, restricted access, noise, and readout are included?}  The answer depends on the physical process.  For the periodic $N=6$, $n=4$ TFIM, preparing the full probe in a Gibbs state at $\beta=5$ gives a $23.5\%$ higher peak local QFI than the reduced ground state.  It also gives more local QFI at $40$ of $60$ sampled fields.  By contrast, in the conditional SPADE model, binary CFI after the assumed readout cross-talk retains only $0.13\%$--$57.0\%$ of the source-state QFI.
+
+\section{Approach}
 
 The first research line develops the mathematical and computational tools needed for mixed-state metrology.  Truncated QFI (TQFI) uses the dominant eigenspace of a state to bound fidelity-based QFI quantities.  This work implements the Variational Quantum State Eigensolver (VQSE) and places it within the Variational Quantum Fisher Information Estimation (VQFIE) pipeline.  Together they provide a quantum--classical route to these bounds without full density-matrix diagonalization~\cite{beckey2022vqfiea,cerezo2022vqse}.
 
 The TFIM study applies these ideas to a finite quantum magnetometer.  Restricting access to part of the probe cannot increase QFI within a preparation family, while access to more qubits recovers the full-system response.  Fixed depolarization lowers local QFI throughout the tested sweep.  Finite-temperature Gibbs preparation gives a different result.  Although it can have a lower maximum than the reduced ground-state preparation, it can provide more local QFI over broad off-peak field ranges.  In colder finite-system regime, it can also give large peaks.  Thermal populations can therefore be useful when the operating field is not close to the ground-state optimum.
 
-The second research line studies the exoplanet problem.  The theoretical analysis explains why direct imaging is poorly conditioned at high contrast and why low-order SPADE modes remain sensitive to small separations.  For the assumed source model, full ideal SPADE is nearly QFI-optimal over the tested settings.
+The second research line studies the exoplanet identification problem.  The theoretical analysis explains why direct imaging is poor conditioned at high contrast and why low-order SPADE modes remain sensitive to small separations.  For the assumed source model, full ideal SPADE is nearly QFI-optimal over the tested settings.
 
-The experimental project began with the aim of applying TQFI to SPADE data supplied after the experiment had ended.  TQFI requires the dominant eigenvalues and eigenvectors of a parameterized state, but the record contains only aggregate first-order counts.  These counts do not determine the separate modal populations or HG-basis coherences needed to reconstruct that state.  An experimental TQFI analysis is therefore not identifiable from this record alone.
+The initial experimental question was if the completed SPADE record could support a TQFI analysis.  TQFI requires access to the dominant eigenspace, either through a variational diagonalization protocol or through enough information about the state and its channels.  The experiment had already ended when the data were supplied.  It had not included programmable basis rotations, and the archived record contains only aggregate first-order counts rather than separate modal populations or HG-basis coherence measurements.  The record therefore cannot support the proposed protocol.
+
+As a secondary outlook, the thesis proposes VQ-SPADE as a possible optical version of VQSE.  A programmable coherent mode transformation would rotate the dominant eigenvectors onto resolved SPADE outputs.  Further measurements would then be needed to construct the TQFI bounds.  VQ-SPADE was not implemented or tested with the available experiment.  It is a possible direction for a future acquisition rather than a result of the present data analysis.
 
 This limit led to a new contribution.  A classical statistical model was first fitted to the observable population-level response.  The experiment was then organized as a quantum-to-classical sequence containing source preparation, quantum propagation and loss, accessible-mode reduction, SPADE measurement, classical readout, calibration, and count statistics.  The fitted data describe only the classical projection at the end of this sequence.  They do not reconstruct the complete quantum channels.
 
@@ -29,7 +33,7 @@ The channel framework is useful because it preserves probability, separates phys
 
 Across both research lines, metrological performance depends on the complete path from preparation to accessible data.  Purity alone does not determine useful QFI, peak QFI alone does not define a useful operating range, and a successful fit to observed counts does not reconstruct an unknown quantum process.
 
-\section{Thesis Structure and Scope}
+\section{Thesis Structure}
 
 Chapter~\ref{ch:MathBackground} introduces the mathematical background for density operators, channels, measurements, CFI, QFI, fidelity, and numerical QFI evaluation.
 
@@ -39,6 +43,6 @@ Chapter~\ref{ch:noise_analysis} reports numerical experiments on a noisy and par
 
 Chapter~\ref{ch:astrophysical_theory} develops the theoretical exoplanet problem, the high-contrast limit of direct imaging, and the SPADE measurement principle.
 
-Chapter~\ref{ch:exoplanet_experiment} then studies the experimental count record and develops the quantum-to-classical channel method that replaced the intended experimental TQFI analysis.
+Chapter~\ref{ch:exoplanet_experiment} then studies the experimental count record and develops the quantum-to-classical channel method that became the main outcome of that study.  It also outlines VQ-SPADE as a possible future connection to TQFI.
 
 The study is limited to single-parameter estimation, finite TFIM systems, and the available weak-light SPADE record.  The numerical results establish finite-system and dataset-specific behavior rather than universal scaling laws.  The appendices collect supporting mathematical material, derivative conventions, statistical diagnostics, and provisional channel tests.

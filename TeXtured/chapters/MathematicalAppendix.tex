@@ -1,39 +1,46 @@
 \chapter{Supplementary Mathematical Background}
 \label{app:mathematical_background}
 
-This appendix records several standard results that provide useful context but are not required for following the main argument of the thesis. They were taken from ~\cite{nielsen_chuang_2010_quantum_computation_and_quantum_information, quantum_theory_from_first_principles}. The notation follows Chapter~\ref{ch:MathBackground}.
+This appendix collects standard results that support the main text but are not needed to follow its central argument~\cite{nielsen_chuang_2010_quantum_computation_and_quantum_information,quantum_theory_from_first_principles}.  The notation follows Chapter~\ref{ch:MathBackground}.
 
 \section{Generalized Measurements}
 
-\begin{definition}[Kraus Operator]
-    An outcome-resolved quantum measurement may be described by Kraus operators $\{K_{x,a}\}$, for which
+\begin{definition}[Kraus operators]
+    An outcome-resolved quantum measurement can be described by Kraus operators $\{K_{x,a}\}$ with
     \begin{equation}
-        p(x|\rho)=\sum_a\operatorname{Tr}\!\left[K_{x,a}\rho K_{x,a}^\dagger\right],
+        p(x|\rho)=\sum_a\operatorname{Tr}\!\left[K_{x,a}\rho K_{x,a}^\dagger\right]
         \qquad
-        \sum_{x,a}K_{x,a}^\dagger K_{x,a}=\mathbb{I}.
+        \sum_{x,a}K_{x,a}^\dagger K_{x,a}=\mathbb{I}
     \end{equation}
-    The associated POVM elements are $M_x=\sum_aK_{x,a}^\dagger K_{x,a}$, recovering Eq.~\eqref{eq:povm_def}. An individual POVM element is also referred to as an effect, commonly denoted by $E_x = M_x$.
+    The associated POVM elements are $M_x=\sum_aK_{x,a}^\dagger K_{x,a}$, as in Eq.~\eqref{eq:povm_def}.  A POVM element is also called an effect and is often written as $E_x=M_x$.
+
+    The POVM gives only the probability of each outcome.  The Kraus operators also describe the state after that outcome.  If outcome $x$ is observed and $p(x|\rho)>0$, the normalized state is
+    \begin{equation}
+        \rho_x
+        =\frac{\sum_aK_{x,a}\rho K_{x,a}^\dagger}{p(x|\rho)}
+    \end{equation}
+    The index $a$ allows several unobserved state changes to produce the same recorded outcome $x$.
 \end{definition}
 
 \begin{theorem}[Naimark dilation]
-    Every POVM can be implemented as a projective measurement on a larger Hilbert space: there exist an ancilla state $|0\rangle_A$, a unitary $U$, and projectors $\{\Pi_x\}$ such that
+    Every POVM can be implemented as a projective measurement on a larger Hilbert space.  There are an ancilla state $|0\rangle_A$, a unitary $U$, and projectors $\{\Pi_x\}$ such that
     \begin{equation}
         \operatorname{Tr}[\rho M_x]
         =\operatorname{Tr}\!\left[
             U(\rho\otimes|0\rangle\langle0|_A)U^\dagger\Pi_x
-            \right].
+            \right]
         \label{eq:naimark_dilation}
     \end{equation}
 \end{theorem}
 
 \begin{remark}[Operational meaning]
-    It explains why optimizing over POVMs in the definition of QFI is physically meaningful, even when the receiver is implemented through a larger apparatus.
+    Naimark dilation shows that a generalized measurement can be built from ordinary unitary evolution and a projective measurement on a larger system.  This is why optimization over POVMs in the definition of QFI still refers to a physical measurement procedure.
 \end{remark}
 
 \section{Choi-Matrix Representation of a Quantum Channel}
 \label{sec:choi_quantum_channel}
 
-Chapter~\ref{ch:MathBackground} introduces quantum channels through their action on density operators and their Kraus representation. Here we record only the equivalent Choi-matrix representation. A quantum channel and its Choi matrix contain the same information, but they are not the same mathematical object. Let $J(\mathcal{E})$ denote the Choi matrix of a channel $\mathcal{E}:\mathcal{L}(\mathcal{X})\rightarrow\mathcal{L}(\mathcal{Y})$. In the column Choi convention, the channel acts on an input state as~\cite{wood2015graphical}
+Chapter~\ref{ch:MathBackground} introduces channels through their action on density operators and through Kraus operators.  Here we give the equivalent Choi-matrix description.  A channel and its Choi matrix contain the same information, but they are different mathematical objects.  The Choi matrix packages the action of the whole channel into one operator.  Let $J(\mathcal{E})$ denote the Choi matrix of a channel $\mathcal{E}:\mathcal{L}(\mathcal{X})\rightarrow\mathcal{L}(\mathcal{Y})$.  In the column Choi convention, the action on an input state is~\cite{wood2015graphical}
 \begin{equation}
     \mathcal{E}(\rho)
     =\operatorname{Tr}_{\mathcal{X}}\!\left[
@@ -42,32 +49,20 @@ Chapter~\ref{ch:MathBackground} introduces quantum channels through their action
         \right]
     \label{eq:choi_channel_action}
 \end{equation}
-The transpose and the contracted subsystem depend on the chosen Choi convention. Equation~\eqref{eq:choi_channel_action} fixes the convention used in the ASCII diagram below.
 
-\begin{Verbatim}[fontsize=\small]
-    rho_X^T ============+
-    |
-    +-----+-------------+
-    |     J(E)          |================ E(rho)_Y
-    +-------------------+
-    contraction Tr_X
-\end{Verbatim}
-
-Each double line represents the ket and bra indices of one density-operator subsystem. Joining the input line of $J(\mathcal{E})$ to $\rho^{\mathsf{T}}$ represents contraction over $\mathcal{X}$. The uncontracted $\mathcal{Y}$ line is the output state. This sketch is a reading aid, not an additional definition or a circuit implementation.
 
 \section{Classical Statistical Distance and Metrological Scaling}
 
 \begin{definition}[Wootters statistical distance]
     For nearby probability distributions, the Wootters statistical distance is
     \begin{equation}
-        \mathrm{d}s^2=\frac{1}{4}\sum_x\frac{(\mathrm{d}p_x)^2}{p_x}.
+        \mathrm{d}s^2=\frac{1}{4}\sum_x\frac{(\mathrm{d}p_x)^2}{p_x}
     \end{equation}
-    For a one-parameter family, $\mathrm{d}s^2=\mathcal{F}_{\mathrm{C}}(\theta)\mathrm{d}\theta^2/4$.
+    For a one-parameter family, $\mathrm{d}s^2=\mathcal{F}_{\mathrm{C}}(\theta)\mathrm{d}\theta^2/4$.  The factor $1/p_x$ means that the same absolute probability change carries more weight for a rare outcome than for a common one.
 \end{definition}
 
 \begin{remark}[Metrological scaling]
-    Fisher information is the local statistical distinguishability per unit change of the parameter.
-    For $N$ independent probes with a fixed per-probe information, the Cram\'er--Rao bound gives the standard-quantum-limit scaling $\Delta\theta=\mathcal{O}(N^{-1/2})$. Entangled probes can, under ideal unitary encoding, yield the Heisenberg scaling $\Delta\theta=\mathcal{O}(N^{-1})$. Noise, state-preparation cost, and the measurement required to attain the bound determine whether this ideal scaling is operationally relevant.
+    Fisher information measures how quickly nearby probability distributions separate when the parameter changes.  For $N$ independent probes with fixed information per probe, the Cram\'er--Rao bound gives the standard-quantum-limit scaling $\Delta\theta=\mathcal{O}(N^{-1/2})$.  Under ideal unitary encoding, entangled probes can reach the Heisenberg scaling $\Delta\theta=\mathcal{O}(N^{-1})$.  Noise, preparation cost, and the required measurement determine if this ideal scaling is useful in practice.
 \end{remark}
 
 \section{Geometric and Multiparameter Extensions}
@@ -78,28 +73,28 @@ Each double line represents the ket and bra indices of one density-operator subs
         Q_{\mu\nu}
         =\langle\partial_\mu\psi|
         (\mathbb{I}-|\psi\rangle\langle\psi|)
-        |\partial_\nu\psi\rangle.
+        |\partial_\nu\psi\rangle
         \label{eq:qgt_def}
     \end{equation}
-    Its real part is the Fubini--Study metric used by the quantum natural gradient, while its imaginary part is the Berry curvature.
+    Its real part is the Fubini--Study metric used by the quantum natural gradient.  Its imaginary part is the Berry curvature.  In simple terms, the real part measures how far the state moves, while the imaginary part records the geometric phase structure of that motion.
 \end{definition}
 
 \begin{remark}[Scope of the main text]
-    The main text uses only the real, metric component. The Bures metric is one member of a broader family of contractive Riemannian metrics classified by Petz. This classification is useful conceptually: under parameter-independent quantum channels, distinguishability cannot increase. The present thesis uses the Bures/SLD member because it is directly connected to the QFI in Eq.~\eqref{def:qfim_bures_relation}.
+    The main text uses only the real metric component.  The Bures metric belongs to a wider family of contractive metrics classified by Petz.  These metrics express the same basic idea: a parameter-independent quantum channel cannot make two nearby states easier to distinguish.  This thesis uses the Bures/SLD metric because Eq.~\eqref{def:qfim_bures_relation} connects it directly to QFI.
 \end{remark}
 
 \begin{remark}[Multiparameter compatibility]
-    For several physical parameters, the inverse QFIM provides a matrix-valued local precision benchmark, but the corresponding single-parameter optimal measurements need not be jointly attainable. A common sufficient local compatibility condition is
+    For several physical parameters, the inverse QFIM gives a local precision benchmark.  However, the best measurement for one parameter may be incompatible with the best measurement for another.  A common sufficient condition for local compatibility is
     \begin{equation}
         \operatorname{Tr}\!\left[\rho[L_i,L_j]\right]=0
-        \quad\text{for all } i,j.
+        \quad\text{for all } i,j
         \label{eq:weak_commutativity}
     \end{equation}
-    When this condition fails, the Holevo bound supplies the tighter asymptotic multiparameter limit. These refinements are not needed for the single-parameter QFI estimates and variational optimization studied in this thesis.
+    When this condition fails, the Holevo bound gives the tighter asymptotic limit for simultaneous estimation.  These refinements are not needed for the single-parameter QFI estimates and variational optimization studied in this thesis.
 \end{remark}
 
 \section{Rank Boundaries}
 
 \begin{remark}[Rank boundaries]
-    At parameter values where the rank of $\rho(\theta)$ changes, an SLD may be non-unique outside the support of the state. The QFI remains well defined by restricting the spectral sums and vectorized inverse in Chapter~\ref{ch:MathBackground} to terms with nonzero denominator, as indicated by Eqs.~\eqref{eq:sld_spectral_elements} and \eqref{eq:safranek_vectorized}. This convention is also the numerically stable one used for the classical reference calculations.
+    At a point where the rank of $\rho(\theta)$ changes, the SLD may not be unique outside the support of the state.  Intuitively, directions with zero probability do not define a unique observable response.  The QFI remains well defined when the spectral sums and vectorized inverse of Chapter~\ref{ch:MathBackground} keep only terms with a nonzero denominator, as in Eqs.~\eqref{eq:sld_spectral_elements} and~\eqref{eq:safranek_vectorized}.  This is also the numerically stable convention used in the classical reference calculations.
 \end{remark}

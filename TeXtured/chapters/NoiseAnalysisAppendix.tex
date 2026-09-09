@@ -1,13 +1,13 @@
 \chapter{Supplementary Numerical Details}
 \label{app:noise_analysis}
 
-This appendix records the proof for the non commutation of the operators of the Transverse-Field Ising Model (TFIM) Hamiltonian introduced in Chapter~\ref{ch:methods}, and the derivative convention used for the matched-purity control in Chapter~\ref{ch:noise_analysis}, that was analyzed and corrected while studying the case, because the naive approach we followed in the beginning, led to inconsistencies.  It is included to make the numerical comparison reproducible. This part does not introduce any additional physical assumptions or conclusions.
+This appendix gives three supporting details for Chapters~\ref{ch:methods} and~\ref{ch:noise_analysis}.  It shows why the two parts of the Transverse-Field Ising Model (TFIM) Hamiltonian do not commute, states finite-shot bounds for VQSE, and fixes the derivative convention for matched-purity paths.  These details make the numerical comparisons reproducible.  They do not add new physical assumptions or conclusions.
 
 
-\section{Non-commutation of the operators}
+\section{Non-commutation of the TFIM Terms}
 \label{app:non_commutation}
 
-To demonstrate that the operators do not commute, the global commutator can be evaluated by isolating the overlapping local terms. Because operators on distinct qubits commute ($Z_{i+1}X_i = X_iZ_{i+1}$), the $X$ operator passes freely through the adjacent $Z$, reducing the expression to the standard Pauli commutation relation $[X, Z] = -2iY$ on the shared qubit:
+The global commutator can be checked by looking only at local terms that act on the same qubit.  Operators on different qubits commute, so $Z_{i+1}X_i=X_iZ_{i+1}$.  The remaining calculation reduces to the Pauli relation $[X,Z]=-2iY$ on the shared qubit.
 \begin{equation}
     \begin{aligned}
         [X_i, Z_iZ_{i+1}]
@@ -19,15 +19,14 @@ To demonstrate that the operators do not commute, the global commutator can be e
     \end{aligned}
 \end{equation}
 
-Because this local evaluation yields a non-zero operator, the macroscopic Hamiltonians $H_X$ and $H_{ZZ}$ do not commute.
-This non-commutation necessitates the use of a Trotterized decomposition for the time evolution, as discussed in Section~\ref{sec:trotterization}.
+The final operator is nonzero, so the full Hamiltonian terms $H_X$ and $H_{ZZ}$ do not commute.  Their time evolutions cannot be separated exactly into independent exponentials.  Section~\ref{sec:trotterization} therefore uses a Trotter decomposition.
 
 
-\subsection{Finite Shot Sampling Complexity and Verification Bounds}
+\section{Finite-Shot Sampling and Verification Bounds}
 \label{appendix:finite_shot_sampling}
 % ==============================================================================
 
-Evaluating eigenvalues for VQSE, via empirical bitstring frequencies $f_i / N_{\text{runs}}$ introduces statistical sampling noise.
+VQSE estimates eigenvalues from the empirical bitstring frequencies $f_i/N_{\text{runs}}$.  A finite number of shots therefore introduces sampling noise.
 
 \begin{theorem}[Shot Complexity for Relative Accuracy]
     For one target probability $\tilde{\lambda}_i$, Hoeffding's inequality gives
@@ -47,26 +46,32 @@ Evaluating eigenvalues for VQSE, via empirical bitstring frequencies $f_i / N_{\
     where $\tilde{\lambda}_m$ is the smallest probability among the retained components.
 \end{theorem}
 
+The bound is controlled by the smallest retained probability.  Small eigenvalues need many more shots because the required sample size grows as $1/\tilde{\lambda}_m^2$.
+
 \begin{theorem}[Operational Error Verification Bound]
-    The total eigenvalue error $\epsilon_\lambda = \sum_{i=1}^m (\lambda_i - \tilde{\lambda}_i)^2$ and eigenvector alignment error $\epsilon_v = \sum_{i=1}^m \langle \delta_i | \delta_i \rangle$ (where $|\delta_i\rangle = (\mathbb{I} - |\tilde{\lambda}_i\rangle\langle\tilde{\lambda}_i|)\rho|\tilde{\lambda}_i\rangle$) are bounded by the convergence value of the cost function $C(\boldsymbol{\beta}_{\mathrm{opt}})$:
+    Define the total eigenvalue error as $\epsilon_\lambda=\sum_{i=1}^m(\lambda_i-\tilde{\lambda}_i)^2$.  Define the eigenvector alignment error as $\epsilon_v=\sum_{i=1}^m\langle\delta_i|\delta_i\rangle$, where $|\delta_i\rangle=(\mathbb{I}-|\tilde{\lambda}_i\rangle\langle\tilde{\lambda}_i|)\rho|\tilde{\lambda}_i\rangle$.  Both errors are bounded by the final cost $C(\boldsymbol{\beta}_{\mathrm{opt}})$.
     \begin{equation}
         \epsilon_\lambda, \, \epsilon_v \le \operatorname{Tr}[\rho^2] - \frac{(E_{m+1} - C(\boldsymbol{\beta}_{\mathrm{opt}}))^2}{\sum_{i=1}^m (E_{m+1} - E_i)^2}
         \label{eq:operational_error_bound}
     \end{equation}
-    Furthermore, an optional two-copy verification protocol using $b_m$ sampled bitstrings, with $m\leq b_m<2^n$, establishes a tighter hardware-verifiable bound:
+    An optional two-copy verification protocol gives a tighter bound that can be checked on hardware.  It uses $b_m$ sampled bitstrings with $m\leq b_m<2^n$.
     \begin{equation}
         \epsilon_\lambda, \, \epsilon_v \le \operatorname{Tr}[\rho^2] - \sum_{i=1}^{b_m} \tilde{\lambda}_i^2 - \frac{\left(1 - \sum_{i=1}^{b_m} \tilde{\lambda}_i\right)^2}{2^n - b_m}
         \label{eq:verification_bound_2copy}
     \end{equation}
 \end{theorem}
 
+The first bound uses the optimized cost to certify both eigenvalues and eigenvectors.  The two-copy version also uses the measured purity and sampled probabilities, so it can give a tighter check after training.
 
 
 
-\section{Derivative conventions for matched-purity paths}
+
+\section{Derivatives for Matched-Purity Paths}
 \label{app:matched_purity_derivatives}
 
-In the matched-purity control, the depolarizing probability $P$ and inverse temperature $\beta$ are selected as functions of the estimated field $h_x$.  The QFI must consequently be evaluated using the total derivative along each selected path.
+In the matched-purity control, the depolarizing probability $P$ and inverse temperature $\beta$ are chosen as functions of the estimated field $h_x$.  The QFI must therefore use the total derivative along each chosen path.
+
+Each derivative has two parts.  One comes from the direct response of the state to $h_x$.  The other comes from changing $P$ or $\beta$ to keep the purity matched.  Leaving out the second part would describe a different path through state space.
 
 For the matched depolarizing family, this derivative is
 \begin{equation}
@@ -74,7 +79,7 @@ For the matched depolarizing family, this derivative is
     =
     (1-P)\frac{\partial\rho_{\mathrm{G},S}}{\partial h_x}
     -\frac{\mathrm{d}P}{\mathrm{d}h_x}\rho_{\mathrm{G},S}
-    +\frac{1}{2^n}\frac{\mathrm{d}P}{\mathrm{d}h_x}\mathbb{I}_S.
+    +\frac{1}{2^n}\frac{\mathrm{d}P}{\mathrm{d}h_x}\mathbb{I}_S
     \label{eq:matched_depolarizing_derivative}
 \end{equation}
 For the matched thermal family, it is
@@ -85,8 +90,41 @@ For the matched thermal family, it is
         \frac{\partial\rho_{\mathrm{th},N}}{\partial h_x}
         +\frac{\partial\rho_{\mathrm{th},N}}{\partial\beta}
         \frac{\mathrm{d}\beta}{\mathrm{d}h_x}
-        \right].
+        \right]
     \label{eq:matched_thermal_derivative}
 \end{equation}
 
-Thus, the matched-purity construction is a comparison of deliberately selected parameterized state paths, not a fixed-channel experiment.  The full-to-local QFI inequalities reported in Chapter~\ref{ch:noise_analysis} provide a practical consistency check for the resulting calculations.
+The matched-purity construction therefore compares chosen parameterized state paths.  It is not a fixed-channel experiment.  The full-to-local QFI inequalities in Chapter~\ref{ch:noise_analysis} provide a direct consistency check for these calculations.
+
+
+\section{Graphical calculus}
+
+We report some diagrammatic proofs of the Stinespring representation and its equivalence to the Kraus representation.  The graphical calculus is a powerful tool for reasoning about quantum processes, and it can simplify complex algebraic manipulations, and represent quantum operations in a more intuitive and visual manner.  The diagrams we used are based on \cite{wood2015graphical}
+
+
+Another convenient reference is \cite{picturing_quantum_processes_2017} that uses another notation, but the one we used is more faithful to the formulas and more intuitive in my opinion. Here a small equivalence between the two notations is shown in Fig.~\ref{fig:diagram_extra_equivalence}.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.7\textwidth]{figures/diagrams/diagram_extra_equivalence.jpg}
+    \caption{Equivalence between the graphical notations used in \cite{wood2015graphical} (left) and \cite{picturing_quantum_processes_2017} (right). Both depict a quantum channel acting on a state $\rho$, and a trace operation.}
+    \label{fig:diagram_extra_equivalence}
+\end{figure}
+
+Here we report the proof of the equivalence between the Stinespring representation and the Kraus representation, which is a fundamental result in quantum information theory. The Stinespring representation expresses a quantum channel as a unitary operation on a larger Hilbert space, while the Kraus representation expresses it as a sum of operators acting on the original Hilbert space.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.7\textwidth]{figures/diagrams/diagram_stinespring_to_kraus_extended_proof.jpg}
+    \caption{Equivalence between the Stinespring representation and the Kraus representation.}
+    \label{fig:diagram_stinespring_to_kraus_extended_proof}
+\end{figure}
+
+
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.7\textwidth]{figures/diagrams/diagram_Choi_to_kraus_extended_proof.jpg}
+    \caption{Equivalence between the Choi representation and the Kraus representation.}
+    \label{fig:diagram_Choi_to_kraus_extended_proof}
+\end{figure}

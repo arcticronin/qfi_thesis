@@ -7,7 +7,7 @@ The central issue is \emph{local metrology}.  Quantum Fisher information (QFI) m
 
 The calculations follow Chapter~\ref{ch:methods}.  We evaluate QFI using the formalism of Chapter~\ref{ch:MathBackground}, and use the finite-displacement fidelity quantities from Section~\ref{sec:bounds} as complementary diagnostics.  The preparation history matters: a ground state, a globally Gibbs-prepared state, and a depolarized state can all give mixed states on $S$, but they are not the same physical experiment.
 
-\begin{remark}[Chapter takeaways]
+\begin{remark}[Chapter Summary]
     For the finite TFIM geometries, field windows, and state families studied here, retaining more qubits leaves more local QFI.  Depolarization provides a simple baseline and lowers local QFI monotonically in the sampled sweep.  In selected regimes, global Gibbs preparation leaves more local QFI than the reduced ground-state family.  This does not mean that a fixed thermal-noise channel increases QFI, nor does it establish a universal scaling law or a general benefit of temperature.
 \end{remark}
 % ==============================================================================
@@ -57,6 +57,7 @@ In each numerical subsection, $H_N(h_x)$ denotes the finite-chain Hamiltonian fo
     Here $\beta$ is the inverse temperature of the Gibbs preparation: larger $\beta$ means a colder Gibbs state.  When the ground state is nondegenerate, the Gibbs family approaches the ground-state reference as $\beta\to\infty$. At a degeneracy, it instead approaches the normalized projector onto the ground-state subspace. The notation follows    $\rho_{\text{family}, \text{ system\_size}}$.
 \end{definition}
 
+
 The full-system depolarizing channel used in this chapter is
 \begin{equation}
     \Lambda_P^{(N)}(\rho)
@@ -74,77 +75,55 @@ It replaces the input by the maximally mixed $N$-qubit state with probability $P
 
 The three primary local states are $\rho_{\mathrm{G},S}$, $\rho_{\mathrm{dep},S}$, and $\rho_{\mathrm{th},S}$.  They have the same accessible Hilbert-space dimension, but not the same spectrum or dependence on $h_x$.  Each full-system curve is a reference ceiling for the reduced state in the corresponding preparation family. The physical question is always what an observer can learn while having access only to $S$.
 
-\todo[]{insert diagram 1}
+A diagrammatic summary is:
 
-\noindent\emph{TODO, Diagram:} Project~1 baseline:
 \[
     h_x\longrightarrow H_N(h_x)\longrightarrow |\psi_0(h_x)\rangle
     \longrightarrow \rho_{\mathrm{G},N}(h_x)
     \xrightarrow{\operatorname{Tr}_E}\rho_{\mathrm{G},S}(h_x)
-    \longrightarrow \text{local SLD QFI and TQFI}.
+    \longrightarrow \text{Local QFI}.
 \]
-There is no external noise map. The subsystem is mixed because it is correlated with the discarded degrees of freedom.
+There is no external noise map. The subsystem is mixed because it is correlated with the discarded degrees of freedom. We also picture a category theory graphical calculus version of the channels, based on \cite{wood2015graphical}.
 
-\noindent\emph{ASCII draft.}  The double lines stand for the ket and bra indices of each subsystem.  Closing the $E$ line denotes the partial trace, while the remaining $S$ indices define $\rho_{\mathrm{G},S}$.
-% \begin{Verbatim}[fontsize=\small]
-%                     +---------------------+
-%     S ==============|                     |============== S --> [ QFI / TQFI ]
-%                     |    rho_G,N(h_x)     |
-%     E ======+=======|                     |=======+====== E
-%             |        +---------------------+      |
-%             +=====================================+
-%     Tr_E
-% \end{Verbatim}
 
-\todo[]{insert diagram 2}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{figures/diagrams/diagram_encoding_hamiltonian.jpg}
+    \caption{Diagrammatic summary of how the parameter $h_x$ is encoded in the Hamiltonian, the state and the density matrix are created, in this initial phase the system is still separable.}
+    \label{fig:diagram_encoding_hamiltonian}
+\end{figure}
 
-\noindent\emph{TODO, Diagram:} Project~9 depolarizing branch:
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\textwidth]{figures/diagrams/diagram_stinespring_to_kraus.jpg}
+    \caption{Stinespring system representation.  The system $S$ is the accessible subsystem, while $E$ is the inaccessible complement.  The Stinespring representation is useful because we can consider a unitary $U$ acting on the state state and on the environment. The partial trace over $E$, represented as a closed loop, connecting the wires, produces the reduced state of $S$. It is equivalent to the channel representation of the same process, which is obtained by applying the Kraus operators $K_i$ to the state of $S$ (See. the graphical proof in Fig.~\ref{fig:diagram_stinespring_to_kraus_extended_proof}).}
+    \label{fig:diagram_stinespring_evolution}
+\end{figure}
+
+The depolarizing channel is parameter independent when $P$ is fixed, it can also be described clearly with a Choi, Stinespring, or Kraus representation.
 \[
     \rho_{\mathrm{G},N}(h_x)
     \xrightarrow{\Lambda_P^{(N)}}\rho_{\mathrm{dep},N}(h_x;P)
     \xrightarrow{\operatorname{Tr}_E}\rho_{\mathrm{dep},S}(h_x;P)
-    \longrightarrow \text{local SLD QFI/TQFI}.
+    \longrightarrow \text{local QFI}.
 \]
-The channel is parameter independent when $P$ is fixed.
 
-\noindent\emph{ASCII draft.}  In the Choi-matrix view, $J(\Lambda_P^{(N)})$ represents the depolarizing channel $\Lambda_P^{(N)}$.  It is kept distinct from the channel symbol itself.  The input contraction follows Eq.~\eqref{eq:choi_channel_action}, after which the output environment is traced out.
-\begin{Verbatim}[fontsize=\small]
-    rho_G,N(h_x)^T ======+
-    |
-    +-----+------------------+
-    | J(Lambda_P^(N))        |============== S
-    |                        |=======+====== E
-    +------------------------+       |
-    input contraction            +======+
-    Tr_E |
-    v
-    rho_dep,S(h_x;P)
-    |
-    v
-        [ QFI / TQFI ]
-\end{Verbatim}
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.7\textwidth]{figures/diagrams/diagram_Choi_to_kraus.jpg}
+    \caption{Equivalence between the Choi representation and the Kraus representation.}
+    \label{fig:diagram_Choi_to_kraus}
+\end{figure}
 
-\todo[]{insert diagram 3}
 
-\noindent\emph{TODO, Diagram:} Thermal branch:
+Thermal branch has a different initialization,that both $H_N$ and the Gibbs state depend on $h_x$.This branch begins from a separately prepared Gibbs state.  It does not apply a thermal channel to $\rho_{\mathrm{G},N}$.
 \[
     h_x\longrightarrow H_N(h_x)\longrightarrow\rho_{\mathrm{th},N}(h_x;\beta)
     \xrightarrow{\operatorname{Tr}_E}\rho_{\mathrm{th},S}(h_x;\beta)
-    \longrightarrow \text{local SLD QFI/TQFI}.
+    \longrightarrow \text{local QFI}.
 \]
-The diagram should state explicitly that both $H_N$ and the Gibbs state depend on $h_x$.
 
-\noindent\emph{ASCII draft.}  This branch begins from a separately prepared Gibbs state.  It does not apply a thermal channel to $\rho_{\mathrm{G},N}$.
-\begin{Verbatim}[fontsize=\small]
-    depends on h_x and beta
-    +---------------------+
-    S ==============|                     |============== S --> [ QFI / TQFI ]
-    |   rho_th,N(h_x;beta)|
-    E ======+=======|                     |=======+====== E
-    |       +---------------------+       |
-    +=====================================+
-    Tr_E
-\end{Verbatim}
 
 
 \begin{infobox}{Scope of the Thermal Model}
@@ -529,7 +508,7 @@ At the principal peak in this $\beta=1$ baseline,
     \mathcal{F}_Q[\rho_{\mathrm{dep},S}]>
     \mathcal{F}_Q[\rho_{\mathrm{th},S}]
 \]
-Peak ordering is not the full field-resolved story.  In every $n$ run, the thermal family exceeds the reduced ground-state family over broad off-peak intervals. For $n=4$, the largest pointwise thermal advantage is $0.456$ at $h_x=1.686$.  
+Peak ordering is not the full field-resolved story.  In every $n$ run, the thermal family exceeds the reduced ground-state family over broad off-peak intervals. For $n=4$, the largest pointwise thermal advantage is $0.456$ at $h_x=1.686$.
 
 \faLightbulb \hspace{5pt} An important fact is that a state family can be inferior by maximum QFI while being superior over a useful interval of the operating field, which is why the chapter reports both peak tables and field-resolved plots.
 
@@ -633,7 +612,7 @@ For the finite TFIM geometries and field windows studied here, thermal preparati
 
 
 
-Critical metrological response is spatially distributed.  Partial trace removes a variable fraction of it, and the retained fraction grows strongly with accessible subsystem size. 
+Critical metrological response is spatially distributed.  Partial trace removes a variable fraction of it, and the retained fraction grows strongly with accessible subsystem size.
 
 Entanglement-induced mixedness, depolarization, and thermal population are not interchangeable.  Purity alone does not predict local QFI: the field dependence of the state and the part of the spectrum populated by the preparation both matter.
 

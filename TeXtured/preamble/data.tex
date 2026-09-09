@@ -31,7 +31,7 @@
 %% Name of the department or institute, where the work was officially assigned
 %% (according to the Organizational Structure of MFF UK in English,
 %% or a full name of a department outside MFF)
-\newcommand*{\Department}{Department of Physics \enquote{Giuseppe Occhialini}}
+\newcommand*{\Department}{Dipartimento di Fisica \enquote{Aldo Pontremoli}, Università degli Studi di Milano}
 
 %% Is it a Department (katedra), or an Institute (ústav)?
 \newcommand*{\DeptType}{Department}
@@ -49,7 +49,11 @@
 
 %% Abstract (recommended length around 80-200 words; this is not a copy of your thesis assignment!)
 \newcommand*{\Abstract}{%
-    Quantum Fisher information (QFI) sets the ultimate sensitivity of a parameterized quantum state, but its practical use requires scalable calculations and a model of the complete sensing process.  This thesis studies both needs.  First, it implements the Variational Quantum State Eigensolver within a variational QFI estimation pipeline to obtain truncated and fidelity-based bounds without full density-matrix diagonalization.  Numerical studies of a finite Transverse-Field Ising Model magnetometer show that restricted access can decrease the available QFI and that fixed depolarization lowers it uniformly across the range.  Gibbs preparation can, even considering finite-temperature regimes, outperform reduced ground-state preparation away from its narrow optimum, showing that sensor design must account for the expected operating regime.  Second, the thesis studies high-contrast exoplanet imaging with spatial-mode demultiplexing (SPADE).  Per surviving photon, ideal full SPADE is nearly QFI-optimal for the assumed source model.  However, aggregate first-order counts from a completed ASI Matera experiment cannot support the intended state reconstruction and truncated-QFI analysis.  The experiment is therefore recast as a modular quantum-to-classical channel sequence, together with a predictive classical calibration model.  This framework enables conditional QFI and CFI calculations while showing that the available data constrain only population-level count statistics, not the complete quantum channel or its coherences.
+    Quantum Fisher information (QFI) bounds quantum-sensor sensitivity.  This thesis develops scalable mixed-state QFI methods and studies how preparation, access, noise, and measurement affect sensitivity.  It implements the Variational Quantum State Eigensolver in a variational pipeline for truncated and fidelity-based QFI bounds.
+
+    A finite Transverse-Field Ising Model serves as a magnetometer.  We compare the reduced ground state with full-probe depolarization and Gibbs preparation of the full probe before inaccessible qubits are traced out.  For periodic $N=6$, $n=4$ over $h_x/J\in[0.1,2.5]$, $P=0.3$ lowers the peak local QFI by $36.4\%$ relative to $P=0$.  At $\beta=5$, the Gibbs-prepared state has more local QFI at $40$ of $60$ sampled fields and a $23.5\%$ higher peak.  The best preparation therefore depends on the operating range.
+
+    The optical study estimates exoplanet separation with spatial-mode demultiplexing (SPADE).  Archived ASI Matera aggregate first-order counts cannot support experimental TQFI or channel reconstruction.  We instead fit a classical calibration model and organize a quantum-to-classical channel sequence.  Grouped holdout coverage is about $94\%$ for nominal $95\%$ intervals.  In the assumed source model, full ideal SPADE retains at least $99.899\%$ of the source QFI per surviving photon.  Binary CFI after assumed readout cross-talk retains only $0.13\%$--$57.0\%$.  A future VQ-SPADE experiment is proposed.
 }
 
 %% Subject (short description for PDF metadata)
