@@ -100,7 +100,7 @@ We use the density-operator, quantum-channel, and POVM conventions introduced in
 
 Figure~\ref{fig:channel_stages} shows the full ordering of the model.
 
-\begin{figure}[H]
+\begin{figure}[!htb]
     \centering
     {
         \tikzset{
@@ -348,7 +348,7 @@ Adding channel parameters does not by itself make a model more valid.  Diagonal 
 In this section we perform a statistical analysis of the recorded counts, assuming the channel model.
 Each experimental setting contains $100$ independent repetitions of $10\,\mathrm{ms}$.  The mean count across these repetitions ranges from $6.93$ to $19.44$, and the median mean at zero separation is $8.17$.  These small values are counts per repetition.  They should not be confused with the paper's normalization of about $40{,}000$--$80{,}000$ detected photons, which refers to the sum over one second.  Incident photons, detected photons, first-order counts, and acquisition time are therefore kept as separate quantities.
 
-The variation between repetitions is larger than expected from a Poisson distribution. The median value  Fano factor\footnote{The Fano factor is a statistical measure to state how much a random process deviates from a standard Poisson distribution. It is defined as the ratio of the variance to the mean of a random variable (it is typically used for a particles or photon counts).$$F = \frac{\sigma^2 }{\mu}$$} in the data is $F=2.497$.  A Poisson distribution has $F=1$, so the variance is about $2.5$ times the mean at a typical setting.  This behavior is called overdispersion or super-Poissonian variation (See Fig.~\ref{fig:spade_model_comparison}).  On its own, it does not prove photon bunching or reveal the physical cause.  Background changes, coupling changes, or other calibration effects can produce the same pattern.  The data also show a nonzero baseline and a dependence on the experimental setting.
+The variation between repetitions is larger than expected from a Poisson distribution. The median Fano factor\footnote{The Fano factor is a statistical measure to state how much a random process deviates from a standard Poisson distribution. It is defined as the ratio of the variance to the mean of a random variable (it is typically used for a particles or photon counts).$$F = \frac{\sigma^2 }{\mu}$$} in the data is $F=2.497$.  A Poisson distribution has $F=1$, so the variance is about $2.5$ times the mean at a typical setting.  This behavior is called overdispersion or super-Poissonian variation (See Fig.~\ref{fig:spade_model_comparison}).  On its own, it does not prove photon bunching or reveal the physical cause.  Background changes, coupling changes, or other calibration effects can produce the same pattern.  The data also show a nonzero baseline and a dependence on the experimental setting.
 
 A Gaussian model is not suitable as the main count model because these means are small and the observations are non-negative integers.  In particular, a Gaussian bootstrap can generate fractional or negative photon counts, which would not be physically meaningful.
 

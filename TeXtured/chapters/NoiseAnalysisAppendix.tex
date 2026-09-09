@@ -122,18 +122,25 @@ A Stinespring representation introduces an auxiliary environment $A$ in a fixed 
 \end{equation}
 The closed environment wire in Figure~\ref{fig:diagram_stinespring_to_kraus_extended_proof} represents the sum over $i$.  The environment used for this dilation is a mathematical part of the channel representation.  It is not automatically the physical subsystem $E$ discarded in the TFIM calculation.
 
-\begin{figure}[htbp]
-    \centering
-    \includegraphics[width=0.7\textwidth]{figures/diagrams/diagram_stinespring_to_kraus_extended_proof.jpg}
-    \caption{Graphical reduction from Stinespring form to Kraus form.  The first line applies $U$ and $U^\dagger$ around the input state and closes the environment wire.  Inserting an environment basis resolves this closed wire into Kraus factors.  Grouping the remaining contractions gives $\sum_iK_i\rho K_i^\dagger$, as in Eq.~\eqref{eq:noise_graphical_stinespring_kraus}.}
-    \label{fig:diagram_stinespring_to_kraus_extended_proof}
-\end{figure}
 
-The Choi matrix is another representation of the same channel.  It contains the channel information in one operator, but it is not the channel map itself.  With the column Choi convention used in this Thesis, its action on $\rho$ is fixed by Eq.~\eqref{eq:choi_channel_action}.  The transpose in that equation is represented graphically by bending the input wire before contracting it with the Choi tensor.  Decomposing the Choi matrix into Kraus factors then gives the same operator-sum expression as Eq.~\eqref{eq:noise_graphical_stinespring_kraus}.
 
-\begin{figure}[htbp]
-    \centering
-    \includegraphics[width=0.7\textwidth]{figures/diagrams/diagram_Choi_to_kraus_extended_proof.jpg}
-    \caption{Graphical relation between Choi and Kraus representations.  The input density operator is contracted with the Choi tensor using the convention of Eq.~\eqref{eq:choi_channel_action}.  Factoring the Choi tensor and regrouping its contractions gives the Kraus form.  The closed wire denotes the implicit sum over the Kraus index.}
-    \label{fig:diagram_Choi_to_kraus_extended_proof}
-\end{figure}
+The Choi matrix is another representation of the same channel.  It contains the channel information in one operator, but it is not the channel map itself.  With the column Choi convention used in this Thesis, its action on $\rho$ is fixed by Eq.~\eqref{eq:choi_channel_action}.  \faOctopusDeploy \hspace{5pt} The transpose in that equation is represented graphically by bending the input wire before contracting it with the Choi tensor.  Decomposing the Choi matrix into Kraus factors then gives the same operator-sum expression as Eq.~\eqref{eq:noise_graphical_stinespring_kraus}.
+
+\begin{landscape}
+    \begin{figure}[p]
+        \centering
+        \begin{subfigure}[t]{0.65\textwidth}
+            \centering
+            \includegraphics[height=0.68\textheight,keepaspectratio]{figures/diagrams/diagram_Choi_to_kraus_extended_proof.jpg}
+            \caption{Graphical relation between Choi and Kraus representations.  The input density operator is contracted with the Choi tensor using the convention of Eq.~\eqref{eq:choi_channel_action}.  Factoring the Choi tensor and regrouping its contractions gives the Kraus form.  The closed wire denotes the implicit sum over the Kraus index.}
+            \label{fig:diagram_Choi_to_kraus_extended_proof}
+        \end{subfigure}\hfill
+        \begin{subfigure}[t]{0.30\textwidth}
+            \centering
+            \includegraphics[height=0.68\textheight,keepaspectratio]{figures/diagrams/diagram_stinespring_to_kraus_extended_proof.jpg}
+            \caption{Graphical reduction from Stinespring form to Kraus form.  The first line applies $U$ and $U^\dagger$ around the input state and closes the environment wire.  Inserting an environment basis resolves this closed wire into Kraus factors.  Grouping the remaining contractions gives $\sum_iK_i\rho K_i^\dagger$, as in Eq.~\eqref{eq:noise_graphical_stinespring_kraus}.}
+            \label{fig:diagram_stinespring_to_kraus_extended_proof}
+        \end{subfigure}
+        \caption{Extended graphical derivations of the Kraus representation from the Choi and Stinespring forms.}
+    \end{figure}
+\end{landscape}

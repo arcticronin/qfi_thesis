@@ -116,7 +116,7 @@ A quantum channel can be drawn in Stinespring, Kraus, or Choi form.  These forms
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=0.7\textwidth]{figures/diagrams/diagram_Choi_to_kraus.jpg}
-    \caption{Generic Choi and Kraus representations of the same channel action.  The closed wires denote index contractions, including the sum over the Kraus index.  In the drawing, $\Lambda$ denotes a Choi tensor.  In the chapter equations, $\Lambda_P^{(N)}$ denotes the depolarizing map itself, whose Choi matrix is written $J(\Lambda_P^{(N)})$.  The convention is fixed by Eq.~\eqref{eq:choi_channel_action}.}
+    \caption{Generic Choi and Kraus representations of the same channel action.  The closed wires denote index contractions, including the sum over the Kraus index.  In the drawing, $\Lambda$ denotes a Choi matrix.  In the chapter equations, $\Lambda_P^{(N)}$ denotes the depolarizing map itself, whose Choi matrix is written $J(\Lambda_P^{(N)})$.  The convention is fixed by Eq.~\eqref{eq:choi_channel_action}.}
     \label{fig:diagram_Choi_to_kraus}
 \end{figure}
 
@@ -196,7 +196,7 @@ $\beta(h_x)$ so that
     \gamma_{\mathrm{target}}(h_x)
     \label{eq:purity_matching_cond}
 \end{equation}
-The target can be a number $\gamma_{\mathrm{target}} \in [\frac{1}{d},1]$, representing the purity of a reference reduced state. In this case d is the dimension of the system.  This asks a simple
+The target can be a number $\gamma_{\mathrm{target}} \in [\frac{1}{2^n},1]$, representing the purity of a reference reduced state. $2^n$ is the dimension of the system.  This asks a simple
 question: if two local states are equally mixed according to their purity, do
 they also have the same local QFI?  The matched-purity results are discussed
 in Section~\ref{sec:project10_peak_purity}.
@@ -480,8 +480,8 @@ best operating point lies.
         versus the purity at that peak.  At the same horizontal position, the
         higher point has the larger peak sensitivity.  Right: the field at which
         the same peak occurs.  The shaded region is the range of peak purities
-        sampled by both families; the dotted thermal line is only a guide between
-        the sampled temperatures. It is more clear if one follows the line of the thermal points on inverse temperature, from the hotter (bluer) to the cooler (more yellow). There we can notice their purity and informativity changes while cooling down.}
+        sampled by both families, the dotted thermal line is only a guide between
+        the sampled temperatures. It is more clear if one follows the line of the thermal points on inverse temperature, from the hotter (bluer) to the cooler (more yellow). There we can notice their purity and changes in QFI while cooling down.}
     \label{fig:project10_peak_purity}
 \end{figure}
 
@@ -592,18 +592,17 @@ The finite-system mechanism is the field dependence of low-lying thermal populat
 For the finite TFIM geometries and field windows studied here, thermal preparation before partial trace can enhance local SLD QFI relative to the reduced ground-state subsystem.  The effect depends on the regime, is strongest at larger $\beta$ in the present sweep, and remains bounded by the QFI of the full thermal family.
 
 
-
 \begin{figure}[H]
     \centering
-    \includegraphics[width=\textwidth]{figures/noise/project9/thermal_comparison.png}
+    \includegraphics[width=0.95\textwidth]{figures/noise/project9/thermal_comparison.png}
     \caption{Field-resolved local SLD QFI for several fixed inverse temperatures $\beta$.}
     \label{localqfi_vs_thermal}
 \end{figure}
 
-
+\vspace{-10pt}
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.7\textwidth]{figures/noise/project9/thermal_evolution.png}
+    \includegraphics[width=0.65\textwidth]{figures/noise/project9/thermal_evolution.png}
     \caption{Peak local SLD QFI versus inverse temperature $\beta$.}
     \label{localqfi_vs_thermal_evo}
 \end{figure}
@@ -616,7 +615,7 @@ For the finite TFIM geometries and field windows studied here, thermal preparati
 
 
 
-Critical metrological response is spatially distributed.  Partial trace removes a variable fraction of it, and the retained fraction grows strongly with accessible subsystem size.
+Critical metrological response is spatially distributed.  Partial trace removes a fraction of it, and the retained fraction grows with accessible subsystem size.
 
 Entanglement-induced mixedness, depolarization, and thermal population are not interchangeable.  Purity alone does not predict local QFI: the field dependence of the state and the part of the spectrum populated by the preparation both matter.
 

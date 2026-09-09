@@ -89,7 +89,7 @@ Across the setting grid, the mean $10\,\mathrm{ms}$ count ranges from $6.93$ to 
     \end{tabularx}
 \end{table}
 
-\begin{figure}[htbp]
+\begin{figure}[!htb]
     \centering
     \includegraphics[width=\textwidth]{figures/exoplanets/spade_raw_diagnostics.png}
     \caption{Diagnostics of the recorded $10\,\mathrm{ms}$ aggregate first-order counts.  The panels show setting means, setting-wise Fano factors, the nonzero $d_a=0$ baseline, and variance against mean.  They summarize the $100$ repetitions directly and do not represent predictions from a fitted quantum state.}
@@ -160,7 +160,7 @@ The observed setting-mean Pearson discrepancy is $4327.62$, compared with a boot
 \end{equation}
 The benchmark is rejected.  Its fitted $\widehat\eta$ is an optimizer within a rejected conditional model, not a measured efficiency.
 
-\begin{figure}[htbp]
+\begin{figure}[!htb]
     \centering
     \includegraphics[width=0.92\textwidth]{figures/exoplanets/spade_model_comparison.png}
     \caption{Comparison of the fixed paper-based benchmark channel (left) and an effective affine mean model (right).  Points and residual maps compare fitted and observed $10\,\mathrm{ms}$ setting means.  The discrete bootstrap rejects both models.  Neither panel validates a complete apparatus channel.}
@@ -198,11 +198,11 @@ The fit to the full grid gives $B=8.23045$ counts per $10\,\mathrm{ms}$, $A=1225
     \label{tab:spade_hierarchical_validation}
     \begin{tabularx}{\textwidth}{Xccc}
         \toprule
-        \textbf{Held-out structure}    & \textbf{RMSE} & \textbf{Standardized SD} & \textbf{95\% coverage} \\
+        \textbf{Held-out structure}    & \textbf{RMSE} & \textbf{Stand. SD} & \textbf{95\% coverage} \\
         \midrule
-        Interleaved checkerboard cells & $0.606$       & $1.004$                  & $93.52\%$              \\
-        Complete distance rows         & $0.734$       & $1.041$                  & $94.67\%$              \\
-        Complete source-ratio columns  & $0.609$       & $1.009$                  & $93.71\%$              \\
+        Interleaved checkerboard cells & $0.606$       & $1.004$            & $93.52\%$              \\
+        Complete distance rows         & $0.734$       & $1.041$            & $94.67\%$              \\
+        Complete source-ratio columns  & $0.609$       & $1.009$            & $93.71\%$              \\
         \bottomrule
     \end{tabularx}
 \end{table}
@@ -246,24 +246,24 @@ Changing the assumed $\chi$ from $0$ to $0.0065$ changes the raw throughput only
 
 The full implementation also provides a sensitivity workbench.  It fixes example values for random displacement, dephasing, coherent mixing, modal loss, and asymmetric readout.  It then fits $T$, background, displacement offset, and a zero-mean coupling field.  The fixed values below were not inferred from the count cube.
 
-\begin{table}[htbp]
+\begin{table}[!htb]
     \centering
     \caption{Parameter sources for the provisional workbench.  The shaded row highlights the single externally reported parameter.  All unshaded rows contain invented sensitivity values or assumed symmetries.  They must not be described as measurements.}
     \label{tab:spade_workbench_provenance}
     \begin{tabularx}{\textwidth}{p{4.5cm} p{2.5cm} X}
         \toprule
-        \textbf{Parameter}        & \textbf{Value}       & \textbf{Required calibration}                         \\
+        \textbf{Parameter}        & \textbf{Value}        & \textbf{Required calibration}                         \\
         \midrule
-        Pointing-jitter SD        & $0.01w_0$            & Acquisition-synchronized centroid or alignment series \\
-        HG dephasing visibility   & $0.98$               & Phase-sensitive coherent mode tomography              \\
-        $HG_0/HG_1$ mixing angle  & $0.01\,\mathrm{rad}$ & Complex mode-injection transfer matrix                \\
-        Mixing phase              & $0$                  & Phase-sensitive transfer matrix                       \\
-        $HG_0$ transmission       & $0.99$               & Absolute $HG_0$ injection throughput                  \\
-        $HG_1$ transmission       & $0.97$               & Separate absolute $HG_{01}$ and $HG_{10}$ throughputs \\
+        Pointing-jitter SD        & $0.01w_0$             & Acquisition-synchronized centroid or alignment series \\
+        HG dephasing visibility   & $0.98$                & Phase-sensitive coherent mode tomography              \\
+        $HG_0/HG_1$ mixing angle  & $0.01\,\mathrm{rad}$  & Complex mode-injection transfer matrix                \\
+        Mixing phase              & $0$                   & Phase-sensitive transfer matrix                       \\
+        $HG_0$ transmission       & $0.99$                & Absolute $HG_0$ injection throughput                  \\
+        $HG_1$ transmission       & $0.97$                & Separate absolute $HG_{01}$ and $HG_{10}$ throughputs \\
         \rowcolor{gray!20}
-        $HG_0\to HG_1$ readout    & $0.0035$             & Repeat the paper's injection calibration              \\
-        $HG_1\to HG_0$ readout    & \makecell{$0.0035$                                                           \\ (sym.)}      & Inject first-order modes and record every output      \\
-        Failure$\to HG_1$ readout & $0$                  & Inject higher modes and record aggregate $HG_1$       \\
+        $HG_0\to HG_1$ readout    & $0.0035$              & Repeat the paper's injection calibration              \\
+        $HG_1\to HG_0$ readout    & \makecell[l]{$0.0035$                                                         \\ (sym.)}      & Inject first-order modes and record every output      \\
+        Failure$\to HG_1$ readout & $0$                   & Inject higher modes and record aggregate $HG_1$       \\
         \bottomrule
     \end{tabularx}
 \end{table}
@@ -274,7 +274,7 @@ The workbench is modular.  A measured transfer matrix, jitter distribution, or m
 
 Its quantum role comes from the position of these effects in the sequence.  Displacement, dephasing, coherent mixing, and modal loss act on the density operator before the SPADE measurement and can change state QFI or measurement CFI.  Readout confusion acts later on classical probabilities.  The provisional numbers are not what makes the model quantum.
 
-\begin{figure}[htbp]
+\begin{figure}[!htb]
     \centering
     \includegraphics[width=0.92\textwidth]{figures/exoplanets/spade_plausible_channel_workbench.png}
     \caption{Replaceable channel workbench using the provisional values in Table~\ref{tab:spade_workbench_provenance}.  Identity tests show how the inferred throughput depends on individual assumptions.  This is a sensitivity analysis, not an estimate of jitter, dephasing, mixing, transmission, or asymmetric readout.}
@@ -286,19 +286,22 @@ The ideal source calculation uses the bright-source-aligned convention $\alpha=d
 
 Table~\ref{tab:spade_information_comparison} gives fractions of source-state QFI for estimating $d_a$, normalized per surviving one-photon trial.  The first two rows use twelve nonzero points from the measured grid.  These points combine three signed distances with four source fractions.  The other rows use a nine-point ladder with $d_a\in\{0.06667,0.4,0.66667\}$ and $\epsilon\in\{0.00427,0.02854,0.09593\}$.
 
-\begin{table}[htbp]
+\begin{table}[!htb]
     \centering
-    \caption{Theoretical information kept when estimating $d_a$.  All values are fractions of source-state QFI per surviving photon and are conditional model calculations.}
+    \caption{Theoretical information kept when estimating $d_a$.  All values are fractions of source-state QFI per surviving photon and are conditional model calculations. Shaded rows use the nine-point ladder, unshaded rows use the twelve regular nonzero points from the measured grid.}
     \label{tab:spade_information_comparison}
-    \begin{tabularx}{\textwidth}{p{4.7cm} p{3.1cm} p{2.3cm} X}
+    \begin{tabularx}{\textwidth}{p{4.8cm} p{1.9cm} X}
         \toprule
-        \textbf{Checkpoint}                      & \textbf{Fraction}    & \textbf{Settings} & \textbf{Status}                                        \\
+        \textbf{Checkpoint}                                    & \textbf{Fraction}      & \textbf{Status} \\
         \midrule
-        Full ideal-SPADE CFI                     & $0.99899$--$1.00000$ & 12 regular points & Theoretical, complete ideal HG outcomes                \\
-        First-order-only binary CFI              & $0.78434$--$0.94485$ & Same 12 points    & Theoretical, $HG_1$ versus all other outcomes          \\
-        Flagged $HG_0/HG_1$ accessible-state QFI & $0.99777$--$1.00000$ & Nine-point ladder & Theoretical flagged quantum channel                    \\
-        Resolved accessible-outcome CFI          & $0.99681$--$1.00000$ & Same nine points  & Theoretical measurement of $HG_0$, $HG_1$, and failure \\
-        Binary CFI after $\chi=0.0035$ confusion & $0.00134$--$0.57026$ & Same nine points  & Conditional on the assumed symmetric classical readout \\
+        Full ideal-SPADE CFI                                   & \makecell[l]{$0.99899$                   \\ to $1.00000$} & Theoretical, complete ideal HG outcomes                \\
+        \makecell[l]{First-order-only                                                                     \\ binary CFI  }                          & \makecell[l]{$0.78434$                   \\ to $0.94485$} & Theoretical, $HG_1$ versus all other outcomes          \\
+        \rowcolor{gray!20}
+        \makecell[l]{Flagged $HG_0/HG_1$ accessible-state QFI} & \makecell[l]{$0.99777$                   \\ to $1.00000$} & Theoretical flagged quantum channel                    \\
+        \rowcolor{gray!20}
+        \makecell[l]{Resolved accessible-outcome CFI}          & \makecell[l]{$0.99681$                   \\ to $1.00000$} & Theoretical measurement of $HG_0$, $HG_1$, and failure \\
+        \rowcolor{gray!20}
+        \makecell[l]{Binary CFI                                                                           \\ after $\chi=0.0035$ confusion} & \makecell[l]{$0.00134$                \\ to $0.57026$} & Conditional on the assumed symmetric classical readout \\
         \bottomrule
     \end{tabularx}
 \end{table}
