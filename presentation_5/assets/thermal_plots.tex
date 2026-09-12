@@ -1,0 +1,40 @@
+% Reproducible plots of the existing thesis-model samples; no new simulation.
+\documentclass[tikz,border=2pt]{standalone}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+\definecolor{Navy}{HTML}{111D2E}
+\definecolor{Paper}{HTML}{F5F3EE}
+\definecolor{Muted}{HTML}{ACB8C9}
+\definecolor{Teal}{HTML}{56D6BE}
+\definecolor{Coral}{HTML}{FF967D}
+\renewcommand{\familydefault}{\sfdefault}
+\begin{document}
+\foreach \Beta in {2,5}{
+\begin{tikzpicture}
+\begin{axis}[width=10.1cm,height=5.45cm,xmin=.1,xmax=2,ymin=0,ymax=5.35,
+ axis lines=left,axis line style={Muted},tick style={Muted},
+ xlabel={Transverse field $h_x/J$},ylabel={Subsystem QFI ($J=1$)},
+ xlabel style={font=\small,text=Paper},ylabel style={font=\small,text=Paper},
+ tick label style={font=\footnotesize,text=Muted},ytick={0,1,2,3,4,5},xtick={.5,1,1.5,2},
+ ymajorgrids=true,grid style={Muted!15!Navy},
+ legend style={draw=none,fill=none,font=\footnotesize,text=Paper,at={(.98,.98)},anchor=north east},
+ legend cell align=left,clip=true]
+\addplot[Paper,line width=1.5pt] table[x=h_over_J,y=ground_local_qfi,col sep=comma]{assets/tfim_curves.csv};
+\addlegendentry{Ground state}
+\ifnum\Beta=2
+ \addplot[Teal,line width=1.8pt] table[x=h_over_J,y=thermal_beta2_local_qfi,col sep=comma]{assets/tfim_curves.csv};
+ \addlegendentry{Gibbs state, $\beta J=2$}
+ \node[font=\small,text=Teal,anchor=west] at (axis cs:1.17,2.9) {Higher off-peak QFI};
+ \draw[Teal,line width=.6pt] (axis cs:1.47,2.65)--(axis cs:1.58,1.18);
+\else
+ \addplot[Muted,dashed,line width=1.0pt] table[x=h_over_J,y=thermal_beta2_local_qfi,col sep=comma]{assets/tfim_curves.csv};
+ \addlegendentry{Gibbs state, $\beta J=2$}
+ \addplot[Teal,line width=1.8pt] table[x=h_over_J,y=thermal_beta5_local_qfi,col sep=comma]{assets/tfim_beta5.csv};
+ \addlegendentry{Gibbs state, $\beta J=5$}
+\fi
+\end{axis}
+\end{tikzpicture}
+}
+\end{document}

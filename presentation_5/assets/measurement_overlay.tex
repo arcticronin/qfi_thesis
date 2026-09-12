@@ -1,0 +1,42 @@
+% Editable vector drawing. Angle is a measurement control, not the unknown state parameter.
+% Exact local model: rho_theta=[I+.8(cos(theta)X+sin(theta)Z)]/2, theta=0.
+\newcommand{\measurementview}[1]{%
+ \pgfmathsetmacro{\CurrentCFI}{.64*sin(#1)^2/(1-.64*cos(#1)^2)}
+ \node[txt,font=\large\bfseries] at (1.05,6.57) {Measurement basis};
+ \node[txt,font=\large\bfseries] at (8.1,6.57) {Accessible information};
+ \begin{scope}[yshift=-.24cm]
+ \coordinate (o) at (3.5,4.5);
+ \draw[Line,line width=1pt] (o) circle (1.6);
+ \draw[Line,->] (1.64,4.5)--(5.36,4.5);
+ \draw[Line,->] (3.5,2.64)--(3.5,6.36);
+ \node[smalltxt] at (5.47,4.64) {$x$};
+ \node[smalltxt] at (3.68,6.18) {$z$};
+ \draw[Teal,line width=2pt] ({3.5-1.6*cos(#1)},{4.5-1.6*sin(#1)})--({3.5+1.6*cos(#1)},{4.5+1.6*sin(#1)});
+ \fill[Teal] ({3.5+1.6*cos(#1)},{4.5+1.6*sin(#1)}) circle (.065);
+ \draw[Paper,-{Stealth[length=2mm]},line width=1.1pt] (o)--(4.78,4.5);
+ \fill[Paper] (4.78,4.5) circle (.055);
+ \node[smalltxt,text=Paper] at (4.88,4.35) {$\rho_0$};
+ \node[smalltxt] at (3.2,4.35) {$0$};
+ \draw[Paper,-{Stealth[length=1.7mm]},line width=1pt] (4.78,4.5)--(4.78,5.22);
+ \node[smalltxt,text=Paper] at (4.99,5.30) {$\partial_\theta\rho$};
+ \draw[Teal,line width=.8pt] (4.04,4.5) arc[start angle=0,end angle=#1,radius=.54cm];
+ \end{scope}
+ \node[txt,text=Teal,font=\large] at (1.05,2.4) {$\varphi=#1^\circ$};
+ \node[smalltxt,text width=3.8cm] at (3.6,2.37) {Bloch-plane view};
+ % Analytic CFI curve. Coordinate scale: 6 cm / 180 degrees, 4.7 cm / FI unit.
+ \draw[Muted,->] (8.1,2.76)--(14.75,2.76);
+ \draw[Muted,->] (8.1,2.76)--(8.1,6.05);
+ \foreach \angle in {0,45,90,135,180}{
+   \draw[Muted] ({8.1+\angle/30},2.76)--({8.1+\angle/30},2.66);
+   \node[anchor=north,text=Muted,font=\footnotesize,inner sep=0pt] at ({8.1+\angle/30},2.54) {$\angle^\circ$};}
+ \foreach \value in {0,.32,.64}{
+   \draw[Line] (8.1,{2.76+4.7*\value})--(14.1,{2.76+4.7*\value});
+   \node[anchor=east,text=Muted,font=\footnotesize,inner sep=2pt] at (7.98,{2.76+4.7*\value}) {\pgfmathprintnumber[fixed,precision=2]{\value}};}
+ \draw[Teal!45!Navy,line width=1.5pt] plot[domain=0:180,samples=181] ({8.1+\x/30},{2.76+4.7*.64*sin(\x)^2/(1-.64*cos(\x)^2)});
+ \draw[Coral,dashed,line width=1.3pt] (8.1,5.768)--(14.1,5.768);
+ \node[anchor=south east,inner sep=0pt,text=Coral,font=\small] at (14.1,5.94) {QFI $=0.64$};
+ \draw[Teal,densely dotted,line width=1pt] ({8.1+#1/30},2.76)--({8.1+#1/30},{2.76+4.7*\CurrentCFI});
+ \fill[Teal] ({8.1+#1/30},{2.76+4.7*\CurrentCFI}) circle (.085);
+ \node[txt,text=Teal,font=\large] at (8.1,2.14) {$\mathcal F_C=\pgfmathprintnumber[fixed,precision=3]{\CurrentCFI}$};
+ \node[anchor=north,text=Muted,font=\small,inner sep=0pt] at (12.7,2.14) {Measurement angle $\varphi$};
+}

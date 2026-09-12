@@ -1,0 +1,4 @@
+TFIM CSV matches exact SLD recomputation (N=6, n=4, periodic, beta J=2).
+Ground peak: 3.925954; thermal peak: 2.606593.
+Equivalent dephasing Kraus sets agree on 20 complex random density matrices.
+Loss completeness and positivity on an entangled input verified, including tau=0 and tau=1.

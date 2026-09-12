@@ -1,0 +1,60 @@
+% Self-contained design. Standard TeX packages; no external Beamer theme.
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{amsmath,amssymb,booktabs,graphicx,tikz}
+\usetikzlibrary{arrows.meta,calc,positioning}
+\usefonttheme{professionalfonts}
+\renewcommand{\familydefault}{\sfdefault}
+\definecolor{Navy}{HTML}{111D2E}
+\definecolor{Panel}{HTML}{1C2B40}
+\definecolor{Paper}{HTML}{F5F3EE}
+\definecolor{Muted}{HTML}{ACB8C9}
+\definecolor{Teal}{HTML}{56D6BE}
+\definecolor{Coral}{HTML}{FF967D}
+\definecolor{Line}{HTML}{34455E}
+\setbeamercolor{normal text}{fg=Paper,bg=Navy}
+\setbeamercolor{background canvas}{bg=Navy}
+\setbeamercolor{structure}{fg=Teal}
+\setbeamercolor{math text}{fg=Paper}
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{headline}{}
+\setbeamertemplate{footline}{}
+\setbeamertemplate{note page}[plain]
+\setbeameroption{hide notes}
+\hypersetup{colorlinks=true,urlcolor=Teal,linkcolor=Paper,
+ pdftitle={Learning what a quantum sensor can reveal},pdfauthor={Luca Manzi}}
+\pdfstringdefDisableCommands{\def\translate#1{#1}}
+\graphicspath{{assets/}{../TeXtured/figures/}}
+\newcommand{\MainSlideCount}{11}
+\newenvironment{canvas}{\begin{tikzpicture}[remember picture,overlay,x=1cm,y=1cm]
+ \begin{scope}[shift={(current page.south west)}]}{\end{scope}\end{tikzpicture}}
+\tikzset{txt/.style={anchor=north west,align=left,inner sep=0pt,text=Paper,font=\normalsize},
+ smalltxt/.style={txt,font=\small,text=Muted},
+ flow/.style={rounded corners=5pt,fill=Panel,draw=Line,minimum height=1.15cm,
+ text=Paper,align=center,font=\small,text width=2.5cm,inner sep=6pt},
+ arr/.style={-{Stealth[length=2.4mm]},line width=1.1pt,draw=Teal}}
+\newsavebox{\slidetitlebox}
+\newcommand{\fittitle}[1]{%
+ \sbox{\slidetitlebox}{\fontsize{23}{27}\selectfont\bfseries #1}%
+ \ifdim\wd\slidetitlebox>14.4cm
+  \resizebox{14.4cm}{!}{\usebox{\slidetitlebox}}%
+ \else\usebox{\slidetitlebox}\fi}
+\newcommand{\heading}[3]{%
+ \node[txt,text=Teal,font=\fontsize{9}{11}\selectfont\bfseries] at (.8,8.4) {#1};
+ \node[txt] at (.8,7.96) {\fittitle{#2}};
+ \node[smalltxt,text width=14.2cm] at (.8,6.98) {#3};}
+\newcommand{\footer}[1]{%
+ \draw[Line,line width=.5pt] (.8,.55)--(15.2,.55);
+ \pgfmathsetmacro{\progressend}{.8+14.4*min(\insertframenumber,11)/11}
+ \draw[Teal,line width=.9pt] (.8,.55)--(\progressend,.55);
+ \node[txt,text=Muted,font=\fontsize{7}{9}\selectfont] at (.8,.38) {LUCA MANZI\quad /\quad MASTER'S DEFENCE};
+ \node[anchor=north east,text=Muted,font=\fontsize{7}{9}\selectfont,inner sep=0pt] at (15.2,.38) {#1};}
+\newcommand{\source}[1]{\node[smalltxt,font=\fontsize{6.5}{8}\selectfont,text width=14.3cm] at (.8,1.06) {#1};}
+\newcommand{\fitmessage}[1]{%
+ \sbox{\slidetitlebox}{\large\bfseries #1}%
+ \ifdim\wd\slidetitlebox>14.2cm
+  \resizebox{14.2cm}{!}{\usebox{\slidetitlebox}}%
+ \else\usebox{\slidetitlebox}\fi}
+\newcommand{\takeaway}[1]{\node[txt,text=Teal] at (.8,1.7) {\fitmessage{#1}};}
+\newcommand{\panel}[4]{\fill[Panel,rounded corners=6pt] (#1,#2) rectangle (#3,#4);}

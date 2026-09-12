@@ -1,0 +1,459 @@
+Master’s degree in Artificial Intelligence for Science and Technology
+
+
+Estimation of Quantum
+Fisher Information by
+variational quantum circuits
+on a quantum computer
+Luca Manzi
+Supervisor: Prof. Enrico Prati
+Co-supervisor: Dr. Sebastiano Corli
+In collaboration with the Italian Space Agency (ASI)
+Quantum Computers for Space Exploration
+Luca Manzi   ·   Master’s thesis                                        1 / 14
+1    Information and variational estimation
+
+Quantum Fisher information as local distinguishability
+How does a small parameter change affect the state and its measurement statistics?
+
+Nearby parameter values                                           Classical Fisher information
+                                                                               [∂θ py (θ )]2
+                                                                  FC ( θ ) = ∑
+                                                                             y    py (θ )
+                                                                  Quantum measurement limit
+          p(y|θ )                  p(y|θ + dθ )
+                                                                  FQ (θ ) = sup FC (θ )
+Each measurement basis reveals
+a different statistical response.                                                       { My }
+    The same local geometry describes changes produced by trainable circuit parameters.
+Thesis: Mathematical Background. Single-parameter, local estimation; schematic outcome distributions.
+
+Luca Manzi   ·   Master’s thesis                                                                        2 / 14
+1    Information and variational estimation
+
+Measurement direction and accessible information
+One mixed qubit and one unknown rotation angle; only the measurement basis changes.
+
+             Measurement axes                                                                    Information extracted
+                     z: optimal 90◦
+                                                                                                                     QFI = 0.64
+                                          45◦
+
+
+
+                                                            Fisher information
+                                                                                 0.64
+                                                                                            CFI 0.47
+                                            state change
+                                                x                                0.32
+                          0                 state
+
+                                                                                   0
+                                                                                        0              45      90         135     180
+                    Bloch-plane view                                                              Measurement angle φ (degrees)
+
+    Changing the measurement raises CFI up to the quantum limit set by the state family.
+Exact illustration: Bloch radius r = 0.8, local estimation of rotation θ (radians) at θ = 0. Derivation: Appendix J.
+
+Luca Manzi    ·   Master’s thesis                                                                                                       3 / 14
+1    Information and variational estimation
+
+
+Variational spectral estimation
+Variational Quantum State Eigensolver (VQSE): a trainable spectral decomposition.
+
+    PCA: covariance matrix                                                VQSE: density matrix
+    C = ∑i si vi viT                                                      ρ = ∑i λi |vi ⟩⟨vi |
+    Directions ranked by variance.                                        Components ranked by probability weight.
+
+
+
+    V (α)ρV † (α) ≈ diag(λ1, λ2, . . .)
+    Frequencies estimate λi ; the inverse rotation V † |i ⟩ recovers eigenvectors.
+
+    Implemented VQSE supplies spectral information for fidelity-based QFI bounds.
+Cerezo et al., npj Quantum Information 8, 113 (2022); Beckey et al., Phys. Rev. Research 4, 013083 (2022).
+
+Luca Manzi   ·   Master’s thesis                                                                                 4 / 14
+1    Information and variational estimation
+
+QFI geometry for variational optimization
+Circuit controls α define an ansatz state family ρα .
+
+For an objective C (α), account for how each control changes the state.
+
+    Newton’s method                                                    Quantum natural gradient
+
+    ∆α = −ηHC−1 ∇C                                                     ∆α = −η ( Fans + λI )−1 ∇C
+    HC = ∇2 C                                                          Ansatz QFIM Fans
+    Curvature of the objective.                                        Distinguishability of neighbouring states.
+
+
+    QNG preconditions the gradient with state geometry rather than the objective Hessian.
+Thesis: Mathematical Background; VQSE. λ > 0 regularizes QNG; Newton expression assumes an invertible Hessian.
+
+Luca Manzi   ·   Master’s thesis                                                                                    5 / 14
+2    A finite quantum magnetometer
+
+Preparation and restricted access in the Ising model
+Six interacting spins encode the transverse field; measurements access four of them.
+
+
+                                                      H ( h x ) = − J ∑ j Z j Z j +1 − h x ∑ j X j
+                                                      Two preparation families
+                                                                                                                           − βH (h x )
+                                                      ρG = |ψ0 (h x )⟩⟨ψ0 (h x )|,                                ρβ = e      Zβ
+                                                      In both cases, the accessible state is
+N=6       n = 4 accessible spins
+        Periodic boundaries                           ρS (h x ) = TrE ρ(h x ).
+
+    Compare the information in the same subsystem, across the same field range.
+Thesis: Noise Analysis, periodic N = 6, n = 4 preparation comparison. Gibbs preparation precedes partial trace.
+
+Luca Manzi   ·   Master’s thesis                                                                                                   6 / 14
+     2                 A finite quantum magnetometer
+
+     Thermal sensitivity beyond the ground-state optimum
+     A lower peak can coexist with greater sensitivity away from the optimum.
+
+                           4                                                       Ground state
+
+
+
+Subsystem QFI FQ (J = 1)
+                                                                                   Gibbs state, βJ = 2
+                                                                                                                  At βJ = 2
+                           3                                               Higher off-peak QFI                    Peak QFI:
+                           2                                                                                      thermal 2.61
+                                                                                                                  ground state 3.93
+                           1
+                                                                                                                  Higher sensitivity
+                           0
+                                                                                                                  away from the
+                               0.25         0.5         0.75      1       1.25       1.5      1.75       2        ground-state peak.
+                                                         Transverse field h x /J
+
+              The preferred preparation depends on the expected field range as well as peak sensitivity.
+     Exact SLD calculation; periodic N = 6, n = 4, J = 1. Different preparation families; no universal thermal advantage.
+
+     Luca Manzi                 ·     Master’s thesis                                                                              7 / 14
+3   An optical application: ASI Matera
+
+
+SPADE detector
+
+
+
+
+Luca Manzi   ·   Master’s thesis         8 / 14
+3    An optical application: ASI Matera
+
+Spatial-mode measurements and the available record
+Spatial-mode sorting measures the displacement response of a faint companion.
+
+Physical measurement                                                Archived observations
+
+      Spatial-mode
+                                    HG00
+                                    Reference mode
+                                                                    n1 = n HG01 + n HG10
+         sorter                                                     525 settings × 100 repetitions
+                                    HG01 , HG10                     52,500 counts; 10 ms per repetition
+                                    First-order
+                                    modes                           Missing: resolved and failure outputs;
+A choice of optical basis, before the                               incident-flux monitoring;
+data are recorded.                                                  measurements in additional bases.
+
+    The record constrains the classical response; it does not identify the full optical state.
+Thesis: Quantum Channel Model for SPADE. Experiment: Santamaria, Sgobba and Lupo, Optica Quantum 2, 46–56 (2024).
+
+Luca Manzi   ·   Master’s thesis                                                                                    9 / 14
+3    An optical application: ASI Matera
+
+
+A quantum-to-classical channel model
+A physical forward model for propagation, measurement and detector reporting.
+
+
+    Source state                   Optical                  Measurement                      Readout                      Repeated
+                                   channel                     { My }
+        ρS                                                                                      R                          counts
+                                      E
+
+
+             py = Tr My E (ρS ) ,                                           prep = Rp
+                              
+
+    Quantum stages                                                      Classical stages
+    Loss, dephasing and coherent mixing.                                Readout, calibration and count noise.
+
+
+    The framework preserves physical constraints and locates losses of information.
+Thesis: sequential channel model. Coherence and optical-channel parameters are not reconstructed from aggregate counts.
+
+Luca Manzi   ·   Master’s thesis                                                                                                10 / 14
+3    An optical application: ASI Matera
+
+
+Kraus representations are not unique
+Different operator sets can describe exactly the same quantum channel.
+
+
+    E (ρ) = ∑ a Ka ρKa† ,                                     ∑ a Ka† Ka = I
+    Example: complete dephasing of a two-mode state in the chosen basis.
+
+    Basis projectors                                                     Random phase flips
+    K0 = |0⟩⟨0|,                       K1 = |1⟩⟨1|                       e0 = √I ,
+                                                                         K               e1 = √Z
+                                                                                         K
+                                                                                          2                               2
+                               ρ+ ZρZ
+    ∑ a Ka ρKa† =                 2   = diag(ρ)
+    Kraus freedom changes the representation. Physical hypotheses concern the channel.
+Two-mode illustration of the thesis HG-dephasing model at v = 0. Equivalent representations cannot be distinguished by system-only data.
+
+Luca Manzi   ·   Master’s thesis                                                                                                      11 / 14
+3    An optical application: ASI Matera
+
+A physical construction: mode-dependent loss
+Mode transmission 0 ≤ τj ≤ 1; loss is represented by an orthogonal failure state.
+
+Choose operators with explicit physical roles
+                        √
+    Kt = ∑ j                 τj | j⟩⟨ j|,                Kfj =             1 − τj |fail⟩⟨ j|
+                                                                      p
+    Transmission and failure jointly account for every input photon.
+
+
+    Kt† Kt + ∑ j (Kfj )† Kfj = ∑ j [τj + (1 − τj )]| j⟩⟨ j| = I
+    Kraus form ensures complete positivity; completeness proves trace preservation.
+
+    Channel validity can be proved mathematically; physical suitability requires calibration.
+Derived from the thesis mode-dependent loss map. Input: one-photon mode space after common survival; failure is retained in the output.
+
+Luca Manzi   ·   Master’s thesis                                                                                                     12 / 14
+3    An optical application: ASI Matera
+
+Information retained by the optical receiver
+Compare quantum and classical information at successive stages of the receiver.
+
+    FQ (ρS ) ≥ FQ [E (ρS )] ≥ FC ( p) ≥ FC ( Rp)
+    For channels and measurements independent of the parameter being estimated.
+
+    Checkpoint                                                                                   Fraction of source QFI
+     Resolved reference, first-order and failure outputs                                         99.68–100%
+     Binary readout; assumed 0.35% port confusion                                                0.13–57.0%
+    Aggregation and readout confusion can strongly reduce the accessible information.
+Conditional model: same nine settings, per photon surviving common loss. Ranges across settings; not reconstructed experimental QFI.
+
+Luca Manzi   ·   Master’s thesis                                                                                                       13 / 14
+4    Conclusions
+
+From state information to experimental access
+Sensitivity depends on preparation, accessible degrees of freedom and measurement.
+
+    Variational estimation
+    Implemented spectral methods for mixed-state QFI bounds.
+    QFI geometry also provides a direction for circuit optimization.
+    Preparation over a field range
+    Thermal preparation offers higher off-peak sensitivity in the studied regime.
+    A physically constrained observation model
+    Physical channels connect information limits to data and guide calibration.
+
+    Next: resolved SPADE outputs, independent calibration and a programmable modal basis.
+QNG is a methodological connection; the optical variational protocol VQ-SPADE remains a proposal for a future experiment.
+
+Luca Manzi   ·   Master’s thesis                                                                                            14 / 14
+Appendix A       Variational estimation
+
+
+Spectral truncation and the local-QFI limit
+Dominant eigencomponents bound a fidelity quantity at finite parameter displacement.
+
+
+                  8[1 − F (ρθ , ρθ +∆ )]
+  I∆ =
+                          ∆2
+  F is root fidelity.
+
+  The retained eigenspace is state dependent; it is not a fixed detector-mode cut-
+  off.
+
+  At regular operating points, I∆ → FQ as ∆ → 0.
+
+  Finite-step bounds need not be pointwise bounds on the exact SLD QFI.
+Thesis: Methods; Mathematical Background. Cerezo et al. (2022); Beckey et al. (2022).
+
+Luca Manzi   ·   Master’s thesis                                                        Appendix A
+Appendix B       Variational optimization
+
+
+The ansatz metric and its scope
+The physical sensing parameter and the trainable circuit controls define different derivatives.
+
+  ans = 4 Re ⟨ ∂ ψ | ∂ ψ ⟩ − ⟨ ∂ ψ | ψ ⟩⟨ ψ | ∂ ψ ⟩
+ Fµν
+                                                   
+                µ     ν         µ              ν
+ Pure ansatz: Fans = 4gFS , the Fubini–Study metric up to convention.
+
+                                    1
+ min ∇CT ∆α +                         ∆αT ( Fans + λI )∆α
+   ∆α                              2η
+ Stationarity gives the regularized natural-gradient update.
+ The quadratic term constrains state change, not objective curvature.
+  Mixed VQSE inputs require a mixed-state metric; a pure-state metric is otherwise a surrogate.
+Thesis: Mathematical Background; VQSE. A full metric has quadratic parameter-count overhead; no general training speedup is claimed.
+
+Luca Manzi   ·   Master’s thesis                                                                                                 Appendix B
+Appendix C       Numerical optimization example
+
+Stochastic reconfiguration in a neural quantum state
+A separate pure-state RBM example illustrates metric-based optimization.
+
+
+
+
+  SR lowers the energy error in this run; it does not benchmark mixed-state VQSE.
+Thesis figure: VQSE chapter. TFIM at h x /J = 1; 80 steps, 300 Monte Carlo samples/step, η = 0.05, SR λ = 10−4 ; same seed.
+
+Luca Manzi   ·   Master’s thesis                                                                                              Appendix C
+Appendix D       Thermal preparation
+
+
+Thermal sensitivity and data processing
+The Gibbs and ground-state families need not have the same field response.
+
+                             e− βH (h x )
+ ρ β (hx ) =
+                            Tr e− βH (h x )
+ The field changes both eigenvectors and thermal populations.
+ Partial trace still obeys data processing within each family:
+
+ FQ [TrE ρ β (h x )] ≤ FQ [ρ β (h x )]
+ For an uncertain field, choose an operating range or prior.
+ These curves do not establish a universal Bayesian or minimax optimum.
+  The comparison changes the preparation family; it does not reverse a fixed noise channel.
+Thesis: Noise Analysis. Finite system; exact SLD QFI.
+
+Luca Manzi   ·   Master’s thesis                                                          Appendix D
+Appendix E       Channel representations
+
+
+Proof of Kraus-unitary freedom
+A change of Kraus basis leaves the channel unchanged.
+
+
+ ea = ∑b u ab Kb ,
+ K                                                    U †U = I
+ ∑ a u ab u∗ac = δbc                                                        Orthonormal columns of U.
+
+
+ ∑a K    ea† = ∑b,c δbc Kb ρKc† = ∑b Kb ρK †
+    ea ρ K
+                                          b
+
+ Isometry in the Kraus index leaves the action on every input unchanged.
+
+  A physical realization adds assumptions about the environment; the reduced map alone does not select them.
+
+Standard Kraus equivalence: an isometry, or a unitary after padding with zero operators. Algebra shown explicitly for this presentation.
+
+Luca Manzi   ·   Master’s thesis                                                                                                      Appendix E
+Appendix F       Identifiability
+
+A classical response does not fix a quantum channel
+Embedding a stochastic map is a model construction, not process tomography.
+
+
+ p 7→ diag( p),                                  p′ = Rp
+ For a column-stochastic R, one valid quantum extension is
+
+ K ji =                 R ji | j⟩⟨i |,                 E R (ρ) = ∑ ji R ji ρii | j⟩⟨ j|
+                  p
+
+ This extension measures and prepares in the chosen basis, erasing coherences.
+ For R = I, both the identity channel and complete dephasing reproduce the same
+ populations.
+
+  Different channels can agree on the measured populations; this is distinct from Kraus freedom of one channel.
+
+Thesis: classical/quantum embedding and HG coherence discussion. Channel-extension example derived for the presentation.
+
+Luca Manzi   ·   Master’s thesis                                                                                           Appendix F
+Appendix G       Physical channel construction
+
+
+The loss map and its physical checks
+The input mode space is embedded in an output space containing an orthogonal failure flag.
+
+
+ Lτ (ρ) = Kt ρKt† + Tr[( I − Kt† Kt )ρ]|fail⟩⟨fail|
+ For any ancillary system, Kraus form preserves positivity:
+ (L ⊗ id)( X ) = ∑(Ka ⊗ I ) X (Ka† ⊗ I ) ≥ 0 for X ≥ 0.
+                             a
+ Boundary checks: τj = 1 transmits mode j; τj = 0 sends it to failure.
+ Normalization: transmission plus failure has unit trace.
+ Physical validation: mode-injection measurements determine the τj .
+
+  Renormalizing the transmitted branch alone changes the question to postselected performance.
+Thesis: mode-dependent loss and flagged mode reduction. The record lacks independent modal-transmission calibration.
+
+Luca Manzi   ·   Master’s thesis                                                                                       Appendix G
+Appendix H       Statistical validation
+
+Predictive calibration of the observed response
+A physical mean with a Gaussian-process correction predicts held-out setting means.
+
+
+ µ(d a , ϵ) = µ0 (d a , ϵ) exp[ f (d a , ϵ) + ξ ]
+ Grouped five-fold validation; all components refitted within each training fold.
+
+    Held-out structure                    RMSE       Standardized SD              95% coverage
+
+    Checkerboard cells                    0.606                       1.004                 93.52%
+    Distance rows                         0.734                       1.041                 94.67%
+    Source-ratio columns                  0.609                       1.009                 93.71%
+  The validated target is the mean of 100 repetitions; this does not identify a complete quantum channel.
+Thesis: Exoplanet Experiment Appendix, hierarchical calibration validation. RMSE in counts per 10 ms.
+
+Luca Manzi   ·   Master’s thesis                                                                        Appendix H
+Appendix I       Experimental outlook
+
+From SPADE to a variational optical measurement
+VQ-SPADE is a proposed optical realization of variational state eigensolving.
+
+
+ pk (α; d a ) = ⟨ HGk |V (α)ρ(d a )V † (α)| HGk ⟩
+ A programmable coherent mode transformation provides the trainable basis.
+
+ Resolved outputs, flux and failure events provide normalized probabilities.
+
+ Nearby states and additional overlap measurements support fidelity-based QFI
+ bounds.
+
+
+  The present record motivates the acquisition design; it does not implement this protocol.
+Thesis: proposed VQ-SPADE scheme. Additional independent channel and background calibrations are required.
+
+Luca Manzi   ·   Master’s thesis                                                                             Appendix I
+Appendix J       Measurement geometry
+
+An exact example of measurement-dependent CFI
+Unknown parameter: state rotation θ. Measurement control: basis angle φ.
+
+                 I +r (cos θ X +sin θ Z )
+ ρθ =                        2            ,                     r = 0.8
+      ( φ)           I ±(cos φ X +sin φ Z )                               1±r cos(θ − φ)
+ M± =                          2            ,                p± =               2
+                                      2       2
+ FC ( φ)|θ =0 = 1−r rsin  φ      2
+                     2 cos2 φ ≤ r = F Q
+
+ At θ = 0, the SLD is L0 = rZ, so measuring Z attains QFI.
+ The 45◦ measurement gives FC = 8/17 ≃ 0.47, compared with FQ = 0.64.
+  These directions label measurements for one parameter, not directions in a two-parameter QFIM.
+Derived from the CFI and SLD definitions in the thesis Mathematical Background. r < 1 keeps this example full rank and regular.
+
+Luca Manzi   ·    Master’s thesis                                                                                                 Appendix J
+

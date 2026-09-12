@@ -1,0 +1,66 @@
+% Light academic theme. Set2 colours are used for graphical accents.
+\usepackage{fix-cm}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amssymb,booktabs,graphicx,tikz}
+\usepackage{mathpazo}
+\usepackage{bm}
+\usepackage[default]{sourcesanspro}
+\usefonttheme{professionalfonts}
+\usetikzlibrary{arrows.meta,calc,positioning,patterns}
+\definecolor{Paper}{HTML}{FCFBF8}
+\definecolor{Ink}{HTML}{25333A}
+\definecolor{Muted}{HTML}{59656A}
+\definecolor{Rule}{HTML}{D5DAD8}
+\definecolor{Green}{HTML}{66C2A5}
+\definecolor{Orange}{HTML}{FC8D62}
+\definecolor{Blue}{HTML}{8DA0CB}
+\definecolor{Pink}{HTML}{E78AC3}
+\definecolor{GreenText}{HTML}{28634F}
+\definecolor{BlueText}{HTML}{465A81}
+\setbeamercolor{normal text}{fg=Ink,bg=Paper}
+\setbeamercolor{background canvas}{bg=Paper}
+\setbeamercolor{math text}{fg=Ink}
+\setbeamercolor{structure}{fg=GreenText}
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{headline}{}
+\setbeamertemplate{footline}{}
+\hypersetup{colorlinks=true,urlcolor=BlueText,linkcolor=Ink,
+ pdftitle={Estimation of Quantum Fisher Information by variational quantum circuits on a quantum computer},
+ pdfauthor={Luca Manzi},pdfsubject={Master's thesis defence; academic presentation}}
+\input{glyphtounicode}
+\pdfgentounicode=1
+\pdfstringdefDisableCommands{\def\translate#1{#1}}
+\graphicspath{{assets/}}
+\newcommand{\MainSlideCount}{14}
+\newenvironment{canvas}{\begin{tikzpicture}[remember picture,overlay,x=1cm,y=1cm]
+ \begin{scope}[shift={(current page.south west)}]}{\end{scope}\end{tikzpicture}}
+\tikzset{txt/.style={anchor=north west,align=left,inner sep=0pt,text=Ink,font=\normalsize},
+ smalltxt/.style={txt,font=\small,text=Muted},
+ eq/.style={txt,font=\fontsize{17}{21}\selectfont},
+ arr/.style={-{Stealth[length=2.3mm]},line width=1pt,draw=Muted},
+ flow/.style={draw=Rule,fill=white,minimum height=1cm,text=Ink,align=center,font=\small,text width=2.1cm,inner sep=5pt}}
+\newsavebox{\titlebox}
+\newcommand{\fittitle}[1]{\sbox{\titlebox}{\rmfamily\fontsize{23}{27}\selectfont #1}%
+ \ifdim\wd\titlebox>14.3cm\resizebox{14.3cm}{!}{\usebox{\titlebox}}\else\usebox{\titlebox}\fi}
+\newcommand{\heading}[3]{
+ \node[smalltxt,font=\fontsize{8}{10}\selectfont] at (.85,8.47) {#1};
+ \node[txt] at (.85,7.98) {\fittitle{#2}};
+ \draw[Green,line width=2pt] (.85,7.13)--(1.65,7.13);
+ \node[smalltxt,text width=14.2cm,font=\fontsize{10}{13}\selectfont] at (.85,6.86) {#3};}
+\newcommand{\footer}[1]{
+ \draw[Rule,line width=.4pt] (.85,.43)--(15.15,.43);
+ \node[smalltxt,font=\fontsize{6.8}{8}\selectfont] at (.85,.29) {Luca Manzi\quad \textperiodcentered\quad Master's thesis};
+ \node[anchor=north east,inner sep=0pt,text=Muted,font=\fontsize{6.8}{8}\selectfont] at (15.15,.29) {#1};}
+\newcommand{\source}[1]{\node[smalltxt,text width=14.3cm,font=\fontsize{6.5}{8}\selectfont] at (.85,.82) {#1};}
+\newcommand{\fitclosing}[1]{%
+ \sbox{\titlebox}{\fontsize{10}{13}\selectfont #1}%
+ \ifdim\wd\titlebox>13.95cm\resizebox{13.95cm}{!}{\usebox{\titlebox}}\else\usebox{\titlebox}\fi}
+\newcommand{\closingline}[1]{
+ \draw[Green,line width=2pt] (.87,1.58)--(.87,1.13);
+ \node[txt] at (1.06,1.54) {\fitclosing{#1}};}
+\newcommand{\wash}[5]{\fill[#1!12!Paper] (#2,#3) rectangle (#4,#5);}
+\newcommand{\ket}[1]{|#1\rangle}
+\newcommand{\bra}[1]{\langle#1|}
+\newcommand{\proj}[1]{\ket{#1}\bra{#1}}
+\newcommand{\Tr}{\operatorname{Tr}}

@@ -1,0 +1,9 @@
+33 PDF pages: 17 main slides, seven overlays on slide 3, ten appendices.
+All expected slide numbers and appendix labels present.
+Clean main and thermal-plot LaTeX logs; all fonts embedded.
+No extracted text extends outside a page.
+No speaker notes or AI4ST cover logo included.
+CFI values verified against outcome probabilities at all seven overlay angles.
+Thermal maxima and 40/60 statistic verified against copied source CSV samples.
+Final rendered pages reviewed; pipeline and geometry overlaps corrected.
+Main, appendix and animation contact sheets regenerated from the final PDF.

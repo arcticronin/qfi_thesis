@@ -1,0 +1,8 @@
+Current version: mixed-state geometry, two coloured Bloch vectors, labelled rotating measurement axis.
+33 pages: 17 main slides, seven overlays on slide 3, ten appendices.
+CFI curve verified against outcome probabilities at 91 angles (0 to 90 degrees).
+Bloch radius 0.8; QFI 0.64; CFI(0)=0, CFI(45)=8/17, CFI(90)=0.64.
+Vectors depict a finite 25-degree separation; information is evaluated locally at theta=0 in radians.
+Appendix J and README updated to the current mixed-state model.
+Clean LaTeX log; embedded fonts; no extracted text outside page bounds; correct main-slide numbering.
+Revised overlays and appendix rendered and visually inspected. Contact sheets refreshed.

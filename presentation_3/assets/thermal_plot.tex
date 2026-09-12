@@ -1,0 +1,33 @@
+\documentclass[tikz,border=2pt]{standalone}
+\usepackage[T1]{fontenc}
+\usepackage{mathpazo}
+\usepackage[default]{sourcesanspro}
+\usepackage{pgfplots}
+\usepgfplotslibrary{fillbetween}
+\pgfplotsset{compat=1.18}
+\definecolor{Paper}{HTML}{FCFBF8}
+\definecolor{Ink}{HTML}{25333A}
+\definecolor{Muted}{HTML}{59656A}
+\definecolor{Green}{HTML}{66C2A5}
+\definecolor{Blue}{HTML}{8DA0CB}
+\definecolor{GreenText}{HTML}{28634F}
+\begin{document}
+\begin{tikzpicture}
+\begin{axis}[width=10.4cm,height=5.45cm,xmin=.1,xmax=2,ymin=0,ymax=4.4,
+ axis lines=left,axis line style={Muted},tick style={Muted},
+ xlabel={Transverse field $h_x/J$},ylabel={Subsystem QFI $\mathcal F_Q$ ($J=1$)},
+ xlabel style={font=\small,text=Ink},ylabel style={font=\small,text=Ink},
+ tick label style={font=\footnotesize,text=Muted},ytick={0,1,2,3,4},xtick={.25,.5,.75,1,1.25,1.5,1.75,2},
+ ymajorgrids=true,grid style={black!9},
+ legend style={draw=none,fill=none,font=\small,text=Ink,at={(.98,.98)},anchor=north east},
+ legend cell align=left,clip=true]
+\addplot[name path=g,Blue,line width=1.5pt] table[x=h_over_J,y=ground_local_qfi,col sep=comma]{assets/tfim_curves.csv};
+\addlegendentry{Ground state}
+\addplot[name path=t,Green,line width=1.8pt] table[x=h_over_J,y=thermal_beta2_local_qfi,col sep=comma]{assets/tfim_curves.csv};
+\addlegendentry{Gibbs state, $\beta J=2$}
+\addplot[Green!22,forget plot] fill between[of=g and t,soft clip={domain=1.111345:2}];
+\node[font=\small,text=GreenText,anchor=west] at (axis cs:1.20,2.9) {Higher off-peak QFI};
+\draw[GreenText,line width=.6pt] (axis cs:1.47,2.65)--(axis cs:1.58,1.18);
+\end{axis}
+\end{tikzpicture}
+\end{document}

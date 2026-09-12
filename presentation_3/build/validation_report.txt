@@ -1,0 +1,5 @@
+presentation: 15 pages; clean LaTeX log; all fonts embedded; text in bounds; correct main-slide numbering; ASI-only cover.
+presentation_academic: 16 pages; clean LaTeX log; all fonts embedded; text in bounds; correct main-slide numbering; ASI-only cover.
+presentation_3: 24 pages; clean LaTeX log; all fonts embedded; text in bounds; correct main-slide numbering; ASI-only cover.
+New qubit plot verified against direct outcome probabilities at 181 measurement angles and an independent SLD calculation: CFI(45deg)=8/17; maximum=QFI=0.64.
+English speaking script: 14 main slides; 1283 spoken words; timing allocation 720 seconds. Rehearsal is still required.
