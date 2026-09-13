@@ -28,8 +28,17 @@ I just need to create the slides, no script notes for now.
     - all the slides from slide 10 from presentation_3 
 
 
+I want to change a little the flow:
+- slide 4 has to introduce a little that i will use mixed states and a good way to treat them is to compute the truncated density matrix, so:
+  - change the title,
+  - insert TQFI somewhere
+  - maybe remove the square of the PCA, but add a point that says that it resembles it
 
+- add a new slide 5 that says our aim: We want to study QFI, TQFI. both simulating numerically and creating the quantum circuits. Apply those methods to:
+    - a quantum magnetometer 
+    - a exoplanet problem 
+- after this, insert the old slide 6, remove the subtitle, the takeway. remove the formulas and insert them in the notes, little, just as a reference. make the boxes larger, in "preparation/encoding" leave only "preparation", and make the plot a little bigger, so we can see them, and make an actual viisble separation between numerical simulaiton and quantum circuit
+- after this slide insert old slide 5 of the magnetometer
+- then old slide 7 and old slide 8, old slide 9 and so on.
+  
 
-    I would like some edits:
-
-    - 

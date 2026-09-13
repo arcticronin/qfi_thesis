@@ -3,6 +3,7 @@
 \usepackage[T1]{fontenc}
 \usepackage{lmodern}
 \usepackage{pgfplots}
+\usepgfplotslibrary{fillbetween}
 \pgfplotsset{compat=1.18}
 \definecolor{Navy}{HTML}{111D2E}
 \definecolor{Paper}{HTML}{F5F3EE}
@@ -21,18 +22,18 @@
  ymajorgrids=true,grid style={Muted!15!Navy},
  legend style={draw=none,fill=none,font=\footnotesize,text=Paper,at={(.98,.98)},anchor=north east},
  legend cell align=left,clip=true]
-\addplot[Paper,line width=1.5pt] table[x=h_over_J,y=ground_local_qfi,col sep=comma]{assets/tfim_curves.csv};
+\addplot[name path=ground,Paper,line width=1.5pt] table[x=h_over_J,y=ground_local_qfi,col sep=comma]{assets/tfim_curves.csv};
 \addlegendentry{Ground state}
 \ifnum\Beta=2
- \addplot[Teal,line width=1.8pt] table[x=h_over_J,y=thermal_beta2_local_qfi,col sep=comma]{assets/tfim_curves.csv};
+ \addplot[name path=thermal,Teal,line width=1.8pt] table[x=h_over_J,y=thermal_beta2_local_qfi,col sep=comma]{assets/tfim_curves.csv};
  \addlegendentry{Gibbs state, $\beta J=2$}
+ \addplot[Teal,fill opacity=.27,draw=none,forget plot] fill between[of=ground and thermal,soft clip={domain=1.11134491:2}];
  \node[font=\small,text=Teal,anchor=west] at (axis cs:1.17,2.9) {Higher off-peak QFI};
  \draw[Teal,line width=.6pt] (axis cs:1.47,2.65)--(axis cs:1.58,1.18);
 \else
- \addplot[Muted,dashed,line width=1.0pt] table[x=h_over_J,y=thermal_beta2_local_qfi,col sep=comma]{assets/tfim_curves.csv};
- \addlegendentry{Gibbs state, $\beta J=2$}
- \addplot[Teal,line width=1.8pt] table[x=h_over_J,y=thermal_beta5_local_qfi,col sep=comma]{assets/tfim_beta5.csv};
+ \addplot[name path=thermal,Teal,line width=1.8pt] table[x=h_over_J,y=thermal_beta5_local_qfi,col sep=comma]{assets/tfim_beta5.csv};
  \addlegendentry{Gibbs state, $\beta J=5$}
+ \addplot[Teal,fill opacity=.27,draw=none,forget plot] fill between[of=ground and thermal,soft clip={domain=.8797917523:2}];
 \fi
 \end{axis}
 \end{tikzpicture}

@@ -1,40 +1,38 @@
-MASTER’S THESIS         /   AI FOR SCIENCE AND TECHNOLOGY
+MASTER’S THESIS       /   AI FOR SCIENCE AND TECHNOLOGY
 
 
-Estimation of Quantum
-Fisher Information by
-variational quantum circuits
-on a quantum computer
+Estimation of Quantum Fisher Informa-
+tion by variational quantum circuits on a
+quantum computer
+
 Luca Manzi
-Artificial Intelligence for Science and Technology
-Supervisor: Prof. Enrico Prati   Co-supervisor: Dr. Sebastiano Corli
+Supervisor: Prof. Enrico Prati
+Co-supervisor: Dr. Sebastiano Corli
 
 In collaboration with the Italian Space Agency (ASI)
 Project: Quantum Computers for Space Exploration
 
-THESIS DEFENCE                                                         1 / 17
-Fisher information and parameter estimation
+THESIS DEFENCE                                            1 / 18
+Fisher Information
 Local sensitivity quantifies the distinguishability of nearby parameter values.
            Small statistical change                      Large statistical change
 
                                                                                                 Fisher information
-                                                                                                How sensitive the observed
-                                                                                                statistics are to a small
-                                                                                                parameter change.
+                                                                                                Sensitivity of an observed
+                                                                                                probability distribution to
+                                                                                                changes in an unknown
              Measurement outcome                           Measurement outcome
+                                                                                                parameter
 
 
-
-
-Quantum Fisher information (QFI) is the best local information
-available from the state, optimized over measurements.
-
-
+Quantum Fisher information (QFI)
+Intrinsic sensitivity of a quantum state to a parameter,
+independent of the measurement basis chosen.
 Illustrative distributions. QFI is a local benchmark; attainable precision also depends on the measurement and estimation assumptions.
 
 
-MATHEMATICAL FRAMEWORK                                                                                                                   2 / 17
-Measurement direction and accessible information
+MATHEMATICAL FRAMEWORK                                                                                                                   2 / 18
+Fisher Information and Measurements
 Two states inside the Bloch sphere; the dashed measurement axis rotates.
 
   Two mixed states                                                         Accessible information
@@ -42,40 +40,17 @@ Two states inside the Bloch sphere; the dashed measurement axis rotates.
                                                                  0.64
                           ρ(θ)
 0        meas. basis                              x              0.32
-                            ρ
-
+                            ρ(0)
                                                                       0
                                                                           0◦               30◦                 60◦                 90◦
-  φ = 0◦                 Bloch radius r = 0.8
-                         θ = 25◦ shown for clarity                         CFI = 0                              Basis angle φ
-The measurement changes CFI; the QFI of the state family remains fixed.
+  φ = 0◦
+                                                                           CFI = 0                              Basis angle φ
+The measurement changes CFI, the QFI remains fixed.
 Mixed states, r = 0.8; finite separation shown for clarity. CFI is local at θ = 0 (radians), not a two-state finite difference. Appendix J.
 
 
-MATHEMATICAL FRAMEWORK                                                                                                                    3 / 17
-Measurement direction and accessible information
-Two states inside the Bloch sphere; the dashed measurement axis rotates.
-
-  Two mixed states                                                         Accessible information
-                                                                                                                     QFI = 0.64
-                                                                 0.64
-                          ρ(θ)
-                  asis
-        me  as. b
-0
-                                                  x              0.32
-                            ρ
-
-                                                                      0
-                                                                          0◦               30◦                 60◦                 90◦
-  φ = 15◦                Bloch radius r = 0.8
-                         θ = 25◦ shown for clarity                         CFI = 0.106                          Basis angle φ
-The measurement changes CFI; the QFI of the state family remains fixed.
-Mixed states, r = 0.8; finite separation shown for clarity. CFI is local at θ = 0 (radians), not a two-state finite difference. Appendix J.
-
-
-MATHEMATICAL FRAMEWORK                                                                                                                    3 / 17
-Measurement direction and accessible information
+MATHEMATICAL FRAMEWORK                                                                                                                    3 / 18
+Fisher Information and Measurements
 Two states inside the Bloch sphere; the dashed measurement axis rotates.
 
   Two mixed states                                                         Accessible information
@@ -88,18 +63,17 @@ Two states inside the Bloch sphere; the dashed measurement axis rotates.
         me
 0
                                                   x              0.32
-                            ρ
-
+                            ρ(0)
                                                                       0
                                                                           0◦               30◦                 60◦                 90◦
-  φ = 30◦                 Bloch radius r = 0.8
-                          θ = 25◦ shown for clarity                        CFI = 0.308                          Basis angle φ
-The measurement changes CFI; the QFI of the state family remains fixed.
+  φ = 30◦
+                                                                           CFI = 0.308                          Basis angle φ
+The measurement changes CFI, the QFI remains fixed.
 Mixed states, r = 0.8; finite separation shown for clarity. CFI is local at θ = 0 (radians), not a two-state finite difference. Appendix J.
 
 
-MATHEMATICAL FRAMEWORK                                                                                                                    3 / 17
-Measurement direction and accessible information
+MATHEMATICAL FRAMEWORK                                                                                                                    3 / 18
+Fisher Information and Measurements
 Two states inside the Bloch sphere; the dashed measurement axis rotates.
 
   Two mixed states                                                         Accessible information
@@ -110,18 +84,17 @@ Two states inside the Bloch sphere; the dashed measurement axis rotates.
     meas.
 0
                                                   x              0.32
-                            ρ
-
+                            ρ(0)
                                                                       0
                                                                           0◦               30◦                 60◦                 90◦
-  φ = 45◦                Bloch radius r = 0.8
-                         θ = 25◦ shown for clarity                         CFI = 0.471                          Basis angle φ
-The measurement changes CFI; the QFI of the state family remains fixed.
+  φ = 45◦
+                                                                           CFI = 0.471                          Basis angle φ
+The measurement changes CFI, the QFI remains fixed.
 Mixed states, r = 0.8; finite separation shown for clarity. CFI is local at θ = 0 (radians), not a two-state finite difference. Appendix J.
 
 
-MATHEMATICAL FRAMEWORK                                                                                                                    3 / 17
-Measurement direction and accessible information
+MATHEMATICAL FRAMEWORK                                                                                                                    3 / 18
+Fisher Information and Measurements
 Two states inside the Bloch sphere; the dashed measurement axis rotates.
 
   Two mixed states                                                         Accessible information
@@ -133,18 +106,17 @@ Two states inside the Bloch sphere; the dashed measurement axis rotates.
     me
 0
                                                   x              0.32
-                            ρ
-
+                            ρ(0)
                                                                       0
                                                                           0◦               30◦                 60◦                 90◦
-  φ = 60◦                Bloch radius r = 0.8
-                         θ = 25◦ shown for clarity                         CFI = 0.571                          Basis angle φ
-The measurement changes CFI; the QFI of the state family remains fixed.
+  φ = 60◦
+                                                                           CFI = 0.571                          Basis angle φ
+The measurement changes CFI, the QFI remains fixed.
 Mixed states, r = 0.8; finite separation shown for clarity. CFI is local at θ = 0 (radians), not a two-state finite difference. Appendix J.
 
 
-MATHEMATICAL FRAMEWORK                                                                                                                    3 / 17
-Measurement direction and accessible information
+MATHEMATICAL FRAMEWORK                                                                                                                    3 / 18
+Fisher Information and Measurements
 Two states inside the Bloch sphere; the dashed measurement axis rotates.
 
   Two mixed states                                                         Accessible information
@@ -156,18 +128,17 @@ Two states inside the Bloch sphere; the dashed measurement axis rotates.
        .
 0
                                                   x              0.32
-                            ρ
-
+                            ρ(0)
                                                                       0
                                                                           0◦               30◦                 60◦                 90◦
-  φ = 75◦                Bloch radius r = 0.8
-                         θ = 25◦ shown for clarity                         CFI = 0.624                          Basis angle φ
-The measurement changes CFI; the QFI of the state family remains fixed.
+  φ = 75◦
+                                                                           CFI = 0.624                          Basis angle φ
+The measurement changes CFI, the QFI remains fixed.
 Mixed states, r = 0.8; finite separation shown for clarity. CFI is local at θ = 0 (radians), not a two-state finite difference. Appendix J.
 
 
-MATHEMATICAL FRAMEWORK                                                                                                                    3 / 17
-Measurement direction and accessible information
+MATHEMATICAL FRAMEWORK                                                                                                                    3 / 18
+Fisher Information and Measurements
 Two states inside the Bloch sphere; the dashed measurement axis rotates.
 
     Two mixed states                                                       Accessible information
@@ -179,142 +150,150 @@ meas. basis
                           ρ(θ)
 0
                                                   x              0.32
-                            ρ
-
+                            ρ(0)
                                                                       0
                                                                           0◦               30◦                 60◦                 90◦
-    φ = 90◦              Bloch radius r = 0.8
-                         θ = 25◦ shown for clarity                         CFI = 0.64                           Basis angle φ
-The measurement changes CFI; the QFI of the state family remains fixed.
+    φ = 90◦
+                                                                           CFI = 0.64                           Basis angle φ
+The measurement changes CFI, the QFI remains fixed.
 Mixed states, r = 0.8; finite separation shown for clarity. CFI is local at θ = 0 (radians), not a two-state finite difference. Appendix J.
 
 
-MATHEMATICAL FRAMEWORK                                                                                                                    3 / 17
-VQSE and principal-component extraction
-Variational Quantum State Eigensolver: dominant spectral components of a mixed state.
+MATHEMATICAL FRAMEWORK                                                                                                                    3 / 18
+Learning the dominant components of a mixed state
+Spectral truncation provides a compact representation for sensitivity estimation.
 
-   PCA / COVARIANCE MATRIX                                           VQSE / DENSITY MATRIX
+ We retain the dominant eigencomponents to represent mixed states efficiently.
 
-                                                                                  i λi |vi ⟩⟨vi |
-                           T                                         ρ=
-   C=             i si vi vi
-              P                                                           P
+                Pm
+   ρm =             i=1 λi |vi ⟩⟨vi |
+                                                                   Retain the m largest eigenvalues
+                                                                   and their associated eigenvectors.
 
-   Dominant directions capture                                       Dominant state components carry
-   the largest share of variance.                                    the largest probability weights.
+ VQSE — Variational Quantum State Eigensolver
+ Learns the leading eigenvalues and a circuit that prepares their eigenvectors.
+ PCA — Principal Component Analysis: an analogy
+ Both retain dominant spectral components: state probabilities here, variances in PCA.
+ TQFI — Truncated Quantum Fisher Information
+ The retained components provide input to fidelity-based QFI bounds.
+VQSE / VQFIE: Cerezo et al. (2022); Beckey et al. (2022). Truncation is subnormalized, not renormalized. Finite-step scope: Appendix A.
 
-                                                                     Train a basis rotation V .
-V ρV † ≈ diag(λ1 , λ2 , . . .)                                       Frequencies estimate eigenvalues;
-                                                                     V † |i⟩ recovers eigenvectors.
+VARIATIONAL METHOD                                                                                                               4 / 18
+Applications
+Study QFI and TQFI through numerical simulation and quantum-circuits.
 
-The retained eigenspace provides a compact input to fidelity-based QFI bounds.
-Implemented and benchmarked established VQSE / VQFIE methods: Cerezo et al. (2022); Beckey et al. (2022). No speedup claim.
+ Compare exact numerical benchmarks with variational spectral estimation.
+
+   Quantum magnetometry                                                 Exoplanet imaging
+   Estimate a magnetic field with                                       Resolve a faint companion with
+   an interacting spin system.                                          spatial-mode measurements.
+   Preparation, restricted access                                       Optical channels, accessible information
+   and spectral truncation.                                             and experimental requirements.
 
 
-VARIATIONAL METHOD                                                                                                            4 / 17
-Local metrology in the transverse-field Ising model
-Six interacting spins encode a magnetic field; measurements access a four-spin subsystem.
+Connect information in the quantum state to information accessible in measurements.
+Magnetometry: numerical and circuit methods. Optical application: channel analysis and proposed variational protocol; experimental TQFI
+was not obtained.
 
+RESEARCH OBJECTIVES                                                                                                               5 / 18
+Parallel numerical and quantum-circuit workflows
+NUMERICAL SIMULATION
+
+  Preparation                        Access                     Spectrum                              Information
+  Hamiltonian                                                   Exact spectral                        Exact SLD QFI
+                                     Partial trace
+  Time evolution                                                decomposition
+                                                                                                      TQFI bounds
+QUANTUM CIRCUIT
+                                                                VQSE
+
+
+
+
+Schematic circuit layouts and example output. Implementations can be exchanged at matched interfaces; physical stage order is preserved.
+
+
+NUMERICAL AND VARIATIONAL METHODS                                                                                                  6 / 18
+APPLICATION I
+
+
+Quantum Magnetometry
+
+
+APPLICATION I          7 / 18
+Toy Model: a noisy Quantum Magnetometer
+Encode a magnetic field, restrict access, study QFI
 
                                                           Ground state             Lowest-energy preparation
-
                                                           Depolarized              Fixed depolarizing noise
-
                                                           Thermal                  Field-dependent populations
 
-Periodic spin chain
-     4 retained / 2 discarded
+                                                          We studied:              ¼ Local QFI retained
+Periodic spin chain                                                                ¼ Effects of preparation
+     4 retained / 2 discarded                                                      ¼ Noise, temperature effects
 
-Compare preparation families over the operating field range.
+Tune temperature for peak sensitivity or a broader useful field range.
 Transverse-field Ising model (TFIM), N = 6, n = 4, periodic boundaries, J = 1. Thesis: NoiseAnalysis, Project 9.
 
 
-NUMERICAL MODEL                                                                                                    5 / 17
-Parallel numerical and quantum-circuit workflows
-The same accessible state connects exact calculations to variational spectral estimation.
-
- H(hx ) = −J                 j Zj Zj+1 − hx j Xj ,                                    Uhx (t) = e−itH(hx )
-                            P              P
-
-
-  Preparation / encoding                     Access                   Spectrum                            Information
-  ρG = |ψ0 ⟩⟨ψ0 |                                                                 i λi |vi ⟩⟨vi |         Exact SLD QFI
-                                                                           P
-                                             ρS = TrE ρ               ρS =
-  ρβ = e−βH /Zβ                              Partial trace            Exact spectrum                      TQFI bounds
-  ρ(t) = U ρin U †                           over E                   (PCA analogy)
-                     Prepare                 Retain S;
-                     and encode              leave E
-                     with U
-                          ehx                unmeasured.              VQSE basis rotation
-
-Interchange implementations at matched interfaces while preserving the physical order.
-Numerical operators above; schematic circuits below. U
-                                                     e approximates U with gates. Gibbs preparation is a separate process.
-
-NUMERICAL AND VARIATIONAL METHODS                                                                                            6 / 17
-        Thermal sensitivity beyond the ground-state optimum
-        A lower peak can coexist with greater sensitivity away from the optimum.
-                        5                                        Ground state
+NUMERICAL MODEL                                                                                                    8 / 18
+        Temperature broadens the sensing range
+        At βJ = 2, Gibbs preparation retains more information beyond the ground-state peak.
+                        5                                      Ground state
 
 
 
 
 Subsystem QFI (J = 1)
-                                                                 Gibbs state, βJ = 2                           At βJ = 2
+                                                               Gibbs state, βJ = 2                         Broader sensitivity
                         4
 
-                        3                                 Higher off-peak QFI                                  Peak QFI:
-                                                                                                               thermal 2.61
-                        2
-                                                                                                               ground state 3.93
+                        3                                Higher off-peak QFI                               More QFI beyond
+                        2                                                                                  the ground-state peak.
+
                         1
-                                                                                                               Higher sensitivity
-                        0                                                                                      away from the
-                             0.5                  1                  1.5                 2
-                                                                                                               ground-state peak.
-                                        Transverse field hx /J
-
-
-        The preferred preparation depends on the expected field range as well as peak sensitivity.
-        Exact SLD calculation; periodic N = 6, n = 4, J = 1. Different preparation families; no universal thermal advantage.
-
-
-        NUMERICAL RESULTS                                                                                                       7 / 17
-        Temperature controls the sensitivity profile
-        Cooling to βJ = 5 produces a higher, more localized peak in this finite system.
-                        5                                       Ground state
-
-
-
-
-Subsystem QFI (J = 1)
-                                                                Gibbs state, βJ = 2
-                        4
-
-                        3
-                                                                Gibbs state, βJ = 5
-                                                                                                         +23.5%
-                                                                                                         higher peak local QFI
-                        2                                                                                at βJ = 5
-                        1
-
+                                                                                                           Uncertain field
                         0
-                                                                                                         40/60
-                             0.5                 1                  1.5                  2               sampled fields favour
-                                       Transverse field hx /J                                            thermal preparation
+                            0.5                  1                 1.5                 2                   Useful across a
+                                       Transverse field hx /J                                              wider field range.
 
-        Choose temperature for the expected field range: peak sensitivity or a broader response.
-        Periodic N = 6, n = 4, βJ = 5. Metrics: 60 fields on hx /J ∈ [0.1, 2.5]; plot ends at 2. Exact SLD calculation.
-
-
-        NUMERICAL RESULTS                                                                                                        8 / 17
-SPADE detector
+        When the field is uncertain, off-peak sensitivity matters as well as the maximum.
+        Exact SLD QFI; periodic N = 6, n = 4, J = 1. Shading: Gibbs QFI above ground-state QFI. Different preparation families.
 
 
+        NUMERICAL RESULTS                                                                                                         9 / 18
+        Cooling strengthens the sensing peak
+        At βJ = 5, the Gibbs state exceeds the ground-state peak in the same spin subsystem.
+                        5                                      Ground state
 
 
-OPTICAL APPLICATION   9 / 17
+
+
+Subsystem QFI (J = 1)
+                                                               Gibbs state, βJ = 5                         Stronger peak
+                        4
+
+                        3                                                                                  Higher QFI around
+                        2                                                                                  the thermal optimum.
+
+                        1
+                                                                                                           Known field range
+                        0
+                            0.5                  1                 1.5                 2                   Useful near the
+                                       Transverse field hx /J                                              target field.
+
+        When the field lies near the optimum, cooling can provide greater local sensitivity.
+        Exact SLD QFI; periodic N = 6, n = 4, J = 1. Shading: Gibbs QFI above ground-state QFI. Different preparation families.
+
+
+        NUMERICAL RESULTS                                                                                                         10 / 18
+APPLICATION II
+
+
+Exoplanet Detection
+
+
+APPLICATION II        11 / 18
 Spatial-mode measurements for exoplanet imaging
 A faint companion must be resolved in the presence of a bright reference source.
 
@@ -333,7 +312,13 @@ SPADE changes the measurement basis to reveal weak spatial signals.
 Thesis illustrations; schematic mode sorter. SPADE: spatial-mode demultiplexing. Tsang et al. (2016); Santamaria et al. (2024).
 
 
-OPTICAL APPLICATION                                                                                                               10 / 17
+OPTICAL APPLICATION                                                                                                               12 / 18
+SPADE detector
+
+
+
+
+OPTICAL APPLICATION   13 / 18
 Experimental observations and identifiability
 The completed ASI Matera experiment supplied aggregate first-order counts.
 
@@ -349,9 +334,9 @@ Repeated counts constrain the mean response; they do not identify the quantum st
 Thesis: Exoplanet Experiment. da : displacement; ϵ: source ratio. Aggregate counts; no basis rotations or experimental TQFI.
 
 
-EXPERIMENTAL DATA                                                                                                              11 / 17
-Classical probabilities and quantum states
-A probability vector has a diagonal quantum representation in a chosen basis.
+EXPERIMENTAL DATA                                                                                                              14 / 18
+Why describe the receiver with quantum channels?
+The model includes mode populations and coherence before the measurement.
 
    CLASSICAL PROBABILITY EMBEDDING                                             QUANTUM COHERENCE
                                                                                                      
@@ -366,113 +351,62 @@ Classical channel: p′ = Rp                                                    
 Redistributes probabilities between outcomes.                                 Acts on populations and coherences.
 
 
-The embedding preserves measured probabilities; coherences require further data.
+Quantum channels describe optical effects before the detector produces classical counts.
 Two-outcome illustration: pi ≥ 0, p0 + p1 = 1, |c|2 ≤ p0 p1 . A state vector of probabilities does not determine a quantum channel.
 
 
-CHANNEL FRAMEWORK                                                                                                                 12 / 17
-A quantum-to-classical channel model
-A physical forward model for propagation, measurement and detector reporting.
+CHANNEL FRAMEWORK                                                                                                                 15 / 18
+From physical assumptions to predicted counts
+A modular model connects source preparation, optical effects and detector readout.
 
-                                   Optical                 Measurement
-   Source state                                                                            Readout                        Repeated
-                                   channel                    {My }
-       ρS                                                                                     R                            counts
-                                      E
+                                    Optical
+   Source state                                                 SPADE                       Readout and                     Predicted
+                                    channel
+       ρS                                                     measurement                    calibration                     counts
+                                       E
 
-            py = Tr[My E(ρS )] ,                                     prep = Rp
-   Quantum stages                                                      Classical stages
-   Loss, dephasing and coherent mixing.                                Readout, calibration and count noise.
+ Choose physically motivated channels and check their mathematical validity.
 
+   Physical channel choices                                               Classical calibration
+   Kraus operators for loss, dephasing                                    Fit throughput, background, offset
+   and coherent mode mixing.                                              and coupling from recorded counts.
 
+Simulate the chosen channel sequence and compare its output with the observations.
+Thesis: provisional channel study. Optical assumptions are replaceable; the count record does not determine their individual values. Details:
+Appendices K–M.
 
-The framework preserves physical constraints and locates losses of information.
-Thesis: sequential channel model. Coherence and optical-channel parameters are not reconstructed from aggregate counts.
+PHYSICAL MODELLING                                                                                                                    16 / 18
+The model reproduces the observed mean response
+Both maps show a central minimum and larger counts at greater separation and source ratio.
 
-
-PHYSICAL MODELLING                                                                                                             13 / 17
-Kraus representations are not unique
-Different operator sets can describe exactly the same quantum channel.
-
-                                †                                †
-   E(ρ) =                a Ka ρKa ,                           a Ka Ka = I
-                     P                                    P
-
-   Example: complete dephasing of a two-mode state in the chosen basis.
-
-   Basis projectors                                                     Random phase flips
-   K0 = |0⟩⟨0|,                      K1 = |1⟩⟨1|                        K
-                                                                        f     I
-                                                                          0 = √2 ,                    K
-                                                                                                      f    Z
-                                                                                                       1 = √2
-
-           †   ρ+ZρZ
-    a Ka ρKa =       = diag(ρ)
-   P
-                 2
-
-Kraus freedom changes the representation. Physical hypotheses concern the channel.
-Two-mode illustration of the thesis HG-dephasing model at v = 0. Equivalent representations cannot be distinguished by system-only data.
+ Observed setting means                                               Modelled setting means
 
 
-CHANNEL FRAMEWORK                                                                                                                14 / 17
-A physical construction: mode-dependent loss
-Mode transmission 0 ≤ τj ≤ 1; loss is represented by an orthogonal failure state.
-
- Choose operators with explicit physical roles
-                       √                                             √
-   Kt =                    τj |j⟩⟨j|,                  Kjf =             1 − τj |fail⟩⟨j|
-                P
-                   j
-   Transmission and failure jointly account for every input photon.
 
 
-   Kt† Kt +           f † f
-                j (Kj ) Kj = j [τj + (1 − τj )]|j⟩⟨j| = I
-                       P         P
+The mean-count pattern is captured by the chosen channels with classical calibration.
+Thesis appendix: provisional channel model, top panels. In-sample mean comparison; assumed optical channels are not individually identi-
+fied by this agreement.
 
-   Kraus form ensures complete positivity; completeness proves trace preservation.
+MODEL AND OBSERVATIONS                                                                                                             17 / 18
+Main contributions
+Simulation, preparation studies, data interpretation and a variational optical proposal.
 
+    Quantum and numerical sensing pipeline
+    Simulated quantum sensors under noise and decoherence, estimating QFI and TQFI.
 
-Channel validity can be proved mathematically; physical suitability requires calibration.
-Derived from the thesis mode-dependent loss map. Input: one-photon mode space after common survival; failure is retained in the output.
+    Preparation and noise models
+    Compared ground and Gibbs states, depolarization and restricted access to the sensor.
 
+    Quantum-channel interpretation of SPADE data
+    Modelled SPADE with quantum channels and fitted the observed mean counts.
 
-PHYSICAL MODELLING                                                                                                               15 / 17
-Information retained by the optical receiver
-Compare quantum and classical information at successive stages of the receiver.
-
-
-  FQ (ρS ) ≥ FQ [E(ρS )] ≥ FC (p) ≥ FC (Rp)
-  For channels and measurements independent of the parameter being estimated.
-
-  Checkpoint                                                                                   Fraction of source QFI
-    Resolved reference, first-order and failure outputs                                        99.68–100%
-    Binary readout; assumed 0.35% port confusion                                               0.13–57.0%
-
-Aggregation and readout confusion can strongly reduce the accessible information.
-Conditional model: same nine settings, per photon surviving common loss. Ranges across settings; not reconstructed experimental QFI.
+    VQ-SPADE: a proposed optical eigensolver
+    A trainable mode rotation and SPADE readout would diagonalize the optical state.
+Thesis: Methods, Noise Analysis, Exoplanet Experiment and Conclusions. VQ-SPADE is proposed for a future experiment.
 
 
-INFORMATION ANALYSIS                                                                                                             16 / 17
-From state information to experimental access
-Sensitivity depends on preparation, accessible degrees of freedom and measurement.
-
-   Variational estimation
-   Implemented spectral methods for mixed-state QFI bounds.
-   Exact numerical calculations benchmark the variational estimates.
-   Preparation over a field range
-   Thermal preparation offers higher off-peak sensitivity in the studied regime.
-   A physically constrained observation model
-   Physical channels connect information limits to data and guide calibration.
-
-
-Next: resolved SPADE outputs, independent calibration and a programmable modal basis.
-The optical variational protocol VQ-SPADE remains a proposal for a future experiment; QFI geometry for optimization is in Appendix B.
-
-
-CONCLUSIONS                                                                                                                      17 / 17
+CONCLUSIONS                                                                                                            18 / 18
 Spectral truncation and the local-QFI limit
 Dominant eigencomponents bound a fidelity quantity at finite parameter displacement.
 
@@ -664,4 +598,69 @@ Exact mixed-qubit model; θ in radians. Full rank keeps every displayed measurem
 used.
 
 APPENDIX J / MEASUREMENT GEOMETRY                                                                                              Appendix J
+Kraus representations are not unique
+Different operator sets can describe exactly the same quantum channel.
+
+                                †                                †
+   E(ρ) =                a Ka ρKa ,                           a Ka Ka = I
+                     P                                    P
+
+   Example: complete dephasing of a two-mode state in the chosen basis.
+
+   Basis projectors                                                     Random phase flips
+   K0 = |0⟩⟨0|,                      K1 = |1⟩⟨1|                        K
+                                                                        f     I
+                                                                          0 = √2 ,                    K
+                                                                                                      f    Z
+                                                                                                       1 = √2
+
+           †   ρ+ZρZ
+    a Ka ρKa =       = diag(ρ)
+   P
+                 2
+
+Kraus freedom changes the representation. Physical hypotheses concern the channel.
+Two-mode illustration of the thesis HG-dephasing model at v = 0. Equivalent representations cannot be distinguished by system-only data.
+
+
+APPENDIX K / CHANNEL REPRESENTATIONS                                                                                         Appendix K
+A physical construction: mode-dependent loss
+Mode transmission 0 ≤ τj ≤ 1; loss is represented by an orthogonal failure state.
+
+ Choose operators with explicit physical roles
+                       √                                             √
+   Kt =                    τj |j⟩⟨j|,                  Kjf =             1 − τj |fail⟩⟨j|
+                P
+                   j
+   Transmission and failure jointly account for every input photon.
+
+
+   Kt† Kt +           f † f
+                j (Kj ) Kj = j [τj + (1 − τj )]|j⟩⟨j| = I
+                       P         P
+
+   Kraus form ensures complete positivity; completeness proves trace preservation.
+
+
+Channel validity can be proved mathematically; physical suitability requires calibration.
+Derived from the thesis mode-dependent loss map. Input: one-photon mode space after common survival; failure is retained in the output.
+
+
+APPENDIX L / PHYSICAL CHANNEL CONSTRUCTION                                                                                   Appendix L
+Information retained by the optical receiver
+Compare quantum and classical information at successive stages of the receiver.
+
+
+  FQ (ρS ) ≥ FQ [E(ρS )] ≥ FC (p) ≥ FC (Rp)
+  For channels and measurements independent of the parameter being estimated.
+
+  Checkpoint                                                                                   Fraction of source QFI
+    Resolved reference, first-order and failure outputs                                        99.68–100%
+    Binary readout; assumed 0.35% port confusion                                               0.13–57.0%
+
+Aggregation and readout confusion can strongly reduce the accessible information.
+Conditional model: same nine settings, per photon surviving common loss. Ranges across settings; not reconstructed experimental QFI.
+
+
+APPENDIX M / INFORMATION RETENTION                                                                                          Appendix M
 
