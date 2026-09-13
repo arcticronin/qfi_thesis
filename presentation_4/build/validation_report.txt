@@ -1,1 +1,1 @@
-Rebuilt current sources: 18 main slides, 6 overlays on slide 3, 13 appendix slides, 36 PDF pages. No LaTeX warnings or box overflow. All page previews and contact sheets regenerated. Slide 4 uses a single truncation formula at the unchanged 17 pt size, with expanded VQSE, PCA and TQFI. Slides 12 and 13 swapped; PDF text order verified.
+Rebuilt 19 main slides, 6 overlays on slide 3, 13 appendices: 37 PDF pages. Refreshed all previews. Slide 4 What / Why / How with 17 pt formula, VQSE and TQFI, no PCA. Corrected duplicate frame label and footer numbering.

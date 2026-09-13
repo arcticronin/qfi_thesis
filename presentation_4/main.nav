@@ -34,14 +34,14 @@
 \headcommand {\beamer@framepages {22}{22}}
 \headcommand {\slideentry {0}{0}{18}{23/23}{}{0}}
 \headcommand {\beamer@framepages {23}{23}}
-\headcommand {\gdef \insertmainframenumber {18}}
-\headcommand {\partentry {\translate {Appendix}}{1}}
-\headcommand {\beamer@partpages {1}{23}}
-\headcommand {\beamer@sectionpages {1}{23}}
-\headcommand {\beamer@subsectionpages {1}{23}}
-\headcommand {\beamer@appendixpages {24}}
-\headcommand {\slideentry {0}{0}{19}{24/24}{}{1}}
+\headcommand {\slideentry {0}{0}{19}{24/24}{}{0}}
 \headcommand {\beamer@framepages {24}{24}}
+\headcommand {\gdef \insertmainframenumber {19}}
+\headcommand {\partentry {\translate {Appendix}}{1}}
+\headcommand {\beamer@partpages {1}{24}}
+\headcommand {\beamer@sectionpages {1}{24}}
+\headcommand {\beamer@subsectionpages {1}{24}}
+\headcommand {\beamer@appendixpages {25}}
 \headcommand {\slideentry {0}{0}{20}{25/25}{}{1}}
 \headcommand {\beamer@framepages {25}{25}}
 \headcommand {\slideentry {0}{0}{21}{26/26}{}{1}}
@@ -66,8 +66,10 @@
 \headcommand {\beamer@framepages {35}{35}}
 \headcommand {\slideentry {0}{0}{31}{36/36}{}{1}}
 \headcommand {\beamer@framepages {36}{36}}
-\headcommand {\beamer@partpages {24}{36}}
-\headcommand {\beamer@subsectionpages {24}{36}}
-\headcommand {\beamer@sectionpages {24}{36}}
-\headcommand {\beamer@documentpages {36}}
-\headcommand {\gdef \inserttotalframenumber {18}}
+\headcommand {\slideentry {0}{0}{32}{37/37}{}{1}}
+\headcommand {\beamer@framepages {37}{37}}
+\headcommand {\beamer@partpages {25}{37}}
+\headcommand {\beamer@subsectionpages {25}{37}}
+\headcommand {\beamer@sectionpages {25}{37}}
+\headcommand {\beamer@documentpages {37}}
+\headcommand {\gdef \inserttotalframenumber {19}}
