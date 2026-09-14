@@ -1,9 +1,18 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
+from pathlib import Path
 from scipy.special import j1
 from mpl_toolkits.axes_grid1 import make_axes_locatable
 from matplotlib.colors import PowerNorm
+
+WHITE = "#FFFFFF"
+MUTED = "#ACB8C9"
+TEAL = "#56D6BE"
+CORAL = "#FF967D"
+NAVY_BKG = "#111D2E"
+PANEL = "#1C2B40"
+teal_coral_cmap = sns.blend_palette([NAVY_BKG, CORAL, TEAL], as_cmap=True)
 
 
 def airy_disk(x, y, x0, y0, I0):
@@ -63,10 +72,8 @@ def compute_w0(radial_profile, max_radius=10.0, samples=20000):
     return r1 + (target - i1) * (r2 - r1) / (i2 - i1)
 
 
-def add_dimension_markers(ax, distance, I1, I2, w0):
-    """Mark the source separation d, the common Gaussian width w0 and the intensities"""
-    """The first two quantities are marked in the resolved plot, the intensities in the unresolved"""
-    marker_color = "#888888"
+def add_dimension_markers(ax, distance, I1, I2, w0, marker_color="#888888"):
+    """Mark the source separation d, common width w0, and the source intensities."""
     marker_alpha = 0.8
     max_intensity = max(I1, I2)
     centers = (-distance / 2, distance / 2)
@@ -154,17 +161,53 @@ def add_dimension_markers(ax, distance, I1, I2, w0):
                 alpha=0.6,
                 zorder=4,
             )
-            lable = r"$I_1$" if center==centers[0] else r"$I_2$"
-            pos_testo = center + 0.4 * (-1 if center==centers[0] else 1)  # Adjust text position based on center
+            label = r"$I_1$" if center == centers[0] else r"$I_2$"
+            pos_text = center + 0.4 * (-1 if center == centers[0] else 1)
             ax.text(
-                pos_testo,
-                peak/3,
-                lable,
+                pos_text,
+                peak / 3,
+                label,
                 ha="center",
                 va="bottom",
                 color=marker_color,
                 fontsize=11,
             )
+
+
+def _get_plot_config(mode):
+    """Return styling options for the thesis or slide version of the figure."""
+    if mode == "slides":
+        return {
+            "figure_background": "none",
+            "axes_background": NAVY_BKG,
+            "text_color": WHITE,
+            "marker_color": WHITE,
+            "line1_color": TEAL,
+            "line2_color": CORAL,
+            "total_color": WHITE,
+            "cmap": teal_coral_cmap,
+            "transparent": False,
+            "hide_spines": False,
+            "show_ticks": False,
+            "facecolor_for_save": "none",
+        }
+    if mode == "thesis":
+        thesis_cmap = sns.color_palette("mako", as_cmap=True)
+        return {
+            "figure_background": "white",
+            "axes_background": "white",
+            "text_color": "#222222",
+            "marker_color": "#666666",
+            "line1_color": sns.color_palette("Set2")[0],
+            "line2_color": sns.color_palette("Set2")[1],
+            "total_color": sns.color_palette("Set2")[2],
+            "cmap": thesis_cmap,
+            "transparent": True,
+            "hide_spines": False,
+            "show_ticks": False,
+            "facecolor_for_save": "white",
+        }
+    raise ValueError("mode must be either 'slides' or 'thesis'")
 
 
 def plot_rayleigh_column(
@@ -179,20 +222,12 @@ def plot_rayleigh_column(
     line_alpha=0.7,
     sum_offset=0.0,
     gamma=1.0,
-    log_y=False,  # <--- Added parameter to control y-axis scale
+    log_y=False,
+    mode="slides",
+    output_path=None,
 ):
-    """
-    Plots a single column with a 2D interference pattern and a 1D intensity cross-section.
-
-    Parameters:
-    - fig_width: Width of the plots in inches.
-    - bottom_ratio: Height of the bottom plot as a percentage of the top plot's height.
-    - crop_percent: Percentage of the top image to crop overall (crops symmetrically from top and bottom).
-    - line_alpha: Transparency level for the individual intensity lines.
-    - sum_offset: Vertical offset added to the total intensity line to separate it from overlapping individual lines.
-    - gamma: Power-law normalization for the 2D colormap. Values < 1.0 make faint outer rings more visible.
-    - log_y: If True, uses a logarithmic scale for the 1D intensity plot to reveal faint secondary peaks.
-    """
+    """Create a Rayleigh-criterion figure in either slide or thesis styling."""
+    config = _get_plot_config(mode)
     sns.set_theme(style="white", rc={"axes.facecolor": (0, 0, 0, 0)})
 
     crop_frac = crop_percent / 100.0
@@ -203,6 +238,9 @@ def plot_rayleigh_column(
     fig_height = (fig_width * keep_ratio) * (1 + ratio_float) + 1.0
 
     fig, ax1 = plt.subplots(figsize=(fig_width, fig_height))
+    fig.patch.set_alpha(1.0 if mode == "thesis" else 0.0)
+    fig.patch.set_facecolor(config["figure_background"])
+    ax1.set_facecolor(config["axes_background"])
 
     # --- Top Subplot (2D Image) ---
     grid_size = 400
@@ -233,39 +271,36 @@ def plot_rayleigh_column(
     ax1.imshow(
         total_intensity_2d,
         extent=[-8, 8, y_min, y_max],
-        cmap=light_cmap,
+        cmap=config["cmap"],
         origin="lower",
         norm=PowerNorm(gamma=gamma),
     )
-    ax1.set_title(title, pad=15, fontsize=14)
-    ax1.axis("off")
+    ax1.set_title(title, pad=15, fontsize=14, color=config["text_color"])
+    ax1.set_xticks([])
+    ax1.set_yticks([])
+    for spine in ax1.spines.values():
+        spine.set_visible(False)
 
-    # --- Bottom Subplot Setup ---
     divider = make_axes_locatable(ax1)
 
     # Use the parameter to control the bottom plot's height
     ax2 = divider.append_axes("bottom", size=bottom_ratio, pad=0.3)
-
-    # --- Bottom Subplot (1D Intensity Profile) ---
-    x_1d = np.linspace(-8, 8, grid_size)
+    ax2.set_facecolor("none")
 
     # Plotting Gaussian PSF for the 1D profile
-    intensity1_1d = gaussian_psf(x_1d, 0, -distance / 2, 0, I1, w0)
-    intensity2_1d = gaussian_psf(x_1d, 0,  distance / 2, 0, I2, w0)
-
-    # Plotting the Airy disk instead of Gaussian PSF for the 1D profile
+    # intensity1_1d = gaussian_psf(x_1d, 0, -distance / 2, 0, I1, w0)
+    # intensity2_1d = gaussian_psf(x_1d, 0,  distance / 2, 0, I2, w0)
+    x_1d = np.linspace(-8, 8, grid_size)
     intensity1_1d = airy_disk(x_1d, 0, -distance / 2, 0, I1)
     intensity2_1d = airy_disk(x_1d, 0, distance / 2, 0, I2)
     total_intensity_1d = intensity1_1d + intensity2_1d
 
-    # Use Seaborn's "Set2" palette for the discrete lines
-    set2_colors = sns.color_palette("Set2")
 
     ax2.plot(
         x_1d,
         intensity1_1d,
         linestyle="--",
-        color=set2_colors[0],
+        color=config["line1_color"],
         linewidth=2.5,
         alpha=line_alpha,
     )
@@ -273,7 +308,7 @@ def plot_rayleigh_column(
         x_1d,
         intensity2_1d,
         linestyle="--",
-        color=set2_colors[1],
+        color=config["line2_color"],
         linewidth=2.5,
         alpha=line_alpha,
     )
@@ -281,19 +316,21 @@ def plot_rayleigh_column(
         x_1d,
         total_intensity_1d + sum_offset,
         linestyle="-",
-        color=set2_colors[2],
+        color=config["total_color"],
         linewidth=3,
     )
 
-    add_dimension_markers(ax2, distance, I1, I2, w0)
+    if mode == "thesis":
+        add_dimension_markers(ax2, distance, I1, I2, w0, marker_color=config["marker_color"])
 
-    ax2.set_xlabel("Radial Distance", fontsize=12)
-    ax2.set_ylabel("Intensity" + (" (Log Scale)" if log_y else ""), fontsize=12)
+    ax2.set_xlabel("Radial Distance", fontsize=12, color=config["text_color"])
+    ax2.set_ylabel("Intensity" + (" (Log Scale)" if log_y else ""), fontsize=12, color=config["text_color"])
     ax2.set_xticks([])
     ax2.set_yticks([])
+    ax2.tick_params(colors=config["text_color"])
     ax2.set_xlim(-8, 8)
 
-    # <--- Apply logarithmic scale and adjust limits accordingly
+# <--- Apply logarithmic scale and adjust limits accordingly
     if log_y:
         ax2.set_yscale("log")
         # 1e-3 floor prevents the zeros of the Bessel function from stretching to negative infinity
@@ -308,50 +345,98 @@ def plot_rayleigh_column(
         )
 
     sns.despine(ax=ax2)
-    plt.savefig(
-        f"rayleigh_{title.replace(' ', '_').lower()}.png", dpi=300, bbox_inches="tight"
+    for spine in ax2.spines.values():
+        spine.set_color(config["text_color"])
+
+    if output_path is None:
+        output_path = Path.cwd() / f"rayleigh_{title.replace(' ', '_').lower()}_{mode}.png"
+    output_path = Path(output_path)
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    fig.savefig(
+        output_path,
+        dpi=300,
+        bbox_inches="tight",
+        transparent=config["transparent"],
+        facecolor=config["facecolor_for_save"],
+        edgecolor="none",
     )
-    plt.show()
+    plt.close(fig)
+    return output_path
 
 
-# --- Example Usage ---
+if __name__ == "__main__":
+    airy_equivalent_w0 = compute_w0(
+        lambda radius: airy_disk(radius, 0, 0, 0, 1.0),
+        max_radius=4.0,
+    )
 
-# Equivalent Gaussian width of the Airy central lobe in the dimensionless
-# coordinates used by airy_disk. Passing a Gaussian profile instead would return
-# that Gaussian's standard deviation according to the same definition.
-airy_equivalent_w0 = compute_w0(
-    lambda radius: airy_disk(radius, 0, 0, 0, 1.0),
-    max_radius=4.0,
-)
+    output_dir = ""
 
-# 1. Resolved with log_y=True to reveal the secondary peaks in the 1D plot
-plot_rayleigh_column(
-    distance=4.5,
-    I1=1.0,
-    I2=0.4,
-    w0=airy_equivalent_w0,
-    title="Resolved",
-    fig_width=5,
-    bottom_ratio="60%",
-    crop_percent=50,
-    line_alpha=0.6,
-    sum_offset=0.05,
-    gamma=1,
-    log_y=False,
-)
+    resolved_thesis = plot_rayleigh_column(
+        distance=4.5,
+        I1=1.0,
+        I2=0.4,
+        w0=airy_equivalent_w0,
+        title="Resolved",
+        fig_width=5,
+        bottom_ratio="60%",
+        crop_percent=50,
+        line_alpha=0.6,
+        sum_offset=0.05,
+        gamma=1.0,
+        log_y=False,
+        mode="thesis",
+        output_path="rayleigh_resolved_thesis.png",
+    )
+    unresolved_thesis = plot_rayleigh_column(
+        distance=2.5,
+        I1=1.0,
+        I2=0.4,
+        w0=airy_equivalent_w0,
+        title="Unresolved",
+        fig_width=5,
+        bottom_ratio="60%",
+        crop_percent=50,
+        line_alpha=1.0,
+        sum_offset=0.05,
+        gamma=1.0,
+        log_y=False,
+        mode="thesis",
+        output_path="rayleigh_unresolved_thesis.png",
+    )
 
-# 2. Unresolved
-plot_rayleigh_column(
-    distance=2.5,
-    I1=1.0,
-    I2=0.4,
-    w0=airy_equivalent_w0,
-    title="Unresolved",
-    fig_width=5,
-    bottom_ratio="60%",
-    crop_percent=50,
-    line_alpha=1.0,
-    sum_offset=0.05,
-    gamma=1,
-    log_y=False,
-)
+    resolved_slides = plot_rayleigh_column(
+        distance=4.5,
+        I1=1.0,
+        I2=0.4,
+        w0=airy_equivalent_w0,
+        title="Resolved",
+        fig_width=5,
+        bottom_ratio="60%",
+        crop_percent=50,
+        line_alpha=0.6,
+        sum_offset=0.05,
+        gamma=1.0,
+        log_y=False,
+        mode="slides",
+        output_path="rayleigh_resolved_slides.png",
+    )
+    unresolved_slides = plot_rayleigh_column(
+        distance=2.5,
+        I1=1.0,
+        I2=0.4,
+        w0=airy_equivalent_w0,
+        title="Unresolved",
+        fig_width=5,
+        bottom_ratio="60%",
+        crop_percent=50,
+        line_alpha=1.0,
+        sum_offset=0.05,
+        gamma=1.0,
+        log_y=False,
+        mode="slides",
+        output_path="rayleigh_unresolved_slides.png",
+    )
+
+    print(f"Saved thesis figures: {resolved_thesis} and {unresolved_thesis}")
+    print(f"Saved slide figures: {resolved_slides} and {unresolved_slides}")
