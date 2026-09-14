@@ -158,14 +158,14 @@ Mixed states, r = 0.8; finite separation shown for clarity. CFI is local at θ =
 
 
 MATHEMATICAL FRAMEWORK                                                                                                                    3 / 19
-Mixed states: what, why and how
- WHAT             Statistical mixtures of quantum states, described by a density matrix.
- WHY              Real sensors are noisy and only partly accessible.
-                  Mixed-state QFI remains less explored and costly to compute exactly.
+How we deal with Mixed States
+ WHAT             Statistical mixtures of quantum states, described by a density matrix ρ
+ WHY              Real sensors are noisy and only partly accessible
+                  Mixed-state QFI remains less explored and costly to compute exactly
 
- HOW              Retain the dominant eigencomponents
+ HOW              Use truncated spectral decomposition
                                   Pm
-                    ρm =             i=1 λi |vi ⟩⟨vi |
+                    ρm =             i=1 λi |ψi ⟩⟨ψi |
                                                                                 The m largest eigenvalues
                                                                                 and their eigenvectors.
 
@@ -177,22 +177,20 @@ Thesis: Introduction. Cerezo et al. (2022); Beckey et al. (2022). Subnormalized 
 
 VARIATIONAL METHOD                                                                                                           4 / 19
 Applications
-Study QFI and TQFI through numerical simulation and quantum-circuits.
-
- Compare exact numerical benchmarks with variational spectral estimation.
-
-   Quantum magnetometry                                                 Exoplanet imaging
-   Estimate a magnetic field with                                       Resolve a faint companion with
-   an interacting spin system.                                          spatial-mode measurements.
-   Preparation, restricted access                                       Optical channels, accessible information
-   and spectral truncation.                                             and experimental requirements.
+Study QFI and TQFI for two applications:
 
 
-Connect information in the quantum state to information accessible in measurements.
-Magnetometry: numerical and circuit methods. Optical application: channel analysis and proposed variational protocol; experimental TQFI
-was not obtained.
+ Quantum magnetometry                 Exoplanet detection
+ Estimate a magnetic field with       Resolve a small exoplanet with
+ an interacting spin system.          spatial-mode measurements.
 
-RESEARCH OBJECTIVES                                                                                                               5 / 19
+
+
+We used numerical simulation and quantum-circuits
+and sent ASI a complete report
+
+
+RESEARCH OBJECTIVES                                                    5 / 19
 Parallel numerical and quantum-circuit workflow
 NUMERICAL SIMULATION
 
@@ -312,12 +310,23 @@ SPADE: SPAtial-mode DEmultiplexing. Tsang et al. (2016); Santamaria et al. (2024
 
 
 OPTICAL APPLICATION                                                                                             12 / 19
-SPADE detector
+SPADE modes and readout cross-talk
+ p0 : fundamental-mode probability
+ Photon in HG00 :
+ dominated by the aligned star.
+ p1 : first-order probability
+ Photon in HG01 or HG10 :
+ carries the exoplanet’s
+ separation-sensitive signal.
+ χ: readout cross-talk
+ Probability of reporting port 1
+ instead of 0, or vice versa.
+ prep
+  1 = χp0 + (1 − χ)p1
+Mode probabilities do not label photon origin. Symmetric classical readout model; other outcomes unchanged. Thesis: Exoplanet Experi-
+ment.
 
-
-
-
-OPTICAL APPLICATION   13 / 19
+OPTICAL APPLICATION                                                                                                              13 / 19
 SPADE detector
 
 

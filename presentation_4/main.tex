@@ -10,6 +10,7 @@
 % ----------------------------------------------------------------------
 \input{theme}
 \input{assets/measurement_overlay}
+
 \title{Estimation of Quantum Fisher Information by variational quantum circuits on a quantum computer}
 \author{Luca Manzi}
 \date{}
@@ -266,7 +267,7 @@
         \node[txt,font=\fontsize{10}{13}\selectfont,text width=3.6cm] at (11.48,3.02) {Useful across a\newline wider field range.};
         %\takeaway{When the field is uncertain, off-peak sensitivity matters as well as the maximum.}
         \takeaway{At $\beta=2$, thermal preparation retains more information beyond the ground-state peak.}
-        \source{Exact SLD QFI; periodic $N=6$, $n=4$, $J=1$. Shading: thermal QFI above ground-state QFI. Different preparation families.}
+        \source{Exact SLD QFI; periodic $N=6$, $n=4$, $J=1$. Different preparation families. Thesis: NoiseAnalysis.}
         \footer{9 / 19}
     \end{canvas}
 \end{frame}
@@ -285,7 +286,7 @@
         \node[txt,font=\fontsize{10}{13}\selectfont,text width=3.6cm] at (11.48,3.02) {Useful near the\newline target field.};
         %\takeaway{When the field lies near the optimum, cooling can provide greater local sensitivity.}
         \takeaway{At $\beta=5$, the thermal state exceeds the ground-state peak in the same spin subsystem.}
-        \source{Exact SLD QFI; periodic $N=6$, $n=4$, $J=1$. Shading: Thermal QFI above ground-state QFI. Different preparation families.}
+        \source{Exact SLD QFI; periodic $N=6$, $n=4$, $J=1$. Different preparation families. Thesis: NoiseAnalysis.}
         \footer{10 / 19}
     \end{canvas}
 \end{frame}
@@ -326,8 +327,32 @@
 % SLIDE 13 | spade-detector
 \begin{frame}[plain,label=spade-detector]
     \begin{canvas}
-        \heading{OPTICAL APPLICATION}{SPADE detector}{}
-        \node[anchor=center] at (8,4.25) {\includegraphics[width=13.8cm,height=5.7cm,keepaspectratio]{hg_modes_strong_visuals.png}};
+        \heading{OPTICAL APPLICATION}{SPADE modes and readout cross-talk}{}
+        % Same width/height constraints as before: actual image height is 5.7 cm.
+        \node[anchor=east,inner sep=0pt] at (15.2,4.25)
+        {\includegraphics[width=13.8cm,height=5.7cm,keepaspectratio]{hg_modes_strong_visuals.png}};
+
+        \begin{scope}[yshift=0.25cm]
+            \node[txt,text=Teal,font=\fontsize{13}{16}\selectfont\bfseries] at (.95,6.87)
+            {$p_0$ : fundamental mode};
+            \node[txt,text width=5.35cm,font=\fontsize{11}{14}\selectfont] at (.95,6.25)
+            {Probability of a photon in $HG_{00}$\newline dominated by the aligned star};
+            \node[txt,text=Coral,font=\fontsize{13}{16}\selectfont\bfseries] at (.95,5.27)
+            {$p_1$ : first-order modes};
+            \node[txt,text width=5.35cm,font=\fontsize{11}{14}\selectfont] at (.95,4.65)
+            {Probability in $HG_{01}$ or $HG_{10}$\newline sensitive to exoplanet separation};
+            \node[txt,text=Teal,font=\fontsize{13}{16}\selectfont\bfseries] at (.95,3.36)
+            {$\chi$ : readout cross-talk};
+            \node[txt,text width=5.35cm,font=\fontsize{11}{14}\selectfont] at (.95,2.74)
+            {Probability of reporting port $1$\newline instead of $0$, or vice versa};
+            \node[txt,font=\fontsize{13}{16}\selectfont] at (.95,1.79)
+            {$p_1^{\rm rep}=\chi p_0+(1-\chi)p_1$};
+        \end{scope}
+
+        \node[txt,font=\fontsize{11}{12}\selectfont] at (14.5,1.79)
+        {$[\dots]$};
+
+        \source{Modal outcomes, not photon origin. Symmetric readout model; other outcomes unchanged. Thesis: Exoplanet Experiment.}
         \footer{13 / 19}
     \end{canvas}
 \end{frame}
@@ -373,15 +398,19 @@
 % SLIDE 16 | record
 \begin{frame}[plain,label=record]
     \begin{canvas}
-        \heading{EXPERIMENTAL DATA}{Experimental observations and identifiability}{The completed ASI Matera experiment, with separation $d$ and relative intensity $\epsilon$.}
-        \node[smalltxt,text width=11.3cm,font=\fontsize{10}{13}\selectfont] at (.85,6.48)
+        \heading{EXPERIMENTAL DATA}{Experimental data}{The completed ASI Matera experiment, with separation $d$ and relative intensity $\epsilon$.}
+        \node[smalltxt,text width=11.3cm,font=\fontsize{10}{13}\selectfont] at (.85,6.75)
         {52,500 count observations: 525 settings $\times$ 100 repetitions; $10\,\mathrm{ms}$ each};
-        \node[txt,text=Teal,font=\small\bfseries] at (.95,5.65) {ONE REPETITION};
-        \node[txt,text=Teal,font=\small\bfseries] at (5.89,5.65) {MEAN OF 100};
-        \node[anchor=north west,inner sep=0pt] at (.95,5.17) {\includegraphics[width=4.48cm,height=3.32cm,keepaspectratio]{sample_1_exoplanet_2026.png}};
-        \node[anchor=north west,inner sep=0pt] at (5.89,5.17) {\includegraphics[width=4.48cm,height=3.32cm,keepaspectratio]{average_sample_exoplanet_2026.png}};
-        \draw[Line,line width=1pt] (10.84,5.67)--(10.84,2.13);
-        \node[txt,text=Coral,font=\fontsize{11}{14}\selectfont\bfseries,text width=3.75cm] at (11.22,5.61) {Missing observables};
+
+        \node[txt,text=Teal,font=\small\bfseries] at (.95,6) {ONE REPETITION};
+        \node[txt,text=Teal,font=\small\bfseries] at (5.89,6) {MEAN OF 100};
+
+        \node[anchor=north west,inner sep=0pt] at (.25,5.4) {\includegraphics[width=5.48cm,height=4.32cm,keepaspectratio]{sample_1_exoplanet_2026.png}};
+        \node[anchor=north west,inner sep=0pt] at (5.35,5.4) {\includegraphics[width=5.48cm,height=4.32cm,keepaspectratio]{average_sample_exoplanet_2026.png}};
+
+        \draw[Line,line width=1pt] (10.84,5.67)--(10.84,0.80);
+
+        \node[txt,text=Coral,font=\fontsize{11}{14}\selectfont\bfseries,text width=3.75cm] at (11.22,6) {Missing observables};
         \node[txt,text width=3.7cm,font=\small] at (11.22,4.91) {Separate modal outputs\\[.25cm] Other measurement bases\\[.25cm] Incident flux and failure outcomes};
         %\takeaway{Number of photons collected in each configuration of $d$ and $\epsilon$}
         %\source{Thesis: Exoplanet Experiment. $d_a$: displacement; $\epsilon$: source ratio. Aggregate counts; no basis rotations or experimental TQFI.}
