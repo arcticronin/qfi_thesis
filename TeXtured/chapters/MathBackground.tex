@@ -1,11 +1,13 @@
 \chapter{Mathematical Background}
 \label{ch:MathBackground}
 
-This chapter introduces the mathematical tools used in the Thesis: mixed quantum states, Fisher information, the symmetric logarithmic derivative, fidelity-based QFI bounds, and the quantum natural gradient. Supplementary material on generalized measurements, geometric extensions, and multiparameter bounds is collected in Appendix~\ref{app:mathematical_background}.
+This Chapter introduces the mathematical tools used in the Thesis: mixed quantum states, Fisher information, the symmetric logarithmic derivative, fidelity-based QFI bounds, and the quantum natural gradient. Supplementary material on generalized measurements, geometric extensions, and multiparameter bounds is collected in Appendix~\ref{app:mathematical_background}.
 
 \section{Quantum States, Mixedness, and Open Systems}
 
 \subsection{Density Operators, Purity, and Ontic versus Epistemic Uncertainty}
+
+The following definitions establish how pure and mixed states are represented, distinguish intrinsic from classical uncertainty, and quantify mixedness for the reduced-state and QFI analyses used later in the Thesis.
 
 \begin{definition}[Density operator and purity]
     A quantum state is represented by a density operator $\rho$ on a Hilbert space $\mathcal{H}$~\cite{nielsen_chuang_2010_quantum_computation_and_quantum_information, Sakurai_Napolitano_2020}:
@@ -32,36 +34,63 @@ This chapter introduces the mathematical tools used in the Thesis: mixed quantum
 \end{definition}
 
 \begin{remark}[Ontic versus Epistemic Uncertainty]
-    The distinction between pure and mixed states highlights two fundamentally different types of uncertainty. A pure state represents a perfectly known system. Any unpredictability in measurement is purely intrinsic to quantum mechanics (it is an \emph{ontic} uncertainty, from greek \emph{ontos}, meaning \enquote{being}). A mixed state introduces also classical uncertainty (\emph{epistemic} uncertainty, from greek \emph{episteme}, meaning \enquote{knowledge}), meaning the exact state of the system is unknown. This lack of knowledge typically arises either because the system was randomly prepared in one of several possible pure states, or because the system is entangled with an unobservable environment. Because completely different preparation methods can result in the exact same mixed state, quantities like the quantum Fisher information depend solely on the final parameterized density operator $\rho(\theta)$, rather than the specific ensemble of pure states used to create it.
+    The distinction between pure and mixed states highlights two fundamentally different types of uncertainty. A pure state represents a perfectly known system. Any unpredictability in measurement is purely intrinsic to quantum mechanics (it is an \emph{ontic} uncertainty, from greek \emph{ontos}, meaning \enquote{being}). A mixed state introduces also classical uncertainty (\emph{epistemic} uncertainty, from greek \emph{episteme}, meaning \enquote{knowledge}), meaning the exact state of the system is unknown. This lack of knowledge typically arises either because the system was randomly prepared in one of several possible pure states, or because the system is entangled with an unobservable environment. Because completely different preparation methods can result in the exact same mixed state, quantities like the quantum Fisher information depend solely on the final parameterized density operator $\rho(\theta)$, rather than the specific ensemble of pure states used to create it. Here, $\theta$ denotes the parameter of interest; more generally, a model may depend on a vector of parameters $\boldsymbol{\theta}$.
+\end{remark}
+
+\begin{definition}[Partial trace]
+    \label{def:partial_trace}
+    Let a composite system have Hilbert space $\mathcal{H}_S\otimes\mathcal{H}_E$, and let $\mathcal{L}(\mathcal{H})$ denote the space of linear operators on $\mathcal{H}$. Following Ref.~\cite{nielsen_chuang_2010_quantum_computation_and_quantum_information}, the partial trace over $E$ is the linear map $\operatorname{Tr}_E:\mathcal{L}(\mathcal{H}_S\otimes\mathcal{H}_E)\to\mathcal{L}(\mathcal{H}_S)$ characterized on product operators by
+    \begin{equation}
+        \operatorname{Tr}_E[A_S\otimes B_E]
+        \coloneqq
+        A_S\operatorname{Tr}[B_E].
+        \label{eq:partial_trace_definition}
+    \end{equation}
+    Equivalently, for rank-one product operators,
+    \begin{equation}
+        \operatorname{Tr}_E
+        \left[
+            |s_1\rangle\langle s_2|\otimes|e_1\rangle\langle e_2|
+            \right]
+        =
+        \langle e_2|e_1\rangle
+        |s_1\rangle\langle s_2|.
+    \end{equation}
+    Linearity determines its action on every joint operator. For a joint state $\rho_{SE}$, the reduced state available on $S$ is $\rho_S\coloneqq\operatorname{Tr}_E[\rho_{SE}]$.
+\end{definition}
+
+\begin{remark}[Operational meaning of the partial trace]
+    Tracing out $E$ discards information available only through that subsystem while preserving all measurement statistics accessible on $S$. Thus, for every observable $A_S$ on $S$, $\operatorname{Tr}[\rho_S A_S]=\operatorname{Tr}[\rho_{SE}(A_S\otimes\mathbb{I}_E)]$. Even when $\rho_{SE}$ is pure, the reduced state $\rho_S$ can be mixed if $S$ and $E$ are entangled.
 \end{remark}
 
 \subsection{Parameterized States and Measurements}
 
 \begin{definition}[Parameterized quantum model]
-    Let $\rho_0$ be the initial state of the quantum system. The parameter $\theta$ is encoded in the state through a parameter-dependent quantum channel $\mathcal{E}_\theta$, giving
+    Let $\rho_0$ be the initial state of the quantum system, and let $\theta\in\Theta\subseteq\mathbb{R}$ denote the unknown scalar parameter of interest. The parameter is encoded in the state through a parameter-dependent quantum channel $\mathcal{E}_\theta$, giving
     \begin{equation}
         \rho(\theta)
         = \mathcal{E}_\theta(\rho_0)
         = \sum_n K_n(\theta)\rho_0K_n^\dagger(\theta)
     \end{equation}
-    where $\{K_n(\theta)\}_n$ are Kraus operators. For a trace-preserving channel, they satisfy $\sum_n K_n^\dagger(\theta)K_n(\theta)=\mathbb{I}$.
-    This framework describes both the open-system dynamics considered in the noise analysis and the weak-optical-field model used in the astrophysical application.
+    where $\{K_n(\theta)\}_n$ is a set of $n$ Kraus operators. For a trace-preserving channel, they satisfy $\sum_n K_n^\dagger(\theta)K_n(\theta)=\mathbb{I}$.
+    For a multiparameter model, one instead writes $\boldsymbol{\theta}\in\Theta\subseteq\mathbb{R}^p$ and $\rho(\boldsymbol{\theta})$.
 \end{definition}
 
+
 \begin{definition}[Positive operator-valued measure]
-    A quantum measurement is described by a positive operator-valued measure (POVM) $\{M_x\}_x$. For a discrete set of outcomes, the POVM elements satisfy
+    Let $\mathcal{X}$ be the discrete set of possible measurement outcomes. A quantum measurement on $\mathcal{H}$ is described by a positive operator-valued measure (POVM), namely a family of operators $\{M_x\}_{x\in\mathcal{X}}$ satisfying
     \begin{equation}
-        M_x\geq 0
+        M_x\geq 0 \quad \text{for every }x\in\mathcal{X}
         \qquad
-        \sum_x M_x=\mathbb{I}
+        \sum_{x\in\mathcal{X}} M_x=\mathbb{I}_{\mathcal{H}}.
     \end{equation}
-    When the state is $\rho(\theta)$, the probability of observing outcome $x$ is
+    Here, $x$ is an outcome label, such as a detector port or a measured bit string. When the state is $\rho(\theta)$, the probability of observing $x\in\mathcal{X}$ is
     \begin{equation}
         p(x|\theta)
         =\operatorname{Tr}\!\left[\rho(\theta)M_x\right]
         \label{eq:povm_def}
     \end{equation}
-    Projective measurements are a special case of POVMs. Further details on projective measurements and general POVMs are provided in Appendix~\ref{app:mathematical_background}.
+    For a continuous outcome space, a POVM instead assigns a positive operator $M(B)$ to each measurable region $B\subseteq\mathcal{X}$, with $M(\mathcal{X})=\mathbb{I}_{\mathcal{H}}$ and $\Pr(x\in B\mid\theta)=\operatorname{Tr}[\rho(\theta)M(B)]$. Projective measurements are a special case of POVMs. Further details on projective measurements and general POVMs are provided in Appendix~\ref{app:mathematical_background}.
 \end{definition}
 
 The two definitions above give the basic quantum-to-classical sequence used throughout the Thesis.  The first arrow prepares a parameterized quantum state.  The measurement then converts that state into a classical probability distribution.
@@ -71,7 +100,7 @@ The two definitions above give the basic quantum-to-classical sequence used thro
         \xrightarrow{\mathcal{E}_\theta}
         \rho(\theta)
     }_{\text{quantum state and evolution}}
-    \xrightarrow{\text{POVM }\{M_x\}_x}
+    \xrightarrow{\text{POVM }\{M_x\}_{x\in\mathcal{X}}}
     \underbrace{
         p(x\mid\theta)
     }_{\text{classical outcome probabilities}}
@@ -80,6 +109,8 @@ The two definitions above give the basic quantum-to-classical sequence used thro
 Noise and restricted access that act before the POVM belong inside the quantum part of this sequence.  Detector processing or statistical noise that acts on $p(x|\theta)$ belongs to the classical part.
 
 \section{From Classical to Quantum Fisher Information}
+
+This section links classical and quantum Fisher information: CFI quantifies the sensitivity of an observed probability distribution to changes in an unknown parameter, while QFI gives the greatest such sensitivity attainable over all quantum measurements.
 
 \begin{definition}[Classical Fisher Information]
     Let $p(x|\theta)$ be the probability density of the measurement outcome $x$, with outcome space $\mathcal{X}$. The classical Fisher information (CFI) associated with this distribution is
@@ -105,6 +136,8 @@ Noise and restricted access that act before the POVM belong inside the quantum p
     So, the CFI quantifies the local sensitivity of the measurement statistics to changes in $\theta$: a larger CFI corresponds to a potentially smaller estimation variance. Because $p(x|\theta)$ is determined by the chosen POVM, the CFI is measurement dependent.
 \end{remark}
 
+Quantum Fisher information (QFI), unlike the CFI, does not depend on a predetermined measurement, it is intrinsic to the quantum state.
+
 \begin{definition}[Quantum Fisher Information]
     For a differentiable, one-parameter family of quantum states $\rho(\theta)$, the Quantum Fisher Information (QFI) is obtained by maximizing the CFI over all allowed POVMs $\{M_x\}$:
     \begin{equation}
@@ -115,7 +148,7 @@ Noise and restricted access that act before the POVM belong inside the quantum p
         \bigl(\theta;{M_x}\bigr)
         \label{eq:qfi_def}
     \end{equation}
-    \faLightbulb \hspace{5pt} The QFI therefore provides a measurement-independent upper bound on the information that can be extracted locally from the state family $\rho(\theta)$. Unlike the CFI, it does not depend on a predetermined measurement.
+    \faLightbulb \hspace{5pt} The QFI provides a measurement-independent upper bound on the information that can be extracted locally from the state family $\rho(\theta)$.
 \end{definition}
 
 \begin{remark}[Quantum Cramér--Rao bound]
@@ -136,15 +169,21 @@ Noise and restricted access that act before the POVM belong inside the quantum p
 The optimization over all POVMs in Definition~\ref{eq:qfi_def} can be evaluated directly from the density operator by introducing the symmetric logarithmic derivative\footnote{It also explains why we defined QFI on a differentiable family of quantum states in Eq.~\eqref{eq:qfi_def}.}.
 
 \begin{definition}[Symmetric logarithmic derivative]
-    For a differentiable mixed-state trajectory $\rho(\theta)$, the symmetric logarithmic derivative (SLD) $L_\theta$ is defined on the support of $\rho$ by
+    For a differentiable quantum state family $\rho(\theta)$, the symmetric logarithmic derivative (SLD) $L_\theta$ is an Hermitian operator that satisfies
     \begin{equation}
         \partial_\theta\rho(\theta)
         =\frac{1}{2}\{\rho(\theta),L_\theta\}
+        =\frac{1}{2}\left[\rho(\theta)L_\theta+L_\theta\rho(\theta)\right]
         \label{eq:sld_lyapunov}
     \end{equation}
+    where $\{A,B\}\coloneqq AB+BA$ is the anticommutator. For a rank-deficient state, the components of $L_\theta$ acting entirely within the kernel of $\rho$ are irrelevant and may be chosen arbitrarily.
 \end{definition}
 
-\begin{proposition}[QFI in terms of the SLD]
+\begin{remark}[Intuitive meaning of the SLD]
+    The SLD is the operator analogue of the classical score $\partial_\theta\log p(x\mid\theta)$: it describes how sensitively the quantum state changes with $\theta$. The symmetric product is required because $\rho$ and $L_\theta$ need not commute; when they do commute, the relation reduces to $\partial_\theta\rho=\rho L_\theta$, making the analogy with a logarithmic derivative explicit. Taking the trace gives $\operatorname{Tr}[\rho L_\theta]=0$, so the QFI in the following proposition is the second moment, or variance, of this quantum score.
+\end{remark}
+
+\begin{proposition}[QFI in terms of the Symmetric logarithmic derivative]
     For a differentiable one-parameter quantum model, the QFI can be evaluated as
     \begin{equation}
         \mathcal{F}_{\mathrm{Q}}(\theta)
@@ -172,9 +211,9 @@ The optimization over all POVMs in Definition~\ref{eq:qfi_def} can be evaluated 
         \label{eq:qfim}
     \end{equation}
 
-    with $L_i$ denoting the SLD associated with $\theta_i$.
+    with $L_i$ denoting the Symmetric logarithmic derivative associated with $\theta_i$.
 
-    For a one-parameter model, the QFIM reduces to the scalar QFI:
+    For a one-parameter model, the QFI matrix reduces to the scalar QFI:
     \begin{equation}
         \mathcal{F}_{\mathrm{Q}}(\theta)
         =
@@ -190,7 +229,7 @@ The optimization over all POVMs in Definition~\ref{eq:qfi_def} can be evaluated 
     \end{itemize}
 \end{remark}
 
-\subsection{Spectral and Vectorized Evaluation}
+\subsection{Spectral and Vectorized Evaluation of QFI}
 
 \begin{remark}[Exact QFI evaluation]
     Let the spectral decomposition of the density operator be
@@ -201,7 +240,7 @@ The optimization over all POVMs in Definition~\ref{eq:qfi_def} can be evaluated 
         \lambda_k
         |\psi_k\rangle\langle\psi_k|
     \end{equation}
-    In the eigenbasis of $\rho$, the matrix elements of the SLD are
+    In the eigenbasis of $\rho$, the matrix elements of the Symmetric logarithmic derivative are
     \begin{equation}
         \langle\psi_k|L_\theta|\psi_l\rangle
         =\frac{2\langle\psi_k|\partial_\theta\rho|\psi_l\rangle}
@@ -238,47 +277,71 @@ The optimization over all POVMs in Definition~\ref{eq:qfi_def} can be evaluated 
 \end{remark}
 
 \section{Fidelity and the Bures Geometry}
-Fidelity is a similarity measure between two quantum states. A fidelity close to $1$ indicates that the states are very similar and therefore difficult to distinguish, whereas a smaller fidelity indicates that they are more distinguishable. To make this intuitive notion of similarity precise for arbitrary pure or mixed quantum states, we use the root Uhlmann fidelity.\\
+Fidelity is a similarity measure between two quantum states. A fidelity close to $1$ indicates that the states are very similar and therefore difficult to distinguish, whereas a smaller fidelity indicates that they are more distinguishable. To make this intuitive notion of similarity precise for arbitrary pure or mixed quantum states, we use the root Uhlmann fidelity.
+
 The Bures distance converts this measure of similarity into a geometric distance. Consequently, states with high fidelity are close in Bures distance, while states with low fidelity are farther apart and easier to distinguish.
 
 \begin{definition}[Root fidelity and Bures distance]
-    The root Uhlmann fidelity and Bures distance between two density operators $\rho$ and $\sigma$ are
+    Let $\rho$ and $\sigma$ be density operators on the same Hilbert space. Their root Uhlmann fidelity is defined as
     \begin{equation}
         F(\rho,\sigma)\coloneqq
-        \operatorname{Tr}\!\left[\sqrt{\sqrt{\rho}\sigma\sqrt{\rho}}\right],
-        \qquad
-        d_B^2(\rho,\sigma)\coloneqq2-2F(\rho,\sigma)
+        \operatorname{Tr}\!\left[\sqrt{\sqrt{\rho}\sigma\sqrt{\rho}}\right]
+        \label{eq:root_fidelity}
+    \end{equation}
+    In this Thesis, $F$ denotes the unsquared root fidelity. The corresponding Bures distance is defined by
+    \begin{equation}
+        d_{\mathrm B}^2(\rho,\sigma)\coloneqq2-2F(\rho,\sigma)
         \label{def:bures_distance}
     \end{equation}
-    For infinitesimally separated states, the Bures metric is related to the QFIM by
-    \begin{equation}
-        H_{ij}=4g_{ij}^{B}
-        \label{def:qfim_bures_relation}
-    \end{equation}
-    where $g_{ij}^{\mathrm B}$ denotes the Bures metric, that appears in the local expansion of the squared Bures distance of two infinitesimally separated states
-    $\rho(\boldsymbol{\theta})$ and
-    $\rho(\boldsymbol{\theta}+d\boldsymbol{\theta})$:
+\end{definition}
+
+\begin{definition}[Bures metric]
+    Let $\rho(\boldsymbol{\theta})$ be a differentiable quantum-state family with $\boldsymbol{\theta}\in\Theta\subseteq\mathbb{R}^p$. The components $g_{ij}^{\mathrm B}(\boldsymbol{\theta})$ of the Bures metric are defined by the second-order expansion of the squared Bures distance between neighboring states:
     \begin{equation}
         d_{\mathrm B}^2
         \left(
         \rho(\boldsymbol{\theta}),
-        \rho(\boldsymbol{\theta}+d\boldsymbol{\theta})
+        \rho(\boldsymbol{\theta}+\mathrm{d}\boldsymbol{\theta})
         \right)
         =
-        g_{ij}^{\mathrm B}(\boldsymbol{\theta})\
-        d\theta_i\,d\theta_j
+        \sum_{i,j=1}^{p}
+        g_{ij}^{\mathrm B}(\boldsymbol{\theta})
+        \,\mathrm{d}\theta_i\,\mathrm{d}\theta_j
         +
-        o\,\,\!\left(
-        \lVert d\boldsymbol{\theta}\rVert^2
+        o\!\left(
+        \lVert\mathrm{d}\boldsymbol{\theta}\rVert^2
         \right)
         \label{eq:bures_local_expansion}
     \end{equation}
 \end{definition}
 
+\begin{proposition}[Relation between the Bures metric and the QFIM]
+    At regular points where the rank of $\rho(\boldsymbol{\theta})$ is locally constant, the QFIM $H_{ij}$ and the Bures metric satisfy
+    \begin{equation}
+        H_{ij}(\boldsymbol{\theta})
+        =4g_{ij}^{\mathrm B}(\boldsymbol{\theta})
+        \label{def:qfim_bures_relation}
+    \end{equation}
+    Thus, the QFIM measures how rapidly neighboring quantum states separate in Bures geometry as the parameters change.
+\end{proposition}
+
 
 \section{Ansatz Geometry and the Quantum Natural Gradient}
 
-Quantum Fisher information appears in this Thesis in two conceptually distinct settings. In quantum sensing, the parameters $\boldsymbol{\theta}$ represent unknown physical quantities encoded in a state $\rho(\boldsymbol{\theta})$. The corresponding QFI or QFIM quantifies how accurately these quantities can be estimated. In a variational quantum circuit, by contrast, the parameters $\boldsymbol{\alpha}$ are adjustable controls chosen by an optimization algorithm. The associated QFIM describes the geometry of the family of states that the circuit can prepare.
+Quantum Fisher information appears in this Thesis in two conceptually
+distinct settings. In quantum sensing, the parameters
+$\boldsymbol{\theta}$ represent unknown physical quantities encoded in a
+state $\rho(\boldsymbol{\theta})$. The corresponding QFI or QFIM
+quantifies how accurately these quantities can be estimated.
+
+Consider now a variational quantum circuit: a sequence of parameterized
+quantum gates that prepares a family of states
+$\rho_{\boldsymbol{\alpha}}$. Its parameters
+$\boldsymbol{\alpha}=(\alpha_1,\ldots,\alpha_q)
+    \in\mathcal{A}\subseteq\mathbb{R}^q$ are real, adjustable control
+variables, typically gate-rotation angles, chosen by an optimization
+algorithm. The associated QFIM describes the geometry of the family of
+states that the circuit can prepare.
 
 \begin{definition}[Ansatz quantum Fisher information matrix]
     Let $\rho_{\boldsymbol{\alpha}}$ be the state prepared by an ansatz, with circuit parameters $\boldsymbol{\alpha}$. Its \emph{ansatz QFIM} is defined by the SLDs $\ell_\mu$ satisfying $\partial_\mu\rho_{\boldsymbol{\alpha}}=\{\rho_{\boldsymbol{\alpha}},\ell_\mu\}/2$:
@@ -348,15 +411,15 @@ Quantum Fisher information appears in this Thesis in two conceptually distinct s
         \lambda\geq0
         \label{eq:qng_update}
     \end{equation}
-    Here, $\lambda$ is a regularization parameter and ${}^{+}$ denotes the Moore--Penrose pseudoinverse. Regularization stabilizes the update when the ansatz QFIM is singular or poorly conditioned, as may occur when some circuit parameters are redundant or have little effect on the prepared state.
+    Here, $\lambda$ is a regularization parameter and ${}^{+}$ denotes the Moore--Penrose pseudoinverse. The regularization term stabilizes the update when the ansatz QFIM is singular or poorly conditioned, as may occur when some circuit parameters are redundant or have little effect on the prepared state.
 
     The quantum natural gradient rescales the ordinary gradient according to the local distinguishability of neighboring ansatz states. It is a geometry-aware optimization direction, an example can be found in Info Box~\ref{sec:vqse_qng_optimization}.
 \end{remark}
 
 \section{Connection to the Variational Algorithms}
-The mathematical tools introduced in this chapter provide the foundation for the variational estimation methods developed in Chapter~\ref{ch:methods}.
+The mathematical tools introduced in this Chapter provide the foundation for the variational estimation methods developed in Chapter~\ref{ch:methods}.
 For an $n$-qubit mixed state, the density matrix has dimension $d=2^n$, and its exact spectral decomposition has a dense computational cost of order $\mathcal{O}(d^3)=\mathcal{O}(8^n)$. Exact mixed-state QFI evaluation therefore becomes classically intractable as the system size increases.
 
 To avoid this bottleneck, Chapter~\ref{ch:methods} introduces two complementary families of fidelity-based QFI bounds. The Truncated Quantum Fisher Information (TQFI) bounds retain the dominant eigenspace of the state, while the Sub- and Super-Fidelity QFI (SSQFI) bounds use trace-based quantities that do not require explicit eigenspace truncation. Both approaches provide finite-difference bounds on the QFI without requiring direct evaluation of the SLD for the full density matrix.
 
-The Variational Quantum State Eigensolver (VQSE) supplies the most important eigenvalues and eigenvectors required to evaluate the TQFI bounds. These quantities are then incorporated into the Variational Quantum Fisher Information Estimation (VQFIE) procedure, which uses fidelity measurements to bound the QFI and, in the probe-optimization setting, to identify circuit parameters that improve the sensitivity of the sensor. The present chapter provides the information-geometric foundation for these methods, while their circuits, optimization procedures, computational costs, and hardware requirements are developed in Chapter~\ref{ch:methods}.
+The Variational Quantum State Eigensolver (VQSE) supplies the most important eigenvalues and eigenvectors required to evaluate the TQFI bounds. These quantities are then incorporated into the Variational Quantum Fisher Information Estimation (VQFIE) procedure, which uses fidelity measurements to bound the QFI and, in the probe-optimization setting, to identify circuit parameters that improve the sensitivity of the sensor. The present Chapter provides the information-geometric foundation for these methods, while their circuits, optimization procedures, computational costs, and hardware requirements are developed in Chapter~\ref{ch:methods}.
