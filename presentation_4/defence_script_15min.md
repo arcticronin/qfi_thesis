@@ -65,11 +65,11 @@ So it is not simply a measure of how large the signal is. A bright but almost co
 
 For a fixed measurement with probabilities (p(x\mid\theta)),
 
-\[
+$$
 F_C(\theta)=\sum_x\frac{[\partial_\theta p(x\mid\theta)]^2}{p(x\mid\theta)}.
-\]
+$$
 
-The classical Cramér–Rao bound is (\operatorname{Var}(\hat\theta)\geq 1/[N F_C(\theta)]) for (N) independent repetitions and an appropriate locally unbiased estimator, under regularity assumptions. Large Fisher information is a precision benchmark, not a guarantee that an arbitrary finite-sample estimator attains the bound. “Local” means around a parameter value; it does not establish global identifiability.
+The classical Cramér–Rao bound is $\operatorname{Var}(\hat\theta)\geq 1/[N F_C(\theta)]$ for $N$ independent repetitions and an appropriate locally unbiased estimator, under regularity assumptions. Large Fisher information is a precision benchmark, not a guarantee that an arbitrary finite-sample estimator attains the bound. “Local” means around a parameter value; it does not establish global identifiability.
 
 Source: [MathBackground.tex](../TeXtured/chapters/MathBackground.tex).
 
@@ -99,17 +99,17 @@ The state has not become more informative. We have become better at reading the 
 
 ### Details to keep in mind
 
-The current animation uses **mixed states**, with Bloch radius (r=0.8), and evaluates Fisher information locally at (\theta=0). For the illustrated equatorial family,
+The current animation uses **mixed states**, with Bloch radius (r=0.8), and evaluates Fisher information locally at ($\theta=0$). For the illustrated equatorial family,
 
-\[
+$$
 \rho_\theta=\tfrac12[I+r(\cos\theta\,\sigma_x+\sin\theta\,\sigma_y)],
 \qquad
 F_Q=r^2=0.64,
-\]
+$$
 
-\[
+$$
 F_C(\varphi)=\frac{r^2\sin^2\varphi}{1-r^2\cos^2\varphi}.
-\]
+$$
 
 - The two vectors have a visible finite separation for illustration. The plotted information is **not** computed as their finite difference.
 - At the initial basis, probabilities have zero first derivative at the reference point. They can still change at second order over a finite displacement.
@@ -136,10 +136,10 @@ These components then enter TQFI, Truncated Quantum Fisher Information, through 
 
 ### Details to keep in mind
 
-\[
+$$
 \rho_m=\sum_{i=1}^{m}\lambda_i|v_i\rangle\langle v_i|,
 \qquad \lambda_1\geq\cdots\geq\lambda_d.
-\]
+$$
 
 - A mixed state need not represent ignorance about a unique underlying ensemble: ensemble decompositions are nonunique. Entanglement with an unobserved system also produces a mixed reduced state.
 - **Truncation is a chosen computational strategy, not a requirement for describing mixed states.** The matrix above is generally subnormalized: ($\operatorname{Tr}\rho_m\leq1$). Renormalizing it would change the quantities entering the stated bounds.
@@ -327,24 +327,24 @@ Because the star is much brighter, even a small confusion probability can contam
 
 For ideal mode outcomes,
 
-\[
+$$
 p_0=\operatorname{Tr}(M_0\rho),\qquad
 p_1=\operatorname{Tr}(M_1\rho),
-\]
+$$
 
-\[
+$$
 M_0=|HG_{00}\rangle\langle HG_{00}|,\qquad
 M_1=|HG_{01}\rangle\langle HG_{01}|+|HG_{10}\rangle\langle HG_{10}|.
-\]
+$$
 
 The symmetric readout assumption gives
 
-\[
+$$
 p_1^{\rm rep}=\chi p_0+(1-\chi)p_1.
-\]
+$$
 
 - The companion also contributes to (HG_{00}). Neither port exclusively identifies photon origin.
-- Higher modes and loss require an additional outcome; generally (p_0+p_1\neq1) unless a binary normalization/conditioning convention has explicitly been imposed.
+- Higher modes and loss require an additional outcome; generally $p_0+p_1\neq1$ unless a binary normalization/conditioning convention has explicitly been imposed.
 - Chi here is **classical reported-port confusion**, not coherent amplitude mixing. The latter requires a pre-measurement optical model.
 - The thesis takes 0.0035 from an external reported cross-talk calibration. Equal reverse leakage and an unaffected failure outcome are assumptions, not a fully measured transfer matrix.
 - A fixed classical post-processing channel can reduce CFI but does not change the pre-measurement state's QFI.
@@ -367,20 +367,20 @@ That is a future proposal. For the existing experiment, I instead model the opti
 
 **The crucial correction is that SPADE gives access to mode populations, not necessarily eigenvalues:**
 
-\[
+$$
 p_j=\langle HG_j|\rho|HG_j\rangle.
-\]
+$$
 
-When the measurement basis diagonalizes the state, individually resolved populations coincide with eigenvalues. Aggregating two modes, as in (p_1), gives a **sum** even in that case.
+When the measurement basis diagonalizes the state, individually resolved populations coincide with eigenvalues. Aggregating two modes, as in $p_1$, gives a **sum** even in that case.
 
 Also, observing selected modes is a projection/coarse-graining operation; it is not generally the partial trace used in the magnetometer. Tensor-factor access and restriction to a modal subspace are different mathematical constructions.
 
 In the proposed extension,
 
-\[
+$$
 p_j(\boldsymbol\alpha)
 =\langle HG_j|U(\boldsymbol\alpha)\rho U^\dagger(\boldsymbol\alpha)|HG_j\rangle.
-\]
+$$
 
 The trainable optical transformation would learn the basis; **SPADE performs the readout**. This would need sufficient mode resolution, controllable transformations, repeated state preparations and calibration of mode-dependent losses. A simple rotation plus the current aggregate record is not already an eigensolver. VQ-SPADE was not implemented or tested.
 
@@ -453,10 +453,10 @@ This separation makes the model useful. A future calibration can replace one ass
 
 A completely positive map can be written
 
-\[
+$$
 \mathcal E(\rho)=\sum_a K_a\rho K_a^\dagger,
 \qquad \sum_a K_a^\dagger K_a=I
-\]
+$$
 
 for a trace-preserving channel on its stated input/output spaces. For loss, an explicit failure flag can retain trace preservation; the surviving subblock alone is generally trace decreasing.
 
@@ -519,10 +519,10 @@ Thank you.
 
 “They share the idea of transforming the gradient using a matrix. But Newton's method uses curvature of the objective, while the quantum natural gradient uses the geometry of the state family. It scales a parameter step by how much that step changes the quantum state.”
 
-\[
+$$
 \Delta\boldsymbol\alpha
 =-\eta\,(F^{\mathrm{ans}}+\lambda I)^{-1}\nabla C.
-\]
+$$
 
 Here (F^{\mathrm{ans}}) is a metric with respect to **trainable circuit parameters**, not the scalar QFI with respect to the sensed field. For pure states, the QFI matrix is four times the Fubini–Study metric, depending on convention. A mixed-state VQSE input needs an appropriate mixed-state metric; a pure-state metric is otherwise a surrogate. Regularization stabilizes poorly conditioned directions. Do not claim a measured general speedup or equivalence to the Hessian.
 
