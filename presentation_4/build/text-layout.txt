@@ -33,131 +33,157 @@ parameter governing a probability distribution.
 
 MATHEMATICAL FRAMEWORK                                                                            2 / 19
 Fisher Information and Measurements
-Two states inside the Bloch sphere                                         Accessible information
+Two states inside the Bloch sphere
+                                                                           Accessible information
                                                                                                                      QFI = 0.64
                                                                  0.64
                           ρ(θ)
-0        meas. basis                              x              0.32
+
+                                                  x              0.32
+0        meas. basis
                             ρ(0)
                                                                       0
-            ◦                                                             0◦               30◦                 60◦                 90◦
-  φ=0
+                                                                          0◦               30◦                 60◦                 90◦
+  φ = 0◦
                                                                            CFI = 0                              Basis angle φ
 
- QFI is intrinsic to the quantum state
- it is independent of the measurement basis
+
+
 Mixed states, r = 0.8; finite separation shown for clarity. CFI is local at θ = 0 (radians), not a two-state finite difference. Appendix J.
 
 
 MATHEMATICAL FRAMEWORK                                                                                                                    3 / 19
 Fisher Information and Measurements
-Two states inside the Bloch sphere                                         Accessible information
+Two states inside the Bloch sphere
+                                                                           Accessible information
                                                                                                                      QFI = 0.64
                                                                  0.64
-                    sis   ρ(θ)
-                 ba
-           as.
-        me
-0
-                                                  x              0.32
+                          ρ(θ)
+                      s
+                   asi
+           as   . b
+0       me                                        x              0.32
+
                             ρ(0)
                                                                       0
-                 ◦                                                        0◦               30◦                 60◦                 90◦
-  φ = 30
+                                                                          0◦               30◦                 60◦                 90◦
+  φ = 30◦
                                                                            CFI = 0.308                          Basis angle φ
 
- QFI is intrinsic to the quantum state
- it is independent of the measurement basis
+
+
 Mixed states, r = 0.8; finite separation shown for clarity. CFI is local at θ = 0 (radians), not a two-state finite difference. Appendix J.
 
 
 MATHEMATICAL FRAMEWORK                                                                                                                    3 / 19
 Fisher Information and Measurements
-Two states inside the Bloch sphere                                         Accessible information
+Two states inside the Bloch sphere
+                                                                           Accessible information
                                                                                                                      QFI = 0.64
                                                                  0.64
-          basis
-                          ρ(θ)
-    mea s.
-0
+          basis           ρ(θ)
+     ea s.
+    m
                                                   x              0.32
+0
                             ρ(0)
                                                                       0
-               ◦                                                          0◦               30◦                 60◦                 90◦
-  φ = 45
+                                                                          0◦               30◦                 60◦                 90◦
+  φ = 45◦
                                                                            CFI = 0.471                          Basis angle φ
 
- QFI is intrinsic to the quantum state
- it is independent of the measurement basis
+
+
 Mixed states, r = 0.8; finite separation shown for clarity. CFI is local at θ = 0 (radians), not a two-state finite difference. Appendix J.
 
 
 MATHEMATICAL FRAMEWORK                                                                                                                    3 / 19
 Fisher Information and Measurements
-Two states inside the Bloch sphere                                         Accessible information
+Two states inside the Bloch sphere
+                                                                           Accessible information
                                                                                                                      QFI = 0.64
-       ba                                                        0.64
-         sis
+                                                                 0.64
+       basis              ρ(θ)
+     as.
     me
-                          ρ(θ)
-      as.
-0
                                                   x              0.32
+0
                             ρ(0)
                                                                       0
-               ◦                                                          0◦               30◦                 60◦                 90◦
-  φ = 60
+                                                                          0◦               30◦                 60◦                 90◦
+  φ = 60◦
                                                                            CFI = 0.571                          Basis angle φ
 
- QFI is intrinsic to the quantum state
- it is independent of the measurement basis
+
+
 Mixed states, r = 0.8; finite separation shown for clarity. CFI is local at θ = 0 (radians), not a two-state finite difference. Appendix J.
 
 
 MATHEMATICAL FRAMEWORK                                                                                                                    3 / 19
 Fisher Information and Measurements
-Two states inside the Bloch sphere                                         Accessible information
-     is                                                                                                              QFI = 0.64
-                                                                 0.64
-    . bas
-                          ρ(θ)
+Two states inside the Bloch sphere
+                                                                           Accessible information
+                                                                                                                     QFI = 0.64
+     is                                                          0.64
+    . bas                 ρ(θ)
   meas
-0
                                                   x              0.32
+0
                             ρ(0)
                                                                       0
-               ◦                                                          0◦               30◦                 60◦                 90◦
-  φ = 75
+                                                                          0◦               30◦                 60◦                 90◦
+  φ = 75◦
                                                                            CFI = 0.624                          Basis angle φ
 
- QFI is intrinsic to the quantum state
- it is independent of the measurement basis
+
+
 Mixed states, r = 0.8; finite separation shown for clarity. CFI is local at θ = 0 (radians), not a two-state finite difference. Appendix J.
 
 
 MATHEMATICAL FRAMEWORK                                                                                                                    3 / 19
 Fisher Information and Measurements
-Two states inside the Bloch sphere                                         Accessible information
+Two states inside the Bloch sphere
+                                                                           Accessible information
                                                                                                                      QFI = 0.64
+                                                                 0.64
 
 
 meas. basis
-                                                                 0.64
                           ρ(θ)
-0
+
                                                   x              0.32
+0
                             ρ(0)
                                                                       0
-               ◦                                                          0◦               30◦                 60◦                 90◦
-    φ = 90
+                                                                          0◦               30◦                 60◦                 90◦
+    φ = 90◦
                                                                            CFI = 0.64                           Basis angle φ
-
  QFI is intrinsic to the quantum state
- it is independent of the measurement basis
+ and it is independent of the measurement basis
 Mixed states, r = 0.8; finite separation shown for clarity. CFI is local at θ = 0 (radians), not a two-state finite difference. Appendix J.
 
 
 MATHEMATICAL FRAMEWORK                                                                                                                    3 / 19
+How we deal with Mixed States
+ WHAT             Statistical mixtures of quantum states, described by a density matrix ρ
+
+
+
+
+Thesis: Introduction. Cerezo et al. (2022); Beckey et al. (2022). Subnormalized truncation; finite-step scope: Appendix A.
+
+VARIATIONAL METHOD                                                                                                           4 / 19
+How we deal with Mixed States
+ WHAT             Statistical mixtures of quantum states, described by a density matrix ρ
+ WHY              Real sensors are noisy and only partly accessible
+                  Mixed-state QFI remains less explored and costly to compute exactly
+
+
+
+
+Thesis: Introduction. Cerezo et al. (2022); Beckey et al. (2022). Subnormalized truncation; finite-step scope: Appendix A.
+
+VARIATIONAL METHOD                                                                                                           4 / 19
 How we deal with Mixed States
  WHAT             Statistical mixtures of quantum states, described by a density matrix ρ
  WHY              Real sensors are noisy and only partly accessible
@@ -194,9 +220,58 @@ RESEARCH OBJECTIVES                                                    5 / 19
 Parallel numerical and quantum-circuit workflow
 NUMERICAL SIMULATION
 
+  Preparation
+  Hamiltonian and
+  time evolution
+
+QUANTUM CIRCUIT
+
+
+
+
+Schematic circuit layouts and example output. Implementations can be exchanged at matched interfaces; physical stage order is preserved.
+
+
+NUMERICAL AND VARIATIONAL METHODS                                                                                                  6 / 19
+Parallel numerical and quantum-circuit workflow
+NUMERICAL SIMULATION
+
+  Preparation                        Access
+  Hamiltonian and                    Partial trace
+  time evolution
+
+QUANTUM CIRCUIT
+
+
+
+
+Schematic circuit layouts and example output. Implementations can be exchanged at matched interfaces; physical stage order is preserved.
+
+
+NUMERICAL AND VARIATIONAL METHODS                                                                                                  6 / 19
+Parallel numerical and quantum-circuit workflow
+NUMERICAL SIMULATION
+
+  Preparation                        Access                     Spectrum
+  Hamiltonian and                    Partial trace              Exact spectral
+  time evolution                                                decomposition
+
+QUANTUM CIRCUIT
+                                                                VQSE
+
+
+
+
+Schematic circuit layouts and example output. Implementations can be exchanged at matched interfaces; physical stage order is preserved.
+
+
+NUMERICAL AND VARIATIONAL METHODS                                                                                                  6 / 19
+Parallel numerical and quantum-circuit workflow
+NUMERICAL SIMULATION
+
   Preparation                        Access                     Spectrum                              Information
-  Hamiltonian and                                               Exact spectral                        1) Exact SLD QFI
-                                     Partial trace
+  Hamiltonian and                    Partial trace              Exact spectral
+                                                                                                      1) Exact SLD QFI
   time evolution                                                decomposition
                                                                                                       2) TQFI bounds
 QUANTUM CIRCUIT
@@ -219,70 +294,70 @@ APPLICATION I          7 / 19
 Toy Model: a noisy Quantum Magnetometer
  Try multiple boundary conditions, preparations, noise models, to study QFI
 
+                                                     Transverse-field Ising model (TFIM)
 
 
                                                         Ground state   Lowest-energy preparation
                                                         Thermal        Field-dependent populations
                                                         Depolarized    Fixed depolarizing noise
 
-Periodic spin chain
-    Partial Trace: 2 discarded
 
-Transverse-field Ising model (TFIM)
+        Periodic spin chain
+     Partial Trace: 2 discarded
 N = 6, n = 4, periodic boundaries, J = 1. Thesis: NoiseAnalysis.
 
 
 NUMERICAL MODEL                                                                                      8 / 19
         Some results: temperature broadens the range
 
-                        5                                      Ground state
+                        5                                       Ground state
 
 
 
 
 Subsystem QFI (J = 1)
-                                                               Gibbs state, βJ = 2                         Broader sensitivity
+                                                                Gibbs state, βJ = 2                           Broader sensitivity
                         4
 
-                        3                                Higher off-peak QFI                               More QFI beyond
-                        2                                                                                  the ground-state peak.
+                        3                                 Higher off-peak QFI                                 More QFI beyond
+                        2                                                                                     the ground-state peak.
 
                         1
-                                                                                                           Uncertain field
+                                                                                                              Uncertain field
                         0
-                             0.5                 1                 1.5                 2                   Useful across a
-                                       Transverse field hx /J                                              wider field range.
+                             0.5                 1                  1.5                 2                     Useful across a
+                                       Transverse field hx /J                                                 wider field range.
 
         At β = 2, thermal preparation retains more information beyond the ground-state peak.
-        Exact SLD QFI; periodic N = 6, n = 4, J = 1. Shading: thermal QFI above ground-state QFI. Different preparation families.
+        Exact SLD QFI; periodic N = 6, n = 4, J = 1. Different preparation families. Thesis: NoiseAnalysis.
 
 
-        NUMERICAL RESULTS                                                                                                           9 / 19
+        NUMERICAL RESULTS                                                                                                          9 / 19
         Some more results: cooling strengthens peak
 
-                        5                                      Ground state
+                        5                                       Ground state
 
 
 
 
 Subsystem QFI (J = 1)
-                                                               Gibbs state, βJ = 5                         Stronger peak
+                                                                Gibbs state, βJ = 5                           Stronger peak
                         4
 
-                        3                                                                                  Higher QFI around
-                        2                                                                                  the thermal optimum.
+                        3                                                                                     Higher QFI around
+                        2                                                                                     the thermal optimum.
 
                         1
-                                                                                                           Known field range
+                                                                                                              Known field range
                         0
-                            0.5                 1                  1.5                 2                   Useful near the
-                                       Transverse field hx /J                                              target field.
+                             0.5                 1                  1.5                 2                     Useful near the
+                                       Transverse field hx /J                                                 target field.
 
         At β = 5, the thermal state exceeds the ground-state peak in the same spin subsystem.
-        Exact SLD QFI; periodic N = 6, n = 4, J = 1. Shading: Thermal QFI above ground-state QFI. Different preparation families.
+        Exact SLD QFI; periodic N = 6, n = 4, J = 1. Different preparation families. Thesis: NoiseAnalysis.
 
 
-        NUMERICAL RESULTS                                                                                                           10 / 19
+        NUMERICAL RESULTS                                                                                                       10 / 19
 APPLICATION II
 
 
@@ -311,22 +386,22 @@ SPADE: SPAtial-mode DEmultiplexing. Tsang et al. (2016); Santamaria et al. (2024
 
 OPTICAL APPLICATION                                                                                             12 / 19
 SPADE modes and readout cross-talk
- p0 : fundamental-mode probability
- Photon in HG00 :
- dominated by the aligned star.
- p1 : first-order probability
- Photon in HG01 or HG10 :
- carries the exoplanet’s
- separation-sensitive signal.
- χ: readout cross-talk
- Probability of reporting port 1
- instead of 0, or vice versa.
- prep
-  1 = χp0 + (1 − χ)p1
-Mode probabilities do not label photon origin. Symmetric classical readout model; other outcomes unchanged. Thesis: Exoplanet Experi-
-ment.
+ p0 : fundamental mode
+ Probability of a photon in HG00
+ dominated by the aligned star
+ p1 : first-order modes
+ Probability in HG01 or HG10
+ sensitive to exoplanet separation
 
-OPTICAL APPLICATION                                                                                                              13 / 19
+ χ : readout cross-talk
+ Probability of reporting port 1
+ instead of 0, or vice versa
+ prep
+  1 = χp0 + (1 − χ)p1                                                                                                  [. . . ]
+Modal outcomes, not photon origin. Symmetric readout model; other outcomes unchanged. Thesis: Exoplanet Experiment.
+
+
+OPTICAL APPLICATION                                                                                                   13 / 19
 SPADE detector
 
 
@@ -354,12 +429,12 @@ Two-outcome illustration: pi ≥ 0, p0 + p1 = 1, |c|2 ≤ p0 p1 . A state vector
 
 
 CHANNEL FRAMEWORK                                                                                                                 15 / 19
-Experimental observations and identifiability
+Experimental data
 The completed ASI Matera experiment, with separation d and relative intensity ϵ.
-
 52,500 count observations: 525 settings × 100 repetitions; 10 ms each
 
 ONE REPETITION                   MEAN OF 100                         Missing observables
+
                                                                      Separate modal outputs
                                                                      Other measurement
                                                                      bases
@@ -393,16 +468,47 @@ PHYSICAL MODELLING                                                              
 The model reproduces the observed mean response
 Both maps show a central minimum and larger counts at greater separation and source ratio.
 
- Observed setting means                                               Modelled setting means
+ Observed setting        means
+                          Replaceable
+            Replaceable SPADE  channelSPADE channel
+                                       workbench:    workbench:are
+                                                  placeholders
+                                                                    Modelled
+                                                                placeholders
+                                                                   sensitivity are
+                                                                                             setting means
+                                                                                   sensitivity assumptions
+                                                                               assumptions
+                      Observed settingObserved
+                                       means setting means                                                                           Frozen prediction
+                                                                                                                                            provisional-channel prediction
+                                                                                                                     Frozen provisional-channel
+        0.6          0.6                                                                       0.6                          0.6
+                                                             18                               18                                                                      18                        18
+        0.4          0.4                                                                       0.4                          0.4
+                                                             16                               16                                                                      16                        16
 
 
+
+
+                                                                 mean counts / 10 ms           mean counts / 10 ms                                                        mean counts / 10 ms       mean counts / 10 ms
+        0.2          0.2                                                                       0.2                          0.2
+                                                             14                               14                                                                      14                        14
+ d/w0   0.0   d/w0   0.0                                                               d/w0    0.0                   d/w0   0.0
+                                                             12                               12                                                                      12                        12
+        0.2          0.2                                                                       0.2                          0.2
+                                                             10                               10                                                                      10                        10
+        0.4          0.4                                                                       0.4                          0.4
+                                                             8                                8                                                                       8                         8
+        0.6          0.6                                                                       0.6                          0.6
+              0.02         0.04 0.02 0.06 0.04 0.08 0.06     0.08                                                    0.02         0.04 0.02 0.06 0.04 0.08 0.06       0.08
 
 
 The mean-count pattern is captured by the chosen channels with classical calibration.
 Thesis appendix: provisional channel model, top panels. In-sample mean comparison; assumed optical channels are not individually identi-
 fied by this agreement.
 
-MODEL AND OBSERVATIONS                                                                                                             18 / 19
+MODEL AND OBSERVATIONS                                                                                                                                                                                                    18 / 19
 Conclusions
 Simulation, preparation studies, data interpretation and a variational optical proposal.
 

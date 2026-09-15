@@ -2,7 +2,7 @@
 
 **Luca Manzi · English · presentation_4 · 19 main slides**
 
-Read only the **Spoken script** sections aloud. Bracketed directions are silent cues. **Details to keep in mind** are preparation for questions, not additional material for the timed talk. The spoken text is approximately 1,730 words. Timings include pointing, slide changes and short pauses; rehearse aloud to calibrate them to your pace. Do not read the equations in the technical notes symbol by symbol.
+Read only the **Spoken script** sections aloud. Bracketed directions are silent cues. **Details to keep in mind** are preparation for questions, not additional material for the timed talk. The spoken text is approximately 1,660 words. Timings include pointing, slide changes and short pauses; rehearse aloud to calibrate them to your pace. Do not read the equations in the technical notes symbol by symbol.
 
 This script follows the current main deck and the agreed story for slide 14. **Slide 14 still contains the HG-mode image in `main.tex`; the script assumes the planned copy of slide 6, used as a pipeline callback.** No slide source has been changed for this script.
 
@@ -44,6 +44,8 @@ The common question is: how much information about an unknown parameter can we a
 
 ### Details to keep in mind
 
+**Intuition — preparation only, not extra spoken text:** The two applications ask the same question at different stages: what sensitivity does the model allow, and how much can the actual measurement reveal?
+
 - The magnetometer is a numerical model and a circuit-method benchmark. The optical application uses a completed laboratory experiment motivated by exoplanet imaging; it is not an astronomical detection of a real exoplanet.
 - Your contribution combines implementations, numerical studies, data interpretation and a future proposal. These have different evidential status throughout the talk.
 
@@ -62,6 +64,8 @@ Fisher information quantifies this local sensitivity. It compares the change in 
 So it is not simply a measure of how large the signal is. A bright but almost constant signal can be less informative than a weaker signal that responds strongly to the parameter.
 
 ### Details to keep in mind
+
+**Intuition — preparation only, not extra spoken text:** Imagine two slightly different field values. If their outcome distributions overlap almost completely, many repetitions are needed to tell them apart. Fisher information quantifies local distinguishability, not brightness alone.
 
 For a fixed measurement with probabilities (p(x\mid\theta)),
 
@@ -99,7 +103,9 @@ The state has not become more informative. We have become better at reading the 
 
 ### Details to keep in mind
 
-The current animation uses **mixed states**, with Bloch radius (r=0.8), and evaluates Fisher information locally at ($\theta=0$). For the illustrated equatorial family,
+**Intuition — preparation only, not extra spoken text:** Think of looking at a small movement from different directions: one view may hide a change that another reveals. The quantum example concerns changes in outcome probabilities, not literally a two-dimensional geometric shadow.
+
+The current animation uses **mixed states**, with Bloch radius $r=0.8$, and evaluates Fisher information locally at $\theta=0$. For the illustrated equatorial family,
 
 $$
 \rho_\theta=\tfrac12[I+r(\cos\theta\,\sigma_x+\sin\theta\,\sigma_y)],
@@ -136,13 +142,15 @@ These components then enter TQFI, Truncated Quantum Fisher Information, through 
 
 ### Details to keep in mind
 
+**Intuition — preparation only, not extra spoken text:** Fidelity is a similarity measure for states. We estimate how quickly nearby states become distinguishable, using selected spectral components and accounting for the part we did not retain. Truncation simplifies the description; it is not permission to ignore its uncertainty.
+
 $$
 \rho_m=\sum_{i=1}^{m}\lambda_i|v_i\rangle\langle v_i|,
 \qquad \lambda_1\geq\cdots\geq\lambda_d.
 $$
 
 - A mixed state need not represent ignorance about a unique underlying ensemble: ensemble decompositions are nonunique. Entanglement with an unobserved system also produces a mixed reduced state.
-- **Truncation is a chosen computational strategy, not a requirement for describing mixed states.** The matrix above is generally subnormalized: ($\operatorname{Tr}\rho_m\leq1$). Renormalizing it would change the quantities entering the stated bounds.
+- **Truncation is a chosen computational strategy, not a requirement for describing mixed states.** The matrix above is generally subnormalized: $\operatorname{Tr}\rho_m\leq1$. Renormalizing it would change the quantities entering the stated bounds.
 - Large eigenvalue weight does not automatically mean that all parameter sensitivity is retained. Dependence of both eigenvalues and eigenvectors matters.
 - The thesis treats truncated-fidelity and generalized-fidelity bounds at finite displacement; their local-QFI interpretation requires the appropriate small-displacement limit. TQFI is not simply “calculate ordinary QFI after deleting small eigenvalues.” Use Appendix A if challenged.
 - VQSE changes the measurement basis, not the input state's eigenvalues. Its numerical outputs are approximate and depend on ansatz expressivity, optimization and sampling. The established method is from the literature; your contribution is its implementation, benchmarking and integration.
@@ -164,6 +172,8 @@ Both start from the same distinction between information in a state and informat
 
 ### Details to keep in mind
 
+**Intuition — preparation only, not extra spoken text:** The magnetometer asks “what happens when I change the design?” The optical record asks “what can these particular measurements tell me about the design?”
+
 The two applications do not both demonstrate experimental TQFI. The numerical study benchmarks metrological quantities; the archived optical counts do not reconstruct an optical state or its TQFI. Presenting this asymmetry explicitly strengthens the scientific story.
 
 ## Slide 6 — Parallel numerical and quantum-circuit workflow
@@ -172,25 +182,29 @@ The two applications do not both demonstrate experimental TQFI. The numerical st
 
 This is the computational structure I developed.
 
-[Follow the upper row from left to right.]
+[Follow the upper row.]
 
-Numerically, I prepare the parameter-dependent state, restrict access to the sensor, and calculate its spectrum. This gives an exact reference within the chosen finite model.
+Numerically, I prepare the state, restrict access and calculate its spectrum. This gives a reference for the circuit route below, where VQSE learns the dominant components needed for the information bounds.
 
-[Follow the lower row.]
+The stages are modular, so I can check approximations against their numerical counterparts.
 
-The circuit formulation represents preparation and evolution through gates. Leaving the environment unobserved reproduces the accessible subsystem statistics. VQSE then provides a variational route to the dominant spectral components.
+[Point to VQSE.]
 
-The two routes meet at the information calculation, where I can compare exact QFI with the truncated bounds.
+I also tested natural-gradient-style training, using stochastic reconfiguration, on selected small VQSE benchmarks. The intuition is to scale parameter updates by how much they change the quantum state.
 
-The practical advantage is modularity: I can replace an implementation of one stage while keeping its physical meaning and interfaces fixed. This lets me check whether a discrepancy comes from the model, restricted access, or a numerical or variational approximation.
+Fisher geometry therefore plays two roles: it quantifies distinguishability for sensing, and it can guide the optimization used in spectral estimation.
 
 ### Details to keep in mind
 
-- Partial trace obeys ($\rho_S=\operatorname{Tr}_E\rho_{SE}$). Marginal measurement statistics on (S) agree whether (E) is traced out mathematically or simply unobserved. Conditioning on an outcome in (E) is a different operation.
+**Intuition — preparation only, not extra spoken text:** A training parameter is a knob. Equal turns of two knobs need not move the quantum state equally far. Natural gradient accounts for that unequal effect when choosing an update; the sensing QFI and the training metric refer to different parameters.
+
+- Partial trace obeys ($\rho_S=\operatorname{Tr}_E\rho_{SE}$). Marginal measurement statistics on $S$ agree whether $E$ is traced out mathematically or simply unobserved. Conditioning on an outcome in $E$ is a different operation.
 - Interchangeable implementations do **not** imply interchangeable stage order; channels generally do not commute.
 - Exact matrix calculations, Trotterized dynamics and variational spectral estimation have different approximation errors. “Validated against numerical references” is more defensible than an unconditional “perfectly matching.”
 - Unitary evolution of a pure state does not prepare a global Gibbs state. The dynamical circuit example and the ground/Gibbs preparation branches are distinct.
 - Do not claim a demonstrated hardware quantum advantage. This establishes and benchmarks a route to variational estimation.
+- The updated VQSE chapter reports stochastic-reconfiguration training on selected small VQSE benchmarks. This supports the scoped implementation claim in the spoken text, not a general speedup claim. The illustrated RBM comparison is a separate pure-state example.
+- Natural gradient uses a state-space metric, whereas Newton's method uses the objective Hessian. The relevant Fisher matrix is with respect to trainable ansatz parameters, not the sensed magnetic field. For mixed VQSE inputs, a pure-state SR metric is generally a surrogate. Recovering the intrinsic mixed-state metric needs an appropriate estimator or a correctly treated purification construction; an arbitrary purification is not sufficient. See Appendix B and [VQSE.tex](../TeXtured/chapters/VQSE.tex).
 
 Source: [Methods.tex](../TeXtured/chapters/Methods.tex).
 
@@ -202,29 +216,35 @@ Let me first show what this framework tells us about a quantum magnetometer.
 
 ### Details to keep in mind
 
+**Intuition — preparation only, not extra spoken text:** Use this divider as a breath and a change of subject. There is no extra concept to explain here.
+
 This is a transition slide. Advance immediately after the sentence.
 
 ## Slide 8 — A noisy quantum magnetometer
 
 ### Spoken script
 
-The probe is an interacting spin chain described by the transverse-field Ising model. The magnetic field we want to estimate changes its quantum state.
+Quantum magnetometry has real applications: NMR probes monitored accelerator fields at CERN's LEP, and ESA's Juice carries a rubidium-based quantum magnetometer.
+
+Here I use a controlled interacting-spin model, the transverse-field Ising chain. The ring represents spin couplings, not probes placed around an accelerator.
 
 [Point to the six sites, then the two dashed sites.]
 
-In this example there are six spins, but only four are accessible. The other two are traced out, so even a pure global preparation can give a mixed accessible state.
+The field changes the probe state. Of six spins, only four are accessible; tracing out the other two can leave a mixed state.
 
-I compare ground-state preparation, thermal preparation and a depolarizing-noise baseline. I also study how access and boundary conditions affect the response.
-
-The question is not just which preparation gives the highest peak. It is which gives useful sensitivity in the field range where the sensor must operate.
+I compare ground-state preparation, thermal preparation and depolarization. The aim is to understand which preparation gives useful sensitivity over the intended field range.
 
 ### Details to keep in mind
+
+**Intuition — preparation only, not extra spoken text:** A reduced state gives exactly the predictions needed for measurements on the spins you can access, even when those spins are correlated with the rest. It is not the state obtained by physically removing two spins and allowing the remaining system to re-equilibrate.
 
 The plotted examples use (N=6), (n=4), periodic boundaries and (J=1). The general methods chapter also discusses open chains; do not mix their Hamiltonian summation limits with this ring.
 
 For a fixed, parameter-independent partial trace or noise channel, QFI cannot increase. More accessible qubits can recover information hidden in the larger probe. However, changing the **preparation family** is not an application of that same data-processing comparison.
 
 This is a finite model: say “sensitivity peak” or “near the critical region,” not a true finite-system thermodynamic singularity. Here “local QFI” may also refer to the accessible subsystem; distinguish that from locality in the estimated parameter when answering questions.
+
+Real-instrument references: [CERN's LEP NMR probes](https://cds.cern.ch/record/359915) and [ESA's MAGSCA aboard Juice](https://www.esa.int/ESA_Multimedia/Images/2023/11/Quantum-based_MAGSCA_aboard_Juice). These motivate magnetometry; neither is presented as a realization of the thermal Ising-chain model.
 
 Source: [NoiseAnalysis.tex](../TeXtured/chapters/NoiseAnalysis.tex).
 
@@ -240,9 +260,11 @@ The thermal state does not win at the highest ground-state peak. Its advantage a
 
 Imagine that the field is not known well enough to place the sensor exactly at its best operating point. A narrow, high peak may be less useful than a response that remains informative across the relevant interval.
 
-Temperature therefore becomes a preparation control: it changes where useful sensitivity is available, rather than simply increasing or decreasing one maximum.
+For a future space sensor with controlled thermal preparation, this could motivate choosing temperature to match the expected field range.
 
 ### Details to keep in mind
+
+**Intuition — preparation only, not extra spoken text:** A sharp peak is useful when you know where to operate. A wider useful response can matter when the field is uncertain. The plots illustrate that trade-off; they do not compute a universal optimum over unknown fields.
 
 - ($\beta=1/(k_B T)$): larger beta means lower temperature. Plot labels use ($\beta J$); the numerical convention is ($J=1$).
 - The global Gibbs state ($e^{-\beta H(h_x)}/Z(h_x)$) is prepared **before** tracing out two spins. It is not generally the Gibbs state of the isolated four-spin Hamiltonian.
@@ -269,6 +291,8 @@ This is not a universal claim that mixed states are better. It shows why prepara
 
 ### Details to keep in mind
 
+**Intuition — preparation only, not extra spoken text:** Thermal preparation gives several energy levels field-dependent populations. Those populations can act as additional indicators of the field. Their benefit must be compared with the other changes caused by temperature.
+
 For the reported (N=6,n=4,\beta=5) periodic example, the thesis gives a 23.5% higher peak. Keep this as a question-answer detail; the main slide deliberately avoids large numerical callouts.
 
 The comparison is between the **reduced ground-state family** and the **reduced globally thermal family**. Both accessible states can be mixed. The field derivative acts on the field-dependent Gibbs preparation, including its populations. No fixed noisy processing of the same ground-state family is claimed to increase QFI. The preparation resources and equilibration time are not optimized by these plots.
@@ -280,6 +304,8 @@ The comparison is between the **reduced ground-state family** and the **reduced 
 The second application moves from a controlled sensor model to an optical experiment.
 
 ### Details to keep in mind
+
+**Intuition — preparation only, not extra spoken text:** This divider changes the physical platform while preserving the question about accessible information.
 
 Change pace slightly; this is the start of the second application, not a new mathematical introduction.
 
@@ -300,6 +326,8 @@ This makes the separation-sensitive component easier to access, even when two in
 It is the same principle as the earlier measurement animation: changing the measurement can reveal information that another basis reads poorly.
 
 ### Details to keep in mind
+
+**Intuition — preparation only, not extra spoken text:** The optical sorter combines amplitudes before detection. That changes what is measured; merely processing the resulting camera intensities differently would not generally implement the same measurement.
 
 SPADE does not defeat all diffraction limits or identify the source of each photon. Its advantage is parameter- and model-dependent measurement sensitivity. Alignment, brightness ratio, throughput, background and readout matter.
 
@@ -324,6 +352,8 @@ The observed first-order probability contains both correctly reported first-orde
 Because the star is much brighter, even a small confusion probability can contaminate the weak signal. This is why a realistic analysis must include the detector, not just the ideal optical measurement.
 
 ### Details to keep in mind
+
+**Intuition — preparation only, not extra spoken text:** Suppose an illustrative acquisition sends 10,000 events to the fundamental outcome and 10 to the first-order outcome. A 0.1% leak from the bright outcome contributes about 10 false first-order events—already comparable to the weak signal. These are illustrative numbers, not the measured dataset.
 
 For ideal mode outcomes,
 
@@ -355,15 +385,15 @@ $$
 
 [On the planned copy of slide six, point to access, then spectrum.]
 
-Initially, we considered SPADE as a way to access selected components of the optical state within this pipeline.
+Initially, we considered SPADE as a way to access selected components of the state. But mode populations are not generally eigenvalues: the Hermite–Gaussian basis need not diagonalize the state.
 
-But there is a crucial distinction: mode populations are not generally eigenvalues. The state need not be diagonal in the Hermite–Gaussian basis.
+This suggested transferring the VQSE idea to optics: train a mode rotation towards an eigenbasis, then use SPADE to read out the spectral populations.
 
-This motivated VQ-SPADE: a proposed trainable mode rotation before detection, aiming to learn an eigenbasis and make the populations usable for spectral estimation.
-
-That is a future proposal. For the existing experiment, I instead model the optical transformations and the recorded outcomes explicitly.
+This is the VQ-SPADE proposal, which remains to be implemented. For the existing experiment, I instead model the optical transformations and recorded outcomes explicitly.
 
 ### Details to keep in mind
+
+**Intuition — preparation only, not extra spoken text:** The diagonal entries are what one chosen basis reveals; eigenvalues belong to the state itself. Training the basis can expose the spectrum. But finding an eigenbasis and finding the most sensitive measurement for a changing parameter are separate goals.
 
 **The crucial correction is that SPADE gives access to mode populations, not necessarily eigenvalues:**
 
@@ -381,6 +411,8 @@ $$
 p_j(\boldsymbol\alpha)
 =\langle HG_j|U(\boldsymbol\alpha)\rho U^\dagger(\boldsymbol\alpha)|HG_j\rangle.
 $$
+
+Diagonalizing $\rho$ is not generally the same as measuring in the eigenbasis of its symmetric logarithmic derivative, which controls local sensing optimality. A state can encode information in rotating eigenvectors even if its eigenvalues are constant.
 
 The trainable optical transformation would learn the basis; **SPADE performs the readout**. This would need sufficient mode resolution, controllable transformations, repeated state preparations and calibration of mode-dependent losses. A simple rotation plus the current aggregate record is not already an eigensolver. VQ-SPADE was not implemented or tested.
 
@@ -406,6 +438,8 @@ The benefit is a physically organized model. We can separate loss, coherent mixi
 
 ### Details to keep in mind
 
+**Intuition — preparation only, not extra spoken text:** Probabilities tell you how much occupies each mode. Coherence tells you how amplitudes from modes can combine when mixed before detection. A classical readout matrix models confusion of labels after that interference has already occurred.
+
 - The diagonal embedding is a valid construction, not quantum-state reconstruction. A stochastic map does not uniquely fix how a quantum extension acts on off-diagonal elements.
 - The two-by-two slide is a **conceptual illustration**. Actual ($HG_{01}/HG_{10}$) aggregation, higher modes and loss require additional structure. Do not silently identify a two-dimensional pure optical basis with one fundamental mode plus an unresolved two-mode sector.
 - Coherent mixing before measurement and classical label confusion after measurement can produce similar changes in populations, but differ on coherent inputs and in their physical position in the sequence.
@@ -429,6 +463,8 @@ So the question becomes more specific: can a physically structured model explain
 
 ### Details to keep in mind
 
+**Intuition — preparation only, not extra spoken text:** Repeating the same measurement sharpens the mean without necessarily telling you more kinds of things. A hundred repeated totals do not automatically reveal the separate contributions to each total.
+
 The record has 525 settings, 100 repetitions per setting and 10 ms per exposure: 52,500 observations, not necessarily 52,500 photons. Separate ($HG_{00}$), ($HG_{01}$), ($HG_{10}$), higher-mode and loss records are absent.
 
 Without an independent incident-flux calibration, count scale does not separate flux from efficiency. Without basis rotations or phase-sensitive observables, the record does not identify HG coherences. Repetition improves knowledge of the measured mean but does not add a new kind of observable.
@@ -439,17 +475,17 @@ Without an independent incident-flux calibration, count scale does not separate 
 
 [Trace the pipeline once.]
 
-I start with a source state, apply optical channels, model the SPADE measurement, and then include readout and classical calibration to predict counts.
+I start with a source state, apply optical channels, model the SPADE measurement, and include readout and calibration to predict counts.
 
-For the optical stages, I chose physically motivated models for effects such as loss, dephasing and mode mixing, represented through valid Kraus operators.
+I constructed physically motivated channels for loss, dephasing and mode mixing, choosing Kraus operators and checking their mathematical validity.
 
-These choices are assumptions that we can replace and test. They are not optical parameters reconstructed from this dataset.
+The optical parameters are assumed; the classical response is fitted to the recorded counts, through throughput, background, displacement offset and coupling corrections.
 
-The recorded counts instead constrain the classical response: throughput, background, displacement offset and coupling corrections.
-
-This separation makes the model useful. A future calibration can replace one assumed channel without rebuilding the entire sensing and inference pipeline.
+This makes the model useful for testing physical hypotheses. We can change one stage, inspect its effect on the predicted response, and later replace that assumption with an independent calibration.
 
 ### Details to keep in mind
+
+**Intuition — preparation only, not extra spoken text:** Fewer detected photons could result from a dimmer source or a lossier receiver. Organizing the stages makes these alternatives explicit; a second calibrated observable is needed to separate them.
 
 A completely positive map can be written
 
@@ -477,15 +513,15 @@ The provisional workbench fixes example optical parameters and fits throughput, 
 
 The model reproduces the main structure of the averaged observations: the central minimum and the increase with separation and relative source intensity.
 
-This supports the usefulness of the complete forward model for describing the mean response. It does not prove that the individual assumed optical mechanisms are the ones present in the apparatus.
+Matching these means does not uniquely identify the optical channels: different physical mechanisms can produce similar counts.
 
-Different combinations can produce similar counts, especially when classical calibration can absorb part of their effects.
+But the framework turns that ambiguity into a guide for the next experiment. Separate modal counts would resolve the combined outputs. Independent flux measurements would help separate illumination from efficiency. Additional measurement bases would reveal information about coherence.
 
-The model is therefore also a tool for designing the next experiment. Separate modal counts, independent throughput measurements and measurements in additional bases would help distinguish competing explanations.
-
-The contribution is both a reconstruction of the observed mean pattern and a clear account of what evidence is still missing.
+The result is therefore both a description of the observed mean response and a framework for designing measurements that can distinguish competing explanations.
 
 ### Details to keep in mind
+
+**Intuition — preparation only, not extra spoken text:** Predicting the average and explaining every fluctuation are different tasks. Two distributions can share a mean while having different spreads. Matching the mean is useful, but supports a narrower conclusion than identifying the full apparatus.
 
 - The displayed panels are the **provisional workbench's observed and modelled setting means**, compared on the data used for fitting. Do not call this plot alone a held-out validation.
 - The thesis separately reports grouped held-out prediction of setting means. That is evidence for the predictive classical calibration layer, not identification of all quantum channels. Use Appendix H if asked.
@@ -508,6 +544,8 @@ The common lesson is that useful sensitivity belongs to the whole sensing proced
 Thank you.
 
 ### Details to keep in mind
+
+**Intuition — preparation only, not extra spoken text:** End by separating implemented methods, numerical findings, data interpretation and a future proposal. The common lesson is the chain from preparation to the recorded measurement.
 
 - The current conclusion slide says “Perfectly matching.” In speech, use the validated-workflow wording above: finite numerical precision, Trotter error and variational convergence still matter.
 - VQ-SPADE is a proposal; the current archived experiment is not a demonstration of variational diagonalization.
@@ -548,8 +586,16 @@ Here (F^{\mathrm{ans}}) is a metric with respect to **trainable circuit paramete
 
 ## Rehearsal notes
 
-- First rehearse **only** the spoken sections, including the five overlay advances on slide 3. The technical notes are not a second spoken paragraph.
+- First rehearse **only** the spoken sections, including the five overlay advances on slide 3. The technical notes and intuition boxes are not a second spoken paragraph.
 - Clock checkpoints: start magnetometry near **5:05**, exoplanets near **7:55**, and conclusions near **14:10**.
-- If running late, shorten the modularity explanation on slide 6 and the future-measurement examples on slide 18. Preserve the distinctions between populations/eigenvalues, assumptions/fits, and demonstrated/proposed work.
+- If running late, omit the modularity sentence on slide 6 and shorten the future-measurement examples on slide 18. Preserve the distinctions between populations/eigenvalues, assumptions/fits, and demonstrated/proposed work.
 - On plots, name the axes or curves, point to the relevant feature, then state its implication. Give the audience a moment to look before continuing.
 - Do not rush the final sentence. Finish with the conclusion slide visible.
+
+## Further question preparation
+
+See [defence_questions.md](defence_questions.md) for 60 questions with short oral answers, intuitive explanations and technical follow-ups. Especially useful follow-ups are questions 23–28: eigenbasis versus sensing basis, unknown parameters, thermal preparation, coherence, fidelity and photon-resource accounting.
+
+For a slower introduction to thermal preparation, see questions 33–52 in [defence_questions.md](defence_questions.md), including a two-level example and a 30-second oral explanation. These are preparation notes, not additions to the timed talk.
+
+Real-instrument examples and suggested slide wording are in questions 53–60 of [defence_questions.md](defence_questions.md). They distinguish MAGSCA and NMR probes from the periodic Ising model, and explain the preparation requirements for a possible temperature-controlled space sensor.
