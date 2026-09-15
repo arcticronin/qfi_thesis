@@ -91,35 +91,35 @@
         \heading{VARIATIONAL METHOD}{How we deal with Mixed States}{}
 
         \onslide<1->{
-        \node[txt,text=Teal,font=\fontsize{11}{14}\selectfont\bfseries] at (.95,7.14) {WHAT};
-        \node[txt,text width=12.1cm,font=\fontsize{11}{14}\selectfont] at (2.75,7.14)
-        {Statistical mixtures of quantum states, described by a density matrix $\rho$};
+            \node[txt,text=Teal,font=\fontsize{11}{14}\selectfont\bfseries] at (.95,7.14) {WHAT};
+            \node[txt,text width=12.1cm,font=\fontsize{11}{14}\selectfont] at (2.75,7.14)
+            {Statistical mixtures of quantum states, described by a density matrix $\rho$};
         }
 
-       \onslide<2->{
-        \node[txt,text=Teal,font=\fontsize{11}{14}\selectfont\bfseries] at (.95,6.47) {WHY};
-        \node[txt,text width=12.1cm,font=\fontsize{11}{14}\selectfont] at (2.75,6.47)
-        {Real sensors are noisy and only partly accessible\newline Mixed-state QFI remains less explored and costly to compute exactly};
-        \draw[Line,line width=.7pt] (.95,5.46)--(15.05,5.46);
+        \onslide<2->{
+            \node[txt,text=Teal,font=\fontsize{11}{14}\selectfont\bfseries] at (.95,6.47) {WHY};
+            \node[txt,text width=12.1cm,font=\fontsize{11}{14}\selectfont] at (2.75,6.47)
+            {Real sensors are noisy and only partly accessible\newline Mixed-state QFI remains less explored and costly to compute exactly};
+            \draw[Line,line width=.7pt] (.95,5.46)--(15.05,5.46);
         }
 
-       \onslide<3->{
-        \node[txt,text=Teal,font=\fontsize{11}{14}\selectfont\bfseries] at (.95,5.17) {HOW};
-        \node[txt,font=\fontsize{11}{14}\selectfont\bfseries] at (2.75,5.17)
-        {Use truncated spectral decomposition};
-        \panel{2.6}{4.66}{15.2}{3.25}
-        \node[eq,font=\fontsize{17}{21}\selectfont] at (2.90,4.28)
-        {$\rho_m=\sum_{i=1}^{m}\lambda_i\proj{\psi_i}$};
-        \node[smalltxt,text width=5.5cm,font=\fontsize{10}{13}\selectfont] at (9.15,4.24)
-        {The $m$ largest eigenvalues\newline and their eigenvectors.};
-        \node[txt,text=Teal,font=\fontsize{11}{14}\selectfont\bfseries] at (2.75,2.99)
-        {VQSE --- Variational Quantum State Eigensolver};
-        \node[txt,text width=12.1cm,font=\fontsize{10}{13}\selectfont] at (2.75,2.49)
-        {Learns the leading eigenvalues and a circuit that prepares their eigenvectors.};
-        \node[txt,text=Coral,font=\fontsize{11}{14}\selectfont\bfseries] at (2.75,1.91)
-        {TQFI --- Truncated Quantum Fisher Information};
-        \node[txt,text width=12.1cm,font=\fontsize{10}{13}\selectfont] at (2.75,1.41)
-        {Uses the retained components to construct fidelity-based QFI bounds.};
+        \onslide<3->{
+            \node[txt,text=Teal,font=\fontsize{11}{14}\selectfont\bfseries] at (.95,5.17) {HOW};
+            \node[txt,font=\fontsize{11}{14}\selectfont\bfseries] at (2.75,5.17)
+            {Use truncated spectral decomposition};
+            \panel{2.6}{4.66}{15.2}{3.25}
+            \node[eq,font=\fontsize{17}{21}\selectfont] at (2.90,4.28)
+            {$\rho_m=\sum_{i=1}^{m}\lambda_i\proj{\psi_i}$};
+            \node[smalltxt,text width=5.5cm,font=\fontsize{10}{13}\selectfont] at (9.15,4.24)
+            {The $m$ largest eigenvalues\newline and their eigenvectors.};
+            \node[txt,text=Teal,font=\fontsize{11}{14}\selectfont\bfseries] at (2.75,2.99)
+            {VQSE --- Variational Quantum State Eigensolver};
+            \node[txt,text width=12.1cm,font=\fontsize{10}{13}\selectfont] at (2.75,2.49)
+            {Learns the leading eigenvalues and a circuit that prepares their eigenvectors.};
+            \node[txt,text=Coral,font=\fontsize{11}{14}\selectfont\bfseries] at (2.75,1.91)
+            {TQFI --- Truncated Quantum Fisher Information};
+            \node[txt,text width=12.1cm,font=\fontsize{10}{13}\selectfont] at (2.75,1.41)
+            {Uses the retained components to construct fidelity-based QFI bounds.};
         }
 
         \node[smalltxt,text width=14.3cm,font=\fontsize{6.5}{8}\selectfont] at (.8,.88)
@@ -168,22 +168,22 @@
         \node[txt,text=Teal,font=\fontsize{11}{14}\selectfont\bfseries] at (.85,7.16) {NUMERICAL SIMULATION};
 
         \onslide<1->{
-        \panel{.8}{6.70}{10.85}{5.05}
-        \node[txt,font=\fontsize{12}{16}\selectfont\bfseries] at (1.08,6.39) {Preparation};
-        \node[smalltxt,text width=3.02cm,font=\fontsize{9}{11}\selectfont] at (1.08,5.82)
-        {Hamiltonian and \newline time evolution};
+            \panel{.8}{6.70}{10.85}{5.05}
+            \node[txt,font=\fontsize{12}{16}\selectfont\bfseries] at (1.08,6.39) {Preparation};
+            \node[smalltxt,text width=3.02cm,font=\fontsize{9}{11}\selectfont] at (1.08,5.82)
+            {Hamiltonian and \newline time evolution};
         }
 
         \onslide<2->{
-        \node[txt,font=\fontsize{12}{16}\selectfont\bfseries] at (4.65,6.39) {Access};
-        \node[smalltxt,text width=2.16cm,font=\fontsize{9}{11}\selectfont] at (4.65,5.72)
-        {Partial trace};
+            \node[txt,font=\fontsize{12}{16}\selectfont\bfseries] at (4.65,6.39) {Access};
+            \node[smalltxt,text width=2.16cm,font=\fontsize{9}{11}\selectfont] at (4.65,5.72)
+            {Partial trace};
         }
 
         \onslide<3->{
-        \node[txt,font=\fontsize{12}{16}\selectfont\bfseries] at (7.50,6.39) {Spectrum};
-        \node[smalltxt,text width=2.95cm,font=\fontsize{9}{11}\selectfont] at (7.50,5.82)
-        {Exact spectral\newline decomposition};
+            \node[txt,font=\fontsize{12}{16}\selectfont\bfseries] at (7.50,6.39) {Spectrum};
+            \node[smalltxt,text width=2.95cm,font=\fontsize{9}{11}\selectfont] at (7.50,5.82)
+            {Exact spectral\newline decomposition};
         }
 
 
@@ -201,19 +201,19 @@
         \draw[Muted, line width=1.1pt, loosely dashed] (7.2,1.35)--(7.2,4.15);
 
         \onslide<1->{
-        \node[anchor=center,inner sep=0pt] at (2.60,2.50)
-        {\includegraphics[width=3.5cm,height=2.65cm,keepaspectratio]{circuit_notrotter.pdf}};
+            \node[anchor=center,inner sep=0pt] at (2.60,2.50)
+            {\includegraphics[width=3.5cm,height=2.65cm,keepaspectratio]{circuit_notrotter2.png}};
         }
 
         \onslide<2->{
-        \node[anchor=center,inner sep=0pt] at (6.2,2.50)
-        {\includegraphics[width=3.5cm,height=3.5cm,keepaspectratio]{circuit_meas.pdf}};
+            \node[anchor=center,inner sep=0pt] at (6.2,2.50)
+            {\includegraphics[width=3.5cm,height=3.5cm,keepaspectratio]{circuit_meas2.png}};
         }
 
         \onslide<3->{
-        \node[txt,font=\fontsize{12}{16}\selectfont\bfseries] at (7.50,3.91) {VQSE};
-        \node[anchor=center,inner sep=0pt] at (8.87,2.5)
-        {\includegraphics[width=4cm,height=1.79cm,keepaspectratio]{lhea_pennylane.pdf}};
+            \node[txt,font=\fontsize{12}{16}\selectfont\bfseries] at (7.50,3.91) {VQSE};
+            \node[anchor=center,inner sep=0pt] at (8.87,2.5)
+            {\includegraphics[width=4cm,height=1.79cm,keepaspectratio]{lhea_pennylane2.png}};
         }
 
         % \draw[arr,draw=Coral] (4.3,2.70)--(4.73,2.70);
@@ -221,14 +221,14 @@
 
         % - - - - - - - INFORMATION - - - - - -
         \onslide<4->{
-        \panel{11.10}{6.70}{15.2}{1.35}
-        \node[txt,font=\fontsize{12}{16}\selectfont\bfseries] at (11.40,6.39) {Information};
-        \node[txt,text width=3.46cm,font=\fontsize{11}{15}\selectfont] at (11.40,5.71)
-        {1) Exact SLD QFI\newline 2) TQFI bounds};
-        \node[anchor=north west,inner sep=0pt] at (11.40,4.49)
-        {\includegraphics[width=3.50cm,height=2.76cm,keepaspectratio]{simulation.pdf}};
-        \draw[arr] (10.57,5.35)--(11.20,5.35);
-        \draw[arr,draw=Coral] (10.57,2.70)--(11.20,2.70);
+            \panel{11.10}{6.70}{15.2}{1.35}
+            \node[txt,font=\fontsize{12}{16}\selectfont\bfseries] at (11.40,6.39) {Information};
+            \node[txt,text width=3.46cm,font=\fontsize{11}{15}\selectfont] at (11.40,5.71)
+            {1) Exact SLD QFI\newline 2) TQFI bounds};
+            \node[anchor=north west,inner sep=0pt] at (11.40,4.49)
+            {\includegraphics[width=3.50cm,height=2.76cm,keepaspectratio]{simulation.pdf}};
+            \draw[arr] (10.57,5.35)--(11.20,5.35);
+            \draw[arr,draw=Coral] (10.57,2.70)--(11.20,2.70);
         }
 
         \source{Schematic circuit layouts and example output. Implementations can be exchanged at matched interfaces; physical stage order is preserved.}
@@ -267,16 +267,16 @@
         \begin{scope}[yshift=.4cm]
 
             \begin{scope}[yshift=-0.6cm]
-            \foreach \i in {0,...,5}{
-                    \pgfmathsetmacro{\ang}{90-60*\i}
-                    \coordinate (q\i) at ({3.3+1.5*cos(\ang)},{4.38+1.5*sin(\ang)});
-                }
+                \foreach \i in {0,...,5}{
+                        \pgfmathsetmacro{\ang}{90-60*\i}
+                        \coordinate (q\i) at ({3.3+1.5*cos(\ang)},{4.38+1.5*sin(\ang)});
+                    }
 
-            \draw[Line,line width=2pt] (q0)--(q1)--(q2)--(q3)--(q4)--(q5)--cycle;
-            \foreach \i in {0,...,3}{\fill[Teal] (q\i) circle (.24);}
-            \foreach \i in {4,5}{\draw[Muted,dashed,line width=1pt] (q\i) circle (.24);}
+                \draw[Line,line width=2pt] (q0)--(q1)--(q2)--(q3)--(q4)--(q5)--cycle;
+                \foreach \i in {0,...,3}{\fill[Teal] (q\i) circle (.24);}
+                \foreach \i in {4,5}{\draw[Muted,dashed,line width=1pt] (q\i) circle (.24);}
 
-            \node[smalltxt,align=center,text width=5cm] at (.8,2.4) {Periodic spin chain \\ \textcolor{Teal}{Partial Trace:} 2 discarded};
+                \node[smalltxt,align=center,text width=5cm] at (.8,2.4) {Periodic spin chain \\ \textcolor{Teal}{Partial Trace:} 2 discarded};
             \end{scope}
 
             \node[txt,text=Teal,font=\bfseries] at (6.5,5.8) {Transverse-field Ising model (TFIM)};

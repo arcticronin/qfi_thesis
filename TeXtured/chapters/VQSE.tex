@@ -8,14 +8,22 @@ VQSE variationally estimates the $m$ largest eigenvalues $\{\lambda_i\}_{i=1}^m$
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=\textwidth]{figures/asi_report/VQSE_frompaper.jpg}
-    \caption{Schematic representation of VQSE, adapted from~\cite{cerezo2022vqse}. The circuit variationally diagonalizes the input density matrix $\rho$ in its dominant subspace by minimizing a cost function. The source uses $\boldsymbol{\theta}$ for the circuit parameters. We use $\boldsymbol{\beta}$ to distinguish them from the sensed parameter.}
+    \caption{VQSE workflow, adapted from~\cite{cerezo2022vqse}. The inputs are an $n$-qubit state $\rho$, the number $m$ of dominant eigenpairs sought, and a parameterized circuit $V(\boldsymbol{\beta})$. In the upper quantum--classical loop, the circuit prepares $\widetilde{\rho}=V(\boldsymbol{\beta})\rho V^\dagger(\boldsymbol{\beta})$; computational-basis measurements supply the cost $C(t,\boldsymbol{\beta})=\operatorname{Tr}[H_{\mathrm{cost}}(t)\widetilde{\rho}]$, and a classical optimizer updates $\boldsymbol{\beta}$ while the auxiliary cost Hamiltonian is adapted. After training, the lower-left circuit measures $\widetilde{\rho}$ at $\boldsymbol{\beta}_{\mathrm{opt}}$: the frequencies of the selected bitstrings $z_i$ estimate the $m$ largest eigenvalues $\widetilde{\lambda}_i$. In the lower-right circuit, preparing $|z_i\rangle$ and applying $V^\dagger(\boldsymbol{\beta}_{\mathrm{opt}})$ gives the corresponding approximate eigenvector $|\widetilde{\lambda}_i\rangle$. The source figure writes $\theta$ for our circuit-parameter vector $\boldsymbol{\beta}$ and $H(t)$ for our $H_{\mathrm{cost}}(t)$; $t\in[0,1]$ denotes normalized optimization progress, not physical evolution time or the sensed parameter $\theta$.}
     \label{fig:vqse_from_paper}
 \end{figure}
 % ==============================================================================
 \subsection{Mathematical Foundation: Diagonalization via Majorization}
 % ==============================================================================
 
-The main idea of VQSE can be understood as a sorting problem. The unitary $V(\boldsymbol{\beta})$ does not change the eigenvalues of $\rho$. Instead, it changes how those eigenvalues contribute to the probabilities observed in the computational basis. VQSE trains $V(\boldsymbol{\beta})$ so that the largest eigenvalues appear as the largest measurement probabilities, assigned in a known order to selected computational-basis states~\cite{cerezo2022vqse}.
+VQSE can be understood as sorting eigenvalue weight among
+computational-basis outcomes. The unitary $V(\boldsymbol{\beta})$
+preserves the eigenvalues of $\rho$, but changes the diagonal
+probabilities observed after the basis rotation~\cite{horn_johnson_2012_matrix}. Training seeks to
+assign the largest eigenvalues, in order, to selected basis states.
+At the ideal optimum, their measurement probabilities equal those
+eigenvalues~\cite{cerezo2022vqse}.
+
+Majorization makes this notion of concentration precise: for two lists with the same total, the more concentrated list has a larger or equal sum of its largest $\ell$ entries for every $\ell$.
 
 \begin{definition}[Majorization of the Diagonal]
     Let $d=2^n$, and let the eigenvalues of $\rho$ be ordered as $\lambda_1\geq\lambda_2\geq\cdots\geq\lambda_d\geq0$. After applying $V(\boldsymbol{\beta})$, measurement in the computational basis $\{|z_k\rangle\}$ gives the probabilities
@@ -49,12 +57,12 @@ The main idea of VQSE can be understood as a sorting problem. The unitary $V(\bo
 \end{definition}
 
 \begin{theorem}[VQSE Cost Function Minimization]
-    VQSE introduces an auxiliary Hamiltonian that is diagonal in the computational basis,
+    Let $\rho$ have eigenvalues $\lambda_1\geq\cdots\geq\lambda_d$, as above. Choose a diagonal auxiliary Hamiltonian whose computational-basis states $|z_k\rangle$ are listed in order of nondecreasing energy:
     \begin{equation}
         H_{\mathrm{VQSE}}=\sum_{k=1}^{d}E_k|z_k\rangle\langle z_k|,
         \qquad 0\leq E_1\leq E_2\leq\cdots\leq E_d
     \end{equation}
-    Its expectation value on the transformed state defines the cost
+    For any unitary $V(\boldsymbol{\beta})$, the expectation of this auxiliary Hamiltonian on the transformed state is
     \begin{equation}
         C(\boldsymbol{\beta})
         =\operatorname{Tr}\!\left[H_{\mathrm{VQSE}}
@@ -62,26 +70,30 @@ The main idea of VQSE can be understood as a sorting problem. The unitary $V(\bo
         =\sum_{k=1}^{d}E_kp_k(\boldsymbol{\beta})
         \label{eq:vqse_cost_dot_product}
     \end{equation}
-    Majorization and the ordering of the energies imply
+    Because the eigenvalue list majorizes the diagonal probability list, the cost obeys
     \begin{equation}
         C(\boldsymbol{\beta})\geq\sum_{k=1}^{d}E_k\lambda_k
         \label{eq:vqse_cost_lower_bound}
     \end{equation}
-    We should assume that the ansatz can represent the required unitary (See \ref{infobox:adaptive_cost_fn} for the details). Then equality is reached when the largest eigenvalue is mapped to the lowest-energy basis state, the second largest to the second-lowest, and so on. Thus, for the components that are resolved,
+    The bound is attainable over unrestricted unitaries: a unitary that maps an eigenbasis of $\rho$ to the computational basis in this energy order makes $p_k=\lambda_k$ for every $k$.
+\end{theorem}
+
+\begin{remark}[Implication for VQSE]
+    The theorem identifies the ideal target for training. If the ansatz can represent the required basis change and optimization finds it, the largest eigenvalues are assigned to the lowest-energy basis states. For the resolved components, one may then choose eigenvectors such that
     \begin{equation}
         V(\boldsymbol{\beta}_{\mathrm{opt}})|\lambda_k\rangle
         =e^{i\phi_k}|z_k\rangle
         \label{eq:vqse_eigenvector_mapping}
     \end{equation}
-    The transformed state is then diagonal in those computational-basis states, and their measured probabilities are the corresponding eigenvalues of $\rho$.
-\end{theorem}
+    Their computational-basis probabilities equal $\lambda_k$, and applying $V^\dagger(\boldsymbol{\beta}_{\mathrm{opt}})$ to $|z_k\rangle$ prepares the corresponding eigenvector up to phase. If the ansatz or optimization falls short of this ideal, VQSE may yield only approximate eigenvalues and eigenvectors; degenerate eigenvalues determine an eigenspace rather than a unique eigenvector basis.
+\end{remark}
 
 \begin{remark}[Why the cost sorts the probabilities]
-    Consider two basis states with $E_i<E_j$ but $p_i<p_j$. Exchanging their probabilities lowers the cost by $(E_j-E_i)(p_j-p_i)>0$. Therefore, minimization favors placing large probabilities on low-energy basis states. The majorization bound guarantees that the best possible sorted probabilities are the eigenvalues themselves.
+    Consider two basis states with $E_i<E_j$ but $p_i<p_j$. Exchanging their probabilities would lower the cost by $(E_j-E_i)(p_j-p_i)>0$. Thus, minimizing the cost favors larger probabilities at lower energies. This exchange explains the sorting intuition; majorization gives the global lower bound in Eq.~\eqref{eq:vqse_cost_lower_bound}.
 \end{remark}
 
 \begin{remark}[How to interpret $H_{\mathrm{VQSE}}$]
-    The auxiliary Hamiltonian is a scoring observable chosen by the algorithm; it is not the physical Hamiltonian that produced $\rho$. To extract the $m$ dominant components, its $m$ lowest levels must be non-degenerate so that they give those components distinct labels. The remaining levels may be degenerate because their individual eigenvectors are not needed. Likewise, if $\rho$ itself has a degenerate eigenvalue, VQSE identifies the associated eigenspace, but there is no unique eigenvector basis inside it.
+    The auxiliary Hamiltonian is a scoring observable chosen by the algorithm; it is not the physical Hamiltonian that produced $\rho$. To extract the $m$ dominant components, its $m$ lowest levels must be non-degenerate so that they give those components distinct labels. The remaining levels may be degenerate because their individual eigenvectors are not needed.
 \end{remark}
 
 Operationally, Eq.~\eqref{eq:vqse_cost_dot_product} requires only the measurement probabilities of the transformed state and the known weights $E_k$. VQSE therefore avoids full tomography and does not need to measure every off-diagonal element of $V\rho V^\dagger$.
