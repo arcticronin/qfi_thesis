@@ -73,11 +73,13 @@
         \only<3>{\measurementview{45}}
         \only<4>{\measurementview{60}}
         \only<5>{\measurementview{75}}
-        \only<6>{\measurementview{90}}
+        \only<6>{
+            \measurementview{90}
 
-        \node[txt,font=\fontsize{12}{14}\selectfont\bfseries] at (.95,2.25)
-        {\textcolor{Coral}{QFI} is intrinsic to the quantum state \\ it is \textcolor{Coral}{independent of the measurement basis}
-        };
+            \node[txt,font=\fontsize{12}{12}\selectfont\bfseries] at (.95,2.25)
+            {\textcolor{Coral}{QFI} is intrinsic to the quantum state \\ and it is \textcolor{Coral}{independent of the measurement basis}
+            };
+        }
         \source{Mixed states, $r=0.8$; finite separation shown for clarity. CFI is local at $\theta=0$ (radians), not a two-state finite difference. Appendix J.}
         \footer{3 / 19}
     \end{canvas}
@@ -87,13 +89,21 @@
 \begin{frame}[plain,label=learning]
     \begin{canvas}
         \heading{VARIATIONAL METHOD}{How we deal with Mixed States}{}
+
+        \onslide<1->{
         \node[txt,text=Teal,font=\fontsize{11}{14}\selectfont\bfseries] at (.95,7.14) {WHAT};
         \node[txt,text width=12.1cm,font=\fontsize{11}{14}\selectfont] at (2.75,7.14)
         {Statistical mixtures of quantum states, described by a density matrix $\rho$};
+        }
+
+       \onslide<2->{
         \node[txt,text=Teal,font=\fontsize{11}{14}\selectfont\bfseries] at (.95,6.47) {WHY};
         \node[txt,text width=12.1cm,font=\fontsize{11}{14}\selectfont] at (2.75,6.47)
         {Real sensors are noisy and only partly accessible\newline Mixed-state QFI remains less explored and costly to compute exactly};
         \draw[Line,line width=.7pt] (.95,5.46)--(15.05,5.46);
+        }
+
+       \onslide<3->{
         \node[txt,text=Teal,font=\fontsize{11}{14}\selectfont\bfseries] at (.95,5.17) {HOW};
         \node[txt,font=\fontsize{11}{14}\selectfont\bfseries] at (2.75,5.17)
         {Use truncated spectral decomposition};
@@ -110,6 +120,8 @@
         {TQFI --- Truncated Quantum Fisher Information};
         \node[txt,text width=12.1cm,font=\fontsize{10}{13}\selectfont] at (2.75,1.41)
         {Uses the retained components to construct fidelity-based QFI bounds.};
+        }
+
         \node[smalltxt,text width=14.3cm,font=\fontsize{6.5}{8}\selectfont] at (.8,.88)
         {Thesis: Introduction. Cerezo et al. (2022); Beckey et al. (2022). Subnormalized truncation; finite-step scope: Appendix A.};
         \footer{4 / 19}
@@ -151,40 +163,74 @@
 \begin{frame}[plain,label=pipeline]
     \begin{canvas}
         \heading{NUMERICAL AND VARIATIONAL METHODS}{Parallel numerical and quantum-circuit workflow}{}
+
+        % - - - - - - NUMERICAL SIMULATION - - - - - -
         \node[txt,text=Teal,font=\fontsize{11}{14}\selectfont\bfseries] at (.85,7.16) {NUMERICAL SIMULATION};
+
+        \onslide<1->{
         \panel{.8}{6.70}{10.85}{5.05}
         \node[txt,font=\fontsize{12}{16}\selectfont\bfseries] at (1.08,6.39) {Preparation};
-        \node[txt,font=\fontsize{12}{16}\selectfont\bfseries] at (4.65,6.39) {Access};
-        \node[txt,font=\fontsize{12}{16}\selectfont\bfseries] at (7.50,6.39) {Spectrum};
-        \node[smalltxt,text width=3.02cm,font=\fontsize{9}{11}\selectfont] at (1.08,5.72)
+        \node[smalltxt,text width=3.02cm,font=\fontsize{9}{11}\selectfont] at (1.08,5.82)
         {Hamiltonian and \newline time evolution};
-        \node[smalltxt,text width=2.16cm,font=\fontsize{9}{11}\selectfont] at (4.65,5.52)
+        }
+
+        \onslide<2->{
+        \node[txt,font=\fontsize{12}{16}\selectfont\bfseries] at (4.65,6.39) {Access};
+        \node[smalltxt,text width=2.16cm,font=\fontsize{9}{11}\selectfont] at (4.65,5.72)
         {Partial trace};
-        \node[smalltxt,text width=2.95cm,font=\fontsize{9}{11}\selectfont] at (7.50,5.72)
+        }
+
+        \onslide<3->{
+        \node[txt,font=\fontsize{12}{16}\selectfont\bfseries] at (7.50,6.39) {Spectrum};
+        \node[smalltxt,text width=2.95cm,font=\fontsize{9}{11}\selectfont] at (7.50,5.82)
         {Exact spectral\newline decomposition};
-        \draw[arr] (4.14,5.32)--(4.53,5.32);
-        \draw[arr] (6.96,5.32)--(7.37,5.32);
-        \draw[Muted,line width=1.1pt] (.85,4.83)--(10.85,4.83);
+        }
+
+
+        % \draw[arr] (4.14,5.32)--(4.53,5.32);
+        % \draw[arr] (6.96,5.32)--(7.37,5.32);
+        \draw[Muted, line width=1.1pt, loosely dashed] (4.4,6.60)--(4.4,5.20);
+        \draw[Muted, line width=1.1pt, loosely dashed] (7.2,6.60)--(7.2,5.20);
+        %\draw[Muted,line width=1.1pt] (.85,4.83)--(10.85,4.83);
+
+        % - - - - - - QUANTUM CIRCUIT - - - - - -
         \node[txt,text=Coral,font=\fontsize{11}{14}\selectfont\bfseries] at (.85,4.63) {QUANTUM CIRCUIT};
         \panel{.8}{4.15}{10.85}{1.35}
         % Enlarged circuit row; only the VQSE stage has a text heading.
+        \draw[Muted, line width=1.1pt, loosely dashed] (4.4,1.35)--(4.4,4.15);
+        \draw[Muted, line width=1.1pt, loosely dashed] (7.2,1.35)--(7.2,4.15);
+
+        \onslide<1->{
+        \node[anchor=center,inner sep=0pt] at (2.60,2.50)
+        {\includegraphics[width=3.5cm,height=2.65cm,keepaspectratio]{circuit_notrotter.pdf}};
+        }
+
+        \onslide<2->{
+        \node[anchor=center,inner sep=0pt] at (6.2,2.50)
+        {\includegraphics[width=3.5cm,height=3.5cm,keepaspectratio]{circuit_meas.pdf}};
+        }
+
+        \onslide<3->{
         \node[txt,font=\fontsize{12}{16}\selectfont\bfseries] at (7.50,3.91) {VQSE};
-        \node[anchor=center,inner sep=0pt] at (2.60,2.70)
-        {\includegraphics[width=3.10cm,height=2.35cm,keepaspectratio]{circuit_notrotter.png}};
-        \node[anchor=center,inner sep=0pt] at (5.9,2.70)
-        {\includegraphics[width=2.3cm,height=2.35cm,keepaspectratio]{circuit_meas.png}};
-        \node[anchor=center,inner sep=0pt] at (8.87,2.65)
-        {\includegraphics[width=3.62cm,height=1.65cm,keepaspectratio]{lhea_pennylane.png}};
-        \draw[arr,draw=Coral] (4.3,2.70)--(4.73,2.70);
-        \draw[arr,draw=Coral] (7.2 ,2.70)--(7.65,2.70);
+        \node[anchor=center,inner sep=0pt] at (8.87,2.5)
+        {\includegraphics[width=4cm,height=1.79cm,keepaspectratio]{lhea_pennylane.pdf}};
+        }
+
+        % \draw[arr,draw=Coral] (4.3,2.70)--(4.73,2.70);
+        % \draw[arr,draw=Coral] (7.2 ,2.70)--(7.65,2.70);
+
+        % - - - - - - - INFORMATION - - - - - -
+        \onslide<4->{
         \panel{11.10}{6.70}{15.2}{1.35}
         \node[txt,font=\fontsize{12}{16}\selectfont\bfseries] at (11.40,6.39) {Information};
         \node[txt,text width=3.46cm,font=\fontsize{11}{15}\selectfont] at (11.40,5.71)
         {1) Exact SLD QFI\newline 2) TQFI bounds};
         \node[anchor=north west,inner sep=0pt] at (11.40,4.49)
-        {\includegraphics[width=3.50cm,height=2.76cm,keepaspectratio]{simulation.png}};
+        {\includegraphics[width=3.50cm,height=2.76cm,keepaspectratio]{simulation.pdf}};
         \draw[arr] (10.57,5.35)--(11.20,5.35);
         \draw[arr,draw=Coral] (10.57,2.70)--(11.20,2.70);
+        }
+
         \source{Schematic circuit layouts and example output. Implementations can be exchanged at matched interfaces; physical stage order is preserved.}
         \footer{6 / 19}
     \end{canvas}
@@ -219,6 +265,8 @@
         \node[txt,text width=30cm,font=\fontsize{13}{15}\selectfont] at (.95,7.2)
         {Try multiple boundary conditions, preparations, noise models, to study QFI};
         \begin{scope}[yshift=.4cm]
+
+            \begin{scope}[yshift=-0.6cm]
             \foreach \i in {0,...,5}{
                     \pgfmathsetmacro{\ang}{90-60*\i}
                     \coordinate (q\i) at ({3.3+1.5*cos(\ang)},{4.38+1.5*sin(\ang)});
@@ -228,9 +276,12 @@
             \foreach \i in {0,...,3}{\fill[Teal] (q\i) circle (.24);}
             \foreach \i in {4,5}{\draw[Muted,dashed,line width=1pt] (q\i) circle (.24);}
 
-            \node[smalltxt,align=center,text width=5cm] at (.8,2.4) {Periodic spin chain\newline \textcolor{Teal}{Partial Trace:} 2 discarded};
+            \node[smalltxt,align=center,text width=5cm] at (.8,2.4) {Periodic spin chain \\ \textcolor{Teal}{Partial Trace:} 2 discarded};
+            \end{scope}
 
-            \begin{scope}[yshift=-1cm]
+            \node[txt,text=Teal,font=\bfseries] at (6.5,5.8) {Transverse-field Ising model (TFIM)};
+
+            \begin{scope}[yshift=-1.3cm]
                 \panel{6.5}{6.16}{15.2}{3.95}
                 \node[txt,text=Teal,font=\bfseries] at (6.9,5.9) {Ground state};
                 \node[txt,text width=5.2cm] at (9.6,5.9) {Lowest-energy preparation};
@@ -247,7 +298,7 @@
         \end{scope}
 
 
-        \takeaway{Transverse-field Ising model (TFIM)}
+        % \takeaway{Transverse-field Ising model (TFIM)}
         \source{$N=6$, $n=4$, periodic boundaries, $J=1$. Thesis: NoiseAnalysis.}
         \footer{8 / 19}
     \end{canvas}
@@ -408,7 +459,7 @@
         \node[anchor=north west,inner sep=0pt] at (.25,5.4) {\includegraphics[width=5.48cm,height=4.32cm,keepaspectratio]{sample_1_exoplanet_2026.png}};
         \node[anchor=north west,inner sep=0pt] at (5.35,5.4) {\includegraphics[width=5.48cm,height=4.32cm,keepaspectratio]{average_sample_exoplanet_2026.png}};
 
-        \draw[Line,line width=1pt] (10.84,5.67)--(10.84,0.80);
+        \draw[Line,line width=1pt] (11.04,5.97)--(11.04,0.80);
 
         \node[txt,text=Coral,font=\fontsize{11}{14}\selectfont\bfseries,text width=3.75cm] at (11.22,6) {Missing observables};
         \node[txt,text width=3.7cm,font=\small] at (11.22,4.91) {Separate modal outputs\\[.25cm] Other measurement bases\\[.25cm] Incident flux and failure outcomes};
@@ -453,9 +504,9 @@
         % Display only the top two panels of the original thesis figure.
         % Cropping removes the original headings, not any data, axes or colour scales.
         \node[anchor=north west,inner sep=0pt] at (1.0,5.90)
-        {\includegraphics[trim={0.0000bp 357.9805bp 559.1696bp 39.1979bp},clip,width=6.5cm,height=4.10cm,keepaspectratio]{spade_plausible_channel_workbench.png}};
+        {\includegraphics[width=6.5cm,height=4.10cm,keepaspectratio]{spade_left.pdf}};
         \node[anchor=north west,inner sep=0pt] at (8.10,5.90)
-        {\includegraphics[trim={557.9696bp 357.9805bp 0.0000bp 39.1979bp},clip,width=6.5cm,height=4.10cm,keepaspectratio]{spade_plausible_channel_workbench.png}};
+        {\includegraphics[width=6.5cm,height=4.10cm,keepaspectratio]{spade_right.pdf}};
         \takeaway{The mean-count pattern is captured by the chosen channels with classical calibration.}
         \source{Thesis appendix: provisional channel model, top panels. In-sample mean comparison; assumed optical channels are not individually identified by this agreement.}
         \footer{18 / 19}
@@ -526,7 +577,7 @@
     \begin{canvas}
         \heading{APPENDIX C /  NUMERICAL OPTIMIZATION EXAMPLE}{Stochastic reconfiguration in a neural quantum state}{A separate pure-state RBM example illustrates metric-based optimization.}
         \begin{scope}[yshift=.4cm]
-            \node[anchor=north west,inner sep=0pt] at (1.5,6.14) {\includegraphics[width=13cm]{sr_comparison.png}};
+            \node[anchor=north west,inner sep=0pt] at (0.9,6.14) {\includegraphics[width=14cm]{sr_comparison.png}};
         \end{scope}
         \closingline{SR lowers the energy error in this run; it does not benchmark mixed-state VQSE.}
         \source{Thesis figure: VQSE chapter. TFIM at $h_x/J=1$; 80 steps, 300 Monte Carlo samples/step, $\eta=0.05$, SR $\lambda=10^{-4}$; same seed.}
