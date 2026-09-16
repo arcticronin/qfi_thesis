@@ -207,13 +207,13 @@
 
         \onslide<2->{
             \node[anchor=center,inner sep=0pt] at (6.2,2.50)
-            {\includegraphics[width=3.5cm,height=3.5cm,keepaspectratio]{circuit_meas2.png}};
+            {\includegraphics[width=4.2cm,height=3.5cm,keepaspectratio]{circuit_meas2.png}};
         }
 
         \onslide<3->{
             \node[txt,font=\fontsize{12}{16}\selectfont\bfseries] at (7.50,3.91) {VQSE};
             \node[anchor=center,inner sep=0pt] at (8.87,2.5)
-            {\includegraphics[width=4cm,height=1.79cm,keepaspectratio]{lhea_pennylane2.png}};
+            {\includegraphics[width=4.2cm,height=2.0cm,keepaspectratio]{lhea_pennylane2.png}};
         }
 
         % \draw[arr,draw=Coral] (4.3,2.70)--(4.73,2.70);
@@ -221,12 +221,12 @@
 
         % - - - - - - - INFORMATION - - - - - -
         \onslide<4->{
-            \panel{11.10}{6.70}{15.2}{1.35}
+            \panel{11.10}{6.70}{15.5}{1.35}
             \node[txt,font=\fontsize{12}{16}\selectfont\bfseries] at (11.40,6.39) {Information};
-            \node[txt,text width=3.46cm,font=\fontsize{11}{15}\selectfont] at (11.40,5.71)
+            \node[txt,text width=3.46cm,font=\fontsize{11}{15}\selectfont] at (11.35,5.71)
             {1) Exact SLD QFI\newline 2) TQFI bounds};
-            \node[anchor=north west,inner sep=0pt] at (11.40,4.49)
-            {\includegraphics[width=3.50cm,height=2.76cm,keepaspectratio]{simulation2.png}};
+            \node[anchor=north west,inner sep=0pt] at (11.25,4.49)
+            {\includegraphics[width=4.50cm,height=3.10cm,keepaspectratio]{simulation2.png}};
             \draw[arr] (10.57,5.35)--(11.20,5.35);
             \draw[arr,draw=Coral] (10.57,2.70)--(11.20,2.70);
         }
@@ -573,15 +573,28 @@
     \end{canvas}
 \end{frame}
 
-\begin{frame}[plain,noframenumbering,label=backup-sr]
+\begin{frame}[plain,noframenumbering,label=backup-vqse-training]
     \begin{canvas}
-        \heading{APPENDIX C /  NUMERICAL OPTIMIZATION EXAMPLE}{Stochastic reconfiguration in a neural quantum state}{A separate pure-state RBM example illustrates metric-based optimization.}
-        \begin{scope}[yshift=.4cm]
-            \node[anchor=north west,inner sep=0pt] at (0.9,6.14) {\includegraphics[width=14cm]{sr_comparison.png}};
+        \heading{APPENDIX C /  ADAPTIVE VQSE TRAINING}{Local-to-global objective schedule}{}
+        \begin{scope}[yshift=.15cm]
+            \node[anchor=north,inner sep=0pt] at (8.0,7.03) {\includegraphics[height=5cm,keepaspectratio]{misc/VQSE_adaptive_training_slides.png}};
         \end{scope}
-        \closingline{SR lowers the energy error in this run; it does not benchmark mixed-state VQSE.}
-        \source{Thesis figure: VQSE chapter. TFIM at $h_x/J=1$; 80 steps, 300 Monte Carlo samples/step, $\eta=0.05$, SR $\lambda=10^{-4}$; same seed.}
+        %\closingline{The changing adaptive objective is a training schedule; the local and global traces provide the fixed-objective context.}
+        \source{Deterministic two-qubit VQSE example: balanced non-diagonal mixed state, rank-3 target, 50 outer iterations and global-target refresh every 5 iterations.}
         \footer{Appendix C}
+    \end{canvas}
+\end{frame}
+
+\begin{frame}[plain,noframenumbering,label=backup-vqse-optimizer-comparison]
+    \begin{canvas}
+        \heading{APPENDIX C.1 /  VQSE OPTIMIZER COMPARISON}{BFGS, Adam and Bures natural gradient}{}
+        %{The mixed-state metric preconditions parameter updates by their physical state displacement.}
+        \begin{scope}[yshift=.15cm]
+            \node[anchor=north,inner sep=0pt] at (8.0,7.03) {\includegraphics[height=5.45cm,keepaspectratio]{misc/VQSE_optimizer_comparison_slides.png}};
+        \end{scope}
+        %\closingline{On this benchmark, Bures-NG approaches the BFGS eigenvalue accuracy with smoother late-stage parameter updates.}
+        \source{Deterministic simulator benchmark: non-diagonal two-qubit state with spectrum $(0.40,0.28,0.20,0.12)$, rank-3 target, equal initialization, 35 outer iterations and target refresh every 5 iterations.}
+        \footer{Appendix C.1}
     \end{canvas}
 \end{frame}
 

@@ -217,7 +217,7 @@ For mixed states, rank truncation can provide an efficient lower and upper bound
     \end{equation}
 \end{definition}
 \begin{remark}[Analogy to PCA]
-    This construction is analogous to PCA or a truncated Singular Value Decomposition (SVD), it retains the eigenspace carrying the largest spectral weight. Because a density matrix is Hermitian and positive semidefinite, its singular values equal its eigenvalues (\cite{horn_johnson_2012_matrix}). The analogy refers to spectral compression, because the dominant eigenspace spanned by its most important eigenvectors, do not necessarily contain all  sensitivity to the parameter.
+    This construction is analogous to PCA or a truncated Singular Value Decomposition (SVD), it retains the eigenspace carrying the largest spectral weight. Because a density matrix is Hermitian and positive semidefinite, its singular values are equal to its eigenvalues (\cite{horn_johnson_2012_matrix}). The analogy refers to spectral compression, because the dominant eigenspace spanned by its most important eigenvectors, do not necessarily contain all  sensitivity to the parameter.
 \end{remark}
 
 \begin{theorem}[Truncated Fidelity Bounds]
@@ -276,20 +276,15 @@ To avoid eigenspace truncation entirely, we implement bounds based on polynomial
 
 \section{The VQFIE Estimation and Optimization Loop}
 
-VQFIE can be used only to estimate the interval $[H_\delta,J_\delta]$ for a fixed probe. Optionally the lower endpoint $H_\delta(\theta;\rho_\theta)$ can be embedded in a closed-loop variational pipeline that prepares probe states $\rho_{\boldsymbol{\alpha}}=U(\boldsymbol{\alpha})\rho_{\mathrm{in}}U^\dagger(\boldsymbol{\alpha})$. At each outer-loop iteration, VQSE supplies the dominant eigenspace of the encoded state, non-variational circuits evaluate the required overlaps, and a classical optimizer updates the preparation parameters using the lower bound as its objective (see Fig.~\ref{fig:vqfie_schema}). This can be useful because it is a cheap way to improve the probe state for parameter estimation, having a minimal resource overhead (but requires copies), even since it is a lower bound.
+VQFIE can be used only to estimate the interval $[H_\delta,J_\delta]$ for a fixed probe. Optionally the lower endpoint $H_\delta(\theta;\rho_\theta)$ can be embedded in a closed-loop variational pipeline that prepares probe states $\rho_{\boldsymbol{\alpha}}=U(\boldsymbol{\alpha})\rho_{\mathrm{in}}U^\dagger(\boldsymbol{\alpha})$. At each outer-loop iteration, VQSE supplies the dominant eigenspace of the encoded state, non-variational circuits evaluate the required overlaps, and a classical optimizer updates the preparation parameters using the lower bound as its objective (see Fig.~\ref{fig:vqfie_schema}). This can be useful because it is a cheap way to improve the probe state for parameter estimation, having a minimal resource overhead (but requiring copies).
 
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.45\textwidth]{figures/asi_report/vqfie.png}
-    \caption{Schematic representation of the VQFIE estimation and optional probe-optimization loop, figure from~\cite{beckey2022vqfiea}.}
-    \label{fig:vqfie_schema}
-\end{figure}
+
 
 \begin{algorithm}[H]
     \caption{Variational Quantum Fisher Information Estimation (VQFIE)}
     \label{alg:vqfie}
     \begin{algorithmic}[1]
-        \Require Initial probe $\rho_{\text{in}}$, optional preparation ansatz $U(\boldsymbol{\alpha})$, field shift $\delta$, truncation rank $m$.
+        \Require Initial probe $\rho_{\text{in}}$, (opt) prep. ansatz $U(\boldsymbol{\alpha})$, field shift $\delta$, trunc.  $m$
         \For{iteration $k = 1, 2, \dots, N_{\text{max}}$}
         \State If optimization is enabled, prepare $\rho_{\boldsymbol{\alpha}}=U(\boldsymbol{\alpha})\rho_{\text{in}}U^\dagger(\boldsymbol{\alpha})$; otherwise set $\rho_{\boldsymbol{\alpha}}=\rho_{\text{in}}$.
         \State Apply physical encoding channels to generate $\rho_\theta = \mathcal{E}_\theta(\rho_{\boldsymbol{\alpha}})$ and $\rho_{\theta+\delta} = \mathcal{E}_{\theta+\delta}(\rho_{\boldsymbol{\alpha}})$.
@@ -314,6 +309,13 @@ VQFIE can be used only to estimate the interval $[H_\delta,J_\delta]$ for a fixe
         \State \textbf{Return:} The evaluated interval and, when optimized, $\boldsymbol{\alpha}_{\text{opt}}$.
     \end{algorithmic}
 \end{algorithm}
+
+\begin{figure}[htb!]
+    \centering
+    \includegraphics[width=0.45\textwidth]{figures/asi_report/vqfie.png}
+    \caption{VQFIE estimation and optional probe-optimization loop for the unitary-sensing example of~\cite{beckey2022vqfiea}. Starting from $N$ copies of an $n$-qubit state $\rho_{\mathrm{in}}$, an optional parameterized circuit prepares the probe; half the copies are encoded at $\theta$ and half at $\theta+\delta$, yielding $\rho_\theta$ and $\rho_{\theta+\delta}$. The TQFI branch requires $N=2$ copies, whereas the SSQFI branch requires $N=4$; their estimates give the finite-displacement lower and upper endpoints $H_\delta$ and $J_\delta$. Optionally, a classical optimizer updates the probe-preparation controls to increase $H_\delta$. In the source figure, $U_\alpha$ denotes our $U(\boldsymbol{\alpha})$, with $\boldsymbol{\alpha}$ the adjustable preparation parameters. Its unitary sensor encoding $W_\theta=e^{-i\theta G}$ is a special case of our more general channel $\mathcal{E}_\theta$; $\theta$ is the sensed parameter and $\delta$ is its displacement.}
+    \label{fig:vqfie_schema}
+\end{figure}
 
 % ==============================================================================
 \section{Quantum Circuit Implementation}
@@ -375,6 +377,6 @@ The evaluation of the SSQFI bounds and the off-diagonal $T$ matrix elements $T_{
 \end{table}
 
 \section{Methodological Scope}
-The exact SLD calculation is the reference method for the finite systems studied in Chapter~\ref{ch:noise_analysis}. The finite-displacement TQFI and SSQFI quantities test how much of the fidelity response can be recovered without full diagonalization, while VQSE is confronted to numerical diagonalization, for supplying the dominant spectral data needed by TQFI. The outer VQFIE state-preparation loop is optional: estimating the bounds for a fixed preparation does not require optimizing $U(\boldsymbol{\alpha})$.
+The exact SLD calculation is the reference method for the finite systems studied in Chapter~\ref{ch:noise_analysis}. The finite-displacement TQFI and SSQFI quantities test how much of the fidelity response can be recovered without full diagonalization, while VQSE is compared to numerical diagonalization, for supplying the dominant spectral data needed by TQFI. The outer VQFIE state-preparation loop is optional: estimating the bounds for a fixed preparation does not require optimizing $U(\boldsymbol{\alpha})$.
 
 We built, optimized and tested all the necessary tools, quantum circuit and the corresponding classical mathematical simulation frameworks. In this way we can swap between them at any stage of the analysis, allowing for flexible testing and validation of the methods under different conditions.

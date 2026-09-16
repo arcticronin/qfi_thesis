@@ -413,7 +413,7 @@ states that the circuit can prepare.
     \end{equation}
     Here, $\lambda$ is a regularization parameter and ${}^{+}$ denotes the Moore--Penrose pseudoinverse. The regularization term stabilizes the update when the ansatz QFIM is singular or poorly conditioned, as may occur when some circuit parameters are redundant or have little effect on the prepared state.
 
-    The quantum natural gradient rescales the ordinary gradient according to the local distinguishability of neighboring ansatz states. It is a geometry-aware optimization direction, an example can be found in Info Box~\ref{sec:vqse_qng_optimization}.
+    The quantum natural gradient rescales the ordinary gradient according to the local distinguishability of neighboring ansatz states. It is a geometry-aware optimization direction; an application to VQSE is presented in Section~\ref{sec:vqse_qng_optimization}.
 \end{remark}
 
 \section{Connection to the Variational Algorithms}

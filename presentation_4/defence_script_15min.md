@@ -190,7 +190,7 @@ The stages are modular, so I can check approximations against their numerical co
 
 [Point to VQSE.]
 
-I also tested natural-gradient-style training, using stochastic reconfiguration, on selected small VQSE benchmarks. The intuition is to scale parameter updates by how much they change the quantum state.
+I also tested a deterministic Bures natural-gradient update on a small mixed-state VQSE benchmark. The intuition is to scale parameter updates by how much they change the quantum state.
 
 Fisher geometry therefore plays two roles: it quantifies distinguishability for sensing, and it can guide the optimization used in spectral estimation.
 
@@ -203,8 +203,8 @@ Fisher geometry therefore plays two roles: it quantifies distinguishability for 
 - Exact matrix calculations, Trotterized dynamics and variational spectral estimation have different approximation errors. “Validated against numerical references” is more defensible than an unconditional “perfectly matching.”
 - Unitary evolution of a pure state does not prepare a global Gibbs state. The dynamical circuit example and the ground/Gibbs preparation branches are distinct.
 - Do not claim a demonstrated hardware quantum advantage. This establishes and benchmarks a route to variational estimation.
-- The updated VQSE chapter reports stochastic-reconfiguration training on selected small VQSE benchmarks. This supports the scoped implementation claim in the spoken text, not a general speedup claim. The illustrated RBM comparison is a separate pure-state example.
-- Natural gradient uses a state-space metric, whereas Newton's method uses the objective Hessian. The relevant Fisher matrix is with respect to trainable ansatz parameters, not the sensed magnetic field. For mixed VQSE inputs, a pure-state SR metric is generally a surrogate. Recovering the intrinsic mixed-state metric needs an appropriate estimator or a correctly treated purification construction; an arbitrary purification is not sufficient. See Appendix B and [VQSE.tex](../TeXtured/chapters/VQSE.tex).
+- The updated VQSE benchmark compares BFGS, Adam and a deterministic damped Bures natural gradient on a small mixed-state problem. It supports a scoped numerical comparison, not a general speedup claim.
+- Natural gradient uses a state-space metric, whereas Newton's method uses the objective Hessian. The relevant metric is with respect to trainable ansatz parameters, not the sensed magnetic field. Here the Bures metric treats the mixed output state directly; a scalable hardware version would need an appropriate sampled estimator. See Appendices B and C.1 and [VQSE.tex](../TeXtured/chapters/VQSE.tex).
 
 Source: [Methods.tex](../TeXtured/chapters/Methods.tex).
 
@@ -550,6 +550,59 @@ Thank you.
 - The current conclusion slide says “Perfectly matching.” In speech, use the validated-workflow wording above: finite numerical precision, Trotter error and variational convergence still matter.
 - VQ-SPADE is a proposal; the current archived experiment is not a demonstration of variational diagonalization.
 - The main talk ends here. The following optional responses are outside the 15-minute budget.
+
+## Backup Slide — Appendix C: Adaptive VQSE training
+
+### Spoken script
+
+This plot makes the adaptive training schedule explicit. In the upper panel, the white curve is the objective optimized at each outer iteration; the dashed curves evaluate the same variational state against the local and global Hamiltonians separately.
+
+The lower panel shows why the optimized objective changes during the run. We start with the local objective, then quadratically transfer weight to the global objective. The white vertical lines mark refreshes of the global target basis states.
+
+Therefore the white curve is useful for monitoring the scheduled optimization, but it is not by itself a fixed-loss convergence curve. To assess spectral accuracy, we compare the estimated eigenvalues with the exact numerical spectrum.
+
+### Intuition
+
+Think of the optimization as learning in two stages. The local Hamiltonian first gives the circuit an easier directional signal; the global Hamiltonian then evaluates whether the learned basis places the dominant spectral weight in the desired computational-basis states. The lower panel is the mixing dial between those two tasks.
+
+- The state is a balanced, non-diagonal two-qubit mixed state with a rank-3 target. The result is a deterministic simulator demonstration, not a hardware benchmark.
+- A global-target refresh does not necessarily create a visible jump: a jump occurs only if the selected target basis states actually change.
+- The adaptive cost changes because the Hamiltonian changes. Use the leading-eigenvalue error on the next slide for a fixed accuracy metric.
+
+## Backup Slide — Appendix C.1: BFGS, Adam and Bures natural gradient
+
+### Spoken script
+
+Here I compare three optimizers from the same initial circuit parameters on the same adaptive VQSE problem: BFGS, Adam, and a deterministic damped Bures natural gradient.
+
+[Point to the upper-left panel.]
+
+This is the fixed metric: the L2 error of the three leading estimated eigenvalues relative to the exact spectrum. BFGS and the Bures natural gradient both reduce it to the few-$10^{-3}$ range in this run, while Adam remains farther away.
+
+[Point to the lower-left panel.]
+
+The final-spectrum panel shows the same outcome directly: BFGS and Bures-NG closely reproduce the three exact leading eigenvalues.
+
+[Point to the lower-right panel.]
+
+The most visible difference is in parameter motion. BFGS has intermittent large and small Euclidean updates, whereas the Bures natural-gradient updates become smooth and steadily decrease after the initial adjustment.
+
+The reason is geometric preconditioning. The update is
+
+$$
+\Delta\boldsymbol\theta=-\eta\,(G_{\mathrm{Bures}}+\lambda I)^{-1}\nabla C.
+$$
+
+The Bures metric is the mixed-state geometry associated with quantum Fisher information. It rescales directions by how much they move the physical density matrix, rather than treating every circuit parameter as having the same physical scale.
+
+### Intuition
+
+Two circuit knobs can be turned by the same angle while moving the quantum state by very different amounts. Ordinary parameter-space updates can therefore overstep in sensitive directions or make little progress in redundant ones. The Bures metric acts like a map of those unequal distances: damping prevents unstable inversion, and the inverse metric rescales the gradient before the update.
+
+- The upper-right adaptive objective should not be read as a fixed-loss race, because the local-to-global Hamiltonian schedule changes it over time.
+- BFGS is also curvature-aware; its jagged update norms here are not proof that BFGS is intrinsically unstable. In this benchmark it is restarted at each outer adaptive stage while the objective changes.
+- The smoother Bures-NG trajectory is an observation for this state, ansatz and damping choice, not a general guarantee of faster convergence.
+- This exact Bures-metric construction uses full density matrices and is appropriate for a small deterministic simulator. A hardware version would require a sampled metric estimator or another scalable approximation.
 
 ## Optional responses for questions
 
