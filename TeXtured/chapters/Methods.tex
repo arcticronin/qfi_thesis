@@ -26,7 +26,7 @@ We model the quantum sensor as a 1D $N$-qubit Transverse-Field Ising Model (TFIM
 \end{definition}
 
 \begin{remark}[Quantum Phase Transition and Ground States]
-    The 1D TFIM is a standard benchmark for quantum metrology because it exhibits a quantum phase transition at $h_x = J$. This criticality separates two distinct physical regimes characterized by their macroscopic ground states:
+    The 1D TFIM is a standard benchmark for quantum metrology because it exhibits a quantum phase transition\footnote{Technically speaking, this occurs only in the thermodynamic limit, in finite size models as the ones we will consider, it is a crossover, and happens at $h_x < J$} at $h_x = J$. This criticality separates two distinct physical regimes characterized by their macroscopic ground states:
     \begin{itemize}
         \item \textbf{Ferromagnetic Phase ($h_x < J$):} The nearest-neighbor coupling dominates. The spins align along the longitudinal $z$-axis, driving the system toward a doubly degenerate ground state of either all spins up ($|0\rangle^{\otimes N}$) or all spins down ($|1\rangle^{\otimes N}$).
         \item \textbf{Paramagnetic Phase ($h_x > J$):} The transverse field dominates. The individual spins are forced to align independently along the transverse $x$-axis, driving the system toward a unique symmetric product state ($|+\rangle^{\otimes N}$).

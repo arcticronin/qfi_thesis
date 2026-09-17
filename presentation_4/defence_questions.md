@@ -232,9 +232,11 @@ so $p_1\simeq\epsilon d_a^2/4$ at small displacement. The experimental calibrati
 
 **Short answer:**
 
-“No. They must define a valid map with the required normalization and physically justified action. Different Kraus representations can describe the same channel; choosing different physical effects is a separate modelling decision.”
+“No. I first choose a physically motivated completely positive, trace-preserving map. Kraus operators are one representation of that map, and different Kraus sets can represent exactly the same observable channel. Choosing a different physical process is a separate modelling decision.”
 
-**Follow-up:** For a trace-preserving map, $\sum_a K_a^\dagger K_a=I$. A loss model may require a failure output to preserve total probability. A unitary/isometric change of Kraus representation does not create a new observable effect. Matching aggregate counts does not select a unique operator set or physical mechanism. See Appendices E–G and K–M.
+**Follow-up:** For a trace-preserving map, $\sum_a K_a^\dagger K_a=I$. A loss model may require a vacuum or failure output to preserve total probability. A unitary or isometric change of Kraus representation does not create a new observable effect. In the thesis, erasure, dephasing, coherent mixing and modal loss represent plausible mechanisms, but the aggregate counts do not prove that these are the unique maps realized by the apparatus. I therefore use the uncalibrated stages for conditional sensitivity analysis, not as fitted process tomography. See Appendices E–G and K–M.
+
+**Avoid:** “I had freedom, so I invented some Kraus operators.” Say instead: “I selected standard channel families corresponding to plausible physical mechanisms and made their unmeasured parameters explicit.”
 
 ### 20. “What exactly would VQ-SPADE add?”
 
@@ -772,6 +774,108 @@ F_B=F_x\left(\frac{dx}{dB}\right)^2.
 $$
 
 The relevant coupling and energy scale must be specified before quoting a field precision. A dimensionless QFI peak by itself is not a sensitivity in tesla per square-root hertz, a response bandwidth, or an instrument specification. A wider interval of field values with useful QFI is also different from a wider temporal bandwidth.
+
+## Channel model — hard questions
+
+### 61. “If the complete channel is not identifiable, what is scientifically useful about your model?”
+
+**Intuition:** A map of all possible failure stages can be useful even when the available observations locate only some of them.
+
+**Short answer:**
+
+“Its value is structural and diagnostic. It separates source preparation, optical propagation, accessible modes, measurement, readout and count statistics. This lets me state which quantities the present data identify, calculate conditional information loss at explicit checkpoints, and specify the calibrations a future experiment would need.”
+
+**Follow-up:** The model preserves normalization by retaining vacuum or failure outcomes, separates QFI from measurement-dependent CFI, and avoids interpreting detector processing as a change to the optical state. It is also modular: a measured transfer matrix or loss calibration can replace a provisional stage without rebuilding the whole inference pipeline. The experimentally supported result is the population-level mean response and a conditional throughput scale, not reconstruction of the complete optical channel.
+
+**Avoid:** Calling the model a uniquely reconstructed or fully validated apparatus description. A good phrase is **“a physically structured forward model and sensitivity workbench.”**
+
+### 62. “Why did you choose this order of channels? Would another order change the result?”
+
+**Intuition:** Rotating a state and then removing coherence need not give the same result as removing coherence and then rotating it.
+
+**Short answer:**
+
+“The order represents one plausible physical sequence from propagation to measurement. Some stages, such as dephasing, coherent mixing and mode-dependent loss, do not generally commute, so changing their order can change the predicted probabilities. The archived aggregate counts do not identify that order.”
+
+**Follow-up:** The chosen sequence should therefore be read as part of the provisional workbench. A calibrated apparatus model could replace, remove or reorder stages. The stable contribution is the framework that keeps those assumptions explicit and propagates them to QFI, CFI and counts. Testing alternative orders would be a useful robustness analysis, but it was not used to claim a uniquely identified optical mechanism.
+
+### 63. “Are the erasure and failure maps actually valid quantum channels?”
+
+**Intuition:** Probability that disappears from the measured modes must go somewhere in the enlarged output space.
+
+**Short answer:**
+
+“Yes, when they are defined on an enlarged Hilbert space containing orthogonal vacuum or failure states. Their Kraus operators transfer the missing probability into those states, making the maps completely positive and trace preserving.”
+
+**Follow-up:** A linear expression for the common erasure map is
+
+$$
+\mathcal S_\eta(X)
+=\eta X+(1-\eta)\operatorname{Tr}(X)
+|\mathrm{vac}\rangle\langle\mathrm{vac}|.
+$$
+
+For a normalized input state this reduces to $\eta\rho+(1-\eta)|\mathrm{vac}\rangle\langle\mathrm{vac}|$. Similarly, modal loss can use a transmitted operator $L=\sum_j\sqrt{\tau_j}|HG_j\rangle\langle HG_j|$ together with failure Kraus operators $\sqrt{1-\tau_j}|\mathrm{fail}\rangle\langle HG_j|$. Keeping the failure branch prevents hidden postselection and preserves total probability.
+
+### 64. “Did you demonstrate that detector cross-talk is the main information bottleneck?”
+
+**Intuition:** A result inside an assumed model tells us what would happen if that model were correct; it does not by itself establish that the apparatus has that mechanism.
+
+**Short answer:**
+
+“I demonstrated that it is the dominant bottleneck within the stated conditional model. The value $\chi=0.0035$ comes from an external calibration, while symmetry of the complete confusion matrix is assumed. The aggregate stream cannot independently validate that full readout map.”
+
+**Follow-up:** The result is still useful because it shows how even small leakage from a bright $HG_0$ port can overwhelm a weak first-order signal, especially near zero separation. Experimentally establishing that this is the dominant loss would require a measured transfer matrix from known injected modes, resolved output ports and background calibration. Describe the reported QFI/CFI ratios as **conditional information-retention calculations**, not a measured decomposition of the instrument's information loss.
+
+### 65. “How did you construct the assumed source density matrix?”
+
+**Intuition:** Each detected photon is attributed either to the centred bright source or to the displaced faint source. We mix those alternatives as probabilities because the two sources have no stable relative phase.
+
+**Short answer:**
+
+“I modelled the star and planet as two mutually incoherent point sources with a Gaussian point-spread function. Conditional on a one-photon event, the centred star prepares the fundamental HG mode, while the displaced planet prepares a displaced Gaussian expanded in the HG basis. Their relative intensities give the weights of a statistical mixture.”
+
+**Follow-up:** With the star defining the origin and $\epsilon$ the faint-source fraction,
+
+$$
+\rho_S(d_a,\epsilon)
+=(1-\epsilon)|HG_0\rangle\langle HG_0|
++\epsilon|\psi_{d_a}\rangle\langle\psi_{d_a}|.
+$$
+
+For the one-axis scan,
+
+$$
+|\psi_{d_a}\rangle
+=\sum_{n=0}^{\infty}e^{-q/2}
+\frac{\alpha^n}{\sqrt{n!}}|HG_n\rangle,
+\qquad
+\alpha=\frac{d_a}{2},
+\qquad q=|\alpha|^2.
+$$
+
+Therefore the displaced-source modal probabilities are $e^{-q}q^n/n!$, and the ideal aggregate first-order probability is $p_1=\epsilon q e^{-q}$ in the one-axis model. Mutual source incoherence removes terms such as $|HG_0\rangle\langle\psi_{d_a}|$, but the projector $|\psi_{d_a}\rangle\langle\psi_{d_a}|$ can still contain off-diagonal HG coherences. The state has rank at most two even though the displaced wavefunction has support on infinitely many HG modes.
+
+**Numerical implementation:** The infinite HG expansion was evaluated with a finite cutoff and an explicit tail or complement outcome. Increasing the maximum order from 8 to 12 changed the calculated QFI by at most $5.1\times10^{-12}$ relative over the validation grid, so the reported result was not controlled by the cutoff. The construction assumes a Gaussian PSF, known programmed $d_a$ and $\epsilon$, mutual incoherence, and bright-source alignment; those are source-model assumptions rather than quantities reconstructed from the aggregate counts.
+
+### 66. “How did you test the channels in practice? Did you generate synthetic data?”
+
+**Intuition:** We tested whether the assumed mechanism gives coherent forward predictions and whether the observable statistical layer predicts held-out data. We did not recover every hidden mechanism from one aggregate detector stream.
+
+**Short answer:**
+
+“I numerically propagated the source density matrix through the assumed channel sequence, converted the output probabilities into predicted counts, and compared the population-level predictions with the experimental setting means. I also removed individual channel effects in identity ablations. Synthetic count datasets were generated for bootstrap goodness-of-fit tests of the statistical count models, but not to claim recovery of all quantum-channel parameters.”
+
+**Follow-up — four distinct checks:**
+
+1. **Forward simulation.** For every $(d_a,\epsilon)$, the code constructed $\rho_S$, applied the assumed displacement or jitter, dephasing, coherent mixing, modal loss and accessible-mode maps, performed the SPADE POVM, applied classical readout confusion, and converted the resulting probability into an expected count. Provisional optical parameters were fixed; throughput, background, offset and calibration terms were fitted.
+2. **Identity ablations.** Individual effects were replaced by their identity limits—for example zero jitter, no dephasing, no mixing, unit transmission or no confusion—and the downstream fit was repeated. This measured sensitivity of inferred quantities such as throughput to each assumption. It did not identify the corresponding physical mechanism.
+3. **Held-out real-data prediction.** Grouped five-fold tests held out checkerboard cells, complete displacement rows and complete source-ratio columns. The target was the mean of the 100 real counts at each setting. This tested interpolation and structured prediction of setting means, not process tomography or the full single-count distribution.
+4. **Synthetic and resampled counts.** Parametric bootstraps generated discrete synthetic datasets from fitted NB1, Poisson--lognormal or benchmark models, refitted each dataset, and compared simulated discrepancies with the observed discrepancy. These tests rejected the tested models as complete descriptions of the individual $10\,\mathrm{ms}$ counts. The empirical bootstrap instead resampled the 100 observed repetitions within each setting; those are resampled measurements, not fully synthetic observations.
+
+**Additional numerical checks:** The source and channel calculations retained normalization through vacuum or failure outcomes. SLD QFI agreed with an independent finite-fidelity calculation to within a maximum relative difference of $0.322\%$ at the tested nonzero settings, and the HG-cutoff convergence check was much smaller than the reported effects.
+
+**Avoid:** “Synthetic data validated the physical channels.” The correct conclusion is: **“Forward simulations, ablations and consistency checks tested the assumed channel implementation; held-out data validated the mean-response layer; the individual optical channels remain unidentifiable from the archived aggregate counts.”**
 
 ### Suggested wording for the slide and spoken transition
 

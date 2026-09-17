@@ -39,6 +39,39 @@
     \end{canvas}
 \end{frame}
 
+
+% SLIDE 5 | aims
+\begin{frame}[plain,label=aims]
+    \begin{canvas}
+        \heading{RESEARCH OBJECTIVES}{Applications}{}
+
+        \node[txt,text width=14cm,font=\fontsize{13}{17}\selectfont] at (.95,7.1)
+        {Study QFI and TQFI for two applications:};
+
+        \begin{scope}[yshift=0.25cm]
+            \panel{.8}{5.55}{7.85}{3.20}
+            \panel{8.10}{5.55}{15.2}{3.20}
+
+            \node[txt,text=Teal,font=\large\bfseries] at (1.12,5.20) {Quantum magnetometry};
+            \node[txt,text width=6.23cm,font=\fontsize{12}{16}\selectfont] at (1.12,4.45)
+            {Estimate a magnetic field with \newline an interacting spin system.};
+
+            \node[txt,text=Coral,font=\large\bfseries] at (8.42,5.20) {Exoplanet detection};
+            \node[txt,text width=6.23cm,font=\fontsize{12}{16}\selectfont] at (8.42,4.45)
+            {Resolve a small exoplanet with\newline spatial-mode measurements.};
+
+        \end{scope}
+        \node[txt,text width=14cm,font=\fontsize{13}{17}\selectfont] at (.95,2.47)
+        {We used numerical simulation and quantum-circuits\\
+            and sent ASI a complete report};
+
+        %\takeaway{Connect information in the quantum state to information accessible in measurements.}
+        %\source{Magnetometry: numerical and circuit methods. Optical application: channel analysis and proposed variational protocol; experimental TQFI was not obtained.}
+        \footer{2 / 19}
+    \end{canvas}
+\end{frame}
+
+
 % SLIDE 2 | information
 \begin{frame}[plain,label=information]
     \begin{canvas}
@@ -56,7 +89,7 @@
         \end{scope}
 
         %\source{Illustrative distributions. QFI is a local benchmark; attainable precision also depends on the measurement and estimation assumptions.}
-        \footer{2 / 19}
+        \footer{3 / 19}
     \end{canvas}
 
 \end{frame}
@@ -81,7 +114,7 @@
             };
         }
         \source{Mixed states, $r=0.8$; finite separation shown for clarity. CFI is local at $\theta=0$ (radians), not a two-state finite difference. Appendix J.}
-        \footer{3 / 19}
+        \footer{4 / 19}
     \end{canvas}
 \end{frame}
 
@@ -124,40 +157,11 @@
 
         \node[smalltxt,text width=14.3cm,font=\fontsize{6.5}{8}\selectfont] at (.8,.88)
         {Thesis: Introduction. Cerezo et al. (2022); Beckey et al. (2022). Subnormalized truncation; finite-step scope: Appendix A.};
-        \footer{4 / 19}
-    \end{canvas}
-\end{frame}
-
-% SLIDE 5 | aims
-\begin{frame}[plain,label=aims]
-    \begin{canvas}
-        \heading{RESEARCH OBJECTIVES}{Applications}{}
-
-        \node[txt,text width=14cm,font=\fontsize{13}{17}\selectfont] at (.95,7.1)
-        {Study QFI and TQFI for two applications:};
-
-        \begin{scope}[yshift=0.25cm]
-            \panel{.8}{5.55}{7.85}{3.20}
-            \panel{8.10}{5.55}{15.2}{3.20}
-
-            \node[txt,text=Teal,font=\large\bfseries] at (1.12,5.20) {Quantum magnetometry};
-            \node[txt,text width=6.23cm,font=\fontsize{12}{16}\selectfont] at (1.12,4.45)
-            {Estimate a magnetic field with \newline an interacting spin system.};
-
-            \node[txt,text=Coral,font=\large\bfseries] at (8.42,5.20) {Exoplanet detection};
-            \node[txt,text width=6.23cm,font=\fontsize{12}{16}\selectfont] at (8.42,4.45)
-            {Resolve a small exoplanet with\newline spatial-mode measurements.};
-
-        \end{scope}
-        \node[txt,text width=14cm,font=\fontsize{13}{17}\selectfont] at (.95,2.47)
-        {We used numerical simulation and quantum-circuits\\
-            and sent ASI a complete report};
-
-        %\takeaway{Connect information in the quantum state to information accessible in measurements.}
-        %\source{Magnetometry: numerical and circuit methods. Optical application: channel analysis and proposed variational protocol; experimental TQFI was not obtained.}
         \footer{5 / 19}
     \end{canvas}
 \end{frame}
+
+
 
 % SLIDE 6 | pipeline
 \begin{frame}[plain,label=pipeline]
@@ -382,6 +386,7 @@
         % Same width/height constraints as before: actual image height is 5.7 cm.
         \node[anchor=east,inner sep=0pt] at (15.2,4.25)
         {\includegraphics[width=13.8cm,height=5.7cm,keepaspectratio]{hg_modes_strong_visuals.png}};
+        \node[txt,font=\fontsize{6}{8}\selectfont\bfseries] at (14.5,7.0){\color{Coral}{positive phase}\\\color{Teal}{negative phase}};
 
         \begin{scope}[yshift=0.25cm]
             \node[txt,text=Teal,font=\fontsize{13}{16}\selectfont\bfseries] at (.95,6.87)
@@ -409,13 +414,82 @@
 \end{frame}
 
 
-% SLIDE 14 | spade-detector
-\begin{frame}[plain,label=spade-detector-detail]
+% SLIDE 6 | pipeline
+\begin{frame}[plain,label=pipeline]
     \begin{canvas}
-        \heading{OPTICAL APPLICATION}{SPADE detector}{}
-        \node[anchor=center] at (8,4.25) {\includegraphics[width=13.8cm,height=5.7cm,keepaspectratio]{hg_modes_strong_visuals.png}};
-        \footer{14 / 19}
+        \heading{NUMERICAL AND VARIATIONAL METHODS}{Parallel numerical and quantum-circuit workflow}{}
+
+        % - - - - - - NUMERICAL SIMULATION - - - - - -
+        \node[txt,text=Teal,font=\fontsize{11}{14}\selectfont\bfseries] at (.85,7.16) {NUMERICAL SIMULATION};
+
+        \panel{.8}{6.70}{10.85}{5.05}
+        \node[txt,font=\fontsize{12}{16}\selectfont\bfseries] at (1.08,6.39) {Preparation};
+        \node[smalltxt,text width=3.02cm,font=\fontsize{9}{11}\selectfont] at (1.08,5.82)
+        {Hamiltonian and \newline time evolution};
+
+
+        \node[txt,font=\fontsize{12}{16}\selectfont\bfseries] at (4.65,6.39) {Access};
+        \node[smalltxt,text width=2.16cm,font=\fontsize{9}{11}\selectfont] at (4.65,5.72)
+        {Partial trace};
+
+
+        \node[txt,font=\fontsize{12}{16}\selectfont\bfseries] at (7.50,6.39) {Spectrum};
+        \node[smalltxt,text width=2.95cm,font=\fontsize{9}{11}\selectfont] at (7.50,5.82)
+        {Exact spectral\newline decomposition};
+
+
+
+        % \draw[arr] (4.14,5.32)--(4.53,5.32);
+        % \draw[arr] (6.96,5.32)--(7.37,5.32);
+        \draw[Muted, line width=1.1pt, loosely dashed] (4.4,6.60)--(4.4,5.20);
+        \draw[Muted, line width=1.1pt, loosely dashed] (7.2,6.60)--(7.2,5.20);
+        %\draw[Muted,line width=1.1pt] (.85,4.83)--(10.85,4.83);
+
+        % - - - - - - QUANTUM CIRCUIT - - - - - -
+        \node[txt,text=Coral,font=\fontsize{11}{14}\selectfont\bfseries] at (.85,4.63) {QUANTUM CIRCUIT};
+        \panel{.8}{4.15}{10.85}{1.35}
+        % Enlarged circuit row; only the VQSE stage has a text heading.
+        \draw[Muted, line width=1.1pt, loosely dashed] (4.4,1.35)--(4.4,4.15);
+        \draw[Muted, line width=1.1pt, loosely dashed] (7.2,1.35)--(7.2,4.15);
+
+
+        \node[anchor=center,inner sep=0pt] at (2.60,2.50)
+        {\includegraphics[width=3.5cm,height=2.65cm,keepaspectratio]{circuit_notrotter2.png}};
+
+
+
+        \node[anchor=center,inner sep=0pt] at (6.2,2.50)
+        {\includegraphics[width=4.2cm,height=3.5cm,keepaspectratio]{circuit_meas2.png}};
+
+        \node[txt,font=\fontsize{12}{16}\selectfont\bfseries] at (7.50,3.91) {VQSE};
+        \node[anchor=center,inner sep=0pt] at (8.87,2.5)
+        {\includegraphics[width=4.2cm,height=2.0cm,keepaspectratio]{lhea_pennylane2.png}};
+
+
+
+        \panel{11.10}{6.70}{15.5}{1.35}
+        \node[txt,font=\fontsize{12}{16}\selectfont\bfseries] at (11.40,6.39) {Information};
+        \node[txt,text width=3.46cm,font=\fontsize{11}{15}\selectfont] at (11.35,5.71)
+        {1) Exact SLD QFI\newline 2) TQFI bounds};
+        \node[anchor=north west,inner sep=0pt] at (11.25,4.49)
+        {\includegraphics[width=4.50cm,height=3.10cm,keepaspectratio]{simulation2.png}};
+        \draw[arr] (10.57,5.35)--(11.20,5.35);
+        \draw[arr,draw=Coral] (10.57,2.70)--(11.20,2.70);
+
+
+        \source{Schematic circuit layouts and example output. Implementations can be exchanged at matched interfaces; physical stage order is preserved.}
+        \footer{6 / 19}
     \end{canvas}
+    % Reference formulas only; hidden in the projected deck. Not a speaking script.
+    \note{\scriptsize
+        \textbf{Workflow formulas (reference).}\par
+        $H(h_x)=-J\sum_j Z_jZ_{j+1}-h_x\sum_j X_j$,\quad $U_{h_x}(t)=e^{-itH(h_x)}$.\par
+        $\rho_{\rm G}=\proj{\psi_0}$,\quad $\rho_\beta=e^{-\beta H}/Z_\beta$,\quad $\rho(t)=U\rho_{\rm in}U^\dagger$.\par
+        $\rho_S=\Tr_E\rho$,\quad $\rho_S=\sum_i\lambda_i\proj{v_i}$,\quad $\rho_m=\sum_{i=1}^m\lambda_i\proj{v_i}$.\par
+        $V\rho_S V^\dagger\approx\operatorname{diag}(\lambda_i)$; $V^\dagger\ket{i}$ recovers eigenvectors.\par
+        Circuit gates approximate $U$; Thermal preparation is a separate process.
+        The numerical and circuit methods share interfaces, not necessarily approximation errors.
+        Finite-displacement fidelity bounds approach the local-QFI limit under regularity assumptions.}
 \end{frame}
 
 
