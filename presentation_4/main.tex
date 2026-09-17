@@ -386,7 +386,8 @@
         % Same width/height constraints as before: actual image height is 5.7 cm.
         \node[anchor=east,inner sep=0pt] at (15.2,4.25)
         {\includegraphics[width=13.8cm,height=5.7cm,keepaspectratio]{hg_modes_strong_visuals.png}};
-        \node[txt,font=\fontsize{6}{8}\selectfont\bfseries] at (14.5,7.0){\color{Coral}{positive phase}\\\color{Teal}{negative phase}};
+        \node[txt,anchor=east,align=right,font=\fontsize{6}{8}\selectfont\bfseries] at (15.1,7.0)
+        {{\color{Paper}field amplitude}\quad{\color{Coral}positive}\quad{\color{Teal}negative}};
 
         \begin{scope}[yshift=0.25cm]
             \node[txt,text=Teal,font=\fontsize{13}{16}\selectfont\bfseries] at (.95,6.87)
@@ -404,9 +405,6 @@
             \node[txt,font=\fontsize{13}{16}\selectfont] at (.95,1.79)
             {$p_1^{\rm rep}=\chi p_0+(1-\chi)p_1$};
         \end{scope}
-
-        \node[txt,font=\fontsize{11}{12}\selectfont] at (14.5,1.79)
-        {$[\dots]$};
 
         \source{Modal outcomes, not photon origin. Symmetric readout model; other outcomes unchanged. Thesis: Exoplanet Experiment.}
         \footer{13 / 19}
