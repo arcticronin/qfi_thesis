@@ -35,7 +35,7 @@
             Project: \textit{Quantum Computers for Space Exploration}};
         \fill[white,rounded corners=6pt] (10.8,3.7) rectangle (14.2,1.7);
         \node[anchor=north,inner sep=0pt] at (12.5,3.44) {\includegraphics[width=2.94cm]{asi.pdf}};
-        \footer{1 / 19}
+        \footer{1 / 20}
     \end{canvas}
 \end{frame}
 
@@ -62,12 +62,11 @@
 
         \end{scope}
         \node[txt,text width=14cm,font=\fontsize{13}{17}\selectfont] at (.95,2.47)
-        {We used numerical simulation and quantum-circuits\\
-            and sent ASI a complete report};
+        {A common workflow combining numerical simulation, quantum circuits and experimental data.};
 
         %\takeaway{Connect information in the quantum state to information accessible in measurements.}
-        %\source{Magnetometry: numerical and circuit methods. Optical application: channel analysis and proposed variational protocol; experimental TQFI was not obtained.}
-        \footer{2 / 19}
+        %%\source{Magnetometry: numerical and circuit methods. Optical application: channel analysis and proposed variational protocol; experimental TQFI was not obtained.}
+        \footer{2 / 20}
     \end{canvas}
 \end{frame}
 
@@ -88,8 +87,8 @@
             {How much information \textcolor{Coral}{a specific, fixed measurement} reveals about an unknown parameter governing a probability distribution.};
         \end{scope}
 
-        %\source{Illustrative distributions. QFI is a local benchmark; attainable precision also depends on the measurement and estimation assumptions.}
-        \footer{3 / 19}
+        %%\source{Illustrative distributions. QFI is a local benchmark; attainable precision also depends on the measurement and estimation assumptions.}
+        \footer{3 / 20}
     \end{canvas}
 
 \end{frame}
@@ -113,15 +112,15 @@
             {\textcolor{Coral}{QFI} is intrinsic to the quantum state \\ and it is \textcolor{Coral}{independent of the measurement basis}
             };
         }
-        \source{Mixed states, $r=0.8$; finite separation shown for clarity. CFI is local at $\theta=0$ (radians), not a two-state finite difference. Appendix J.}
-        \footer{4 / 19}
+        %\source{Mixed states, $r=0.8$; finite separation shown for clarity. CFI is local at $\theta=0$ (radians), not a two-state finite difference. Appendix J.}
+        \footer{4 / 20}
     \end{canvas}
 \end{frame}
 
 % SLIDE 4 | learning
 \begin{frame}[plain,label=learning]
     \begin{canvas}
-        \heading{VARIATIONAL METHOD}{How we deal with Mixed States}{}
+        \heading{VARIATIONAL METHOD}{How we treat mixed states}{}
 
         \onslide<1->{
             \node[txt,text=Teal,font=\fontsize{11}{14}\selectfont\bfseries] at (.95,7.14) {WHAT};
@@ -155,9 +154,9 @@
             {Uses the retained components to construct fidelity-based QFI bounds.};
         }
 
-        \node[smalltxt,text width=14.3cm,font=\fontsize{6.5}{8}\selectfont] at (.8,.88)
-        {Thesis: Introduction. Cerezo et al. (2022); Beckey et al. (2022). Subnormalized truncation; finite-step scope: Appendix A.};
-        \footer{5 / 19}
+        %\node[smalltxt,text width=14.3cm,font=\fontsize{6.5}{8}\selectfont] at (.8,.88)
+        %{Thesis: Introduction. Cerezo et al. (2022); Beckey et al. (2022). Subnormalized truncation; finite-step scope: Appendix A.};
+        \footer{5 / 20}
     \end{canvas}
 \end{frame}
 
@@ -235,8 +234,8 @@
             \draw[arr,draw=Coral] (10.57,2.70)--(11.20,2.70);
         }
 
-        \source{Schematic circuit layouts and example output. Implementations can be exchanged at matched interfaces; physical stage order is preserved.}
-        \footer{6 / 19}
+        %\source{Schematic circuit layouts and example output. Implementations can be exchanged at matched interfaces; physical stage order is preserved.}
+        \footer{6 / 20}
     \end{canvas}
     % Reference formulas only; hidden in the projected deck. Not a speaking script.
     \note{\scriptsize
@@ -257,17 +256,15 @@
         \node[txt,text=Teal,font=\fontsize{11}{14}\selectfont\bfseries] at (.8,5.65) {APPLICATION I};
         \node[txt,font=\fontsize{32}{38}\selectfont\bfseries] at (.8,4.96) {Quantum Magnetometry};
         \titleaccent{.8}{3.85}
-        \footer{7 / 19}
+        \footer{7 / 20}
     \end{canvas}
 \end{frame}
 
 % SLIDE 8 | magnetometer
 \begin{frame}[plain,label=magnetometer]
     \begin{canvas}
-        \heading{NUMERICAL MODEL}{Toy Model: a noisy Quantum Magnetometer}{}
+        \heading{NUMERICAL MODEL}{A noisy quantum magnetometer}{An interacting-spin model for comparing preparation, noise and restricted access.}
 
-        \node[txt,text width=30cm,font=\fontsize{13}{15}\selectfont] at (.95,7.2)
-        {Try multiple boundary conditions, preparations, noise models, to study QFI};
         \begin{scope}[yshift=.4cm]
 
             \begin{scope}[yshift=-0.6cm]
@@ -303,15 +300,15 @@
 
 
         % \takeaway{Transverse-field Ising model (TFIM)}
-        \source{$N=6$, $n=4$, periodic boundaries, $J=1$. Thesis: NoiseAnalysis.}
-        \footer{8 / 19}
+        %\source{$N=6$, $n=4$, periodic boundaries, $J=1$. Thesis: NoiseAnalysis.}
+        \footer{8 / 20}
     \end{canvas}
 \end{frame}
 
 % SLIDE 9 | thermal
 \begin{frame}[plain,label=thermal]
     \begin{canvas}
-        \heading{NUMERICAL RESULTS}{Some results: temperature broadens the range}
+        \heading{NUMERICAL RESULTS}{Thermal preparation broadens the sensitive range}
         {}
         \node[anchor=north west,inner sep=0pt] at (.58,6.75)
         {\includegraphics[page=1,width=10.5cm,height=4.65cm,keepaspectratio]{thermal_plots.pdf}};
@@ -322,15 +319,15 @@
         \node[txt,font=\fontsize{10}{13}\selectfont,text width=3.6cm] at (11.48,3.02) {Useful across a\newline wider field range.};
         %\takeaway{When the field is uncertain, off-peak sensitivity matters as well as the maximum.}
         \takeaway{At $\beta=2$, thermal preparation retains more information beyond the ground-state peak.}
-        \source{Exact SLD QFI; periodic $N=6$, $n=4$, $J=1$. Different preparation families. Thesis: NoiseAnalysis.}
-        \footer{9 / 19}
+        %\source{Exact SLD QFI; periodic $N=6$, $n=4$, $J=1$. Different preparation families. Thesis: NoiseAnalysis.}
+        \footer{9 / 20}
     \end{canvas}
 \end{frame}
 
 % SLIDE 10 | thermal-cold
 \begin{frame}[plain,label=thermal-cold]
     \begin{canvas}
-        \heading{NUMERICAL RESULTS}{Some more results: cooling strengthens peak}
+        \heading{NUMERICAL RESULTS}{Cooling strengthens the sensitivity peak}
         {}
         \node[anchor=north west,inner sep=0pt] at (.58,6.75)
         {\includegraphics[page=2,width=10.5cm,height=4.65cm,keepaspectratio]{thermal_plots.pdf}};
@@ -341,8 +338,8 @@
         \node[txt,font=\fontsize{10}{13}\selectfont,text width=3.6cm] at (11.48,3.02) {Useful near the\newline target field.};
         %\takeaway{When the field lies near the optimum, cooling can provide greater local sensitivity.}
         \takeaway{At $\beta=5$, the thermal state exceeds the ground-state peak in the same spin subsystem.}
-        \source{Exact SLD QFI; periodic $N=6$, $n=4$, $J=1$. Different preparation families. Thesis: NoiseAnalysis.}
-        \footer{10 / 19}
+        %\source{Exact SLD QFI; periodic $N=6$, $n=4$, $J=1$. Different preparation families. Thesis: NoiseAnalysis.}
+        \footer{10 / 20}
     \end{canvas}
 \end{frame}
 
@@ -353,7 +350,7 @@
         \node[txt,text=Teal,font=\fontsize{11}{14}\selectfont\bfseries] at (.8,5.65) {APPLICATION II};
         \node[txt,font=\fontsize{32}{38}\selectfont\bfseries] at (.8,4.96) {Exoplanet Detection};
         \titleaccent{.8}{3.85}
-        \footer{11 / 19}
+        \footer{11 / 20}
     \end{canvas}
 \end{frame}
 
@@ -362,7 +359,7 @@
     \begin{canvas}
         \heading{OPTICAL APPLICATION}{The Exoplanet Problem}{A faint exoplanet must be resolved in the presence of a bright star.}
         \panel{.8}{6.58}{8.65}{2.25}\panel{8.85}{6.58}{15.2}{2.25}
-        \node[txt,font=\large\bfseries] at (1.12,6.28) {Direct imaging};
+        \node[txt,font=\large\bfseries] at (1.12,6.28) {Direct imaging, Rayleigh limit};
         \node[anchor=north west,inner sep=0pt] at (1.12,5.61) {\includegraphics[width=3.47cm,height=3.3cm,keepaspectratio]{rayleigh_resolved.png}};
         \node[anchor=north west,inner sep=0pt] at (4.93,5.61) {\includegraphics[width=3.47cm,height=3.3cm,keepaspectratio]{rayleigh_unresolved.png}};
         \node[txt,font=\large\bfseries] at (9.18,6.28) {Spatial-mode sorting};
@@ -374,8 +371,8 @@
         \node[txt,text=Coral,text width=1.98cm,font=\small] at (12.78,4.43) {Exoplanet};
         \node[smalltxt,text width=5.47cm] at (9.18,3.34) {Photon counts in a spatial-mode basis.};
         \takeaway{SPADE changes the measurement basis to reveal weak spatial signals.}
-        \source{SPADE: SPAtial-mode DEmultiplexing. Tsang et al. (2016); Santamaria et al. (2024).}
-        \footer{12 / 19}
+        %\source{SPADE: SPAtial-mode DEmultiplexing. Tsang et al. (2016); Santamaria et al. (2024).}
+        \footer{12 / 20}
     \end{canvas}
 \end{frame}
 
@@ -406,122 +403,16 @@
             {$p_1^{\rm rep}=\chi p_0+(1-\chi)p_1$};
         \end{scope}
 
-        \source{Modal outcomes, not photon origin. Symmetric readout model; other outcomes unchanged. Thesis: Exoplanet Experiment.}
-        \footer{13 / 19}
+        %\source{Modal outcomes, not photon origin. Symmetric readout model; other outcomes unchanged. Thesis: Exoplanet Experiment.}
+        \footer{13 / 20}
     \end{canvas}
 \end{frame}
 
 
-% SLIDE 6 | pipeline
-\begin{frame}[plain,label=pipeline]
-    \begin{canvas}
-        \heading{NUMERICAL AND VARIATIONAL METHODS}{Parallel numerical and quantum-circuit workflow}{}
-
-        % - - - - - - NUMERICAL SIMULATION - - - - - -
-        \node[txt,text=Teal,font=\fontsize{11}{14}\selectfont\bfseries] at (.85,7.16) {NUMERICAL SIMULATION};
-
-        \panel{.8}{6.70}{10.85}{5.05}
-        \node[txt,font=\fontsize{12}{16}\selectfont\bfseries] at (1.08,6.39) {Preparation};
-        \node[smalltxt,text width=3.02cm,font=\fontsize{9}{11}\selectfont] at (1.08,5.82)
-        {Hamiltonian and \newline time evolution};
-
-
-        \node[txt,font=\fontsize{12}{16}\selectfont\bfseries] at (4.65,6.39) {Access};
-        \node[smalltxt,text width=2.16cm,font=\fontsize{9}{11}\selectfont] at (4.65,5.72)
-        {Partial trace};
-
-
-        \node[txt,font=\fontsize{12}{16}\selectfont\bfseries] at (7.50,6.39) {Spectrum};
-        \node[smalltxt,text width=2.95cm,font=\fontsize{9}{11}\selectfont] at (7.50,5.82)
-        {Exact spectral\newline decomposition};
-
-
-
-        % \draw[arr] (4.14,5.32)--(4.53,5.32);
-        % \draw[arr] (6.96,5.32)--(7.37,5.32);
-        \draw[Muted, line width=1.1pt, loosely dashed] (4.4,6.60)--(4.4,5.20);
-        \draw[Muted, line width=1.1pt, loosely dashed] (7.2,6.60)--(7.2,5.20);
-        %\draw[Muted,line width=1.1pt] (.85,4.83)--(10.85,4.83);
-
-        % - - - - - - QUANTUM CIRCUIT - - - - - -
-        \node[txt,text=Coral,font=\fontsize{11}{14}\selectfont\bfseries] at (.85,4.63) {QUANTUM CIRCUIT};
-        \panel{.8}{4.15}{10.85}{1.35}
-        % Enlarged circuit row; only the VQSE stage has a text heading.
-        \draw[Muted, line width=1.1pt, loosely dashed] (4.4,1.35)--(4.4,4.15);
-        \draw[Muted, line width=1.1pt, loosely dashed] (7.2,1.35)--(7.2,4.15);
-
-
-        \node[anchor=center,inner sep=0pt] at (2.60,2.50)
-        {\includegraphics[width=3.5cm,height=2.65cm,keepaspectratio]{circuit_notrotter2.png}};
-
-
-
-        \node[anchor=center,inner sep=0pt] at (6.2,2.50)
-        {\includegraphics[width=4.2cm,height=3.5cm,keepaspectratio]{circuit_meas2.png}};
-
-        \node[txt,font=\fontsize{12}{16}\selectfont\bfseries] at (7.50,3.91) {VQSE};
-        \node[anchor=center,inner sep=0pt] at (8.87,2.5)
-        {\includegraphics[width=4.2cm,height=2.0cm,keepaspectratio]{lhea_pennylane2.png}};
-
-
-
-        \panel{11.10}{6.70}{15.5}{1.35}
-        \node[txt,font=\fontsize{12}{16}\selectfont\bfseries] at (11.40,6.39) {Information};
-        \node[txt,text width=3.46cm,font=\fontsize{11}{15}\selectfont] at (11.35,5.71)
-        {1) Exact SLD QFI\newline 2) TQFI bounds};
-        \node[anchor=north west,inner sep=0pt] at (11.25,4.49)
-        {\includegraphics[width=4.50cm,height=3.10cm,keepaspectratio]{simulation2.png}};
-        \draw[arr] (10.57,5.35)--(11.20,5.35);
-        \draw[arr,draw=Coral] (10.57,2.70)--(11.20,2.70);
-
-
-        \source{Schematic circuit layouts and example output. Implementations can be exchanged at matched interfaces; physical stage order is preserved.}
-        \footer{6 / 19}
-    \end{canvas}
-    % Reference formulas only; hidden in the projected deck. Not a speaking script.
-    \note{\scriptsize
-        \textbf{Workflow formulas (reference).}\par
-        $H(h_x)=-J\sum_j Z_jZ_{j+1}-h_x\sum_j X_j$,\quad $U_{h_x}(t)=e^{-itH(h_x)}$.\par
-        $\rho_{\rm G}=\proj{\psi_0}$,\quad $\rho_\beta=e^{-\beta H}/Z_\beta$,\quad $\rho(t)=U\rho_{\rm in}U^\dagger$.\par
-        $\rho_S=\Tr_E\rho$,\quad $\rho_S=\sum_i\lambda_i\proj{v_i}$,\quad $\rho_m=\sum_{i=1}^m\lambda_i\proj{v_i}$.\par
-        $V\rho_S V^\dagger\approx\operatorname{diag}(\lambda_i)$; $V^\dagger\ket{i}$ recovers eigenvectors.\par
-        Circuit gates approximate $U$; Thermal preparation is a separate process.
-        The numerical and circuit methods share interfaces, not necessarily approximation errors.
-        Finite-displacement fidelity bounds approach the local-QFI limit under regularity assumptions.}
-\end{frame}
-
-
-
-
-% SLIDE 15 | embedding
-\begin{frame}[plain,label=embedding]
-    \begin{canvas}
-        \heading{CHANNEL FRAMEWORK}{Why describe the receiver with quantum channels?}{The model includes mode populations and coherence before the measurement.}
-        \begin{scope}[yshift=.4cm]
-            \panel{.8}{6.18}{8.5}{3.55} \panel{8.75}{6.18}{15.2}{3.55}
-            \node[txt,text=Teal,font=\small\bfseries] at (1.15,5.85) {CLASSICAL PROBABILITY EMBEDDING};
-            \node[txt,font=\fontsize{15}{19}\selectfont] at (1.15,5.08)
-            {$\boldsymbol p=\begin{pmatrix}p_0\\p_1\end{pmatrix}
-                    \;\longmapsto\;\textcolor{Coral}{\rho_{\rm diag}}=\begin{pmatrix}p_0&0\\0&p_1\end{pmatrix}$};
-            \node[txt,text=Coral,font=\small\bfseries] at (9.1,5.85) {QUANTUM COHERENCE};
-            \node[txt,font=\fontsize{17}{21}\selectfont] at (9.1,5.08)
-            {$\textcolor{Coral}{\rho}=\begin{pmatrix}p_0&c\\c^*&p_1\end{pmatrix}$};
-            \node[txt,font=\large] at (.85,3.09) {Classical channel: $\boldsymbol p'=R\boldsymbol p$};
-            \node[txt,font=\large] at (8.95,3.09) {Quantum channel: $\rho'=\mathcal E(\rho)$};
-            \node[smalltxt,text width=7cm] at (.85,2.52) {Redistributes probabilities between outcomes.};
-            \node[smalltxt,text width=6.1cm] at (8.95,2.52) {Acts on populations and coherences.};
-        \end{scope}
-        \takeaway{Quantum channels describe optical effects before the detector produces classical counts.}
-        \source{Two-outcome illustration: $p_i\geq0$, $p_0+p_1=1$, $|c|^2\leq p_0p_1$. A state vector of probabilities does not determine a quantum channel.}
-        \footer{15 / 19}
-    \end{canvas}
-
-\end{frame}
-
-% SLIDE 16 | record
+% SLIDE 14 | record
 \begin{frame}[plain,label=record]
     \begin{canvas}
-        \heading{EXPERIMENTAL DATA}{Experimental data}{The completed ASI Matera experiment, with separation $d$ and relative intensity $\epsilon$.}
+        \heading{EXPERIMENTAL DATA}{Experimental data}{Aggregate first-order counts over separation and source intensity.}
         \node[smalltxt,text width=11.3cm,font=\fontsize{10}{13}\selectfont] at (.85,6.75)
         {52,500 count observations: 525 settings $\times$ 100 repetitions; $10\,\mathrm{ms}$ each};
 
@@ -533,44 +424,182 @@
 
         \draw[Line,line width=1pt] (11.04,5.97)--(11.04,0.80);
 
-        \node[txt,text=Coral,font=\fontsize{11}{14}\selectfont\bfseries,text width=3.75cm] at (11.22,6) {Missing observables};
-        \node[txt,text width=3.7cm,font=\small] at (11.22,4.91) {Separate modal outputs\\[.25cm] Other measurement bases\\[.25cm] Incident flux and failure outcomes};
+        \node[txt,text=Coral,font=\fontsize{11}{14}\selectfont\bfseries,text width=3.75cm] at (11.22,6) {Experimental setup};
+
+        \node[txt,text width=4.8cm,font=\small] at (10.8, 4.91) {   \begin{itemize}
+                \item $d$: signed source separation
+                \item $\epsilon$: relative source intensity
+                \item Each pixel: aggregate counts assigned to $\ket{HG_{01}}$ and $\ket{HG_{10}}$
+            \end{itemize}
+        };
         %\takeaway{Number of photons collected in each configuration of $d$ and $\epsilon$}
-        %\source{Thesis: Exoplanet Experiment. $d_a$: displacement; $\epsilon$: source ratio. Aggregate counts; no basis rotations or experimental TQFI.}
-        \footer{16 / 19}
+        %%\source{Thesis: Exoplanet Experiment. $d_a$: displacement; $\epsilon$: source ratio. Aggregate counts; no basis rotations or experimental TQFI.}
+        \footer{14 / 20}
     \end{canvas}
 \end{frame}
 
 
-% SLIDE 17 | sequence
+% SLIDE 15 | modal reconstruction
+\begin{frame}[plain,label=hg-reconstruction]
+    \begin{canvas}
+        \heading{FROM MODES TO A STATE}{When modal counts become spectral information}{SPADE populations are eigenvalues only under a specific basis assumption.}
+
+        \panel{.8}{6.35}{4.55}{2.05}
+        \node[anchor=center,text=Teal,font=\fontsize{10}{13}\selectfont\bfseries] at (2.68,5.95)
+        {1. MEASURE};
+        \node[anchor=center,font=\fontsize{14}{18}\selectfont] at (2.68,4.92)
+        {$p_j=\langle HG_j|\rho|HG_j\rangle$};
+        \node[anchor=center,text width=3.15cm,align=center,font=\fontsize{9}{12}\selectfont] at (2.68,3.68)
+        {SPADE returns populations in the chosen HG basis.};
+
+        \panel{4.85}{6.35}{9.55}{2.05}
+        \node[anchor=center,text=Coral,font=\fontsize{10}{13}\selectfont\bfseries] at (7.20,5.95)
+        {2. ONLY IF};
+        \node[anchor=center,font=\fontsize{12}{16}\selectfont] at (7.20,4.87)
+        {$\rho=\displaystyle\sum_j\lambda_j|HG_j\rangle\langle HG_j|$};
+        \node[anchor=center,text width=4.05cm,align=center,font=\fontsize{9}{12}\selectfont] at (7.20,3.62)
+        {The state is diagonal in HG, and retained modes are individually resolved and normalized.};
+
+        \panel{9.85}{6.35}{15.20}{2.05}
+        \node[anchor=center,text=Teal,font=\fontsize{10}{13}\selectfont\bfseries] at (12.53,5.95)
+        {3. RECONSTRUCT};
+        \node[anchor=center,font=\fontsize{13}{17}\selectfont] at (12.53,4.88)
+        {$\rho_r=\displaystyle\sum_{j=0}^{r-1}p_j|HG_j\rangle\langle HG_j|$};
+        \node[anchor=center,text width=4.65cm,align=center,font=\fontsize{9}{12}\selectfont] at (12.53,3.58)
+        {Then $p_j=\lambda_j$ for the retained modes and $\operatorname{rank}(\rho_r)\leq r$.};
+
+        \draw[arr] (4.48,4.23)--(4.80,4.23);
+        \draw[arr] (9.48,4.23)--(9.80,4.23);
+        \takeaway{Without the diagonal-basis assumption, modal populations are not the eigenvalues of the state.}
+        %\source{A modal cutoff and a spectral rank truncation coincide only when the HG basis diagonalizes the retained state.}
+        \footer{15 / 20}
+    \end{canvas}
+\end{frame}
+
+
+
+
+% SLIDE 16 | classical-to-quantum transition
+\begin{frame}[plain,label=classical-to-quantum]
+    \begin{canvas}
+        \heading{CHANNEL FRAMEWORK}{From probabilities to a quantum description}{A two-mode example: the same populations can belong to different quantum states.}
+
+        \panel{.8}{6.30}{4.80}{3.15}
+        \node[anchor=center,text=Teal,font=\fontsize{10}{13}\selectfont\bfseries] at (2.80,5.87)
+        {PROBABILITIES};
+        \node[anchor=center,font=\fontsize{17}{21}\selectfont] at (2.80,4.73)
+        {$\boldsymbol q=\begin{pmatrix}q_a\\q_b\end{pmatrix}$};
+        \node[anchor=center,text width=3.4cm,align=center,font=\fontsize{10}{13}\selectfont] at (2.80,3.65)
+        {How often each mode is detected.};
+
+        \panel{5.00}{6.30}{9.85}{3.15}
+        \node[anchor=center,text=Teal,font=\fontsize{10}{13}\selectfont\bfseries] at (7.43,5.87)
+        {DIAGONAL REPRESENTATION};
+        \node[anchor=center,font=\fontsize{17}{21}\selectfont] at (7.43,4.73)
+        {$\rho_{\rm diag}=\begin{pmatrix}q_a&0\\0&q_b\end{pmatrix}$};
+        \node[anchor=center,text width=4.15cm,align=center,font=\fontsize{10}{13}\selectfont] at (7.43,3.65)
+        {The same probabilities, written as a density matrix.};
+
+        \panel{10.05}{6.30}{15.20}{3.15}
+        \node[anchor=center,text=Coral,font=\fontsize{10}{13}\selectfont\bfseries] at (12.63,5.87)
+        {ALLOWING COHERENCE};
+        \node[anchor=center,font=\fontsize{17}{21}\selectfont] at (12.63,4.73)
+        {$\rho=\begin{pmatrix}q_a&\textcolor{Coral}{c}\\\textcolor{Coral}{c^*}&q_b\end{pmatrix}$};
+        \node[anchor=center,text width=4.45cm,align=center,font=\fontsize{10}{13}\selectfont] at (12.63,3.65)
+        {Coherence can change while these populations stay the same.};
+
+        \node[anchor=center,font=\fontsize{12}{16}\selectfont] at (4.30,2.55)
+        {Classical readout: $\boldsymbol q^{\rm rep}=R_\chi\boldsymbol q$};
+        \node[anchor=center,font=\fontsize{12}{16}\selectfont] at (11.60,2.55)
+        {Quantum channel: $\rho'=\mathcal E(\rho)$};
+
+        \takeaway{Counts reveal populations. The optical model also describes coherence.}
+        % This is a representation comparison, not a physical process creating coherence from counts.
+        % q_a and q_b are normalized populations of two individual modes in this illustration.
+        \footer{16 / 20}
+    \end{canvas}
+\end{frame}
+
+% SLIDE 17 | source-state
+\begin{frame}[plain,label=embedding]
+    \begin{canvas}
+        \heading{CHANNEL FRAMEWORK}{From two incoherent sources to an optical state}{The state is defined before loss, measurement and detector processing.}
+
+        \panel{.8}{6.15}{5.45}{1.86}
+        \node[anchor=center,text=Teal,font=\fontsize{10}{13}\selectfont\bfseries] at (3.12,5.78)
+        {PHYSICAL SOURCE};
+        \fill[Teal] (1.34,4.86) circle (.17);
+        \node[txt,font=\fontsize{11}{14}\selectfont\bfseries] at (1.72,5.08) {centred star};
+        \node[txt,text=Teal,font=\fontsize{13}{16}\selectfont] at (1.72,4.54)
+        {$|HG_{00}\rangle$};
+        \fill[Coral] (1.34,3.49) circle (.095);
+        \node[txt,font=\fontsize{11}{14}\selectfont\bfseries] at (1.72,3.72) {displaced companion};
+        \node[txt,text=Coral,font=\fontsize{13}{16}\selectfont] at (1.72,3.18)
+        {$|\psi_{d_a}\rangle$};
+        \panel{5.70}{6.15}{15.20}{1.86}
+        \node[txt,text=Coral,font=\fontsize{10}{13}\selectfont\bfseries] at (6.05,5.78)
+        {ONE-PHOTON SOURCE STATE};
+        \node[anchor=center,font=\fontsize{12}{16}\selectfont] at (10.45,4.85)
+        {$\begin{aligned}
+                    \rho_S(d_a,\epsilon)
+                     & =(1-\epsilon)|HG_{00}\rangle\langle HG_{00}|       \\
+                     & \quad+\epsilon|\psi_{d_a}\rangle\langle\psi_{d_a}|
+                \end{aligned}$};
+        \node[anchor=center,font=\fontsize{13}{16}\selectfont] at (10.45,3.80)
+        {$|\psi_{d_a}\rangle=\displaystyle\sum_n c_n(d_a)|HG_n\rangle$};
+        \node[anchor=center,text width=8.35cm,align=center,font=\fontsize{9}{12}\selectfont] at (10.45,2.73)
+        {No interference term between the two sources; the displaced component can still contain coherence between HG modes.};
+
+        \takeaway{The quantum state contains modal structure that the recorded probability $p_1$ alone cannot reconstruct.}
+        %\source{$\epsilon$: faint-source photon fraction. Gaussian PSF and bright-source alignment are source-model assumptions. Thesis: Astrophysical and Exoplanet Experiment.}
+        \footer{17 / 20}
+    \end{canvas}
+
+\end{frame}
+
+% SLIDE 18 | why quantum channels
 \begin{frame}[plain,label=sequence]
     \begin{canvas}
-        \heading{PHYSICAL MODELLING}{From physical assumptions to predicted counts}{A modular model connects source preparation, optical effects and detector readout.}
-        \node[flow,minimum height=1.5cm] (s) at (2.07,5.72) {Source state\\ $\rho_S$};
-        \node[flow,minimum height=1.5cm,draw=Teal,line width=1pt] (e) at (5.06,5.72) {Optical channel\\ $\mathcal E$};
-        \node[flow,minimum height=1.5cm,draw=Paper,line width=1pt] (m) at (8.05,5.72) {SPADE\\ measurement};
-        \node[flow,minimum height=1.5cm,draw=Coral,line width=1pt] (r) at (11.04,5.72) {Readout and\\ calibration};
-        \node[flow,minimum height=1.5cm] (n) at (14.03,5.72) {Predicted\\ counts};
-        \draw[arr] (s)--(e);\draw[arr] (e)--(m);\draw[arr] (m)--(r);\draw[arr] (r)--(n);
-        \node[txt,text width=14cm,font=\fontsize{11}{14}\selectfont] at (.95,4.46)
-        {Choose physically motivated channels and check their mathematical validity.};
-        \panel{.85}{3.82}{7.77}{2.02}\panel{8.02}{3.82}{15.15}{2.02}
-        \node[txt,text=Teal,font=\fontsize{11}{14}\selectfont\bfseries] at (1.15,3.53) {Physical channel choices};
-        \node[txt,text width=6.23cm,font=\fontsize{10}{13}\selectfont] at (1.15,2.96)
-        {Kraus operators for loss, dephasing\newline and coherent mode mixing.};
-        \node[txt,text=Coral,font=\fontsize{11}{14}\selectfont\bfseries] at (8.32,3.53) {Classical calibration};
-        \node[txt,text width=6.50cm,font=\fontsize{10}{13}\selectfont] at (8.32,2.96)
-        {Fit throughput, background, offset\newline and coupling from recorded counts.};
-        \takeaway{Simulate the chosen channel sequence and compare its output with the observations.}
-        \source{Thesis: provisional channel study. Optical assumptions are replaceable; the count record does not determine their individual values. Details: Appendices K--M.}
-        \footer{17 / 19}
+        \heading{CHANNEL FRAMEWORK}{Why use quantum channels?}{Optical effects act on the state; readout cross-talk acts on probabilities.}
+
+        \node[anchor=center,font=\fontsize{12.5}{16}\selectfont] at (8.0,6.42)
+        {$\rho_S\;\xrightarrow{\;\mathcal E\;}\;\rho'
+                \;\xrightarrow{\;\mathrm{SPADE}\;}\;\boldsymbol p
+                \;\xrightarrow{\;R_\chi\;}\;\boldsymbol p^{\rm rep}
+                \;\xrightarrow{\;\mathrm{calibration}\;}\;\boldsymbol\mu$};
+
+        \panel{.8}{5.65}{7.78}{1.98}
+        \node[anchor=center,text=Teal,font=\fontsize{10}{13}\selectfont\bfseries] at (4.29,5.30)
+        {QUANTUM CHANNEL};
+        \node[anchor=center,font=\fontsize{11}{14}\selectfont] at (4.29,4.31)
+        {$\begin{pmatrix}q_a&c\\c^*&q_b\end{pmatrix}
+                \xrightarrow{\;\mathcal D_v\;}
+                \begin{pmatrix}q_a&v c\\v c^*&q_b\end{pmatrix}$};
+        \node[anchor=center,text width=5.95cm,align=center,font=\fontsize{8.5}{11}\selectfont] at (4.29,3.10)
+        {Before SPADE: dephasing scales $c$ by $v$ while leaving two HG-mode populations unchanged.};
+        \node[anchor=center,text=Muted,text width=5.90cm,align=center,font=\fontsize{7}{9}\selectfont] at (4.29,2.34)
+        {Other optical maps describe loss, alignment, coherent mixing and modal transmission.};
+
+        \panel{8.03}{5.65}{15.20}{1.98}
+        \node[anchor=center,text=Coral,font=\fontsize{10}{13}\selectfont\bfseries] at (11.62,5.30)
+        {CLASSICAL CROSS-TALK};
+        \node[anchor=center,font=\fontsize{14}{18}\selectfont] at (11.62,4.30)
+        {$\boldsymbol p^{\rm rep}=R_\chi\boldsymbol p$};
+        \node[anchor=center,font=\fontsize{12}{16}\selectfont] at (11.62,3.63)
+        {$p_1^{\rm rep}=\chi p_0+(1-\chi)p_1$};
+        \node[anchor=center,text width=5.95cm,align=center,font=\fontsize{8.5}{11}\selectfont] at (11.62,2.72)
+        {After SPADE: cross-talk redistributes outcomes after coherence is inaccessible to this measurement.};
+
+        \takeaway{A probability-only model cannot describe pre-measurement coherence or its loss.}
+        %\source{The optical channels are specified physical hypotheses, not reconstructed from the aggregate counts; the observable count response is calibrated.}
+        \footer{18 / 20}
     \end{canvas}
 \end{frame}
 
-% SLIDE 18 | model-result
+% SLIDE 19 | model-result
 \begin{frame}[plain,label=model-result]
     \begin{canvas}
-        \heading{MODEL AND OBSERVATIONS}{The model reproduces the observed mean response}{Both maps show a central minimum and larger counts at greater separation and source ratio.}
+        \heading{MODEL AND OBSERVATIONS}{A conditional model captures the observed mean pattern}{Both maps show a central minimum and larger counts at greater separation and source ratio.}
         \node[txt,text=Teal,font=\fontsize{12}{16}\selectfont\bfseries] at (1.0,6.48) {Observed setting means};
         \node[txt,text=Coral,font=\fontsize{12}{16}\selectfont\bfseries] at (8.10,6.48) {Modelled setting means};
         % Display only the top two panels of the original thesis figure.
@@ -579,18 +608,18 @@
         {\includegraphics[width=6.5cm,height=4.10cm,keepaspectratio]{spade_left.pdf}};
         \node[anchor=north west,inner sep=0pt] at (8.10,5.90)
         {\includegraphics[width=6.5cm,height=4.10cm,keepaspectratio]{spade_right.pdf}};
-        \takeaway{The mean-count pattern is captured by the chosen channels with classical calibration.}
-        \source{Thesis appendix: provisional channel model, top panels. In-sample mean comparison; assumed optical channels are not individually identified by this agreement.}
-        \footer{18 / 19}
+        \takeaway{Agreement supports the mean-response model, not a unique reconstruction of the optical channels.}
+        %\source{Thesis appendix: provisional channel workbench, top panels. In-sample mean comparison; optical parameters are conditional assumptions.}
+        \footer{19 / 20}
     \end{canvas}
 \end{frame}
 
-% SLIDE 19 | conclusions
+% SLIDE 20 | conclusions
 \begin{frame}[plain,label=conclusions]
     \begin{canvas}
         \heading{CONCLUSIONS}{Conclusions}{Simulation, preparation studies, data interpretation and a variational optical proposal.}
         \fill[Teal] (.98,6.38) circle (.065);
-        \node[txt,font=\fontsize{12}{16}\selectfont\bfseries] at (1.24,6.59) {Perfectly matching quantum and numerical sensing pipeline};
+        \node[txt,font=\fontsize{12}{16}\selectfont\bfseries] at (1.24,6.59) {Numerical and quantum-circuit sensing pipeline};
         \node[txt,text width=13.5cm,font=\fontsize{10}{14}\selectfont] at (1.24,6.03)
         {Simulated quantum sensors under noise and decoherence, estimating QFI and TQFI.};
         \fill[Teal] (.98,4.99) circle (.065);
@@ -598,15 +627,15 @@
         \node[txt,text width=13.5cm,font=\fontsize{10}{14}\selectfont] at (1.24,4.64)
         {Compared ground and Thermal states, depolarization and restricted access to the sensor.};
         \fill[Teal] (.98,3.60) circle (.065);
-        \node[txt,font=\fontsize{12}{16}\selectfont\bfseries] at (1.24,3.81) {Quantum-channel interpretation of SPADE data};
+        \node[txt,font=\fontsize{12}{16}\selectfont\bfseries] at (1.24,3.81) {Quantum-to-classical model of the SPADE receiver};
         \node[txt,text width=13.5cm,font=\fontsize{10}{14}\selectfont] at (1.24,3.25)
-        {Modelled SPADE with quantum channels and fitted the observed mean counts.};
+        {Specified optical channels and calibrated the observable mean-count response.};
         \fill[Coral] (.98,2.21) circle (.065);
         \node[txt,text=Coral,font=\fontsize{12}{16}\selectfont\bfseries] at (1.24,2.42) {VQ-SPADE: a proposed optical eigensolver};
         \node[txt,text width=13.5cm,font=\fontsize{10}{14}\selectfont] at (1.24,1.86)
         {A trainable mode rotation and SPADE readout would diagonalize the optical state.};
-        \source{Thesis: Methods, Noise Analysis, Exoplanet Experiment and Conclusions. VQ-SPADE is proposed for a future experiment.}
-        \footer{19 / 19}
+        %\source{Thesis: Methods, Noise Analysis, Exoplanet Experiment and Conclusions. VQ-SPADE is proposed for a future experiment.}
+        \footer{20 / 20}
     \end{canvas}
 \end{frame}
 
@@ -621,7 +650,7 @@
             {$F$ is root fidelity.\\[.3cm] The retained eigenspace is state dependent; it is not a fixed detector-mode cutoff.\\[.3cm] At regular operating points, $\mathcal I_\Delta\to\mathcal F_Q$ as $\Delta\to0$.};
         \end{scope}
         \closingline{Finite-step bounds need not be pointwise bounds on the exact SLD QFI.}
-        \source{Thesis: Methods; Mathematical Background. Cerezo et al. (2022); Beckey et al. (2022).}
+        %\source{Thesis: Methods; Mathematical Background. Cerezo et al. (2022); Beckey et al. (2022).}
         \footer{Appendix A}
     \end{canvas}
 \end{frame}
@@ -640,7 +669,7 @@
             \node[txt,text width=13.7cm] at (1.03,2.77) {Stationarity gives the regularized natural-gradient update.\newline The quadratic term constrains state change, not objective curvature.};
         \end{scope}
         \closingline{Mixed VQSE inputs require a mixed-state metric; a pure-state metric is otherwise a surrogate.}
-        \source{Thesis: Mathematical Background; VQSE. A full metric has quadratic parameter-count overhead; no general training speedup is claimed.}
+        %\source{Thesis: Mathematical Background; VQSE. A full metric has quadratic parameter-count overhead; no general training speedup is claimed.}
         \footer{Appendix B}
     \end{canvas}
 \end{frame}
@@ -652,7 +681,7 @@
             \node[anchor=north,inner sep=0pt] at (8.0,7.03) {\includegraphics[height=5cm,keepaspectratio]{misc/VQSE_adaptive_training_slides.png}};
         \end{scope}
         %\closingline{The changing adaptive objective is a training schedule; the local and global traces provide the fixed-objective context.}
-        \source{Deterministic two-qubit VQSE example: balanced non-diagonal mixed state, rank-3 target, 50 outer iterations and global-target refresh every 5 iterations.}
+        %\source{Deterministic two-qubit VQSE example: balanced non-diagonal mixed state, rank-3 target, 50 outer iterations and global-target refresh every 5 iterations.}
         \footer{Appendix C}
     \end{canvas}
 \end{frame}
@@ -665,7 +694,7 @@
             \node[anchor=north,inner sep=0pt] at (8.0,7.03) {\includegraphics[height=5.45cm,keepaspectratio]{misc/VQSE_optimizer_comparison_slides.png}};
         \end{scope}
         %\closingline{On this benchmark, Bures-NG approaches the BFGS eigenvalue accuracy with smoother late-stage parameter updates.}
-        \source{Deterministic simulator benchmark: non-diagonal two-qubit state with spectrum $(0.40,0.28,0.20,0.12)$, rank-3 target, equal initialization, 35 outer iterations and target refresh every 5 iterations.}
+        %\source{Deterministic simulator benchmark: non-diagonal two-qubit state with spectrum $(0.40,0.28,0.20,0.12)$, rank-3 target, equal initialization, 35 outer iterations and target refresh every 5 iterations.}
         \footer{Appendix C.1}
     \end{canvas}
 \end{frame}
@@ -680,7 +709,7 @@
             \node[txt,text width=13.8cm] at (1.0,2.58) {For an uncertain field, choose an operating range or prior.\newline These curves do not establish a universal Bayesian or minimax optimum.};
         \end{scope}
         \closingline{The comparison changes the preparation family; it does not reverse a fixed noise channel.}
-        \source{Thesis: Noise Analysis. Finite system; exact SLD QFI.}
+        %\source{Thesis: Noise Analysis. Finite system; exact SLD QFI.}
         \footer{Appendix D}
     \end{canvas}
 \end{frame}
@@ -700,7 +729,7 @@
             \node[txt,text width=13.8cm] at (1.0,2.56) {Isometry in the Kraus index leaves the action on every input unchanged.};
         \end{scope}
         \closingline{A physical realization adds assumptions about the environment; the reduced map alone does not select them.}
-        \source{Standard Kraus equivalence: an isometry, or a unitary after padding with zero operators. Algebra shown explicitly for this presentation.}
+        %\source{Standard Kraus equivalence: an isometry, or a unitary after padding with zero operators. Algebra shown explicitly for this presentation.}
         \footer{Appendix E}
     \end{canvas}
 \end{frame}
@@ -715,7 +744,7 @@
             \node[txt,text width=13.8cm] at (1.0,3.34) {This extension measures and prepares in the chosen basis, erasing coherences.\newline For $R=I$, both the identity channel and complete dephasing reproduce the same populations.};
         \end{scope}
         \closingline{Different channels can agree on the measured populations; this is distinct from Kraus freedom of one channel.}
-        \source{Thesis: classical/quantum embedding and HG coherence discussion. Channel-extension example derived for the presentation.}
+        %\source{Thesis: classical/quantum embedding and HG coherence discussion. Channel-extension example derived for the presentation.}
         \footer{Appendix F}
     \end{canvas}
 \end{frame}
@@ -732,7 +761,7 @@
             {Boundary checks: $\tau_j=1$ transmits mode $j$; $\tau_j=0$ sends it to failure.\newline Normalization: transmission plus failure has unit trace.\newline Physical validation: mode-injection measurements determine the $\tau_j$.};
         \end{scope}
         \closingline{Renormalizing the transmitted branch alone changes the question to postselected performance.}
-        \source{Thesis: mode-dependent loss and flagged mode reduction. The record lacks independent modal-transmission calibration.}
+        %\source{Thesis: mode-dependent loss and flagged mode reduction. The record lacks independent modal-transmission calibration.}
         \footer{Appendix G}
     \end{canvas}
 \end{frame}
@@ -753,7 +782,7 @@
                 \end{tabular}};
         \end{scope}
         \closingline{The validated target is the mean of 100 repetitions; this does not identify a complete quantum channel.}
-        \source{Thesis: Exoplanet Experiment Appendix, hierarchical calibration validation. RMSE in counts per $10\,\mathrm{ms}$.}
+        %\source{Thesis: Exoplanet Experiment Appendix, hierarchical calibration validation. RMSE in counts per $10\,\mathrm{ms}$.}
         \footer{Appendix H}
     \end{canvas}
 \end{frame}
@@ -768,7 +797,7 @@
             {A programmable coherent mode transformation provides the trainable basis.\\[.3cm] Resolved outputs, flux and failure events provide normalized probabilities.\\[.3cm] Nearby states and additional overlap measurements support fidelity-based QFI bounds.};
         \end{scope}
         \closingline{The present record motivates the acquisition design; it does not implement this protocol.}
-        \source{Thesis: proposed VQ-SPADE scheme. Additional independent channel and background calibrations are required.}
+        %\source{Thesis: proposed VQ-SPADE scheme. Additional independent channel and background calibrations are required.}
         \footer{Appendix I}
     \end{canvas}
 \end{frame}
@@ -789,7 +818,7 @@
             At $\varphi=90^\circ$, measuring $Z$ attains QFI $=0.64$; the SLD is $L_0=rZ$.\\[.1cm]
             Both displayed vectors have radius 0.8; their $25^\circ$ separation is only illustrative.};
         \closingline{Changing the measurement changes accessible information, not the underlying quantum limit.}
-        \source{Exact mixed-qubit model; $\theta$ in radians. Full rank keeps every displayed measurement regular. No finite-difference QFI approximation is used.}
+        %\source{Exact mixed-qubit model; $\theta$ in radians. Full rank keeps every displayed measurement regular. No finite-difference QFI approximation is used.}
         \footer{Appendix J}
     \end{canvas}
 \end{frame}
@@ -811,7 +840,7 @@
             {$\sum_aK_a\rho K_a^\dagger=\frac{\rho+Z\rho Z}{2}=\operatorname{diag}(\rho)$};
         \end{scope}
         \closingline{Kraus freedom changes the representation. Physical hypotheses concern the channel.}
-        \source{Two-mode illustration of the thesis HG-dephasing model at $v=0$. Equivalent representations cannot be distinguished by system-only data.}
+        %\source{Two-mode illustration of the thesis HG-dephasing model at $v=0$. Equivalent representations cannot be distinguished by system-only data.}
         \footer{Appendix K}
     \end{canvas}
 \end{frame}
@@ -830,7 +859,7 @@
             \node[txt,text width=13.45cm] at (1.16,2.65) {Kraus form ensures complete positivity; completeness proves trace preservation.};
         \end{scope}
         \closingline{Channel validity can be proved mathematically; physical suitability requires calibration.}
-        \source{Derived from the thesis mode-dependent loss map. Input: one-photon mode space after common survival; failure is retained in the output.}
+        %\source{Derived from the thesis mode-dependent loss map. Input: one-photon mode space after common survival; failure is retained in the output.}
         \footer{Appendix L}
     \end{canvas}
 \end{frame}
@@ -854,8 +883,42 @@
             \node[txt,font=\fontsize{16}{20}\selectfont] at (10.78,2.68) {$0.13$--$57.0\%$};
         \end{scope}
         \closingline{Aggregation and readout confusion can strongly reduce the accessible information.}
-        \source{Conditional model: same nine settings, per photon surviving common loss. Ranges across settings; not reconstructed experimental QFI.}
+        %\source{Conditional model: same nine settings, per photon surviving common loss. Ranges across settings; not reconstructed experimental QFI.}
         \footer{Appendix M}
+    \end{canvas}
+\end{frame}
+
+\begin{frame}[plain,noframenumbering,label=backup-qcrb]
+    \begin{canvas}
+        \heading{APPENDIX N / QUANTUM ESTIMATION}{From information to precision: the quantum Cramér--Rao bound}{QFI is the best local Fisher information available over all quantum measurements.}
+
+        \panel{.8}{6.33}{5.25}{2.22}
+        \node[anchor=center,text=Teal,font=\fontsize{10}{13}\selectfont\bfseries] at (3.03,5.92)
+        {FIXED POVM};
+        \node[anchor=center,font=\fontsize{15}{19}\selectfont] at (3.03,4.80)
+        {$\operatorname{Var}(\hat\theta)\geq\dfrac{1}{N\mathcal F_C(\theta;M)}$};
+        \node[anchor=center,text width=3.75cm,align=center,font=\fontsize{8.5}{11}\selectfont] at (3.03,3.45)
+        {Assuming $N$ independent trials and local unbiasedness.};
+
+        \panel{5.53}{6.33}{10.05}{2.22}
+        \node[anchor=center,text=Coral,font=\fontsize{10}{13}\selectfont\bfseries] at (7.79,5.92)
+        {BEST MEASUREMENT};
+        \node[anchor=center,font=\fontsize{14}{18}\selectfont] at (7.79,4.86)
+        {$\mathcal F_C(\theta;M)\leq\mathcal F_Q(\theta)$};
+        \node[anchor=center,text width=3.85cm,align=center,font=\fontsize{8.5}{11}\selectfont] at (7.79,3.45)
+        {Maximize the CFI over all POVMs for the same state family.};
+
+        \panel{10.33}{6.33}{15.20}{2.22}
+        \node[anchor=center,text=Teal,font=\fontsize{10}{13}\selectfont\bfseries] at (12.77,5.92)
+        {QUANTUM LIMIT};
+        \node[anchor=center,font=\fontsize{15}{19}\selectfont] at (12.77,4.80)
+        {$\operatorname{Var}(\hat\theta)\geq\dfrac{1}{N\mathcal F_Q(\theta)}$};
+        \node[anchor=center,text width=4.10cm,align=center,font=\fontsize{8.5}{11}\selectfont] at (12.77,3.45)
+        {Equivalently, $\Delta\theta\geq1/\sqrt{N\mathcal F_Q}$.};
+
+        \takeaway{The QCRB is an ideal local precision limit; attaining it also requires a suitable measurement and estimator.}
+        %\source{Assumptions: differentiable one-parameter model, independent repetitions, local unbiasedness and regularity. The optimal measurement can depend on the unknown parameter. Thesis: Mathematical Background.}
+        \footer{Appendix N}
     \end{canvas}
 \end{frame}
 \end{document}

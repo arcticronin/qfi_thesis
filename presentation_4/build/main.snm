@@ -34,8 +34,8 @@
 \beamer@slide {spade}{22}
 \beamer@slide {spade-detector<1>}{23}
 \beamer@slide {spade-detector}{23}
-\beamer@slide {pipeline<1>}{24}
-\beamer@slide {pipeline}{24}
+\beamer@slide {hg-reconstruction<1>}{24}
+\beamer@slide {hg-reconstruction}{24}
 \beamer@slide {embedding<1>}{25}
 \beamer@slide {embedding}{25}
 \beamer@slide {record<1>}{26}
@@ -74,3 +74,5 @@
 \beamer@slide {backup-detail-loss}{42}
 \beamer@slide {backup-detail-retention<1>}{43}
 \beamer@slide {backup-detail-retention}{43}
+\beamer@slide {backup-qcrb<1>}{44}
+\beamer@slide {backup-qcrb}{44}

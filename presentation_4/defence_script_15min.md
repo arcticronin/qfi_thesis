@@ -1,10 +1,10 @@
 # Thesis defence — 15-minute speaking script
 
-**Luca Manzi · English · presentation_4 · 19 main slides**
+**Luca Manzi · English · presentation_4 · 20 main slides**
 
-Read only the **Spoken script** sections aloud. Bracketed directions are silent cues. **Details to keep in mind** are preparation for questions, not additional material for the timed talk. The spoken text is approximately 1,660 words. Timings include pointing, slide changes and short pauses; rehearse aloud to calibrate them to your pace. Do not read the equations in the technical notes symbol by symbol.
+Read only the **Spoken script** sections aloud. Bracketed directions are silent cues. **Details to keep in mind** are preparation for questions, not additional material for the timed talk. The spoken text is approximately 1,600 words. Timings include pointing, slide changes and short pauses; rehearse aloud to calibrate them to your pace. Do not read the equations in the technical notes symbol by symbol.
 
-This script follows the current main deck and the agreed story for slide 14. **Slide 14 still contains the HG-mode image in `main.tex`; the script assumes the planned copy of slide 6, used as a pipeline callback.** No slide source has been changed for this script.
+This script follows the current main deck. The detailed sections after each spoken passage are preparation material and are not intended to be delivered verbatim.
 
 The central thread is: **a sensor must retain useful sensitivity through preparation, restricted access and measurement, over the range where it will operate.**
 
@@ -13,24 +13,25 @@ The central thread is: **a sensor must retain useful sensitivity through prepara
 | Slide | Topic | Duration | Clock |
 |---|---|---:|---|
 | 1 | Opening | 0:30 | 0:00–0:30 |
-| 2 | Classical Fisher information | 0:50 | 0:30–1:20 |
-| 3 | Measurement animation and QFI | 1:00 | 1:20–2:20 |
-| 4 | Mixed states and spectral estimation | 1:05 | 2:20–3:25 |
-| 5 | Two applications | 0:30 | 3:25–3:55 |
+| 2 | Two applications | 0:30 | 0:30–1:00 |
+| 3 | Classical Fisher information | 0:50 | 1:00–1:50 |
+| 4 | Measurement animation and QFI | 1:00 | 1:50–2:50 |
+| 5 | Mixed states and spectral estimation | 1:05 | 2:50–3:55 |
 | 6 | Numerical and circuit pipeline | 1:05 | 3:55–5:00 |
 | 7 | Magnetometry divider | 0:05 | 5:00–5:05 |
 | 8 | Magnetometer model | 0:55 | 5:05–6:00 |
 | 9 | Broader thermal sensitivity | 1:00 | 6:00–7:00 |
 | 10 | Stronger thermal peak | 0:55 | 7:00–7:55 |
 | 11 | Exoplanet divider | 0:05 | 7:55–8:00 |
-| 12 | Imaging problem and SPADE | 0:55 | 8:00–8:55 |
-| 13 | Mode probabilities and cross-talk | 0:55 | 8:55–9:50 |
-| 14 | Initial analogy and VQ-SPADE proposal | 0:40 | 9:50–10:30 |
-| 15 | Why quantum and classical channels | 1:05 | 10:30–11:35 |
-| 16 | Available data | 0:40 | 11:35–12:15 |
-| 17 | Constructed channel model | 0:55 | 12:15–13:10 |
-| 18 | Mean-response result and implications | 1:00 | 13:10–14:10 |
-| 19 | Conclusions | 0:50 | 14:10–15:00 |
+| 12 | Imaging problem and SPADE | 0:50 | 8:00–8:50 |
+| 13 | Mode probabilities and cross-talk | 0:45 | 8:50–9:35 |
+| 14 | Available data and the original TQFI goal | 0:45 | 9:35–10:20 |
+| 15 | Why populations are not enough for TQFI | 0:40 | 10:20–11:00 |
+| 16 | From probabilities to a quantum description | 0:40 | 11:00–11:40 |
+| 17 | Physical source state | 0:40 | 11:40–12:20 |
+| 18 | The receiver as a channel sequence | 0:50 | 12:20–13:10 |
+| 19 | Mean-response result and implications | 1:00 | 13:10–14:10 |
+| 20 | Conclusions | 0:50 | 14:10–15:00 |
 
 ## Slide 1 — Opening
 
@@ -49,11 +50,29 @@ The common question is: how much information about an unknown parameter can we a
 - The magnetometer is a numerical model and a circuit-method benchmark. The optical application uses a completed laboratory experiment motivated by exoplanet imaging; it is not an astronomical detection of a real exoplanet.
 - Your contribution combines implementations, numerical studies, data interpretation and a future proposal. These have different evidential status throughout the talk.
 
-## Slide 2 — Classical Fisher information
+## Slide 2 — Applications
 
 ### Spoken script
 
-Before discussing quantum sensors, consider an ordinary measurement.
+I study this question in two complementary settings.
+
+The magnetometer provides a controlled model: I can vary preparation, noise and access, and compare the resulting sensitivities.
+
+The optical experiment asks a different question: given a real measurement record, which parts of the sensing process can we reconstruct or meaningfully model?
+
+Both start from the same distinction between information in a state and information in recorded outcomes.
+
+### Details to keep in mind
+
+**Intuition — preparation only, not extra spoken text:** The magnetometer asks “what happens when I change the design?” The optical record asks “what can these particular measurements tell me about the design?”
+
+The two applications do not both demonstrate experimental TQFI. The numerical study benchmarks metrological quantities; the archived optical counts do not reconstruct an optical state or its TQFI. Presenting this asymmetry explicitly strengthens the scientific story.
+
+## Slide 3 — Classical Fisher information
+
+### Spoken script
+
+To connect these applications, consider an ordinary measurement.
 
 [Point to the probability distributions.]
 
@@ -77,7 +96,7 @@ The classical Cramér–Rao bound is $\operatorname{Var}(\hat\theta)\geq 1/[N F_
 
 Source: [MathBackground.tex](../TeXtured/chapters/MathBackground.tex).
 
-## Slide 3 — Fisher information and measurements
+## Slide 4 — Fisher information and measurements
 
 ### Spoken script
 
@@ -108,7 +127,7 @@ The state has not become more informative. We have become better at reading the 
 The current animation uses **mixed states**, with Bloch radius $r=0.8$, and evaluates Fisher information locally at $\theta=0$. For the illustrated equatorial family,
 
 $$
-\rho_\theta=\tfrac12[I+r(\cos\theta\,\sigma_x+\sin\theta\,\sigma_y)],
+\rho_\theta=\tfrac12[I+r(\cos\theta\,\sigma_x+\sin\theta\,\sigma_z)],
 \qquad
 F_Q=r^2=0.64,
 $$
@@ -119,12 +138,12 @@ $$
 
 - The two vectors have a visible finite separation for illustration. The plotted information is **not** computed as their finite difference.
 - At the initial basis, probabilities have zero first derivative at the reference point. They can still change at second order over a finite displacement.
-- For this pure-state limit, generic equatorial projective bases attain the same QFI; the mixed-state choice makes the measurement dependence visible. Singular zero-probability settings require care with limits.
+- For $r<1$, the CFI depends on the measurement basis as shown. In the pure-state limit $r\to1$, generic projective bases in this plane attain the QFI; singular zero-probability settings require care with limits.
 - The optimal basis can depend on the unknown parameter. Local attainability does not imply one globally optimal, immediately known measurement.
 
 Reference: Appendix J of the deck and [measurement_overlay.tex](assets/measurement_overlay.tex).
 
-## Slide 4 — How we deal with mixed states
+## Slide 5 — How we treat mixed states
 
 ### Spoken script
 
@@ -157,24 +176,6 @@ $$
 - The introduction calls mixed-state QFI less explored. Do not turn that into “nobody has studied mixed states.”
 
 Sources: [Methods.tex](../TeXtured/chapters/Methods.tex), [VQSE.tex](../TeXtured/chapters/VQSE.tex).
-
-## Slide 5 — Applications
-
-### Spoken script
-
-I used these ideas in two complementary settings.
-
-The magnetometer provides a controlled model: I can vary preparation, noise and access, and compare the resulting sensitivities.
-
-The optical experiment asks a different question: given a real measurement record, which parts of the sensing process can we reconstruct or meaningfully model?
-
-Both start from the same distinction between information in a state and information in recorded outcomes.
-
-### Details to keep in mind
-
-**Intuition — preparation only, not extra spoken text:** The magnetometer asks “what happens when I change the design?” The optical record asks “what can these particular measurements tell me about the design?”
-
-The two applications do not both demonstrate experimental TQFI. The numerical study benchmarks metrological quantities; the archived optical counts do not reconstruct an optical state or its TQFI. Presenting this asymmetry explicitly strengthens the scientific story.
 
 ## Slide 6 — Parallel numerical and quantum-circuit workflow
 
@@ -248,7 +249,7 @@ Real-instrument references: [CERN's LEP NMR probes](https://cds.cern.ch/record/3
 
 Source: [NoiseAnalysis.tex](../TeXtured/chapters/NoiseAnalysis.tex).
 
-## Slide 9 — Temperature broadens the useful range
+## Slide 9 — Thermal preparation broadens the sensitive range
 
 ### Spoken script
 
@@ -273,7 +274,7 @@ For a future space sensor with controlled thermal preparation, this could motiva
 
 Sources: [NoiseAnalysis.tex](../TeXtured/chapters/NoiseAnalysis.tex), [NoiseAnalysisAppendix.tex](../TeXtured/chapters/NoiseAnalysisAppendix.tex).
 
-## Slide 10 — Cooling strengthens the peak
+## Slide 10 — Cooling strengthens the sensitivity peak
 
 ### Spoken script
 
@@ -315,19 +316,19 @@ Change pace slightly; this is the start of the second application, not a new mat
 
 A faint companion close to a bright star is difficult to resolve because their images overlap.
 
-[Point from the resolved image to the unresolved image.]
+[Point from the unresolved image to the mode sorter.]
 
-Direct imaging records photon positions. But position is only one possible measurement of the optical field.
+Direct imaging records photon positions. SPADE instead sorts the light into spatial modes.
 
-SPADE, spatial-mode demultiplexing, instead sorts light into spatial modes. With the sorter aligned to the star, the bright reference mainly occupies the fundamental mode, while the displaced companion contributes to higher modes.
+With the sorter aligned to the star, most of the bright light enters the fundamental mode. The displaced companion also contributes to higher modes, where its weak signal is easier to detect.
 
-This makes the separation-sensitive component easier to access, even when two intensity peaks are not visibly resolved.
-
-It is the same principle as the earlier measurement animation: changing the measurement can reveal information that another basis reads poorly.
+This connects to the earlier measurement animation: changing the measurement basis can reveal information that another measurement misses.
 
 ### Details to keep in mind
 
 **Intuition — preparation only, not extra spoken text:** The optical sorter combines amplitudes before detection. That changes what is measured; merely processing the resulting camera intensities differently would not generally implement the same measurement.
+
+The slide labels “Bright star” and “Exoplanet” are a visual shorthand for the dominant contributions. The physical outputs are spatial modes. The companion also contributes to the fundamental mode.
 
 SPADE does not defeat all diffraction limits or identify the source of each photon. Its advantage is parameter- and model-dependent measurement sensitivity. Alignment, brightness ratio, throughput, background and readout matter.
 
@@ -339,17 +340,15 @@ Sources: [Astrophysical.tex](../TeXtured/chapters/Astrophysical.tex), [Exoplanet
 
 ### Spoken script
 
-[Point to the fundamental mode, then the two first-order modes.]
+[Point to the fundamental and first-order modes.]
 
-I call the probability of the fundamental outcome p-zero. It is dominated by the aligned star. P-one is the combined probability of the two first-order outcomes, which carry the separation-sensitive signal.
+P-zero is the probability of the fundamental outcome. P-one combines the two first-order outcomes, which respond to the source separation.
 
-These are mode labels, not labels telling us which source emitted a photon.
+The detector can confuse the reported ports. In this model, chi describes that cross-talk.
 
-Now introduce chi: the probability of confusing the two reported ports in a symmetric readout model.
+The reported first-order signal therefore includes some events from the bright fundamental port.
 
-The observed first-order probability contains both correctly reported first-order events and leaked fundamental-port events.
-
-Because the star is much brighter, even a small confusion probability can contaminate the weak signal. This is why a realistic analysis must include the detector, not just the ideal optical measurement.
+Even a small leak matters because the star is so much brighter. This gives us a simple classical description of the readout. Next, we need to ask what the available counts can tell us.
 
 ### Details to keep in mind
 
@@ -367,6 +366,8 @@ M_0=|HG_{00}\rangle\langle HG_{00}|,\qquad
 M_1=|HG_{01}\rangle\langle HG_{01}|+|HG_{10}\rangle\langle HG_{10}|.
 $$
 
+The slide uses an assumed symmetric readout model. The pair $(\chi,1-\chi)$ gives the weights for reporting outcome 1 from inputs 0 and 1. It is one row of the full confusion matrix, not a quantum state or a complete channel by itself.
+
 The symmetric readout assumption gives
 
 $$
@@ -379,87 +380,19 @@ $$
 - The thesis takes 0.0035 from an external reported cross-talk calibration. Equal reverse leakage and an unaffected failure outcome are assumptions, not a fully measured transfer matrix.
 - A fixed classical post-processing channel can reduce CFI but does not change the pre-measurement state's QFI.
 
-## Slide 14 — Returning to the pipeline: a limitation and a proposal
+## Slide 14 — What the experiment recorded
 
 ### Spoken script
 
-[On the planned copy of slide six, point to access, then spectrum.]
+The ASI Matera experiment had already finished when we received these data.
 
-Initially, we considered SPADE as a way to access selected components of the state. But mode populations are not generally eigenvalues: the Hermite–Gaussian basis need not diagonalize the state.
+[Point to the individual acquisition and the averaged map.]
 
-This suggested transferring the VQSE idea to optics: train a mode rotation towards an eigenbasis, then use SPADE to read out the spectral populations.
+At each setting, we have one hundred repetitions of the combined first-order count.
 
-This is the VQ-SPADE proposal, which remains to be implemented. For the existing experiment, I instead model the optical transformations and recorded outcomes explicitly.
+My initial aim was to use these measurements for TQFI. But the archive did not contain the separate modal outcomes or the measurements needed to recover the state's dominant eigencomponents.
 
-### Details to keep in mind
-
-**Intuition — preparation only, not extra spoken text:** The diagonal entries are what one chosen basis reveals; eigenvalues belong to the state itself. Training the basis can expose the spectrum. But finding an eigenbasis and finding the most sensitive measurement for a changing parameter are separate goals.
-
-**The crucial correction is that SPADE gives access to mode populations, not necessarily eigenvalues:**
-
-$$
-p_j=\langle HG_j|\rho|HG_j\rangle.
-$$
-
-When the measurement basis diagonalizes the state, individually resolved populations coincide with eigenvalues. Aggregating two modes, as in $p_1$, gives a **sum** even in that case.
-
-Also, observing selected modes is a projection/coarse-graining operation; it is not generally the partial trace used in the magnetometer. Tensor-factor access and restriction to a modal subspace are different mathematical constructions.
-
-In the proposed extension,
-
-$$
-p_j(\boldsymbol\alpha)
-=\langle HG_j|U(\boldsymbol\alpha)\rho U^\dagger(\boldsymbol\alpha)|HG_j\rangle.
-$$
-
-Diagonalizing $\rho$ is not generally the same as measuring in the eigenbasis of its symmetric logarithmic derivative, which controls local sensing optimality. A state can encode information in rotating eigenvectors even if its eigenvalues are constant.
-
-The trainable optical transformation would learn the basis; **SPADE performs the readout**. This would need sufficient mode resolution, controllable transformations, repeated state preparations and calibration of mode-dependent losses. A simple rotation plus the current aggregate record is not already an eigensolver. VQ-SPADE was not implemented or tested.
-
-Source: [Conclusions.tex](../TeXtured/chapters/Conclusions.tex), deck Appendix I.
-
-## Slide 15 — Why quantum and classical channels?
-
-### Spoken script
-
-A classical channel transforms a probability distribution. Readout confusion is an example: it changes how outcomes are reported.
-
-[Point to the diagonal matrix.]
-
-We can represent a probability vector as a diagonal density matrix. That lets classical statistics sit within the same mathematical language.
-
-[Point to the off-diagonal entries.]
-
-But optical transformations can also act on coherence: the phase relationships between modes. A probability vector alone cannot describe those effects.
-
-The quantum-channel model therefore follows the state before measurement, while classical channels describe the later readout.
-
-The benefit is a physically organized model. We can separate loss, coherent mixing and reporting errors, and ask at which stage information becomes inaccessible. We do not infer quantum coherence merely by writing probabilities in a matrix.
-
-### Details to keep in mind
-
-**Intuition — preparation only, not extra spoken text:** Probabilities tell you how much occupies each mode. Coherence tells you how amplitudes from modes can combine when mixed before detection. A classical readout matrix models confusion of labels after that interference has already occurred.
-
-- The diagonal embedding is a valid construction, not quantum-state reconstruction. A stochastic map does not uniquely fix how a quantum extension acts on off-diagonal elements.
-- The two-by-two slide is a **conceptual illustration**. Actual ($HG_{01}/HG_{10}$) aggregation, higher modes and loss require additional structure. Do not silently identify a two-dimensional pure optical basis with one fundamental mode plus an unresolved two-mode sector.
-- Coherent mixing before measurement and classical label confusion after measurement can produce similar changes in populations, but differ on coherent inputs and in their physical position in the sequence.
-- For a parameter-independent channel, QFI is nonincreasing. A parameter-encoding channel can introduce sensitivity; the data-processing statement does not prohibit that.
-
-Sources: [MathBackground.tex](../TeXtured/chapters/MathBackground.tex), [ExoplanetExperiment.tex](../TeXtured/chapters/ExoplanetExperiment.tex).
-
-## Slide 16 — What the experiment recorded
-
-### Spoken script
-
-The completed ASI Matera experiment provides repeated photon counts over a grid of separations and relative source intensities.
-
-[Point to the individual acquisition, then the averaged map.]
-
-Averaging reveals a clear response, but the archive contains only the aggregate first-order stream.
-
-We do not have separate modal outputs, measurements in other bases, or all the flux and failure information needed to reconstruct the optical state.
-
-So the question becomes more specific: can a physically structured model explain the observed mean response, and tell us what a future experiment should measure?
+The data did support fitting the average count response. The question became how to connect that fit to a physical description of the receiver.
 
 ### Details to keep in mind
 
@@ -469,77 +402,244 @@ The record has 525 settings, 100 repetitions per setting and 10 ms per exposure:
 
 Without an independent incident-flux calibration, count scale does not separate flux from efficiency. Without basis rotations or phase-sensitive observables, the record does not identify HG coherences. Repetition improves knowledge of the measured mean but does not add a new kind of observable.
 
-## Slide 17 — From physical assumptions to predicted counts
+The experimental TQFI protocol is not identifiable from this record. This does not prevent a conditional TQFI calculation from an assumed state and channel model. The fitted quantities describe the observed count response. They do not determine the complete optical channel.
+
+## Slide 15 — When modal counts become spectral information
 
 ### Spoken script
 
-[Trace the pipeline once.]
+This slide explains the gap between the original idea and the available data.
 
-I start with a source state, apply optical channels, model the SPADE measurement, and include readout and calibration to predict counts.
+[Move from the measured populations to the middle panel.]
 
-I constructed physically motivated channels for loss, dephasing and mode mixing, choosing Kraus operators and checking their mathematical validity.
+TQFI needs dominant eigenvalues and eigenvectors. SPADE gives populations in a fixed mode basis.
 
-The optical parameters are assumed; the classical response is fitted to the recorded counts, through throughput, background, displacement offset and coupling corrections.
+These would coincide if that basis matched the state's eigenbasis. In general, we cannot assume that it does.
 
-This makes the model useful for testing physical hypotheses. We can change one stage, inspect its effect on the predicted response, and later replace that assumption with an independent calibration.
+So I kept the classical fit and developed a quantum description of the receiver. To explain that step, let us first connect probabilities to density matrices.
 
 ### Details to keep in mind
 
-**Intuition — preparation only, not extra spoken text:** Fewer detected photons could result from a dimmer source or a lossier receiver. Organizing the stages makes these alternatives explicit; a second calibrated observable is needed to separate them.
+**Intuition — preparation only, not extra spoken text:** Looking at the diagonal of a matrix in one basis is not the same as diagonalizing the matrix. They agree only when that basis is an eigenbasis.
 
-A completely positive map can be written
+SPADE gives access to mode populations
 
 $$
-\mathcal E(\rho)=\sum_a K_a\rho K_a^\dagger,
-\qquad \sum_a K_a^\dagger K_a=I
+p_j=\langle HG_j|\rho|HG_j\rangle.
 $$
 
-for a trace-preserving channel on its stated input/output spaces. For loss, an explicit failure flag can retain trace preservation; the surviving subblock alone is generally trace decreasing.
+If
 
-**Two kinds of freedom must be distinguished:**
+$$
+\rho=\sum_j\lambda_j|HG_j\rangle\langle HG_j|,
+$$
 
-1. Different Kraus representations can describe the **same channel**: ($K'_a=\sum_b u_{ab}K_b$) for a suitable unitary/isometry. This is representational freedom.
-2. Choosing a loss, mixing or dephasing model chooses a **physical map**. It is a modelling assumption, not merely a different Kraus representation of an already identified channel.
+then $p_j=\lambda_j$ and the retained approximation is
 
-Physical interpretation is attached to the full map and, when justified, an environment model or instrument. It cannot generally be uniquely assigned to each Kraus operator from output counts alone.
+$$
+\rho_r=\sum_{j=0}^{r-1}p_j|HG_j\rangle\langle HG_j|,
+\qquad \operatorname{rank}(\rho_r)\leq r.
+$$
 
-The provisional workbench fixes example optical parameters and fits throughput, background, offset and a coupling field. It also includes random displacement and readout assumptions. Its construction and provenance are documented in [ExoplanetExperimentAppendix.tex](../TeXtured/chapters/ExoplanetExperimentAppendix.tex), “Provisional Channel Workbench.”
+- An HG cutoff is a basis truncation. To reproduce the dominant rank-$r$ spectral truncation used by TQFI, the chosen modes must be eigenvectors and must correspond to the $r$ largest eigenvalues. Diagonality alone does not establish this ordering.
+- Aggregating $HG_{01}$ and $HG_{10}$ into one value $p_1$ gives their sum, not two separate eigenvalues.
+- “Normalized” on the slide means that the total trial normalization is known. It does not mean rescaling the retained probabilities to sum to one. The truncated operator may have trace below one. Keep the omitted weight when evaluating the fidelity bounds. A normalized postselected state would answer a different question.
+- Observing selected modes is a projection or coarse-graining operation; it is not the partial trace used in the magnetometer.
+- VQ-SPADE proposes a trainable unitary that maps the state's eigenvectors onto resolved HG outputs. This is an ideal target that requires a sufficiently expressive transformation and successful optimization. It is kept for the conclusion and Appendix I.
 
-## Slide 18 — Reproducing the observed mean response
+Sources: [ExoplanetExperiment.tex](../TeXtured/chapters/ExoplanetExperiment.tex), [Conclusions.tex](../TeXtured/chapters/Conclusions.tex).
+
+## Slide 16 — From probabilities to a quantum description
 
 ### Spoken script
 
-[Point to the observed map and then the modelled map. Pause.]
+[Move from left to right.]
 
-The model reproduces the main structure of the averaged observations: the central minimum and the increase with separation and relative source intensity.
+For two modes, we can collect their probabilities in a vector. We can also write those probabilities on the diagonal of a density matrix.
 
-Matching these means does not uniquely identify the optical channels: different physical mechanisms can produce similar counts.
+But an optical state can have additional entries: coherences between the modes. The same populations can therefore belong to different quantum states.
 
-But the framework turns that ambiguity into a guide for the next experiment. Separate modal counts would resolve the combined outputs. Independent flux measurements would help separate illumination from efficiency. Additional measurement bases would reveal information about coherence.
+Classical cross-talk changes the reported probabilities. A quantum channel describes what happens to the optical state before measurement, including its coherences.
 
-The result is therefore both a description of the observed mean response and a framework for designing measurements that can distinguish competing explanations.
+This gives us the language to model the receiver.
+
+### Details to keep in mind
+
+**Intuition — preparation only, not extra spoken text:** Modal probabilities describe how often outcomes occur. Coherences describe relations between modal amplitudes that a different measurement can reveal. Rewriting the probability vector as a diagonal matrix does not recover these relations.
+
+The slide uses two **individual** modes, labelled $a$ and $b$, with
+
+$$
+q_a,q_b\geq0
+\qquad
+q_a+q_b=1
+\qquad
+|c|^2\leq q_aq_b
+$$
+
+The last condition ensures positivity of the two-mode density matrix. The symbols $q_a,q_b$ are illustrative mode populations, not the scalar displacement quantity $q=d_a^2/4$ used in the source model.
+
+- These are not the measured pair $(p_0,p_1)$ from slide 13. There, $p_1$ combines two first-order modes and further modes or failure events may remain. The full receiver keeps a complement outcome.
+- The middle and right panels compare possible state descriptions. They are not successive physical operations that create coherence from measured counts. Setting $c=0$ is one possible state compatible with these populations.
+- The probabilities belong on the diagonal of a **state**. The classical transition probabilities belong in the **channel matrix**. Do not embed the weights $(\chi,1-\chi)$ and describe the result as the optical state.
+- The two-mode readout example is
+
+$$
+R_\chi=
+\begin{pmatrix}
+1-\chi&\chi\\
+\chi&1-\chi
+\end{pmatrix}
+\qquad
+\boldsymbol q^{\rm rep}=R_\chi\boldsymbol q
+$$
+
+- In the actual low-mode model, the corresponding three-outcome matrix leaves the failure outcome unchanged. Both the symmetry and that isolation are assumptions.
+- A stochastic matrix fixes only the classical transition probabilities. It does not determine how a quantum channel acts on coherences. Appendix F gives an explicit quantum extension and explains its non-uniqueness.
+- A density matrix is a state. A quantum channel $\mathcal E$ is a map acting on density matrices. Merely writing a probability vector as a diagonal matrix does not specify such a map.
+
+Source: [ExoplanetExperiment.tex](../TeXtured/chapters/ExoplanetExperiment.tex), classical and quantum descriptions. Appendix F of the deck gives the technical extension.
+
+## Slide 17 — From two incoherent sources to an optical state
+
+### Spoken script
+
+Where do those coherences come from in this experiment?
+
+[Point to the two source contributions.]
+
+The star and companion are independent sources, so we describe them as a statistical mixture.
+
+However, the displaced companion's wavefunction extends across several HG modes. Those mode amplitudes can have definite phase relations, even though the two sources are mutually incoherent.
+
+This source model therefore supplies both populations and modal coherences. We can now follow how the receiver acts on that state.
+
+### Details to keep in mind
+
+**Intuition — preparation only, not extra spoken text:** Each photon is attributed probabilistically to one of two mutually incoherent sources. Mutual incoherence removes interference between the source alternatives; it does not remove the spatial-mode structure of each source.
+
+The conditional one-photon source model is
+
+$$
+\rho_S(d_a,\epsilon)
+=(1-\epsilon)|HG_{00}\rangle\langle HG_{00}|
++\epsilon|\psi_{d_a}\rangle\langle\psi_{d_a}|.
+$$
+
+For the one-axis Gaussian model,
+
+$$
+|\psi_{d_a}\rangle
+=\sum_{n=0}^{\infty}c_n(d_a)|HG_n\rangle,
+\qquad
+c_n=e^{-q/2}\frac{\alpha^n}{\sqrt{n!}},
+\quad \alpha=\frac{d_a}{2},\quad q=|\alpha|^2.
+$$
+
+The ideal first-order population is consequently $p_1=\epsilon q e^{-q}$ in the one-axis convention.
+
+- There are no cross terms $|HG_{00}\rangle\langle\psi_{d_a}|$ between the two source alternatives.
+- The term $|\psi_{d_a}\rangle\langle\psi_{d_a}|$ can nevertheless contain off-diagonal HG terms $|HG_m\rangle\langle HG_n|$ for $m\neq n$.
+- The density matrix has rank at most two even though the displaced spatial wavefunction has support on infinitely many HG modes. Rank and basis support are different concepts.
+- The numerical calculation uses a finite HG cutoff and a complement outcome. Cutoff convergence was checked independently.
+- The slide is conditional on a Gaussian PSF, known programmed $d_a$ and $\epsilon$, mutual source incoherence and alignment to the bright source.
+
+Sources: [Astrophysical.tex](../TeXtured/chapters/Astrophysical.tex), [ExoplanetExperiment.tex](../TeXtured/chapters/ExoplanetExperiment.tex).
+
+Here $\epsilon=I_B/(I_A+I_B)$ is the faint-source photon fraction. The contrast $I_B/I_A$ approximates it only when the companion is much fainter. The model uses $d_a=d/w_0$ for dimensionless separation.
+
+## Slide 18 — Why use quantum channels?
+
+### Spoken script
+
+[Follow the sequence from left to right.]
+
+We start from the optical state. Channels describe loss, alignment and changes to the modes before SPADE measures them.
+
+For example, dephasing reduces coherence while leaving the mode populations unchanged.
+
+SPADE produces outcome probabilities. Readout cross-talk, background and calibration then determine the predicted mean counts.
+
+The benefit is that each physical effect has its own place. We can replace an assumption with a measured calibration and calculate how it changes the signal and the available information.
+
+The present data test the count response. They do not identify every optical channel.
+
+### Details to keep in mind
+
+**Intuition — preparation only, not extra spoken text:** A probability vector records the diagonal seen by one measurement. A quantum channel is needed when the device can also change the off-diagonal information that another measurement could reveal.
+
+In a two-mode illustration,
+
+$$
+\rho=\begin{pmatrix}q_a&c\\c^*&q_b\end{pmatrix},
+\qquad
+\mathcal D_v(\rho)
+=\begin{pmatrix}q_a&vc\\vc^*&q_b\end{pmatrix}.
+$$
+
+The dephasing example uses a real visibility $0\leq v\leq1$. A direct HG measurement sees the same populations before and after this map. A later coherent mode transformation can turn coherence into a population difference. With a known transformation and suitable inputs, populations can therefore carry indirect information about dephasing. The present aggregate record and incomplete calibration do not identify $v$ independently.
+
+Classical readout cross-talk instead acts on the measurement output:
+
+$$
+\boldsymbol p^{\rm rep}=R_\chi\boldsymbol p,
+\qquad
+p_1^{\rm rep}=\chi p_0+(1-\chi)p_1.
+$$
+
+Other stages remain part of the complete receiver model:
+
+- Before measurement: common loss, alignment or jitter, dephasing, coherent mode mixing, mode-dependent loss and accessible-mode reduction.
+- Measurement: $p_y=\operatorname{Tr}(M_y\rho)$.
+- After measurement: readout confusion, additive background, calibration variation and repeated-count statistics.
+- A background parameter may contain dark counts, ambient background or unresolved leakage; the current record cannot separate them.
+- The quantum-channel description is useful for propagation, QFI analysis and testing alternative measurements. It is not evidence that every channel parameter was learned from this dataset.
+
+The Kraus formalism and its non-uniqueness are available in Appendices E, K and L if the quantum-information examiner asks. They are not needed in the main spoken explanation.
+
+Source: [ExoplanetExperiment.tex](../TeXtured/chapters/ExoplanetExperiment.tex), [ExoplanetExperimentAppendix.tex](../TeXtured/chapters/ExoplanetExperimentAppendix.tex).
+
+Common survival is counted once. Conditional modal probabilities are multiplied by $T=N_{\mathrm{in}}\eta$. The example dephasing and mixing parameters are fixed sensitivity assumptions. They were not fitted from these counts. QFI comparisons use a common per-surviving-photon normalization and parameter-independent channels.
+
+## Slide 19 — A conditional model captures the observed mean pattern
+
+### Spoken script
+
+[Compare the observed and modelled maps.]
+
+With the optical assumptions fixed, we fit the observable count response.
+
+The model captures the central minimum and the increase with separation and companion intensity.
+
+A separate check tested the classical calibration model on settings left out of fitting. It predicted the means well. The detailed results are in the appendix.
+
+This supports the model's practical use. The channel description also lets us study how optical imperfections affect sensitivity and identify which extra measurements would help.
+
+It is foundation work for a future experiment with resolved modes and a controllable measurement basis.
 
 ### Details to keep in mind
 
 **Intuition — preparation only, not extra spoken text:** Predicting the average and explaining every fluctuation are different tasks. Two distributions can share a mean while having different spreads. Matching the mean is useful, but supports a narrower conclusion than identifying the full apparatus.
 
 - The displayed panels are the **provisional workbench's observed and modelled setting means**, compared on the data used for fitting. Do not call this plot alone a held-out validation.
-- The thesis separately reports grouped held-out prediction of setting means. That is evidence for the predictive classical calibration layer, not identification of all quantum channels. Use Appendix H if asked.
+- The separate hierarchical calibration model was checked by holding out checkerboard cells, complete distance rows and complete source-ratio columns. Nominal 95% intervals covered 93.52%, 94.67% and 93.71% of the held-out setting means. These are the Appendix H results, not a validation statistic for the two provisional-workbench panels shown here.
 - Reproducing means is not reproducing the distribution of individual counts. The thesis finds overdispersion and rejects the tested simple deterministic count models as complete descriptions of individual exposures.
 - Avoid “the channels were fitted” and “I reconstructed the experimental QFI.” Instead: **“The optical channels were specified; the observable count response was calibrated.”** A model-based QFI remains conditional on the specified state and channels.
 - More measurements help only if they resolve relevant ambiguities: separate ports address modal aggregation; known flux and loss outcomes address efficiency; phase-sensitive or rotated-basis measurements address coherence; controlled mode injection constrains transfer properties. Complete channel identification can require several calibrated inputs as well as outputs.
 
-## Slide 19 — Conclusions
+The prediction target is the mean of 100 repetitions, expressed as counts per 10 ms. The Gaussian-process correction is classical calibration variation. Mean prediction does not establish the distribution of every individual count or reconstruct experimental QFI.
+
+## Slide 20 — Conclusions
 
 ### Spoken script
 
-To conclude, I developed a numerical and quantum-circuit workflow for studying mixed-state sensor sensitivity, using exact references and variational spectral estimation.
+To conclude, I developed numerical and quantum-circuit methods for studying sensor sensitivity and estimating dominant state components.
 
-I used it to compare preparation, noise and restricted access in a magnetometer. The thermal results show that the most useful preparation depends on the operating range, not only on the ground-state peak.
+For the magnetometer, the useful preparation depends on the field range where the sensor will operate.
 
-For SPADE, I constructed a quantum-to-classical channel description that reproduces the observed mean response while making the limits of the available data explicit. I also proposed VQ-SPADE as a future route to optical spectral estimation.
+For SPADE, the initial TQFI goal led to a calibrated count model and a physical channel framework. VQ-SPADE is the proposed next step, using a trainable optical transformation to learn the state's eigenbasis.
 
-The common lesson is that useful sensitivity belongs to the whole sensing procedure: what we prepare, what we can access, and what we actually measure.
+Across both applications, the central question is how preparation, access and measurement determine the information we can use.
 
 Thank you.
 
@@ -547,9 +647,39 @@ Thank you.
 
 **Intuition — preparation only, not extra spoken text:** End by separating implemented methods, numerical findings, data interpretation and a future proposal. The common lesson is the chain from preparation to the recorded measurement.
 
-- The current conclusion slide says “Perfectly matching.” In speech, use the validated-workflow wording above: finite numerical precision, Trotter error and variational convergence still matter.
-- VQ-SPADE is a proposal; the current archived experiment is not a demonstration of variational diagonalization.
+- The numerical and circuit implementations were compared against exact references; finite numerical precision, Trotter error and variational convergence still matter.
+- The slide's phrase “would diagonalize” describes the ideal goal of VQ-SPADE. A realizable device would learn an approximate eigenbasis, subject to optical control, calibration and optimization limits. The archived experiment did not implement it. Diagonalization alone is also insufficient for TQFI. Nearby states and additional overlap measurements are required.
 - The main talk ends here. The following optional responses are outside the 15-minute budget.
+
+## Backup Slide — Appendix N: Quantum Cramér–Rao bound
+
+### Spoken script
+
+For a fixed measurement, the classical Cramér–Rao bound says that the variance of a locally unbiased estimator is at least one over the number of independent repetitions times the classical Fisher information.
+
+The QFI is the maximum classical Fisher information over all measurements. Replacing the measurement-dependent information by this maximum gives the quantum Cramér–Rao bound:
+
+$$
+\operatorname{Var}(\hat\theta)\geq\frac{1}{N\mathcal F_Q(\theta)},
+\qquad
+\Delta\theta\geq\frac{1}{\sqrt{N\mathcal F_Q(\theta)}}.
+$$
+
+It is therefore an ideal local precision benchmark. Reaching it still requires an appropriate measurement and an efficient estimator; the optimal measurement can itself depend on the unknown parameter.
+
+### Details to keep in mind
+
+- The bound assumes a differentiable one-parameter model, independent repetitions, regularity and local unbiasedness.
+- Since $\mathcal F_C(M)\leq\mathcal F_Q$, a particular measurement obeys
+
+  $$
+  \operatorname{Var}(\hat\theta)
+  \geq\frac{1}{N\mathcal F_C(M)}
+  \geq\frac{1}{N\mathcal F_Q}.
+  $$
+
+- For a single parameter, measuring in an SLD eigenbasis can attain the QFI locally under the usual conditions. This does not imply one fixed, globally optimal measurement for every parameter value.
+- The QCRB concerns estimator variance, not absolute error in a single experimental run.
 
 ## Backup Slide — Appendix C: Adaptive VQSE training
 

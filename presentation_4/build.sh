@@ -15,4 +15,4 @@ for pass in 1 2; do
     fi
 done
 cp build/main.pdf main.pdf
-printf 'Built presentation_4/main.pdf (19 main slides, 6-step overlay, 13 appendices).\n'
+printf 'Built presentation_4/main.pdf (20 main slides, 6-step overlay, 15 appendices).\n'
