@@ -61,7 +61,8 @@ arr/.style={-{Stealth[length=2.4mm]},line width=1.1pt,draw=Teal}}
     \ifdim\wd\slidetitlebox>14.2cm
         \resizebox{14.2cm}{!}{\usebox{\slidetitlebox}}%
     \else\usebox{\slidetitlebox}\fi}
-\newcommand{\takeaway}[1]{\node[txt,text=Teal] at (.8,1.7) {\fitmessage{#1}};}
+% \newcommand{\takeaway}[1]{\node[txt,text=Teal] at (.8,1.7) {\fitmessage{#1}};}
+\newcommand{\takeaway}[1]{\node[txt,text=Teal] at (.8,1.3) {\fitmessage{#1}};}
 \newcommand{\panel}[4]{\fill[Panel,rounded corners=6pt] (#1,#2) rectangle (#3,#4);}
 
 % Compatibility helpers for slides adapted from presentation_3.

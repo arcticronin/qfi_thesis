@@ -522,7 +522,7 @@ The present data test the count response. They do not identify every optical cha
 
 ### Details to keep in mind
 
-The detailed dephasing and readout example is now in Appendix P. The main slide shows only the stage ordering and physical roles.
+Detailed examples are in Appendices P--R. Appendix P separates optical dephasing from classical readout, Appendix Q follows a physical photon-loss channel through to the fitted count response, and Appendix R shows the complete receiver flow. The main slide shows only the stage ordering and physical roles.
 
 **Intuition — preparation only, not extra spoken text:** A probability vector records the diagonal seen by one measurement. A quantum channel is needed when the device can also change the off-diagonal information that another measurement could reveal.
 
@@ -804,3 +804,46 @@ The two maps describe different physical effects, even when the final recorded c
 - Its strength is not independently identified by the available data. A known mode rotation and suitable inputs could make it testable in a future experiment.
 - The symmetric confusion model remains a classical post-measurement assumption.
 - Appendix F distinguishes different quantum extensions of the same classical response. Appendices E and K discuss different Kraus representations of one fixed channel.
+
+## Backup Slide — Appendix Q: Photon loss and measured counts
+
+### Spoken script
+
+Here is one concrete physical channel used in the receiver model: photon loss.
+
+With probability $\eta$, the photon survives and reaches SPADE. With probability $1-\eta$, it is transferred to the vacuum outcome. Including that vacuum branch makes this a normalized quantum channel.
+
+The experiment did not record the incident photon flux, so the loss probability $\eta$ cannot be fitted separately. The counts instead constrain the effective throughput $T=N_{\rm in}\eta$.
+
+After SPADE, the predicted mean also contains a fitted background $B$. Dark counts can contribute to this background, but so can stray light and modal leakage. Therefore $B$ is an effective detector background, not a measurement of the dark-count rate alone.
+
+This example shows why the stages are separated: photon loss acts on the quantum state, whereas background counts enter after the measurement.
+
+### Details to keep in mind
+
+- The loss map is an erasure channel because the missing probability is placed in an orthogonal vacuum outcome.
+- On a finite one-photon mode space, one Kraus representation is $K_0=\sqrt{\eta}\,I$ for survival and $K_j=\sqrt{1-\eta}\,|\mathrm{vac}\rangle\langle HG_j|$ for loss from each mode. Their completeness relation makes the map trace preserving.
+- For separation-independent $\eta$, the QFI per incident photon is $\eta\mathcal F_Q(\rho_S)$, while the conditional state of a surviving photon is still $\rho_S$.
+- The fitted quantity is $T=N_{\rm in}\eta$, not $\eta$ itself. An independent incident-flux measurement would be needed to separate them.
+- The fitted $B$ can combine detector dark counts, stray light, bright-mode leakage and other unresolved baseline contributions. Source-blocked measurements would be needed to identify the dark-count contribution.
+- The mean model is $\mu=B+Tg(d,\epsilon)p^{\rm rep}_1$. The individual counts are overdispersed, so this equation describes their mean rather than asserting a simple Poisson distribution.
+
+## Backup Slide — Appendix R: Complete receiver pipeline
+
+### Spoken script
+
+This diagram shows the complete direction of the model.
+
+We begin with the assumed source state. Photon loss is a quantum channel acting on that state. SPADE then converts the optical state into measurement probabilities.
+
+After measurement, cross-talk acts on the classical outcome probabilities. Background and calibration convert the reported first-order probability into a predicted mean count, which is finally compared with the recorded data.
+
+The separation is useful because these stages do not describe the same object. Optical channels act on density matrices, SPADE produces probabilities, and the detector model produces count statistics. It also tells us which quantities can be calibrated or replaced independently.
+
+### Details to keep in mind
+
+- Photon loss and any other pre-measurement optical effects act on $\rho$.
+- SPADE is represented by a POVM, with $p_1=\operatorname{Tr}(M_1\rho)$.
+- The cross-talk matrix $R_\chi$ is a classical stochastic map acting after the POVM.
+- The final mean is $\mu=B+Tg(d,\epsilon)p^{\rm rep}_1$, where $T=N_{\rm in}\eta$.
+- The data constrain the final count response and some effective combinations of parameters; they do not reconstruct every preceding channel independently.

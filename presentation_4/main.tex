@@ -961,4 +961,90 @@
     \end{canvas}
 \end{frame}
 
+
+% BACKUP Q | physical loss channel and fitted count response
+\begin{frame}[plain,noframenumbering,label=backup-loss-counts]
+    \begin{canvas}
+        \heading{APPENDIX Q / PHYSICAL CHANNEL}{Photon loss as an erasure channel}{A photon either reaches SPADE or is transferred to the vacuum outcome.}
+
+        \node[anchor=center,font=\fontsize{12.5}{16}\selectfont] at (8.0,6.45)
+        {$\rho_S\;\xrightarrow{\;\mathcal S_\eta\;}\;\rho_{\rm surv}
+          \;\xrightarrow{\;\mathrm{SPADE}\;}\;\boldsymbol p
+          \;\xrightarrow{\;R_\chi\;}\;\boldsymbol p^{\rm rep}
+          \;\xrightarrow{\;\mathrm{detector}\;}\;\mu$};
+
+        \panel{.8}{5.70}{7.78}{1.90}
+        \node[anchor=center,text=Teal,font=\fontsize{10}{13}\selectfont\bfseries] at (4.29,5.31)
+        {QUANTUM LOSS CHANNEL};
+        \node[anchor=center,font=\fontsize{13}{17}\selectfont] at (4.29,4.48)
+        {$\mathcal S_\eta(\rho_S)
+          =\eta\rho_S+(1-\eta)\proj{\mathrm{vac}}$};
+        \node[anchor=center,text width=5.95cm,align=center,font=\fontsize{9}{12}\selectfont] at (4.29,3.28)
+        {$\eta$: the photon survives\qquad $1-\eta$: the photon is lost};
+        \node[anchor=center,text=Muted,text width=5.90cm,align=center,font=\fontsize{8}{10.5}\selectfont] at (4.29,2.48)
+        {The vacuum branch keeps total probability\newline equal to one.};
+
+        \panel{8.03}{5.70}{15.20}{1.90}
+        \node[anchor=center,text=Coral,font=\fontsize{10}{13}\selectfont\bfseries] at (11.62,5.31)
+        {WHAT THE COUNTS CONSTRAIN};
+        \node[anchor=center,font=\fontsize{14}{18}\selectfont] at (11.62,4.50)
+        {$\mu=B+T\,g(d,\epsilon)\,p^{\rm rep}_1$};
+        \node[anchor=center,font=\fontsize{12}{15}\selectfont] at (11.62,3.78)
+        {$T=N_{\rm in}\eta$};
+        \node[anchor=center,text width=5.95cm,align=center,font=\fontsize{8.7}{11.5}\selectfont] at (11.62,2.75)
+        {$T$: fitted effective throughput\qquad $B$: fitted effective background};
+
+        \takeaway{Dark counts belong to the detector layer and may contribute to $B$; they are not the optical loss channel.}
+        \footer{Appendix Q}
+    \end{canvas}
+\end{frame}
+
+
+% BACKUP R | complete state-to-count receiver flow
+\begin{frame}[plain,noframenumbering,label=backup-receiver-flow]
+    \begin{canvas}
+        \heading{APPENDIX R / RECEIVER PIPELINE}{From the source state to recorded counts}{The model separates optical evolution, measurement and detector effects.}
+
+        \node[draw=Teal!70,fill=Panel,rounded corners=5pt,minimum width=2.05cm,minimum height=1.75cm,
+              align=center,font=\fontsize{9}{12}\selectfont] (source) at (1.55,4.55)
+        {\textbf{Source state}\\[4pt]$\rho_S$};
+
+        \node[draw=Teal!70,fill=Panel,rounded corners=5pt,minimum width=2.15cm,minimum height=1.75cm,
+              align=center,font=\fontsize{9}{12}\selectfont] (loss) at (4.10,4.55)
+        {\textbf{Photon loss}\\[4pt]$\mathcal S_\eta(\rho)$};
+
+        \node[draw=Paper!45,fill=Panel,rounded corners=5pt,minimum width=2.15cm,minimum height=1.75cm,
+              align=center,font=\fontsize{8.7}{11.5}\selectfont] (spade) at (6.70,4.55)
+        {\textbf{SPADE}\\\textbf{measurement}\\[3pt]$p_1=\Tr(M_1\rho)$};
+
+        \node[draw=Coral!75,fill=Panel,rounded corners=5pt,minimum width=2.15cm,minimum height=1.75cm,
+              align=center,font=\fontsize{8.7}{11.5}\selectfont] (readout) at (9.30,4.55)
+        {\textbf{Readout}\\\textbf{cross-talk}\\[3pt]$\boldsymbol p\mapsto R_\chi\boldsymbol p$};
+
+        \node[draw=Coral!75,fill=Panel,rounded corners=5pt,minimum width=2.55cm,minimum height=1.75cm,
+              align=center,font=\fontsize{8.2}{11}\selectfont] (background) at (12.15,4.55)
+        {\textbf{Background}\\\textbf{and calibration}\\[3pt]$\mu=B+Tg\,p^{\rm rep}_1$};
+
+        \node[draw=Coral!75,fill=Panel,rounded corners=5pt,minimum width=1.95cm,minimum height=1.75cm,
+              align=center,font=\fontsize{8.7}{11.5}\selectfont] (counts) at (14.75,4.55)
+        {\textbf{Recorded}\\\textbf{counts}\\[3pt]$n_1$};
+
+        \draw[arr] (source.east)--(loss.west);
+        \draw[arr] (loss.east)--(spade.west);
+        \draw[arr] (spade.east)--(readout.west);
+        \draw[arr] (readout.east)--(background.west);
+        \draw[arr] (background.east)--(counts.west);
+
+        \node[anchor=center,text=Teal,font=\fontsize{9}{12}\selectfont\bfseries] at (2.82,2.95)
+        {QUANTUM};
+        \node[anchor=center,text=Paper!70,font=\fontsize{9}{12}\selectfont\bfseries] at (6.70,2.95)
+        {MEASUREMENT};
+        \node[anchor=center,text=Coral,font=\fontsize{9}{12}\selectfont\bfseries] at (11.95,2.95)
+        {CLASSICAL};
+
+        \takeaway{Each stage acts on a different object: quantum state $\rightarrow$ probabilities $\rightarrow$ count statistics.}
+        \footer{Appendix R}
+    \end{canvas}
+\end{frame}
+
 \end{document}
