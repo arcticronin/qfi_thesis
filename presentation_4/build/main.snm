@@ -34,12 +34,12 @@
 \beamer@slide {spade}{22}
 \beamer@slide {spade-detector<1>}{23}
 \beamer@slide {spade-detector}{23}
-\beamer@slide {hg-reconstruction<1>}{24}
-\beamer@slide {hg-reconstruction}{24}
-\beamer@slide {embedding<1>}{25}
-\beamer@slide {embedding}{25}
-\beamer@slide {record<1>}{26}
-\beamer@slide {record}{26}
+\beamer@slide {record<1>}{24}
+\beamer@slide {record}{24}
+\beamer@slide {classical-to-quantum<1>}{25}
+\beamer@slide {classical-to-quantum}{25}
+\beamer@slide {embedding<1>}{26}
+\beamer@slide {embedding}{26}
 \beamer@slide {sequence<1>}{27}
 \beamer@slide {sequence}{27}
 \beamer@slide {model-result<1>}{28}
@@ -76,3 +76,7 @@
 \beamer@slide {backup-detail-retention}{43}
 \beamer@slide {backup-qcrb<1>}{44}
 \beamer@slide {backup-qcrb}{44}
+\beamer@slide {hg-reconstruction<1>}{45}
+\beamer@slide {hg-reconstruction}{45}
+\beamer@slide {backup-dephasing-readout<1>}{46}
+\beamer@slide {backup-dephasing-readout}{46}
