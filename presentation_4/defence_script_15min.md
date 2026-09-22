@@ -10,27 +10,27 @@ The central thread is: **a sensor must retain useful sensitivity through prepara
 
 ## Timing map
 
-| Slide | Topic | Duration | Clock |
-|---|---|---:|---|
-| 1 | Opening | 0:30 | 0:00–0:30 |
-| 2 | Two applications | 0:30 | 0:30–1:00 |
-| 3 | Classical Fisher information | 0:50 | 1:00–1:50 |
-| 4 | Measurement animation and QFI | 1:00 | 1:50–2:50 |
-| 5 | Mixed states and spectral estimation | 1:05 | 2:50–3:55 |
-| 6 | Numerical and circuit pipeline | 1:05 | 3:55–5:00 |
-| 7 | Magnetometry divider | 0:05 | 5:00–5:05 |
-| 8 | Magnetometer model | 0:55 | 5:05–6:00 |
-| 9 | Broader thermal sensitivity | 1:00 | 6:00–7:00 |
-| 10 | Stronger thermal peak | 0:55 | 7:00–7:55 |
-| 11 | Exoplanet divider | 0:05 | 7:55–8:00 |
-| 12 | Imaging problem and SPADE | 0:50 | 8:00–8:50 |
-| 13 | Mode probabilities and cross-talk | 0:45 | 8:50–9:35 |
-| 14 | Available data and the original TQFI goal | 1:05 | 9:35–10:40 |
-| 15 | From probabilities to quantum states | 0:45 | 10:40–11:25 |
-| 16 | Physical source state | 0:45 | 11:25–12:10 |
-| 17 | The receiver as a channel sequence | 0:55 | 12:10–13:05 |
-| 18 | Mean-response result and implications | 1:00 | 13:05–14:05 |
-| 19 | Conclusions | 0:55 | 14:05–15:00 |
+| Slide | Topic                                     | Duration | Clock       |
+| ----- | ----------------------------------------- | -------: | ----------- |
+| 1     | Opening                                   |     0:30 | 0:00–0:30   |
+| 2     | Two applications                          |     0:30 | 0:30–1:00   |
+| 3     | Classical Fisher information              |     0:50 | 1:00–1:50   |
+| 4     | Measurement animation and QFI             |     1:00 | 1:50–2:50   |
+| 5     | Mixed states and spectral estimation      |     1:05 | 2:50–3:55   |
+| 6     | Numerical and circuit pipeline            |     1:05 | 3:55–5:00   |
+| 7     | Magnetometry divider                      |     0:05 | 5:00–5:05   |
+| 8     | Magnetometer model                        |     0:55 | 5:05–6:00   |
+| 9     | Broader thermal sensitivity               |     1:00 | 6:00–7:00   |
+| 10    | Stronger thermal peak                     |     0:55 | 7:00–7:55   |
+| 11    | Exoplanet divider                         |     0:05 | 7:55–8:00   |
+| 12    | Imaging problem and SPADE                 |     0:50 | 8:00–8:50   |
+| 13    | Mode probabilities and cross-talk         |     0:45 | 8:50–9:35   |
+| 14    | Available data and the original TQFI goal |     1:05 | 9:35–10:40  |
+| 15    | From probabilities to quantum states      |     0:45 | 10:40–11:25 |
+| 16    | Physical source state                     |     0:45 | 11:25–12:10 |
+| 17    | The receiver as a channel sequence        |     0:55 | 12:10–13:05 |
+| 18    | Mean-response result and implications     |     1:00 | 13:05–14:05 |
+| 19    | Conclusions                               |     0:55 | 14:05–15:00 |
 
 ## Slide 1 — Opening
 
@@ -38,20 +38,23 @@ The central thread is: **a sensor must retain useful sensitivity through prepara
 
 Good morning. My thesis studies how to assess the sensitivity of quantum sensors when we include the conditions under which they actually operate.
 
-The work was developed in collaboration with the Italian Space Agency. 
+The work was developed in collaboration with the Italian Space Agency.
 
 ### Details to keep in mind
 
-**Intuition — preparation only, not extra spoken text:** 
+**Intuition — preparation only, not extra spoken text:**
+
 - The magnetometer is a numerical model and a circuit-method benchmark. The optical application uses a completed laboratory experiment motivated by exoplanet imaging; it is not an astronomical detection of a real exoplanet.
 - Your contribution combines implementations, numerical studies, data interpretation and a future proposal. These have different evidential status throughout the talk.
 
 ## Slide 2 — Applications
 
 ### Spoken script
+
 The question I tried to answer is: how much information about an unknown parameter can we actually access?
 
-I will connect two applications: 
+I will connect two applications:
+
 - quantum magnetometery, where I aim to estimate a magnetic field using an interacting spin model
 - and a problem of exoplanet detection, where I need to resolve a faint source which is very close to a bright star, using spatial mode measurements
 
@@ -108,7 +111,6 @@ These vectors illustrate states at two parameter values. Keep the states fixed, 
 
 The classical Fisher information increases as the projections are farther away (the states are more distnguishable).
 
-
 [Advance to ninety degrees. Pause at the meeting of the curves.]
 
 Here, the CFI reaches the maximum, that defines the quantum Fisher information, which is the best local sensitivity available from the state over all measurements. The key takeway is that QFI is intrinsic to the quantum state and it's independent on the measurement basis.
@@ -145,8 +147,6 @@ Reference: Appendix J of the deck and [measurement_overlay.tex](assets/measureme
 We also have to introduce mixed states. They are statistical mixtures of quantum states, described by a density matrix, used to describe real quantum sensors.
 
 Why study them? Real sensors interact with their environment, and may be only partially accessible. Mixed states exact QFI is hard to compute and is less explored in the literature.
-
-
 
 How: we use a truncated density matrix
 
@@ -186,7 +186,7 @@ Sources: [Methods.tex](../TeXtured/chapters/Methods.tex), [VQSE.tex](../TeXtured
 
 This is the computational structure I developed.
 
-It follows two parallel flows: a numerical simulation and a quantum circuit. 
+It follows two parallel flows: a numerical simulation and a quantum circuit.
 
 First we make a starting state evolve with a Hamiltoninan
 
@@ -196,7 +196,7 @@ Then we compute the spectrum (which as we said in the quantum circuit case is do
 
 The two flows are designed to be interchangable at every checkpoint.
 
-I also tested a natural-gradient update on  VQSE benchmark. The intuition is to scale parameter updates by how much they change the quantum state.
+I also tested a natural-gradient update on VQSE benchmark. The intuition is to scale parameter updates by how much they change the quantum state.
 
 Fisher geometry therefore plays two roles: it quantifies distinguishability for sensing, and it can guide the optimization used in spectral estimation.
 
@@ -230,9 +230,9 @@ This is a transition slide. Advance immediately after the sentence.
 
 ### Spoken script
 
-Quantum magnetometry has real applications: NMR probes monitored accelerator fields at CERN's LEP, and ESA's Juice carries a rubidium-based quantum magnetometer.
+Quantum magnetometry has real applications, for example they use it at CERN and at ESA
 
-Here I use a controlled interacting-spin model, the transverse-field Ising chain. The ring represents spin couplings, not probes placed around an accelerator.
+Here to simulate a quantum magnetometr I use a controlled interacting-spin model, the transverse-field Ising chain. The ring represents spin couplings.
 
 [Point to the six sites, then the two dashed sites.]
 
@@ -318,6 +318,7 @@ Change pace slightly; this is the start of the second application, not a new mat
 ## Slide 12 — The exoplanet problem
 
 ### Spoken script
+
 Consider a bright star and a faint exoplanet.
 
 To detect the exoplanet we can use direct imaging, which records photon positions. If they are separated enough, they can be resolved, if they are too close, the rayleigh diffraction limit prevents us from resolving the two intensities.
@@ -380,7 +381,7 @@ $$
 p_1^{\rm rep}=\chi p_0+(1-\chi)p_1.
 $$
 
-- The companion also contributes to (HG_{00}). Neither port exclusively identifies photon origin.
+- The companion also contributes to (HG\_{00}). Neither port exclusively identifies photon origin.
 - Higher modes and loss require an additional outcome; generally $p_0+p_1\neq1$ unless a binary normalization/conditioning convention has explicitly been imposed.
 - Chi here is **classical reported-port confusion**, not coherent amplitude mixing. The latter requires a pre-measurement optical model.
 - The thesis takes 0.0035 from an external reported cross-talk calibration. Equal reverse leakage and an unaffected failure outcome are assumptions, not a fully measured transfer matrix.
@@ -390,7 +391,7 @@ $$
 
 ### Spoken script
 
-The ASI Matera simulated the system in the lab with lasers. 
+The ASI Matera simulated the system in the lab with lasers.
 They collected first order counts, at different relative intensities $\epsilon$ and separation $d$.
 
 [Point to the individual acquisition and the averaged map.]
@@ -468,9 +469,9 @@ Where do those coherences come from in this experiment?
 
 The star and exoplanet are independent sources, so we describe them as a statistical mixture.
 
-However, the exoplanet wavefunction, which is a sum of several HG modes, might contain coherences.
+The exoplanet wavefunction is a coherent superposition of several HG modes.
 
-The collected $p_1$ is proportional to the trace of $\psi_{d_a}$, so it has no information on the coherences.
+But the fixed measurement of $p_1$ does not depend on the coherences of those HG modes
 
 In this way we have defined the optical state that enters SPADE.
 
@@ -522,9 +523,9 @@ Then SPADE produces outcome probabilities. After the measurement, readout cross-
 
 The benefit is that each physical effect has its own place.
 
-We computed the QFI at each step to asses where we are losing the most information. As a result we found that after the cross-talk effect, the ratio CFI/QFI drops from 90% to 57%.
+We compare state QFI before measurement with CFI after measurement, to asses where we are losing the most information.
 
-
+In the assumed receiver model we found that after the cross-talk effect, the ratio CFI/QFI drops from 90% to 57%.
 
 ### Details to keep in mind
 
@@ -571,7 +572,7 @@ Common survival is counted once. Conditional modal probabilities are multiplied 
 
 [Compare the observed and modelled maps.]
 
-The assumptions of the previous quantum-to-classical model were fitted to reproduce the ASI data. 
+Some of the assumptions of the previous quantum-to-classical model were fitted to reproduce the ASI data.
 
 Here I show the comparison of the mean counts for different distances and intensity ratios.
 
@@ -599,7 +600,7 @@ To conclude, I developed numerical and quantum-circuit methods for studying quan
 
 For the magnetometer, the useful preparation depends on the field range where the sensor will operate.
 
-For SPADE, we derived also a physical channel framework. 
+For SPADE, we derived also a physical channel framework.
 
 VQ-SPADE is the proposed next step, using a trainable optical transformation to learn the state's eigenbasis. It requires additional data from ASI.
 
