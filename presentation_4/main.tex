@@ -48,7 +48,7 @@
         \heading{RESEARCH OBJECTIVES}{Applications}{}
 
         \node[txt,text width=14cm,font=\fontsize{13}{17}\selectfont] at (.95,7.1)
-        {Study QFI and TQFI for two applications:};
+        {Question: How much information about an unknown parameter can we actually access?};
 
         \begin{scope}[yshift=0.25cm]
             \panel{.8}{5.55}{7.85}{3.20}
@@ -60,11 +60,11 @@
 
             \node[txt,text=Coral,font=\large\bfseries] at (8.42,5.20) {Exoplanet detection};
             \node[txt,text width=6.23cm,font=\fontsize{12}{16}\selectfont] at (8.42,4.45)
-            {Resolve a faint companion with\newline spatial-mode measurements.};
+            {Resolve a faint source with\newline spatial-mode measurements.};
 
         \end{scope}
         \node[txt,text width=14cm,font=\fontsize{13}{17}\selectfont] at (.95,2.47)
-        {A common workflow combining numerical simulation, quantum circuits and experimental data.};
+        {Common workflow combining numerical simulation, quantum circuits and experimental data.};
 
         %\takeaway{Connect information in the quantum state to information accessible in measurements.}
         %%\source{Magnetometry: numerical and circuit methods. Optical application: channel analysis and proposed variational protocol; experimental TQFI was not obtained.}
@@ -77,7 +77,9 @@
 \begin{frame}[plain,label=information]
     \begin{canvas}
         \heading{MATHEMATICAL FRAMEWORK}{Classical Fisher Information}
-        {Local sensitivity, distinguishability of nearby parameter values.}
+        {An unknown parameter determines the distribution of possible measurement outcomes. \\
+            If changing the parameter barely changes the distribution, the measurement tells us very little.\\
+            If a small change produces a distinguishable response, it is more informative.}
 
         \begin{scope}[yshift=-0.25cm]
             \node[anchor=north west,inner sep=0pt] at (.85,6.23) {\includegraphics[width=9.1cm]{distinguishability.pdf}};
@@ -100,7 +102,7 @@
 % SLIDE 4 | measurement-geometry
 \begin{frame}[plain,label=measurement-geometry]
     \begin{canvas}
-        \heading{MATHEMATICAL FRAMEWORK}{Fisher Information and Measurements}{Two states inside the Bloch sphere}
+        \heading{MATHEMATICAL FRAMEWORK}{Fisher Information and Measurements}{Two states at two parameter values.}
         % Advance once per basis. One logical slide, six portable PDF overlays.
         \only<1>{\measurementview{0}}
         \only<2>{\measurementview{30}}
@@ -113,6 +115,7 @@
             \node[txt,font=\fontsize{12}{12}\selectfont\bfseries] at (.95,2.25)
             {\textcolor{Coral}{QFI} is intrinsic to the quantum state \\ and it is \textcolor{Coral}{independent of the measurement basis}
             };
+            \takeaway{The state has not become more informative, we have become better at reading it}
         }
         %\source{Mixed states, $r=0.8$; finite separation shown for clarity. CFI is local at $\theta=0$ (radians), not a two-state finite difference. Appendix J.}
         \footer{4 / 19}
@@ -122,7 +125,7 @@
 % SLIDE 5 | learning
 \begin{frame}[plain,label=learning]
     \begin{canvas}
-        \heading{VARIATIONAL METHOD}{How we treat mixed states}{}
+        \heading{MATHEMATICAL FRAMEWORK}{Mixed states}{}
 
         \onslide<1->{
             \node[txt,text=Teal,font=\fontsize{11}{14}\selectfont\bfseries] at (.95,7.14) {WHAT};
@@ -265,7 +268,7 @@
 % SLIDE 8 | magnetometer
 \begin{frame}[plain,label=magnetometer]
     \begin{canvas}
-        \heading{NUMERICAL MODEL}{A noisy quantum magnetometer}{An interacting-spin model for comparing preparation, noise and restricted access.}
+        \heading{APPLICATION I: QUANTUM MAGNETOMETRY}{A noisy quantum magnetometer}{An interacting-spin model for comparing preparation, noise and restricted access.}
 
         \begin{scope}[yshift=.4cm]
 
@@ -310,7 +313,7 @@
 % SLIDE 9 | thermal
 \begin{frame}[plain,label=thermal]
     \begin{canvas}
-        \heading{NUMERICAL RESULTS}{Thermal preparation broadens the sensitive range}
+        \heading{APPLICATION I: QUANTUM MAGNETOMETRY}{Thermal preparation broadens the sensitive range}
         {}
         \node[anchor=north west,inner sep=0pt] at (.58,6.75)
         {\includegraphics[page=1,width=10.5cm,height=4.65cm,keepaspectratio]{thermal_plots.pdf}};
@@ -329,7 +332,7 @@
 % SLIDE 10 | thermal-cold
 \begin{frame}[plain,label=thermal-cold]
     \begin{canvas}
-        \heading{NUMERICAL RESULTS}{Cooling strengthens the sensitivity peak}
+        \heading{APPLICATION I: QUANTUM MAGNETOMETRY}{Cooling strengthens the sensitivity peak}
         {}
         \node[anchor=north west,inner sep=0pt] at (.58,6.75)
         {\includegraphics[page=2,width=10.5cm,height=4.65cm,keepaspectratio]{thermal_plots.pdf}};
@@ -359,7 +362,7 @@
 % SLIDE 12 | spade
 \begin{frame}[plain,label=spade]
     \begin{canvas}
-        \heading{OPTICAL APPLICATION}{The Exoplanet Problem}{A faint exoplanet must be resolved in the presence of a bright star.}
+        \heading{APPLICATION II: EXOPLANET DETECTION}{The Exoplanet Problem}{A faint exoplanet must be resolved in the presence of a bright star.}
         \panel{.8}{6.58}{8.65}{2.25}\panel{8.85}{6.58}{15.2}{2.25}
         \node[txt,font=\large\bfseries] at (1.12,6.28) {Direct imaging, Rayleigh limit};
         \node[anchor=north west,inner sep=0pt] at (1.12,5.61) {\includegraphics[width=3.47cm,height=3.3cm,keepaspectratio]{rayleigh_resolved.png}};
@@ -369,10 +372,10 @@
         \node[flow,text width=1.23cm,minimum height=.83cm] (sorter) at (10.65,4.85) {Mode\\ sorter};
         \draw[arr] (sorter.east)--(12.55,5.37);
         \draw[arr,draw=Coral] (sorter.east)--(12.55,4.2);
-        \node[txt,text width=1.98cm,font=\small] at (12.78,5.58) {$HG_{00}$};
-        \node[txt,text=Coral,text width=1.98cm,font=\small] at (12.78,4.43) {Higher\\ modes};
+        \node[txt,text=Teal,text width=1.98cm,font=\small] at (12.78,5.58) {Star};
+        \node[txt,text=Coral,text width=1.98cm,font=\small] at (12.78,4.43) {Exoplanet};
         \node[smalltxt,text width=5.47cm] at (9.18,3.34) {Photon counts in a spatial-mode basis.};
-        \takeaway{SPADE changes the measurement basis to reveal weak spatial signals.}
+        \takeaway{Change the measurement basis. We used SPAtial-mode DEmultiplexing (SPADE)}
         %\source{SPADE: SPAtial-mode DEmultiplexing. Tsang et al. (2016); Santamaria et al. (2024).}
         \footer{12 / 19}
     \end{canvas}
@@ -381,7 +384,7 @@
 % SLIDE 13 | spade-detector
 \begin{frame}[plain,label=spade-detector]
     \begin{canvas}
-        \heading{OPTICAL APPLICATION}{SPADE modes and readout cross-talk}{}
+        \heading{APPLICATION II: EXOPLANET DETECTION}{SPADE, Hermit-Gauss modes and cross-talk}{}
         % Same width/height constraints as before: actual image height is 5.7 cm.
         \node[anchor=east,inner sep=0pt] at (15.2,4.25)
         {\includegraphics[width=13.8cm,height=5.7cm,keepaspectratio]{hg_modes_strong_visuals.png}};
@@ -414,7 +417,7 @@
 % SLIDE 14 | record
 \begin{frame}[plain,label=record]
     \begin{canvas}
-        \heading{EXPERIMENTAL DATA}{What the experiment recorded}{Aggregate first-order counts over separation and source intensity.}
+        \heading{APPLICATION II: EXPERIMENTAL DATA}{What the experiment recorded}{Aggregate first-order counts, in experimental lab settings, over separation $d$ and intensity ratio $\epsilon$}
         \node[smalltxt,text width=11.3cm,font=\fontsize{10}{13}\selectfont] at (.85,6.75)
         {52,500 count observations: 525 settings $\times$ 100 repetitions; $10\,\mathrm{ms}$ each};
 
@@ -433,13 +436,14 @@
 
         \node[txt,text=Coral,font=\fontsize{11}{14}\selectfont\bfseries] at (11.30,4.57)
         {MISSING};
-        \node[txt,text width=3.70cm,font=\fontsize{10}{13}\selectfont] at (11.30,4.03)
-        {Separate modes and\\measurements in other bases};
+        \node[txt,text width=4.40cm,font=\fontsize{10}{11}\selectfont] at (11.30,4.03)
+        {Separate modes \\ measurements in other bases};
 
         \node[txt,text=Teal,font=\fontsize{11}{14}\selectfont\bfseries] at (11.30,2.85)
         {NEW DIRECTION};
-        \node[txt,text width=3.70cm,font=\fontsize{10}{13}\selectfont] at (11.30,2.31)
-        {Fit the counts and\\model the receiver};
+        \node[txt,text width=4.40cm,font=\fontsize{10}{13}\selectfont] at (11.30,2.31)
+        {Fit the counts using quantum channels \\
+            foundation to find \\ the optimal basis};
         %\takeaway{Number of photons collected in each configuration of $d$ and $\epsilon$}
         %%\source{Thesis: Exoplanet Experiment. $d_a$: displacement; $\epsilon$: source ratio. Aggregate counts; no basis rotations or experimental TQFI.}
         \footer{14 / 19}
@@ -450,7 +454,7 @@
 % SLIDE 15 | classical-to-quantum transition
 \begin{frame}[plain,label=classical-to-quantum]
     \begin{canvas}
-        \heading{CHANNEL FRAMEWORK}{From probabilities to quantum states}{Two-mode example. Counts do not determine the whole state.}
+        \heading{APPLICATION II: CHANNEL FRAMEWORK}{From probabilities to quantum states}{Two-mode example. Counts do not determine the whole state.}
 
         \panel{.8}{6.30}{4.80}{3.0}
 
@@ -492,13 +496,13 @@
 % SLIDE 16 | source-state
 \begin{frame}[plain,label=embedding]
     \begin{canvas}
-        \heading{CHANNEL FRAMEWORK}{The optical source state}{The state is defined before loss, measurement and detector processing.}
+        \heading{APPLICATION II: CHANNEL FRAMEWORK}{The optical source state}{The state is defined before loss, measurement and detector processing.}
 
         \panel{.8}{6.15}{5.45}{1.86}
         \node[anchor=center,text=Teal,font=\fontsize{10}{13}\selectfont\bfseries] at (3.12,5.78)
         {PHYSICAL SOURCE};
         \fill[Teal] (1.34,4.86) circle (.17);
-        \node[txt,font=\fontsize{11}{14}\selectfont\bfseries] at (1.72,5.08) {centred star};
+        \node[txt,font=\fontsize{11}{14}\selectfont\bfseries] at (1.72,5.08) {centered star};
         \node[txt,text=Teal,font=\fontsize{13}{16}\selectfont] at (1.72,4.54)
         {$|HG_{00}\rangle$};
         \fill[Coral] (1.34,3.49) circle (.095);
@@ -528,7 +532,7 @@
 % SLIDE 17 | receiver sequence
 \begin{frame}[plain,label=sequence]
     \begin{canvas}
-        \heading{CHANNEL FRAMEWORK}{From the optical state to counts}{Each stage describes one part of the receiver.}
+        \heading{APPLICATION II:  CHANNEL FRAMEWORK}{From the optical state to counts}{Each stage describes one part of the receiver.}
 
         \node[anchor=center,font=\fontsize{13}{17}\selectfont] at (8.0,6.30)
         {$\rho_S\;\xrightarrow{\;\mathcal E\;}\;\rho'
@@ -560,7 +564,7 @@
 % SLIDE 18 | model-result
 \begin{frame}[plain,label=model-result]
     \begin{canvas}
-        \heading{MODEL AND OBSERVATIONS}{The model captures the mean count pattern}{Fit to the recorded settings, with fixed optical assumptions.}
+        \heading{APPLICATION II: MODEL AND OBSERVATIONS}{The model captures the mean count pattern}{Fit to the recorded settings, with fixed optical assumptions.}
         \node[txt,text=Teal,font=\fontsize{12}{16}\selectfont\bfseries] at (1.0,6.48) {Observed setting means};
         \node[txt,text=Coral,font=\fontsize{12}{16}\selectfont\bfseries] at (8.10,6.48) {Modelled setting means};
         % Display only the top two panels of the original thesis figure.
@@ -969,16 +973,16 @@
 
         \node[anchor=center,font=\fontsize{12.5}{16}\selectfont] at (8.0,6.45)
         {$\rho_S\;\xrightarrow{\;\mathcal S_\eta\;}\;\rho_{\rm surv}
-          \;\xrightarrow{\;\mathrm{SPADE}\;}\;\boldsymbol p
-          \;\xrightarrow{\;R_\chi\;}\;\boldsymbol p^{\rm rep}
-          \;\xrightarrow{\;\mathrm{detector}\;}\;\mu$};
+                \;\xrightarrow{\;\mathrm{SPADE}\;}\;\boldsymbol p
+                \;\xrightarrow{\;R_\chi\;}\;\boldsymbol p^{\rm rep}
+                \;\xrightarrow{\;\mathrm{detector}\;}\;\mu$};
 
         \panel{.8}{5.70}{7.78}{1.90}
         \node[anchor=center,text=Teal,font=\fontsize{10}{13}\selectfont\bfseries] at (4.29,5.31)
         {QUANTUM LOSS CHANNEL};
         \node[anchor=center,font=\fontsize{13}{17}\selectfont] at (4.29,4.48)
         {$\mathcal S_\eta(\rho_S)
-          =\eta\rho_S+(1-\eta)\proj{\mathrm{vac}}$};
+                =\eta\rho_S+(1-\eta)\proj{\mathrm{vac}}$};
         \node[anchor=center,text width=5.95cm,align=center,font=\fontsize{9}{12}\selectfont] at (4.29,3.28)
         {$\eta$: the photon survives\qquad $1-\eta$: the photon is lost};
         \node[anchor=center,text=Muted,text width=5.90cm,align=center,font=\fontsize{8}{10.5}\selectfont] at (4.29,2.48)
@@ -1006,27 +1010,27 @@
         \heading{APPENDIX R / RECEIVER PIPELINE}{From the source state to recorded counts}{The model separates optical evolution, measurement and detector effects.}
 
         \node[draw=Teal!70,fill=Panel,rounded corners=5pt,minimum width=2.05cm,minimum height=1.75cm,
-              align=center,font=\fontsize{9}{12}\selectfont] (source) at (1.55,4.55)
+            align=center,font=\fontsize{9}{12}\selectfont] (source) at (1.55,4.55)
         {\textbf{Source state}\\[4pt]$\rho_S$};
 
         \node[draw=Teal!70,fill=Panel,rounded corners=5pt,minimum width=2.15cm,minimum height=1.75cm,
-              align=center,font=\fontsize{9}{12}\selectfont] (loss) at (4.10,4.55)
+            align=center,font=\fontsize{9}{12}\selectfont] (loss) at (4.10,4.55)
         {\textbf{Photon loss}\\[4pt]$\mathcal S_\eta(\rho)$};
 
         \node[draw=Paper!45,fill=Panel,rounded corners=5pt,minimum width=2.15cm,minimum height=1.75cm,
-              align=center,font=\fontsize{8.7}{11.5}\selectfont] (spade) at (6.70,4.55)
+            align=center,font=\fontsize{8.7}{11.5}\selectfont] (spade) at (6.70,4.55)
         {\textbf{SPADE}\\\textbf{measurement}\\[3pt]$p_1=\Tr(M_1\rho)$};
 
         \node[draw=Coral!75,fill=Panel,rounded corners=5pt,minimum width=2.15cm,minimum height=1.75cm,
-              align=center,font=\fontsize{8.7}{11.5}\selectfont] (readout) at (9.30,4.55)
+            align=center,font=\fontsize{8.7}{11.5}\selectfont] (readout) at (9.30,4.55)
         {\textbf{Readout}\\\textbf{cross-talk}\\[3pt]$\boldsymbol p\mapsto R_\chi\boldsymbol p$};
 
         \node[draw=Coral!75,fill=Panel,rounded corners=5pt,minimum width=2.55cm,minimum height=1.75cm,
-              align=center,font=\fontsize{8.2}{11}\selectfont] (background) at (12.15,4.55)
+            align=center,font=\fontsize{8.2}{11}\selectfont] (background) at (12.15,4.55)
         {\textbf{Background}\\\textbf{and calibration}\\[3pt]$\mu=B+Tg\,p^{\rm rep}_1$};
 
         \node[draw=Coral!75,fill=Panel,rounded corners=5pt,minimum width=1.95cm,minimum height=1.75cm,
-              align=center,font=\fontsize{8.7}{11.5}\selectfont] (counts) at (14.75,4.55)
+            align=center,font=\fontsize{8.7}{11.5}\selectfont] (counts) at (14.75,4.55)
         {\textbf{Recorded}\\\textbf{counts}\\[3pt]$n_1$};
 
         \draw[arr] (source.east)--(loss.west);
