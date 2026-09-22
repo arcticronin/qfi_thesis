@@ -38,28 +38,24 @@ The central thread is: **a sensor must retain useful sensitivity through prepara
 
 Good morning. My thesis studies how to assess the sensitivity of quantum sensors when we include the conditions under which they actually operate.
 
-The work was developed in collaboration with the Italian Space Agency. I will connect two applications: a quantum magnetometer and an optical experiment motivated by exoplanet detection.
-
-The common question is: how much information about an unknown parameter can we actually access?
+The work was developed in collaboration with the Italian Space Agency. 
 
 ### Details to keep in mind
 
-**Intuition — preparation only, not extra spoken text:** The two applications ask the same question at different stages: what sensitivity does the model allow, and how much can the actual measurement reveal?
-
+**Intuition — preparation only, not extra spoken text:** 
 - The magnetometer is a numerical model and a circuit-method benchmark. The optical application uses a completed laboratory experiment motivated by exoplanet imaging; it is not an astronomical detection of a real exoplanet.
 - Your contribution combines implementations, numerical studies, data interpretation and a future proposal. These have different evidential status throughout the talk.
 
 ## Slide 2 — Applications
 
 ### Spoken script
+The question I tried to answer is: how much information about an unknown parameter can we actually access?
 
-I study this question in two complementary settings.
+I will connect two applications: 
+- quantum magnetometery, where I aim to estimate a magnetic field using an interacting spin model
+- and a problem of exoplanet detection, where I need to resolve a faint source which is very close to a bright star, using spatial mode measurements
 
-The magnetometer provides a controlled model: I can vary preparation, noise and access, and compare the resulting sensitivities.
-
-The optical experiment asks a different question: given a real measurement record, which parts of the sensing process can we reconstruct or meaningfully model?
-
-Both start from the same distinction between information in a state and information in recorded outcomes.
+To approach these applications I developed a common workflow which combines numerical simulation, quantum circuits and experimental data
 
 ### Details to keep in mind
 
@@ -71,15 +67,17 @@ The two applications do not both demonstrate experimental TQFI. The numerical st
 
 ### Spoken script
 
-To connect these applications, consider an ordinary measurement.
+Before discussing the applications, we need to introduce some concepts, for example fisher information.
 
 [Point to the probability distributions.]
 
-An unknown parameter, such as a magnetic field, determines the distribution of possible outcomes. If changing the parameter barely changes that distribution, the measurement tells us very little. If a small change produces a distinguishable response, estimation becomes easier.
+An unknown parameter, such as a magnetic field, determines the distribution of possible measurement outcomes.
 
-Fisher information quantifies this local sensitivity. It compares the change in the outcome probabilities with their statistical fluctuations.
+Consider a small change in the parameter.
 
-So it is not simply a measure of how large the signal is. A bright but almost constant signal can be less informative than a weaker signal that responds strongly to the parameter.
+We can have different situations: on the left this change barely changes the distribution, so the measurement tells us very little, while in the right case the same change produces a distinguishable response, so the measurement is more informative.
+
+Fisher information quantifies the sensitivity of the distribution to this parameter. So it is how much information a specific fixed measurement reveals about an unknown parameter.
 
 ### Details to keep in mind
 
@@ -99,25 +97,23 @@ Source: [MathBackground.tex](../TeXtured/chapters/MathBackground.tex).
 
 ### Spoken script
 
-A quantum state can contain information that a particular measurement fails to reveal.
-
 [Start at zero degrees. Point to the two coloured vectors.]
 
-These vectors illustrate states at two parameter values. Keep the states fixed, and rotate only the measurement basis.
+Let's visualize how fisher information changes.
+
+These vectors illustrate states at two parameter values. Keep the states fixed, and rotate only the measurement basis, where we project those states.
 
 [Advance through thirty and forty-five degrees.]
-
-The classical Fisher information changes because the measurement probes the state differently.
-
 [Advance through sixty and seventy-five degrees.]
 
-Some bases are more responsive to the parameter variation than others.
+The classical Fisher information increases as the projections are farther away (the states are more distnguishable).
+
 
 [Advance to ninety degrees. Pause at the meeting of the curves.]
 
-Here, the measurement reaches the quantum Fisher information, or QFI: the best local sensitivity available from the state over all measurements.
+Here, the CFI reaches the maximum, that defines the quantum Fisher information, which is the best local sensitivity available from the state over all measurements. The key takeway is that QFI is intrinsic to the quantum state and it's independent on the measurement basis.
 
-The state has not become more informative. We have become better at reading the information it already contains. That distinction will matter again in the optical experiment.
+The state has not become more informative. We have become better at reading it.
 
 ### Details to keep in mind
 
@@ -142,21 +138,29 @@ $$
 
 Reference: Appendix J of the deck and [measurement_overlay.tex](assets/measurement_overlay.tex).
 
-## Slide 5 — How we treat mixed states
+## Slide 5 — Mixed states
 
 ### Spoken script
 
-What are mixed states? They describe statistical mixtures of quantum states, using a density matrix.
+We also have to introduce mixed states. They are statistical mixtures of quantum states, described by a density matrix, used to describe real quantum sensors.
 
-Why study them? Real sensors interact with their environment, and we may observe only part of the probe. Mixed-state sensitivity is therefore important, but computing it exactly becomes expensive as the system grows.
+Why study them? Real sensors interact with their environment, and may be only partially accessible. Mixed states exact QFI is hard to compute and is less explored in the literature.
+
+
+
+How: we use a truncated density matrix
 
 [Point to the truncated density matrix.]
 
-Our approach keeps the dominant eigencomponents instead of treating the entire spectrum in equal detail.
+considering only the dominant $m$ eigenvalues lambda and eigenvectors $\psi$
 
-VQSE, the Variational Quantum State Eigensolver, learns a change of basis that exposes the leading eigenvalues and allows their eigenvectors to be prepared.
+This is similar to PCA.
 
-These components then enter TQFI, Truncated Quantum Fisher Information, through fidelity-based bounds. Intuitively, we compare nearby states using a compact spectral description to estimate how distinguishable they are.
+To do that on quantum computers, we use a VQSE, the Variational Quantum State Eigensolver, a quantum circuit.
+
+With the truncated density matrix we compute the TQFI, Truncated Quantum Fisher Information, which gives the upper and lower bounds of the QFI.
+
+Intuitively, we compare nearby states using a compact spectral description to estimate how distinguishable they are.
 
 ### Details to keep in mind
 
@@ -182,15 +186,17 @@ Sources: [Methods.tex](../TeXtured/chapters/Methods.tex), [VQSE.tex](../TeXtured
 
 This is the computational structure I developed.
 
-[Follow the upper row.]
+It follows two parallel flows: a numerical simulation and a quantum circuit. 
 
-Numerically, I prepare the state, restrict access and calculate its spectrum. This gives a reference for the circuit route below, where VQSE learns the dominant components needed for the information bounds.
+First we make a starting state evolve with a Hamiltoninan
 
-The stages are modular, so I can check approximations against their numerical counterparts.
+Then to have a mixed state, we restric access: in the numerical simulation we take a partial trace, in the quantum circuit we ignore some qubits.
 
-[Point to VQSE.]
+Then we compute the spectrum (which as we said in the quantum circuit case is done with VQSE) and with this we compute the lower bound of the QFI.
 
-I also tested a deterministic Bures natural-gradient update on a small mixed-state VQSE benchmark. The intuition is to scale parameter updates by how much they change the quantum state.
+The two flows are designed to be interchangable at every checkpoint.
+
+I also tested a natural-gradient update on  VQSE benchmark. The intuition is to scale parameter updates by how much they change the quantum state.
 
 Fisher geometry therefore plays two roles: it quantifies distinguishability for sensing, and it can guide the optimization used in spectral estimation.
 
@@ -312,16 +318,15 @@ Change pace slightly; this is the start of the second application, not a new mat
 ## Slide 12 — The exoplanet problem
 
 ### Spoken script
+Consider a bright star and a faint exoplanet.
 
-A faint companion close to a bright star is difficult to resolve because their images overlap.
+To detect the exoplanet we can use direct imaging, which records photon positions. If they are separated enough, they can be resolved, if they are too close, the rayleigh diffraction limit prevents us from resolving the two intensities.
 
-[Point from the unresolved image to the mode sorter.]
-
-Direct imaging records photon positions. SPADE instead sorts the light into spatial modes.
-
-With the sorter aligned to the star, most of the bright light enters the fundamental mode. The displaced companion also contributes to higher modes, where its weak signal is easier to detect.
+A better approach is sorting the light into spatial modes, to clearly separate the contirbution of the star and the exoplanet.
 
 This connects to the earlier measurement animation: changing the measurement basis can reveal information that another measurement misses.
+
+As mode sorter we used SPADE.
 
 ### Details to keep in mind
 
@@ -335,19 +340,21 @@ Mutual incoherence of star and companion does not mean that their spatial densit
 
 Sources: [Astrophysical.tex](../TeXtured/chapters/Astrophysical.tex), [ExoplanetExperiment.tex](../TeXtured/chapters/ExoplanetExperiment.tex).
 
-## Slide 13 — SPADE modes and readout cross-talk
+## Slide 13 — SPADE, Hermite-Gauss modes and cross-talk
 
 ### Spoken script
 
+SPADE maps the spatial photon wavefunction into spatial Hermite-Gaussian modes.
+
+With SPADE aligned to the star, most of the bright light enters the fundamental mode. We define the probability of this outcome as $p_0$
+
+The exoplanet contributes to higher modes, we define $p_1$ the probability of the two first-order modes.
+
 [Point to the fundamental and first-order modes.]
 
-P-zero is the probability of the fundamental outcome. P-one combines the two first-order outcomes, which respond to the source separation.
+There's a probability that a detector confuses the modes. We model this with a classical cross-talk channel, with probability $\chi$.
 
-The detector can confuse the reported ports. In this model, chi describes that cross-talk.
-
-The reported first-order signal therefore includes some events from the bright fundamental port.
-
-Even a small leak matters because the star is so much brighter. This gives us a simple classical description of the readout. Next, we need to ask what the available counts can tell us.
+The reported first-order exoplanet signal therefore might include some events from the star.
 
 ### Details to keep in mind
 
@@ -383,17 +390,14 @@ $$
 
 ### Spoken script
 
-The ASI Matera experiment had already finished when we received these data.
+The ASI Matera simulated the system in the lab with lasers. 
+They collected first order counts, at different relative intensities $\epsilon$ and separation $d$.
 
 [Point to the individual acquisition and the averaged map.]
 
-At each setting, we have one hundred repetitions of the combined first-order count.
+I developed a quantum channel model connecting the optical state to the recorded counts.
 
-My initial aim was to use these measurements for TQFI. But the archive did not contain the separate modal outcomes or the measurements needed to recover the state's dominant eigencomponents.
-
-TQFI needs eigenvalues and eigenvectors. Fixed HG populations do not generally provide them. The detailed basis argument is in the backup slides.
-
-The data did support fitting the average count response. I therefore developed a channel model connecting the optical state to the recorded counts. To explain that change of perspective, let us connect probabilities to density matrices.
+With further calibration this framework could help designing a basis better suited to the actual receiver
 
 ### Details to keep in mind
 
@@ -411,13 +415,11 @@ The experimental TQFI protocol is not identifiable from this record. This does n
 
 [Move from left to right.]
 
-For two modes, we can collect their probabilities in a vector. We can also write those probabilities on the diagonal of a density matrix.
+Let us connect probabilities with quantum states.
 
-But an optical state can have additional entries: coherences between the modes. The same populations can therefore belong to different quantum states.
+For two modes, we collect their classical probabilities in a vector. We can also write those probabilities on the diagonal of a density matrix.
 
-Classical cross-talk changes the reported probabilities. A quantum channel describes what happens to the optical state before measurement, including its coherences.
-
-This gives us the language to model the receiver.
+But an optical state can have additional entries: coherences between those modes. The same populations can therefore belong to different quantum states.
 
 ### Details to keep in mind
 
@@ -464,11 +466,13 @@ Where do those coherences come from in this experiment?
 
 [Point to the two source contributions.]
 
-The star and companion are independent sources, so we describe them as a statistical mixture.
+The star and exoplanet are independent sources, so we describe them as a statistical mixture.
 
-However, the displaced companion's wavefunction extends across several HG modes. Those mode amplitudes can have definite phase relations, even though the two sources are mutually incoherent.
+However, the exoplanet wavefunction, which is a sum of several HG modes, might contain coherences.
 
-This source model therefore supplies both populations and modal coherences. We can now follow how the receiver acts on that state.
+The collected $p_1$ is proportional to the trace of $\psi_{d_a}$, so it has no information on the coherences.
+
+In this way we have defined the optical state that enters SPADE.
 
 ### Details to keep in mind
 
@@ -508,17 +512,19 @@ Here $\epsilon=I_B/(I_A+I_B)$ is the faint-source photon fraction. The contrast 
 
 ### Spoken script
 
+Now we describe what happens to the optical state when it goes through SPADE and the detector.
+
 [Follow the sequence from left to right.]
 
-We start from the optical state. Channels describe loss, alignment and changes to the modes before SPADE measures them.
+What happens before the optical state enters SPADE is described by a series of quantum channels, that include loss, alignment and changes to the modes.
 
-The optical stages can change both the mode populations and their coherence.
+Then SPADE produces outcome probabilities. After the measurement, readout cross-talk and background and calibration then determine the predicted mean counts.
 
-SPADE produces outcome probabilities. Readout cross-talk, background and calibration then determine the predicted mean counts.
+The benefit is that each physical effect has its own place.
 
-The benefit is that each physical effect has its own place. We can replace an assumption with a measured calibration and calculate how it changes the signal and the available information.
+We computed the QFI at each step to asses where we are losing the most information. As a result we found that after the cross-talk effect, the ratio CFI/QFI drops from 90% to 57%.
 
-The present data test the count response. They do not identify every optical channel.
+
 
 ### Details to keep in mind
 
@@ -565,15 +571,13 @@ Common survival is counted once. Conditional modal probabilities are multiplied 
 
 [Compare the observed and modelled maps.]
 
-With the optical assumptions fixed, we fit the observable count response.
+The assumptions of the previous quantum-to-classical model were fitted to reproduce the ASI data. 
 
-The model captures the central minimum and the increase with separation and companion intensity.
+Here I show the comparison of the mean counts for different distances and intensity ratios.
 
-A separate check tested the classical calibration model on settings left out of fitting. It predicted the means well. The detailed results are in the appendix.
+This supports the model's practical use. The channel description also lets us study how optical imperfections affect sensitivity.
 
-This supports the model's practical use. The channel description also lets us study how optical imperfections affect sensitivity and identify which extra measurements would help.
-
-It is foundation work for a future experiment with resolved modes and a controllable measurement basis.
+With this model we can also identify which extra measurements would help for a future experiment.
 
 ### Details to keep in mind
 
@@ -591,11 +595,13 @@ The prediction target is the mean of 100 repetitions, expressed as counts per 10
 
 ### Spoken script
 
-To conclude, I developed numerical and quantum-circuit methods for studying sensor sensitivity and estimating dominant state components.
+To conclude, I developed numerical and quantum-circuit methods for studying quantum sensor under noise.
 
 For the magnetometer, the useful preparation depends on the field range where the sensor will operate.
 
-For SPADE, the initial TQFI goal led to a calibrated count model and a physical channel framework. VQ-SPADE is the proposed next step, using a trainable optical transformation to learn the state's eigenbasis.
+For SPADE, we derived also a physical channel framework. 
+
+VQ-SPADE is the proposed next step, using a trainable optical transformation to learn the state's eigenbasis. It requires additional data from ASI.
 
 Across both applications, the central question is how preparation, access and measurement determine the information we can use.
 

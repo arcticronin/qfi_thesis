@@ -77,9 +77,7 @@
 \begin{frame}[plain,label=information]
     \begin{canvas}
         \heading{MATHEMATICAL FRAMEWORK}{Classical Fisher Information}
-        {An unknown parameter determines the distribution of possible measurement outcomes. \\
-            If changing the parameter barely changes the distribution, the measurement tells us very little.\\
-            If a small change produces a distinguishable response, it is more informative.}
+        {An unknown parameter determines the distribution of possible measurement outcomes.}
 
         \begin{scope}[yshift=-0.25cm]
             \node[anchor=north west,inner sep=0pt] at (.85,6.23) {\includegraphics[width=9.1cm]{distinguishability.pdf}};
@@ -296,7 +294,7 @@
                 \node[txt,text width=5.2cm] at (9.6, 5.2)
                 {Field-dependent populations};
                 \node[txt,text=Coral,font=\bfseries] at (6.9,4.5)
-                {Depolarized};
+                {Depolarization};
                 \node[txt,text width=5.2cm] at (9.6,4.5)
                 {Fixed depolarizing noise};
             \end{scope}
@@ -384,7 +382,7 @@
 % SLIDE 13 | spade-detector
 \begin{frame}[plain,label=spade-detector]
     \begin{canvas}
-        \heading{APPLICATION II: EXOPLANET DETECTION}{SPADE, Hermit-Gauss modes and cross-talk}{}
+        \heading{APPLICATION II: EXOPLANET DETECTION}{SPADE, Hermite-Gauss modes and cross-talk}{}
         % Same width/height constraints as before: actual image height is 5.7 cm.
         \node[anchor=east,inner sep=0pt] at (15.2,4.25)
         {\includegraphics[width=13.8cm,height=5.7cm,keepaspectratio]{hg_modes_strong_visuals.png}};
@@ -399,7 +397,7 @@
             \node[txt,text=Coral,font=\fontsize{13}{16}\selectfont\bfseries] at (.95,5.27)
             {$p_1$ : first-order modes};
             \node[txt,text width=5.35cm,font=\fontsize{11}{14}\selectfont] at (.95,4.65)
-            {Probability in $HG_{01}$ or $HG_{10}$\newline sensitive to exoplanet separation};
+            {Probability in $HG_{01}$ or $HG_{10}$\newline sensitive to exoplanet};
             \node[txt,text=Teal,font=\fontsize{13}{16}\selectfont\bfseries] at (.95,3.36)
             {$\chi$ : readout cross-talk};
             \node[txt,text width=5.35cm,font=\fontsize{11}{14}\selectfont] at (.95,2.74)
@@ -429,15 +427,6 @@
 
         \draw[Line,line width=1pt] (11.04,5.97)--(11.04,0.80);
 
-        \node[txt,text=Coral,font=\fontsize{11}{14}\selectfont\bfseries] at (11.30,5.92)
-        {INITIAL AIM};
-        \node[txt,text width=3.70cm,font=\fontsize{11}{14}\selectfont] at (11.30,5.38)
-        {Estimate TQFI};
-
-        \node[txt,text=Coral,font=\fontsize{11}{14}\selectfont\bfseries] at (11.30,4.57)
-        {MISSING};
-        \node[txt,text width=4.40cm,font=\fontsize{10}{11}\selectfont] at (11.30,4.03)
-        {Separate modes \\ measurements in other bases};
 
         \node[txt,text=Teal,font=\fontsize{11}{14}\selectfont\bfseries] at (11.30,2.85)
         {FOUNDATIONAL WORK};
@@ -454,7 +443,7 @@
 % SLIDE 15 | classical-to-quantum transition
 \begin{frame}[plain,label=classical-to-quantum]
     \begin{canvas}
-        \heading{APPLICATION II: CHANNEL FRAMEWORK}{From probabilities to quantum states}{Two-mode example. Counts do not determine the whole state.}
+        \heading{APPLICATION II: CHANNEL FRAMEWORK}{From probabilities to quantum channels}{Two-mode example. Counts do not determine the whole state.}
 
         \panel{.8}{6.30}{4.80}{3.0}
 
@@ -475,18 +464,18 @@
 
         \panel{10.05}{6.30}{15.20}{3.0}
         \node[anchor=center,text=Coral,font=\fontsize{10}{13}\selectfont\bfseries] at (12.63,5.87)
-        {WITH COHERENCE};
+        {QUANTUM STATE};
         \node[anchor=center,font=\fontsize{15}{19}\selectfont] at (12.63,4.78)
         {$\rho=\begin{pmatrix}q_a&\textcolor{Coral}{c}\\\textcolor{Coral}{c^*}&q_b\end{pmatrix}$};
         \node[anchor=center,text width=4.45cm,align=center,font=\fontsize{9.5}{13}\selectfont] at (12.63,3.55)
         {Same populations,\\different coherence.};
 
-        \node[anchor=center,font=\fontsize{12}{16}\selectfont] at (4.30,2.55)
-        {Classical readout: $\boldsymbol q^{\rm rep}=R_\chi\boldsymbol q$};
-        \node[anchor=center,font=\fontsize{12}{16}\selectfont] at (11.60,2.55)
-        {Quantum channel: $\rho'=\mathcal E(\rho)$};
+        % \node[anchor=center,font=\fontsize{12}{16}\selectfont] at (4.30,2.55)
+        % {Classical readout: $\boldsymbol q^{\rm rep}=R_\chi\boldsymbol q$};
+        % \node[anchor=center,font=\fontsize{12}{16}\selectfont] at (11.60,2.55)
+        % {Quantum channel: $\rho'=\mathcal E(\rho)$};
 
-        \takeaway{Counts reveal populations. The optical model also describes coherence.}
+        %\takeaway{Counts reveal populations. The optical model also describes coherence.}
         % This is a representation comparison, not a physical process creating coherence from counts.
         % q_a and q_b are normalized populations of two individual modes in this illustration.
         \footer{15 / 19}
