@@ -102,7 +102,7 @@ Source: [MathBackground.tex](../TeXtured/chapters/MathBackground.tex).
 
 [Start at zero degrees. Point to the two coloured vectors.]
 
-Let's visualize how fisher information changes.
+Let's visualize how fisher information changes with different measurment setups.
 
 These vectors illustrate states at two parameter values. Keep the states fixed, and rotate only the measurement basis, where we project those states.
 
@@ -192,7 +192,9 @@ First we make a starting state evolve with a Hamiltoninan
 
 Then to have a mixed state, we restric access: in the numerical simulation we take a partial trace, in the quantum circuit we ignore some qubits.
 
-Then we compute the spectrum (which as we said in the quantum circuit case is done with VQSE) and with this we compute the lower bound of the QFI.
+Then we compute the spectrum (which as we said in the quantum circuit case is done with VQSE)
+
+and with this we compute the lower bound of the QFI.
 
 The two flows are designed to be interchangable at every checkpoint.
 
@@ -232,13 +234,16 @@ This is a transition slide. Advance immediately after the sentence.
 
 Quantum magnetometry has real applications, for example they use it at CERN and at ESA
 
-Here to simulate a quantum magnetometr I use a controlled interacting-spin model, the transverse-field Ising chain. The ring represents spin couplings.
+Here to simulate a quantum magnetometr I use a interacting-spin model, the transverse-field Ising model. The ring represents spin couplings.
 
 [Point to the six sites, then the two dashed sites.]
 
-The field changes the probe state. Of six spins, only four are accessible; tracing out the other two can leave a mixed state.
+The transverse field changes the state.
+In this example, of six spins, only four are accessible
 
-I compare ground-state preparation, thermal preparation and depolarization. The aim is to understand which preparation gives useful sensitivity over the intended field range.
+I compare ground-state preparation, thermal preparation and noise channels.
+
+The aim is to understand which preparation gives useful sensitivity over the intended field range.
 
 ### Details to keep in mind
 
@@ -258,15 +263,17 @@ Source: [NoiseAnalysis.tex](../TeXtured/chapters/NoiseAnalysis.tex).
 
 ### Spoken script
 
-Here, white is the reduced ground-state reference and green is the reduced thermal preparation at inverse temperature beta equal to two.
+Here we show some results, on the y axis we have the QFI, on the x axis the transverse field.
+
+In white the ground-state preparation
+
+In green is the thermal preparation
 
 [Point first to the white maximum, then to the shaded region on the right.]
 
-The thermal state does not win at the highest ground-state peak. Its advantage appears away from that optimum, where the green curve remains above the white curve.
+Even if the ground state has an higher peak, the thermal state behave better, away from that optimum, where the green curve remains above the white curve.
 
-Imagine that the field is not known well enough to place the sensor exactly at its best operating point. A narrow, high peak may be less useful than a response that remains informative across the relevant interval.
-
-For a future space sensor with controlled thermal preparation, this could motivate choosing temperature to match the expected field range.
+Imagine having a sensor in space. We do not known well enough to place the sensor exactly at its best operating point. A narrow, high peak may be less useful than a broader response across the relevant interval.
 
 ### Details to keep in mind
 
@@ -283,17 +290,11 @@ Sources: [NoiseAnalysis.tex](../TeXtured/chapters/NoiseAnalysis.tex), [NoiseAnal
 
 ### Spoken script
 
-Now I lower the temperature, increasing beta to five.
-
-[Point to the green peak.]
-
-For this preparation and accessible subsystem, the thermal peak is also higher than the reduced ground-state peak.
+In the other case, lowering the temperature we obtain a thermal peak that is higher than the ground-state's
 
 The intuition is that low-energy excited states are not necessarily useless background. Their populations change with the magnetic field, and that change can carry information.
 
-Together, these plots show two possible benefits: broader sensitivity away from the ground-state optimum, or stronger sensitivity around a favourable operating region.
-
-This is not a universal claim that mixed states are better. It shows why preparation must be evaluated against the intended sensing task, rather than judged only by purity or by proximity to the ground state.
+Together, these plots show some possible benefits of a thermal state preparation.
 
 ### Details to keep in mind
 
