@@ -77,7 +77,8 @@
 \begin{frame}[plain,label=information]
     \begin{canvas}
         \heading{MATHEMATICAL FRAMEWORK}{Classical Fisher Information}
-        {An unknown parameter determines the distribution of possible measurement outcomes.}
+        {An unknown parameter determines the distribution of possible measurement outcomes.\\[0.25cm]
+        Consider a small change in the parameter.}
 
         \begin{scope}[yshift=-0.25cm]
             \node[anchor=north west,inner sep=0pt] at (.85,6.23) {\includegraphics[width=9.1cm]{distinguishability.pdf}};
@@ -136,11 +137,14 @@
         \onslide<2->{
             \node[txt,text=Teal,font=\fontsize{11}{14}\selectfont\bfseries] at (.95,6.47) {WHY};
             \node[txt,text width=12.1cm,font=\fontsize{11}{14}\selectfont] at (2.75,6.47)
-            {Real sensors are noisy and only partly accessible\newline Exact QFI becomes costly as the system grows};
-            \draw[Line,line width=.7pt] (.95,5.46)--(15.05,5.46);
+            {Real sensors are noisy and only partly accessible\newline Exact QFI becomes costly as the system grows\newline
+            Less explored in literature};
+
         }
 
         \onslide<3->{
+            \begin{scope}[yshift=-.4cm]
+            \draw[Line,line width=.7pt] (.95,5.36)--(15.05,5.36);
             \node[txt,text=Teal,font=\fontsize{11}{14}\selectfont\bfseries] at (.95,5.17) {HOW};
             \node[txt,font=\fontsize{11}{14}\selectfont\bfseries] at (2.75,5.17)
             {Use truncated spectral decomposition};
@@ -157,6 +161,7 @@
             {TQFI --- Truncated Quantum Fisher Information};
             \node[txt,text width=12.1cm,font=\fontsize{10}{13}\selectfont] at (2.75,1.41)
             {Uses the retained components to construct fidelity-based QFI bounds.};
+            \end{scope}
         }
 
         %\node[smalltxt,text width=14.3cm,font=\fontsize{6.5}{8}\selectfont] at (.8,.88)
@@ -179,7 +184,7 @@
             \panel{.8}{6.70}{10.85}{5.05}
             \node[txt,font=\fontsize{12}{16}\selectfont\bfseries] at (1.08,6.39) {Preparation};
             \node[smalltxt,text width=3.02cm,font=\fontsize{9}{11}\selectfont] at (1.08,5.82)
-            {Hamiltonian and \newline time evolution};
+            {Time evolution with a Hamiltonian};
         }
 
         \onslide<2->{
@@ -272,7 +277,7 @@
 
         \begin{scope}[yshift=.4cm]
 
-            \begin{scope}[yshift=-0.6cm]
+            \begin{scope}[yshift=-0.3cm]
                 \foreach \i in {0,...,5}{
                         \pgfmathsetmacro{\ang}{90-60*\i}
                         \coordinate (q\i) at ({3.3+1.5*cos(\ang)},{4.38+1.5*sin(\ang)});
@@ -303,8 +308,8 @@
 
         \end{scope}
 
-
-        % \takeaway{Transverse-field Ising model (TFIM)}
+        \panel{1.1}{1.45}{15.2}{0.7}
+        \node[txt,text=Paper,font=\fontsize{11}{14}\selectfont\bfseries] at (1.35,1.2){Aim: understand which preparation gives useful sensitivity};
         %\source{$N=6$, $n=4$, periodic boundaries, $J=1$. Thesis: NoiseAnalysis.}
         \footer{8 / 19}
     \end{canvas}
@@ -319,9 +324,9 @@
         {\includegraphics[page=1,width=10.5cm,height=4.65cm,keepaspectratio]{thermal_plots.pdf}};
         \draw[Rule] (11.10,6.34)--(11.10,2.1);
         \node[txt,text=Teal,font=\fontsize{11}{14}\selectfont\bfseries,text width=3.6cm] at (11.48,6.12) {Broader sensitivity};
-        \node[txt,font=\fontsize{10}{13}\selectfont,text width=3.6cm] at (11.48,5.17) {More QFI beyond\newline the ground-state peak.};
-        \node[txt,text=Teal,font=\fontsize{11}{14}\selectfont\bfseries,text width=3.6cm] at (11.48,3.65) {Uncertain field};
-        \node[txt,font=\fontsize{10}{13}\selectfont,text width=3.6cm] at (11.48,3.02) {Useful across a\newline wider field range.};
+        \node[txt,font=\fontsize{10}{13}\selectfont,text width=3.6cm] at (11.48,5.37) {More QFI across the range.};
+        \node[txt,text=Teal,font=\fontsize{11}{14}\selectfont\bfseries,text width=3.6cm] at (11.48,3.95) {Uncertain field};
+        \node[txt,font=\fontsize{10}{13}\selectfont,text width=3.6cm] at (11.48,3.32) {e.g. quantum sensor in space: narrow high peak less useful than broader};
         %\takeaway{When the field is uncertain, off-peak sensitivity matters as well as the maximum.}
         \takeaway{At $\beta=2$, thermal preparation retains more information beyond the ground-state peak.}
         %\source{Exact SLD QFI; periodic $N=6$, $n=4$, $J=1$. Different preparation families. Thesis: NoiseAnalysis.}
@@ -337,12 +342,12 @@
         \node[anchor=north west,inner sep=0pt] at (.58,6.75)
         {\includegraphics[page=2,width=10.5cm,height=4.65cm,keepaspectratio]{thermal_plots.pdf}};
         \draw[Rule] (11.10,6.34)--(11.10,2.1);
-        \node[txt,text=Teal,font=\fontsize{11}{14}\selectfont\bfseries,text width=3.6cm] at (11.48,6.12) {Stronger peak};
-        \node[txt,font=\fontsize{10}{13}\selectfont,text width=3.6cm] at (11.48,5.17) {Higher QFI around\newline the thermal optimum.};
-        \node[txt,text=Teal,font=\fontsize{11}{14}\selectfont\bfseries,text width=3.6cm] at (11.48,3.65) {Known field range};
-        \node[txt,font=\fontsize{10}{13}\selectfont,text width=3.6cm] at (11.48,3.02) {Useful near the\newline target field.};
+        \node[txt,text=Teal,font=\fontsize{11}{14}\selectfont\bfseries,text width=3.6cm] at (11.48,6.12) {High, narrow peak};
+        \node[txt,font=\fontsize{10}{13}\selectfont,text width=3.6cm] at (11.48,5.37) {Useful if we know target field.};
+        \node[txt,text=Teal,font=\fontsize{11}{14}\selectfont\bfseries,text width=3.6cm] at (11.48,3.95) {Benefits};
+        \node[txt,font=\fontsize{10}{13}\selectfont,text width=3.6cm] at (11.48,3.32) {Controlling temperature of thermal preparation.};
         %\takeaway{When the field lies near the optimum, cooling can provide greater local sensitivity.}
-        \takeaway{At $\beta=5$, the thermal state exceeds the ground-state peak in the same spin subsystem.}
+        \takeaway{At $\beta=5$, the thermal state exceeds the ground-state peak.}
         %\source{Exact SLD QFI; periodic $N=6$, $n=4$, $J=1$. Different preparation families. Thesis: NoiseAnalysis.}
         \footer{10 / 19}
     \end{canvas}
