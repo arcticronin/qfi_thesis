@@ -449,11 +449,9 @@
 % SLIDE 14 | record
 \begin{frame}[plain,label=record]
     \begin{canvas}
-        \heading{APPLICATION II: EXPERIMENTAL DATA}{What the experiment recorded}{ASI Matera simulated system in lab with lasers.
+        \heading{APPLICATION II: EXPERIMENTAL DATA}{What the experiment recorded}{ASI Matera simulated system in lab with lasers. \\
         Collected first order counts, at different relative intensities $\epsilon$ and separation $d$.
         }
-        \node[smalltxt,text width=11.3cm,font=\fontsize{10}{13}\selectfont] at (.85,6.55)
-        {52,500 count observations: 525 settings $\times$ 100 repetitions; $10\,\mathrm{ms}$ each};
 
         \node[txt,text=Teal,font=\small\bfseries] at (.95,6) {ONE REPETITION};
         \node[txt,text=Teal,font=\small\bfseries] at (5.89,6) {MEAN OF 100};
@@ -463,12 +461,15 @@
 
         \draw[Line,line width=1pt] (11.04,5.97)--(11.04,0.80);
 
+        
+        \node[smalltxt,text width=4.40cm,font=\fontsize{10}{13}\selectfont] at (11.20,5.4)
+        {52,500 count observations: 525 settings $\times$ 100 repetitions; $10\,\mathrm{ms}$ each};
 
-        \node[txt,text=Teal,font=\fontsize{11}{14}\selectfont\bfseries] at (11.20,5)
-        {FOUNDATIONAL WORK};
-        \node[txt,text width=4.40cm,font=\fontsize{10}{13}\selectfont] at (11.20,4.5)
-        {Fit the counts using quantum channels \\
-            Find the optimal basis};
+        \node[txt,text=Teal,font=\fontsize{11}{14}\selectfont\bfseries] at (11.20,3.4)
+        {Q-CHANNEL MODEL};
+        \node[txt,text width=4.40cm,font=\fontsize{10}{13}\selectfont] at (11.20,2.9)
+        {Optical state $\leftrightarrow$ counts \\
+         Further calibration helps finding better basis};
         %\takeaway{Number of photons collected in each configuration of $d$ and $\epsilon$}
         %%\source{Thesis: Exoplanet Experiment. $d_a$: displacement; $\epsilon$: source ratio. Aggregate counts; no basis rotations or experimental TQFI.}
         \footer{14 / 19}
