@@ -42,11 +42,12 @@ HG_10 = (2 * u) * psi_0
 HG_20 = (4 * u**2 - 2) * psi_0
 HG_11 = (2 * u) * (2 * v) * psi_0
 HG_02 = (4 * v**2 - 2) * psi_0
+HG_12 = (2 * u) * (4 * v**2 - 2) * psi_0
 
 # Arrange the indices as a compact coordinate grid:
 #
 #   HG_00  HG_01  HG_02
-#   HG_10  HG_11  HG_20
+#   HG_10  HG_11  HG_12
 #
 # This keeps HG_01 to the right of HG_00, HG_10 below it, and HG_11 on
 # the diagonal while preserving the wide 2 x 3 footprint used by the slide.
@@ -56,7 +57,7 @@ mode_panels = [
     (HG_02, r"$|HG_{02}\rangle$"),
     (HG_10, r"$|HG_{10}\rangle$"),
     (HG_11, r"$|HG_{11}\rangle$"),
-    (HG_20, r"$|HG_{20}\rangle$"),
+    (HG_12, r"$|HG_{12}\rangle$"),
 ]
 
 # ==========================================

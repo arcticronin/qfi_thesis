@@ -82,12 +82,12 @@
         \begin{scope}[yshift=-0.25cm]
             \node[anchor=north west,inner sep=0pt] at (.85,6.23) {\includegraphics[width=9.1cm]{distinguishability.pdf}};
             \onslide<2->{
-            \panel{10.35}{6.18}{15.2}{3.18}
-            \node[txt,text width=4.15cm,font=\large\bfseries] at (10.7,5.82) {Fisher Information};
-            % \node[smalltxt,text width=4.05cm] at (10.7,5.15) {How sensitive the observed statistics are to a small parameter change.};
-            \node[smalltxt,text width=4.05cm] at (10.7,5.15) {Sensitivity of an observed probability distribution to changes in an unknown parameter};
-            \node[txt,text width=13.9cm,font=\large] at (.85,2.65)
-            {How much information \textcolor{Coral}{a specific, fixed measurement} reveals about an unknown parameter governing a probability distribution.};
+                \panel{10.35}{6.18}{15.2}{3.18}
+                \node[txt,text width=4.15cm,font=\large\bfseries] at (10.7,5.82) {Fisher Information};
+                % \node[smalltxt,text width=4.05cm] at (10.7,5.15) {How sensitive the observed statistics are to a small parameter change.};
+                \node[smalltxt,text width=4.05cm] at (10.7,5.15) {Sensitivity of an observed probability distribution to changes in an unknown parameter};
+                \node[txt,text width=13.9cm,font=\large] at (.85,2.65)
+                {How much information \textcolor{Coral}{a specific, fixed measurement} reveals about an unknown parameter governing a probability distribution.};
             }
         \end{scope}
 
@@ -369,16 +369,16 @@
         \node[anchor=north west,inner sep=0pt] at (4.93,5.61) {\includegraphics[width=3.47cm,height=3.3cm,keepaspectratio]{rayleigh_unresolved.png}};
 
         \onslide<2->{
-        \panel{8.85}{6.58}{15.2}{2.25}
-        \node[txt,font=\large\bfseries] at (9.18,6.28) {Spatial-mode sorting};
-        \draw[arr] (9.23,4.85)--(9.76,4.85);
-        \node[flow,text width=1.23cm,minimum height=.83cm] (sorter) at (10.65,4.85) {Mode\\ sorter};
-        \draw[arr] (sorter.east)--(12.55,5.37);
-        \draw[arr,draw=Coral] (sorter.east)--(12.55,4.2);
-        \node[txt,text=Teal,text width=1.98cm,font=\small] at (12.78,5.58) {Star};
-        \node[txt,text=Coral,text width=1.98cm,font=\small] at (12.78,4.43) {Exoplanet};
-        \node[smalltxt,text width=5.47cm] at (9.18,3.34) {Photon counts in a spatial-mode basis.};
-        \takeaway{Change the measurement basis. We used SPAtial-mode DEmultiplexing (SPADE)}
+            \panel{8.85}{6.58}{15.2}{2.25}
+            \node[txt,font=\large\bfseries] at (9.18,6.28) {Spatial-mode sorting};
+            \draw[arr] (9.23,4.85)--(9.76,4.85);
+            \node[flow,text width=1.23cm,minimum height=.83cm] (sorter) at (10.65,4.85) {Mode\\ sorter};
+            \draw[arr] (sorter.east)--(12.55,5.37);
+            \draw[arr,draw=Coral] (sorter.east)--(12.55,4.2);
+            \node[txt,text=Teal,text width=1.98cm,font=\small] at (12.78,5.58) {Star};
+            \node[txt,text=Coral,text width=1.98cm,font=\small] at (12.78,4.43) {Exoplanet};
+            \node[smalltxt,text width=5.47cm] at (9.18,3.34) {Photon counts in a spatial-mode basis.};
+            \takeaway{Change the measurement basis. We used SPAtial-mode DEmultiplexing (SPADE)}
         }
 
         %\source{SPADE: SPAtial-mode DEmultiplexing. Tsang et al. (2016); Santamaria et al. (2024).}
@@ -408,27 +408,27 @@
             {Probability of a photon in $HG_{00}$\newline dominated by the aligned star};
 
             \onslide<2->{
-            \node[txt,text=Coral,font=\fontsize{13}{16}\selectfont\bfseries] at (.95,5.07)
-            {$p_1$ : first-order modes};
-            \node[txt,text width=5.35cm,font=\fontsize{11}{14}\selectfont] at (.95,4.45)
-            {Probability in $HG_{01}$ or $HG_{10}$\newline sensitive to exoplanet};
+                \node[txt,text=Coral,font=\fontsize{13}{16}\selectfont\bfseries] at (.95,5.07)
+                {$p_1$ : first-order modes};
+                \node[txt,text width=5.35cm,font=\fontsize{11}{14}\selectfont] at (.95,4.45)
+                {Probability in $HG_{01}$ or $HG_{10}$\newline sensitive to exoplanet};
             }
 
             \onslide<2->{
-            \begin{scope}[shift={(hgmodes.north west)},x=0.00299056cm,y=-0.00299056cm]
-            \draw[Coral,line width=1.5pt] (975,30) rectangle (1875,930);
-            \draw[Coral,line width=1.5pt] (30,975) rectangle (930,1875);
-            \draw[Teal,line width=1.5pt] (30,30) rectangle (930,930);
-            \end{scope}
+                \begin{scope}[shift={(hgmodes.north west)},x=0.00299056cm,y=-0.00299056cm]
+                    \draw[Coral,line width=1.5pt] (975,30) rectangle (1875,930);
+                    \draw[Coral,line width=1.5pt] (30,975) rectangle (930,1875);
+                    \draw[Teal,line width=1.5pt] (30,30) rectangle (930,930);
+                \end{scope}
             }
 
             \onslide<3->{
-            \node[txt,text=Paper,font=\fontsize{13}{16}\selectfont\bfseries] at (.95,3.36)
-            {$\chi$ : readout cross-talk};
-            \node[txt,text width=5.35cm,font=\fontsize{11}{14}\selectfont] at (.95,2.74)
-            {Probability of reporting port $1$\newline instead of $0$, or vice versa};
-            \node[txt,font=\fontsize{13}{16}\selectfont] at (.95,1.79)
-            {$p_1^{\rm rep}=\chi p_0+(1-\chi)p_1$};
+                \node[txt,text=Paper,font=\fontsize{13}{16}\selectfont\bfseries] at (.95,3.36)
+                {$\chi$ : readout cross-talk};
+                \node[txt,text width=5.35cm,font=\fontsize{11}{14}\selectfont] at (.95,2.74)
+                {Probability of reporting port $1$\newline instead of $0$, or vice versa};
+                \node[txt,font=\fontsize{13}{16}\selectfont] at (.95,1.79)
+                {$p_1^{\rm rep}=\chi p_0+(1-\chi)p_1$};
             }
         \end{scope}
 
@@ -471,32 +471,32 @@
     \begin{canvas}
         \heading{APPLICATION II: CHANNEL FRAMEWORK}{From probabilities to quantum channels}{Two-mode example. Counts do not determine the whole state.}
 
-    \begin{scope}[yshift=-0.5cm]
-        \panel{.8}{6.30}{4.80}{3.0}
+        \begin{scope}[yshift=-0.5cm]
+            \panel{.8}{6.30}{4.80}{3.0}
 
-        \node[anchor=center,text=Teal,font=\fontsize{10}{13}\selectfont\bfseries] at (2.80,5.87)
-        {PROBABILITIES};
-        \node[anchor=center,font=\fontsize{15}{19}\selectfont] at (2.80,4.78)
-        {$\boldsymbol q=\begin{pmatrix}q_a\\q_b\end{pmatrix}$};
-        \node[anchor=center,text width=3.4cm,align=center,font=\fontsize{9.5}{13}\selectfont] at (2.80,3.55)
-        {Probabilities of the\\two mode outcomes.};
+            \node[anchor=center,text=Teal,font=\fontsize{10}{13}\selectfont\bfseries] at (2.80,5.87)
+            {PROBABILITIES};
+            \node[anchor=center,font=\fontsize{15}{19}\selectfont] at (2.80,4.78)
+            {$\boldsymbol q=\begin{pmatrix}q_a\\q_b\end{pmatrix}$};
+            \node[anchor=center,text width=3.4cm,align=center,font=\fontsize{9.5}{13}\selectfont] at (2.80,3.55)
+            {Probabilities of the\\two mode outcomes.};
 
-        \panel{5.00}{6.30}{9.85}{3.0}
-        \node[anchor=center,text=Teal,font=\fontsize{10}{13}\selectfont\bfseries] at (7.43,5.87)
-        {DIAGONAL STATE};
-        \node[anchor=center,font=\fontsize{15}{19}\selectfont] at (7.43,4.78)
-        {$\rho_{\rm diag}=\begin{pmatrix}q_a&0\\0&q_b\end{pmatrix}$};
-        \node[anchor=center,text width=4.15cm,align=center,font=\fontsize{9.5}{13}\selectfont] at (7.43,3.55)
-        {A density matrix with\\the same populations.};
+            \panel{5.00}{6.30}{9.85}{3.0}
+            \node[anchor=center,text=Teal,font=\fontsize{10}{13}\selectfont\bfseries] at (7.43,5.87)
+            {DIAGONAL STATE};
+            \node[anchor=center,font=\fontsize{15}{19}\selectfont] at (7.43,4.78)
+            {$\rho_{\rm diag}=\begin{pmatrix}q_a&0\\0&q_b\end{pmatrix}$};
+            \node[anchor=center,text width=4.15cm,align=center,font=\fontsize{9.5}{13}\selectfont] at (7.43,3.55)
+            {A density matrix with\\the same populations.};
 
-        \panel{10.05}{6.30}{15.20}{3.0}
-        \node[anchor=center,text=Coral,font=\fontsize{10}{13}\selectfont\bfseries] at (12.63,5.87)
-        {QUANTUM STATE};
-        \node[anchor=center,font=\fontsize{15}{19}\selectfont] at (12.63,4.78)
-        {$\rho=\begin{pmatrix}q_a&\textcolor{Coral}{c}\\\textcolor{Coral}{c^*}&q_b\end{pmatrix}$};
-        \node[anchor=center,text width=4.45cm,align=center,font=\fontsize{9.5}{13}\selectfont] at (12.63,3.55)
-        {Same populations,\\different coherence.};
-    \end{scope}
+            \panel{10.05}{6.30}{15.20}{3.0}
+            \node[anchor=center,text=Coral,font=\fontsize{10}{13}\selectfont\bfseries] at (12.63,5.87)
+            {QUANTUM STATE};
+            \node[anchor=center,font=\fontsize{15}{19}\selectfont] at (12.63,4.78)
+            {$\rho=\begin{pmatrix}q_a&\textcolor{Coral}{c}\\\textcolor{Coral}{c^*}&q_b\end{pmatrix}$};
+            \node[anchor=center,text width=4.45cm,align=center,font=\fontsize{9.5}{13}\selectfont] at (12.63,3.55)
+            {Same populations,\\different coherence.};
+        \end{scope}
 
         % \node[anchor=center,font=\fontsize{12}{16}\selectfont] at (4.30,2.55)
         % {Classical readout: $\boldsymbol q^{\rm rep}=R_\chi\boldsymbol q$};
@@ -567,27 +567,27 @@
 
         \onslide<2->{
 
-        \node[anchor=center,font=\fontsize{13}{17}\selectfont] at (8.0,6.30)
-        {$\rho_S\;\xrightarrow{\;\textcolor{Teal}{\mathcal E}\;}\;\rho'
-                \;\xrightarrow{\;\mathrm{SPADE}\;}\;\boldsymbol p
-                \;\xrightarrow{\;\textcolor{Coral}{R_\chi}\;}\;\boldsymbol p^{\rm rep}
-                \;\xrightarrow{\;\textcolor{Coral}{\mathrm{calibration}}\;}\;\boldsymbol\mu$};
+            \node[anchor=center,font=\fontsize{13}{17}\selectfont] at (8.0,6.30)
+            {$\rho_S\;\xrightarrow{\;\textcolor{Teal}{\mathcal E}\;}\;\rho'
+                    \;\xrightarrow{\;\mathrm{SPADE}\;}\;\boldsymbol p
+                    \;\xrightarrow{\;\textcolor{Coral}{R_\chi}\;}\;\boldsymbol p^{\rm rep}
+                    \;\xrightarrow{\;\textcolor{Coral}{\mathrm{calibration}}\;}\;\boldsymbol\mu$};
 
-        \panel{8.03}{5.50}{15.20}{2.45}
-        \node[txt,text=Coral,font=\fontsize{11}{14}\selectfont\bfseries] at (8.40,5.08)
-        {AFTER MEASUREMENT};
-        \node[txt,text width=6.10cm,font=\fontsize{12}{16}\selectfont] at (8.40,4.35)
-        {Readout cross-talk\\[.25cm]Calibration};
-        \node[txt,text=Muted,font=\fontsize{10}{13}\selectfont] at (8.40,3.10)
-        {Act on outcomes and counts.};
+            \panel{8.03}{5.50}{15.20}{2.45}
+            \node[txt,text=Coral,font=\fontsize{11}{14}\selectfont\bfseries] at (8.40,5.08)
+            {AFTER MEASUREMENT};
+            \node[txt,text width=6.10cm,font=\fontsize{12}{16}\selectfont] at (8.40,4.35)
+            {Readout cross-talk\\[.25cm]Calibration};
+            \node[txt,text=Muted,font=\fontsize{10}{13}\selectfont] at (8.40,3.10)
+            {Act on outcomes and counts.};
         }
 
         \onslide<3->{
-        \panel{.8}{2.25}{15.20}{1}
-        \node[txt,text=Teal,font=\fontsize{11}{14}\selectfont\bfseries] at (1.15,2.08)
-        {Compare QFI before measurement with CFI after, to asses where information \\
-        is lost. After the cross-talk effect, CFI/QFI
-        drops from 90\% to 57\%.};
+            \panel{.8}{2.25}{15.20}{1}
+            \node[txt,text=Teal,font=\fontsize{11}{14}\selectfont\bfseries] at (1.15,2.08)
+            {Compare QFI before measurement with CFI after, to asses where information \\
+                is lost. After the cross-talk effect, CFI/QFI
+                drops from 90\% to 57\%.};
 
         }
 
