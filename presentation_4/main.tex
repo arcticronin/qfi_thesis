@@ -231,11 +231,11 @@
         \onslide<4->{
             \panel{11.10}{6.70}{15.5}{1.35}
             \node[txt,font=\fontsize{12}{16}\selectfont\bfseries] at (11.40,6.39) {Information};
-            \node[txt,text width=3.46cm,font=\fontsize{11}{15}\selectfont] at (11.35,5.71)
-            {1) Exact SLD QFI\newline 2) TQFI bounds};
-            \node[anchor=north west,inner sep=0pt] at (11.25,4.49)
-            {\includegraphics[width=4.50cm,height=3.10cm,keepaspectratio]{simulation2.png}};
-            \draw[arr] (10.57,5.35)--(11.20,5.35);
+            \node[txt,text width=3.46cm,font=\fontsize{11}{15}\selectfont] at (11.35,5.65)
+            {QFI and its bounds};
+            \node[anchor=north west,inner sep=0pt] at (11.15,4.89)
+            {\includegraphics[width=4.50cm,height=3.30cm,keepaspectratio]{simulation2.png}};
+            \draw[arr] (10.57,5.75)--(11.20,5.75);
             \draw[arr,draw=Coral] (10.57,2.70)--(11.20,2.70);
         }
 
@@ -362,23 +362,28 @@
 % SLIDE 12 | spade
 \begin{frame}[plain,label=spade]
     \begin{canvas}
-        \heading{APPLICATION II: EXOPLANET DETECTION}{The Exoplanet Problem}{A faint exoplanet must be resolved in the presence of a bright star.}
-        \panel{.8}{6.58}{8.65}{2.25}
-        \node[txt,font=\large\bfseries] at (1.12,6.28) {Direct imaging, Rayleigh limit};
-        \node[anchor=north west,inner sep=0pt] at (1.12,5.61) {\includegraphics[width=3.47cm,height=3.3cm,keepaspectratio]{rayleigh_resolved.png}};
-        \node[anchor=north west,inner sep=0pt] at (4.93,5.61) {\includegraphics[width=3.47cm,height=3.3cm,keepaspectratio]{rayleigh_unresolved.png}};
+        \heading{APPLICATION II: EXOPLANET DETECTION}{The Exoplanet Problem}{Detect a faint exoplanet close to a bright star.}
+        \panel{.8}{6.58}{8.65}{1.55}
+        \node[txt,font=\large\bfseries] at (1.12,6.28) {Direct imaging};
+        \node[smalltxt,text width=6.2cm] at (1.12,5.75) {Record photon positions. \\
+        If sources are too close $\rightarrow$ Rayleigh limit 
+        };
+        \node[anchor=north west,inner sep=0pt] at (1.12,4.91) {\includegraphics[width=3.47cm,height=3.3cm,keepaspectratio]{rayleigh_resolved.png}};
+        \node[anchor=north west,inner sep=0pt] at (4.93,4.91) {\includegraphics[width=3.47cm,height=3.3cm,keepaspectratio]{rayleigh_unresolved.png}};
 
         \onslide<2->{
-            \panel{8.85}{6.58}{15.2}{2.25}
-            \node[txt,font=\large\bfseries] at (9.18,6.28) {Spatial-mode sorting};
-            \draw[arr] (9.23,4.85)--(9.76,4.85);
-            \node[flow,text width=1.23cm,minimum height=.83cm] (sorter) at (10.65,4.85) {Mode\\ sorter};
-            \draw[arr] (sorter.east)--(12.55,5.37);
-            \draw[arr,draw=Coral] (sorter.east)--(12.55,4.2);
-            \node[txt,text=Teal,text width=1.98cm,font=\small] at (12.78,5.58) {Star};
-            \node[txt,text=Coral,text width=1.98cm,font=\small] at (12.78,4.43) {Exoplanet};
-            \node[smalltxt,text width=5.47cm] at (9.18,3.34) {Photon counts in a spatial-mode basis.};
-            \takeaway{Change the measurement basis. We used SPAtial-mode DEmultiplexing (SPADE)}
+        \panel{8.85}{6.58}{15.2}{1.55}
+        \node[txt,font=\large\bfseries] at (9.18,6.28) {Spatial-mode sorting};
+    \begin{scope}[yshift=-0.35cm]
+        \draw[arr] (9.23,4.85)--(9.76,4.85);
+        \node[flow,text width=1.23cm,minimum height=.83cm] (sorter) at (10.65,4.85) {Mode\\ sorter};
+        \draw[arr] (sorter.east)--(12.55,5.37);
+        \draw[arr,draw=Coral] (sorter.east)--(12.55,4.2);
+        \node[txt,text=Teal,text width=1.98cm,font=\small] at (12.78,5.58) {Star};
+        \node[txt,text=Coral,text width=1.98cm,font=\small] at (12.78,4.43) {Exoplanet};
+        \node[smalltxt,text width=5.47cm] at (9.18,3.34) {Sort light into spatial modes, to \\separate contributions of star and exoplanet.};
+    \end{scope}
+        \takeaway{Change the measurement basis. We used SPAtial-mode DEmultiplexing (SPADE)}
         }
 
         %\source{SPADE: SPAtial-mode DEmultiplexing. Tsang et al. (2016); Santamaria et al. (2024).}
@@ -391,6 +396,8 @@
     \begin{canvas}
         \heading{APPLICATION II: EXOPLANET DETECTION}{SPADE, Hermite-Gauss modes and cross-talk}{}
         % Same width/height constraints as before: actual image height is 5.7 cm.
+        \node[smalltxt,text width=12.47cm] at (0.95,7.34) {SPADE maps the spatial photon wavefunction into spatial Hermite-Gaussian modes.};
+    \begin{scope}[yshift=-0.45cm]
         \node[anchor=east,inner sep=0pt] (hgmodes) at (15.2,4.25)
         {\includegraphics[width=13.8cm,height=5.7cm,keepaspectratio]{hg_modes_strong_visuals.png}};
         % Square outlines over the selected mode panels (image pixel coordinates).
@@ -431,6 +438,7 @@
                 {$p_1^{\rm rep}=\chi p_0+(1-\chi)p_1$};
             }
         \end{scope}
+    \end{scope}
 
         %\source{Modal outcomes, not photon origin. Symmetric readout model; other outcomes unchanged. Thesis: Exoplanet Experiment.}
         \footer{13 / 19}
@@ -441,8 +449,10 @@
 % SLIDE 14 | record
 \begin{frame}[plain,label=record]
     \begin{canvas}
-        \heading{APPLICATION II: EXPERIMENTAL DATA}{What the experiment recorded}{Aggregate first-order counts, in experimental lab settings, over separation $d$ and intensity ratio $\epsilon$}
-        \node[smalltxt,text width=11.3cm,font=\fontsize{10}{13}\selectfont] at (.85,6.75)
+        \heading{APPLICATION II: EXPERIMENTAL DATA}{What the experiment recorded}{ASI Matera simulated system in lab with lasers.
+        Collected first order counts, at different relative intensities $\epsilon$ and separation $d$.
+        }
+        \node[smalltxt,text width=11.3cm,font=\fontsize{10}{13}\selectfont] at (.85,6.55)
         {52,500 count observations: 525 settings $\times$ 100 repetitions; $10\,\mathrm{ms}$ each};
 
         \node[txt,text=Teal,font=\small\bfseries] at (.95,6) {ONE REPETITION};
@@ -678,7 +688,7 @@
     \begin{canvas}
         \heading{APPENDIX C /  ADAPTIVE VQSE TRAINING}{Local-to-global objective schedule}{}
         \begin{scope}[yshift=.15cm]
-            \node[anchor=north,inner sep=0pt] at (8.0,7.03) {\includegraphics[height=5cm,keepaspectratio]{misc/VQSE_adaptive_training_slides.png}};
+            \node[anchor=north,inner sep=0pt] at (8.0,7.13) {\includegraphics[height=6.5cm,keepaspectratio]{misc/VQSE_adaptive_training_slides.png}};
         \end{scope}
         %\closingline{The changing adaptive objective is a training schedule; the local and global traces provide the fixed-objective context.}
         %\source{Deterministic two-qubit VQSE example: balanced non-diagonal mixed state, rank-3 target, 50 outer iterations and global-target refresh every 5 iterations.}
@@ -691,7 +701,7 @@
         \heading{APPENDIX C.1 /  VQSE OPTIMIZER COMPARISON}{BFGS, Adam and Bures natural gradient}{}
         %{The mixed-state metric preconditions parameter updates by their physical state displacement.}
         \begin{scope}[yshift=.15cm]
-            \node[anchor=north,inner sep=0pt] at (8.0,7.03) {\includegraphics[height=5.45cm,keepaspectratio]{misc/VQSE_optimizer_comparison_slides.png}};
+            \node[anchor=north,inner sep=0pt] at (8.0,7.13) {\includegraphics[height=6.45cm,keepaspectratio]{misc/VQSE_optimizer_comparison_slides.png}};
         \end{scope}
         %\closingline{On this benchmark, Bures-NG approaches the BFGS eigenvalue accuracy with smoother late-stage parameter updates.}
         %\source{Deterministic simulator benchmark: non-diagonal two-qubit state with spectrum $(0.40,0.28,0.20,0.12)$, rank-3 target, equal initialization, 35 outer iterations and target refresh every 5 iterations.}
