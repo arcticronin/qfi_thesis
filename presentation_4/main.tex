@@ -112,8 +112,8 @@
         \only<6>{
             \measurementview{90}
 
-            \node[txt,font=\fontsize{12}{12}\selectfont\bfseries] at (.95,2.25)
-            {\textcolor{Coral}{QFI} is intrinsic to the quantum state \\ and it is \textcolor{Coral}{independent of the measurement basis}
+            \node[txt,font=\fontsize{10.5}{12}\selectfont\bfseries] at (.8,1.85)
+            {\textcolor{Coral}{QFI} is intrinsic to the quantum state and it is \textcolor{Coral}{independent of the measurement basis}
             };
             \takeaway{The state has not become more informative, we have become better at reading it}
         }
@@ -453,6 +453,9 @@
         Collected first order counts, at different relative intensities $\epsilon$ and separation $d$.
         }
 
+        \fill[white,rounded corners=6pt] (12.7,8.1) rectangle (15.3,6.7);
+        \node[anchor=north,inner sep=0pt] at (14,7.94) {\includegraphics[width=2.34cm]{asi.pdf}};
+
         \node[txt,text=Teal,font=\small\bfseries] at (.95,6) {ONE REPETITION};
         \node[txt,text=Teal,font=\small\bfseries] at (5.89,6) {MEAN OF 100};
 
@@ -480,7 +483,7 @@
 % SLIDE 15 | classical-to-quantum transition
 \begin{frame}[plain,label=classical-to-quantum]
     \begin{canvas}
-        \heading{APPLICATION II: CHANNEL FRAMEWORK}{From probabilities to quantum channels}{Two-mode example. Counts do not determine the whole state.}
+        \heading{APPLICATION II: CHANNEL FRAMEWORK}{From probabilities to quantum channels}{Connect probabilities with quantum states: two modes example.}
 
         \begin{scope}[yshift=-0.5cm]
             \panel{.8}{6.30}{4.80}{3.0}
@@ -489,8 +492,8 @@
             {PROBABILITIES};
             \node[anchor=center,font=\fontsize{15}{19}\selectfont] at (2.80,4.78)
             {$\boldsymbol q=\begin{pmatrix}q_a\\q_b\end{pmatrix}$};
-            \node[anchor=center,text width=3.4cm,align=center,font=\fontsize{9.5}{13}\selectfont] at (2.80,3.55)
-            {Probabilities of the\\two mode outcomes.};
+            \node[anchor=center,text width=4.1cm,align=center,font=\fontsize{9.5}{13}\selectfont] at (2.80,3.55)
+            {Classical probabilities in a vector.};
 
             \panel{5.00}{6.30}{9.85}{3.0}
             \node[anchor=center,text=Teal,font=\fontsize{10}{13}\selectfont\bfseries] at (7.43,5.87)
@@ -498,7 +501,7 @@
             \node[anchor=center,font=\fontsize{15}{19}\selectfont] at (7.43,4.78)
             {$\rho_{\rm diag}=\begin{pmatrix}q_a&0\\0&q_b\end{pmatrix}$};
             \node[anchor=center,text width=4.15cm,align=center,font=\fontsize{9.5}{13}\selectfont] at (7.43,3.55)
-            {A density matrix with\\the same populations.};
+            {Same probabilities on the \\ diagonal of a density matrix.};
 
             \panel{10.05}{6.30}{15.20}{3.0}
             \node[anchor=center,text=Coral,font=\fontsize{10}{13}\selectfont\bfseries] at (12.63,5.87)
@@ -506,7 +509,7 @@
             \node[anchor=center,font=\fontsize{15}{19}\selectfont] at (12.63,4.78)
             {$\rho=\begin{pmatrix}q_a&\textcolor{Coral}{c}\\\textcolor{Coral}{c^*}&q_b\end{pmatrix}$};
             \node[anchor=center,text width=4.45cm,align=center,font=\fontsize{9.5}{13}\selectfont] at (12.63,3.55)
-            {Same populations,\\different coherence.};
+            {Optical state can have additional entries $\rightarrow$ coherences.};
         \end{scope}
 
         % \node[anchor=center,font=\fontsize{12}{16}\selectfont] at (4.30,2.55)
@@ -514,7 +517,7 @@
         % \node[anchor=center,font=\fontsize{12}{16}\selectfont] at (11.60,2.55)
         % {Quantum channel: $\rho'=\mathcal E(\rho)$};
 
-        %\takeaway{Counts reveal populations. The optical model also describes coherence.}
+        \takeaway{Same populations can belong to different quantum states.}
         % This is a representation comparison, not a physical process creating coherence from counts.
         % q_a and q_b are normalized populations of two individual modes in this illustration.
         \footer{15 / 19}
@@ -524,20 +527,26 @@
 % SLIDE 16 | source-state
 \begin{frame}[plain,label=embedding]
     \begin{canvas}
-        \heading{APPLICATION II: CHANNEL FRAMEWORK}{The optical source state}{The state is defined before loss, measurement and detector processing.}
+        \heading{APPLICATION II: CHANNEL FRAMEWORK}{The optical source state}{Where do those coherences come from in this experiment?}
 
-        \panel{.8}{6.15}{5.45}{1.86}
+
+        \panel{.8}{6.15}{5.45}{1.56}
         \node[anchor=center,text=Teal,font=\fontsize{10}{13}\selectfont\bfseries] at (3.12,5.78)
         {PHYSICAL SOURCE};
-        \fill[Teal] (1.34,4.86) circle (.17);
-        \node[txt,font=\fontsize{11}{14}\selectfont\bfseries] at (1.72,5.08) {centered star};
-        \node[txt,text=Teal,font=\fontsize{13}{16}\selectfont] at (1.72,4.54)
+        \fill[Teal] (1.34,4.96) circle (.17);
+        \node[txt,font=\fontsize{11}{14}\selectfont\bfseries] at (1.72,5.18) {centered star};
+        \node[txt,text=Teal,font=\fontsize{13}{16}\selectfont] at (1.72,4.64)
         {$|HG_{00}\rangle$};
-        \fill[Coral] (1.34,3.49) circle (.095);
-        \node[txt,font=\fontsize{11}{14}\selectfont\bfseries] at (1.72,3.72) {exoplanet};%{displaced companion};
-        \node[txt,text=Coral,font=\fontsize{13}{16}\selectfont] at (1.72,3.18)
+        \fill[Coral] (1.34,3.59) circle (.095);
+        \node[txt,font=\fontsize{11}{14}\selectfont\bfseries] at (1.72,3.82) {exoplanet};%{displaced companion};
+        \node[txt,text=Coral,font=\fontsize{13}{16}\selectfont] at (1.72,3.28)
         {$|\psi_{d_a}\rangle$};
-        \panel{5.70}{6.15}{15.20}{1.86}
+        \node[anchor=center,text width=4.35cm,align=center,font=\fontsize{9}{12}\selectfont] at (2.95,2.13)
+        {Independent sources $\Rightarrow$ statistical mixture};
+
+
+        \onslide<2->{
+        \panel{5.70}{6.15}{15.20}{1.56}
         \node[txt,text=Coral,font=\fontsize{10}{13}\selectfont\bfseries] at (6.05,5.78)
         {ONE-PHOTON SOURCE STATE};
         \node[anchor=center,font=\fontsize{12}{16}\selectfont] at (10.45,4.85)
@@ -547,10 +556,11 @@
                 \end{aligned}$};
         \node[anchor=center,font=\fontsize{13}{16}\selectfont] at (10.45,3.80)
         {$|\psi_{d_a}\rangle=\displaystyle\sum_n c_n(d_a)|HG_n\rangle$};
-        \node[anchor=center,text width=8.35cm,align=center,font=\fontsize{9}{12}\selectfont] at (10.45,2.73)
+        \node[anchor=center,text width=8.35cm,align=center,font=\fontsize{9}{12}\selectfont] at (10.45,2.53)
         {No interference term between the two sources; the exoplanet component can still contain coherence between HG modes.};
 
         \takeaway{The quantum state contains modal structure that the recorded probability $p_1$ alone cannot reconstruct.}
+        }
         %\source{$\epsilon$: faint-source photon fraction. Gaussian PSF and bright-source alignment are source-model assumptions. Thesis: Astrophysical and Exoplanet Experiment.}
         \footer{16 / 19}
     \end{canvas}
@@ -560,7 +570,7 @@
 % SLIDE 17 | receiver sequence
 \begin{frame}[plain,label=sequence]
     \begin{canvas}
-        \heading{APPLICATION II:  CHANNEL FRAMEWORK}{From the optical state to counts}{Each stage describes one part of the receiver.}
+        \heading{APPLICATION II:  CHANNEL FRAMEWORK}{From the optical state to counts}{What happens to the optical state when it goes through SPADE and the detector?}
 
         \node[anchor=center,font=\fontsize{13}{17}\selectfont] at (8.0,6.30)
         {$\rho_S\;\xrightarrow{\;\textcolor{Teal}{\mathcal E}\;}\;\rho'
@@ -571,9 +581,9 @@
         \panel{.8}{5.50}{7.78}{2.45}
         \node[txt,text=Teal,font=\fontsize{11}{14}\selectfont\bfseries] at (1.15,5.08)
         {BEFORE MEASUREMENT};
-        \node[txt,text width=6.15cm,font=\fontsize{12}{16}\selectfont] at (1.15,4.35)
-        {Loss and alignment\\[.25cm]Mode mixing and dephasing};
-        \node[txt,text=Muted,font=\fontsize{10}{13}\selectfont] at (1.15,3.10)
+        \node[txt,text width=6.15cm,font=\fontsize{12}{16}\selectfont] at (1.15,4.05)
+        {Series of quantum channels\\[.25cm]Loss and alignment};
+        \node[txt,text=Muted,font=\fontsize{10}{13}\selectfont] at (1.15,4.65)
         {Act on the optical state.};
 
         \onslide<2->{
@@ -587,9 +597,9 @@
             \panel{8.03}{5.50}{15.20}{2.45}
             \node[txt,text=Coral,font=\fontsize{11}{14}\selectfont\bfseries] at (8.40,5.08)
             {AFTER MEASUREMENT};
-            \node[txt,text width=6.10cm,font=\fontsize{12}{16}\selectfont] at (8.40,4.35)
+            \node[txt,text width=6.10cm,font=\fontsize{12}{16}\selectfont] at (8.40,4.05)
             {Readout cross-talk\\[.25cm]Calibration};
-            \node[txt,text=Muted,font=\fontsize{10}{13}\selectfont] at (8.40,3.10)
+            \node[txt,text=Muted,font=\fontsize{10}{13}\selectfont] at (8.40,4.65)
             {Act on outcomes and counts.};
         }
 
@@ -610,7 +620,9 @@
 % SLIDE 18 | model-result
 \begin{frame}[plain,label=model-result]
     \begin{canvas}
-        \heading{APPLICATION II: MODEL AND OBSERVATIONS}{The model captures the mean count pattern}{Fit to the recorded settings, with fixed optical assumptions.}
+        \heading{APPLICATION II: MODEL AND OBSERVATIONS}{The model captures the mean count pattern}{Some of the assumptions of SPADE quantum-to-classical model $\rightarrow$ fitted to ASI data.}
+
+        \begin{scope}[yshift=.25cm]
         \node[txt,text=Teal,font=\fontsize{12}{16}\selectfont\bfseries] at (1.0,6.48) {Observed setting means};
         \node[txt,text=Coral,font=\fontsize{12}{16}\selectfont\bfseries] at (8.10,6.48) {Modelled setting means};
         % Display only the top two panels of the original thesis figure.
@@ -619,7 +631,14 @@
         {\includegraphics[width=6.5cm,height=4.10cm,keepaspectratio]{spade_left.pdf}};
         \node[anchor=north west,inner sep=0pt] at (8.10,5.90)
         {\includegraphics[width=6.5cm,height=4.10cm,keepaspectratio]{spade_right.pdf}};
-        \takeaway{Agreement supports the mean-response model, not a unique reconstruction of the optical channels.}
+        \end{scope}
+
+        \panel{.9}{1.85}{15.40}{0.7}
+        \node[txt,text=Teal,font=\fontsize{11}{14}\selectfont\bfseries] at (1.15,1.68)
+        {Channel description allows studying how optical imperfections affect sensitivity.\\
+        Identify which extra measurements would help for a future experiment};
+
+        % \takeaway{Agreement supports the mean-response model, not a unique reconstruction of the optical channels.}
         %\source{Thesis appendix: provisional channel workbench, top panels. In-sample mean comparison; optical parameters are conditional assumptions.}
         \footer{18 / 19}
     \end{canvas}
@@ -628,23 +647,30 @@
 % SLIDE 19 | conclusions
 \begin{frame}[plain,label=conclusions]
     \begin{canvas}
-        \heading{CONCLUSIONS}{Conclusions}{Simulation, preparation studies, data interpretation and a variational optical proposal.}
+        \heading{CONCLUSIONS}{Conclusions}{}
         \fill[Teal] (.98,6.38) circle (.065);
-        \node[txt,font=\fontsize{12}{16}\selectfont\bfseries] at (1.24,6.59) {Numerical and quantum-circuit sensing pipeline};
-        \node[txt,text width=13.5cm,font=\fontsize{10}{14}\selectfont] at (1.24,6.03)
-        {Simulated quantum sensors under noise and decoherence, estimating QFI and TQFI.};
+
+        \begin{scope}[yshift=.4cm,xshift=-0.2cm]
+        \fill[white,rounded corners=6pt] (12.7,8.1) rectangle (15.3,6.7);
+        \node[anchor=north,inner sep=0pt] at (14,7.94) {\includegraphics[width=2.34cm]{asi.pdf}};
+        \end{scope}
+
+        \node[txt,font=\fontsize{12}{16}\selectfont\bfseries] at (1.24,6.59) {Numerical and quantum-circuit methods, 
+        to estimate QFI and TQFI};
+        % \node[txt,text width=13.5cm,font=\fontsize{10}{14}\selectfont] at (1.24,6.03)
+        % {Simulated quantum sensors under noise and decoherence, estimating QFI and TQFI.};
+        \begin{scope}[yshift=.4cm]
         \fill[Teal] (.98,4.99) circle (.065);
-        \node[txt,font=\fontsize{12}{16}\selectfont\bfseries] at (1.24,5.20) {Preparation and noise models};
-        \node[txt,text width=13.5cm,font=\fontsize{10}{14}\selectfont] at (1.24,4.64)
-        {Compared ground and thermal states, depolarization and restricted access to the sensor.};
+        \node[txt,font=\fontsize{12}{16}\selectfont\bfseries] at (1.24,5.20) {Simulated quantum sensor under noise};
+        \node[txt,text width=13.5cm,font=\fontsize{10}{12}\selectfont] at (1.24,4.64)
+        {Manzi, Mandarino, Prati, \textit{Local Quantum Fisher Information in Noisy Ising Magnetometers}, 2026. (In preparation)};
+    \end{scope}
         \fill[Teal] (.98,3.60) circle (.065);
         \node[txt,font=\fontsize{12}{16}\selectfont\bfseries] at (1.24,3.81) {Quantum-to-classical model of the SPADE receiver};
-        \node[txt,text width=13.5cm,font=\fontsize{10}{14}\selectfont] at (1.24,3.25)
-        {Specified optical channels and calibrated the observable mean-count response.};
-        \fill[Coral] (.98,2.21) circle (.065);
-        \node[txt,text=Coral,font=\fontsize{12}{16}\selectfont\bfseries] at (1.24,2.42) {VQ-SPADE: a proposed optical eigensolver};
-        \node[txt,text width=13.5cm,font=\fontsize{10}{14}\selectfont] at (1.24,1.86)
-        {A trainable optical transformation would learn an approximate eigenbasis.};
+        \fill[Coral] (.98,2.91) circle (.065);
+        \node[txt,text=Coral,font=\fontsize{12}{16}\selectfont\bfseries] at (1.24,3.12) {VQ-SPADE: a proposed optical eigensolver};
+        \node[txt,text width=13.5cm,font=\fontsize{10}{12}\selectfont] at (1.24,2.46)
+        {Manzi, Mandarino, Prati, \textit{Variational Eigenmode Learning for Sub-Rayleigh Imaging}, \\ 2026. (In preparation)};
         %\source{Thesis: Methods, Noise Analysis, Exoplanet Experiment and Conclusions. VQ-SPADE is proposed for a future experiment.}
         \footer{19 / 19}
     \end{canvas}
